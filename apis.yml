@@ -7,8 +7,7 @@ type: Index
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-tags:
-  - API
+tags: []
 created: '2025-02-17'
 modified: '2026-03-16'
 url: >-
@@ -21,8 +20,7 @@ apis:
       Join our developer portal forum and connect with fellow members to solve technical
       questions about APIs, share use cases, and collaborate on projects.
     humanURL: ' https://developer.novopayment.com/'
-    tags:
-      - API
+    tags: []
     properties:
       - type: Documentation
         url: ' https://developer.novopayment.com/'
