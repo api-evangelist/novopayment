@@ -14,6 +14,8 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/novopayment/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 common:
+  - type: DomainSecurity
+    url: security/novopayment-domain-security.yml
   - type: GitHubOrganization
     url: https://github.com/novopayment
   - type: LinkedIn
