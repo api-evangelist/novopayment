@@ -4,9 +4,21 @@ description: >-
   Join our developer portal forum and connect with fellow members to solve technical
   questions about APIs, share use cases, and collaborate on projects.
 type: Index
+accessModel:
+  pricing: freemium
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Freemium
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
 tags: []
 created: '2025-02-17'
 modified: '2026-04-28'
