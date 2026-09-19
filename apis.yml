@@ -1,8 +1,13 @@
 aid: novopayment
 name: NovoPayment
-description: >-
-  Join our developer portal forum and connect with fellow members to solve technical
-  questions about APIs, share use cases, and collaborate on projects.
+description: NovoPayment is a Miami-headquartered banking-as-a-service and embedded-finance platform serving
+  banks, fintechs, retailers and payment companies across the Americas. Its developer hub publishes an
+  OAuth2-secured REST API suite spanning six product families — Card Solutions, Digital Banking, Digital
+  Acquiring, Digital Wallets, Payments and Tokenization — covering card issuing and processing, digital
+  account opening, KYC and compliance checks, customer and profile management, alias directories, real-time
+  P2P payments, merchant-presented QR acceptance, payment authorization, and Visa/Mastercard token service
+  provisioning including push provisioning to Apple Pay, Google Pay and Samsung Pay. Access runs through
+  a self-service sandbox, with UAT and production promoted by request after project review.
 type: Index
 deliveryModel:
   model: unknown
@@ -27,33 +32,583 @@ accessModel:
   - plans
   generated: '2026-07-22'
   method: derived
-position: Consuming
+position: Producing
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-tags: []
+tags:
+- Payments
+- Banking as a Service
+- Embedded Finance
+- Card Issuing
+- Digital Wallet
+- Tokenization
+- Real-Time Payments
+- Onboarding
+- KYC
+- Latin America
+- Fintech
+- Digital Banking
+tags_raw:
+- Payments
+- Banking as a Service
+- Embedded Finance
+- Card Issuing
+- Digital Wallets
+- Tokenization
+- Real-Time Payments
+- Onboarding
+- KYC
+- Latin America
+- Fintech
+- Digital Banking
 created: '2025-02-17'
-modified: '2026-04-28'
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/novopayment/refs/heads/main/apis.yml
+modified: '2026-09-17'
+url: https://raw.githubusercontent.com/api-evangelist/novopayment/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 common:
-  - type: DomainSecurity
-    url: security/novopayment-domain-security.yml
-  - type: GitHubOrganization
-    url: https://github.com/novopayment
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/novopayment
+- type: OAuthScopes
+  url: scopes/novopayment-scopes.yml
+- type: Authentication
+  url: authentication/novopayment-authentication.yml
+- type: DomainSecurity
+  url: security/novopayment-domain-security.yml
+- type: GitHubOrganization
+  url: https://github.com/novopayment
+- type: LinkedIn
+  url: https://www.linkedin.com/company/novopayment_2/
+- type: Website
+  url: https://novopayment.com/
+- type: DeveloperPortal
+  url: https://developer.novopayment.com/
+- type: Documentation
+  url: https://developer.novopayment.com/api
+- type: APIReference
+  url: https://developer.novopayment.com/api
+- type: GettingStarted
+  url: https://developer.novopayment.com/guides/quick-start
+- type: SignUp
+  url: https://developer.novopayment.com/user/register
+- type: Login
+  url: https://developer.novopayment.com/user
+- type: Support
+  url: https://novopayment.com/contact/
+- type: TermsOfService
+  url: https://developer.novopayment.com/terms-and-conditions-use
+- type: PrivacyPolicy
+  url: https://developer.novopayment.com/privacy-policy
+- type: Packages
+  url: packages/novopayment-packages.yml
+- type: SDKs
+  url: packages/novopayment-packages.yml
+- type: LLMsTxt
+  url: llms/novopayment-llms.txt
+- type: X-MCPServerCandidate
+  url: mcp/novopayment-mcp.yml
+- type: Conformance
+  url: conformance/novopayment-conformance.yml
+- type: Compliance
+  url: conformance/novopayment-conformance.yml
+- type: ErrorCatalog
+  url: errors/novopayment-error-codes.yml
+- type: DeclineCodes
+  url: errors/novopayment-decline-codes.yml
+- type: Lifecycle
+  url: lifecycle/novopayment-lifecycle.yml
+- type: Conventions
+  url: conventions/novopayment-conventions.yml
+- type: DataModel
+  url: data-model/novopayment-data-model.yml
+- type: Sandbox
+  url: sandbox/novopayment-sandbox.yml
+- type: Webhooks
+  url: asyncapi/novopayment-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Plans
+  url: plans/novopayment-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/novopayment-rate-limits.yml
+- type: FinOps
+  url: finops/novopayment-finops.yml
 apis:
-  - aid: novopayment:novopayment
-    name: NovoPayment
-    description: >-
-      Join our developer portal forum and connect with fellow members to solve technical
-      questions about APIs, share use cases, and collaborate on projects.
-    humanURL: ' https://developer.novopayment.com/'
-    tags: []
-    properties:
-      - type: Documentation
-        url: ' https://developer.novopayment.com/'
+- aid: novopayment:accounts
+  name: NovoPayment Accounts API
+  description: NovoPayment offers the Accounts API to provide a customized, scalable, light and portable
+    set of functionalities. These functionalities can be used by financial institutions for supporting
+    banking activities.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  tags:
+  - Digital Banking
+  - Account
+  - Banking as a Service
+  - Payments
+  tags_raw:
+  - Digital Banking
+  - Accounts
+  - Banking as a Service
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-accounts-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/accounts-api/accounts-api-spec-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-accounts-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:alias-directory
+  name: NovoPayment Alias Directory API
+  description: The Alias Directory API enables a set of operations to store and manage users' information
+    safely for sending funds between them. One of the main advantages of using NovoPayment's Alias Directory
+    is that the information sent in each transaction is the alias; therefore, sensitive data such as a
+    PAN is not exposed in each transaction.
+  humanURL: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  tags:
+  - Payments
+  - Aliases
+  - Directory
+  - Money Transfer
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-alias-directory-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/alias-directory-api/alias-directory-api-v1.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-alias-directory-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/aliasdirectory/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:cards
+  name: NovoPayment Cards API
+  description: Card Issuing, Switching, and Transaction Processing groups together the activities surrounding
+    creating card programs, issuing cards to customers, managing those cards, and processing the transactions
+    those customers make. These components can be implemented modularly. For example, an issuer may want
+    to only employ NovoPayment’s Switch, while another uses only Issuing capabilities and handles transaction
+    authorization in-house.
+  humanURL: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  tags:
+  - Card Issuing
+  - Cards
+  - Payments
+  - Prepaid
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-cards-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/cards-api/cards-api-spec-v1.3.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Overlay
+    url: overlays/novopayment-cards-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/api/v1.3
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:compliance
+  name: NovoPayment Compliance API
+  description: The Compliance API allows you to validate the identity of the person who is registering
+    in the system, with facial, document, and address verification among others. It is easy to implement
+    and is applicable for all onboardings.
+  humanURL: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  tags:
+  - KYC
+  - Compliance
+  - Identity Verification
+  - Digital Banking
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-compliance-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/compliance-api/compliance-api-v1.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-compliance-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/kyc/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:customers
+  name: NovoPayment Customers API
+  description: The Customers API allows to handle the different type of customers that can be served by
+    NovoPayment’s platform. This includes individuals, commercial and merchant customers. For most of
+    the operations to be performed in the platform you will need to provide the customer id in order to
+    complete the operation. Below operations are available for Customers API Create Commercial Customers
+    This operation can be used for commercial customer creation.
+  humanURL: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  tags:
+  - Customers
+  - Digital Banking
+  - Onboarding
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-customers-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/customers-api/customers-api-spec-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-customers-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/customers/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:issuer-tokenization
+  name: NovoPayment Issuer Tokenization API
+  description: NovoPayment, as a Token Service Provider, has a collection of APIs that enables Issuers
+    to participate in the Tokenization ecosystem; we are responsible for the interaction between the Issuer
+    and the franchises. Providing security in the process, ease of implementation and support for your
+    development teams throughout the project.
+  humanURL: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  tags:
+  - Tokenization
+  - Card Issuing
+  - Payments
+  - Digital Wallet
+  tags_raw:
+  - Tokenization
+  - Card Issuing
+  - Payments
+  - Digital Wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-issuer-tokenization-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/tokenization-api/tokenization-api-v1.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-issuer-tokenization-overlay.yaml
+  baseURL: https://cert-api.novopayment.com
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:mastercard-issuer-tokenization
+  name: NovoPayment MasterCard Tokenization API
+  description: Introduction  NovoPayment, as a Token Service Provider, has a collection of APIs that enables
+    Issuers to participate in the Tokenization ecosystem; we are responsible for the interaction between
+    the Issuer and the franchises. Providing security in the process, ease of implementation and support
+    for your development teams throughout the project.
+  humanURL: https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  tags:
+  - Tokenization
+  - Mastercard
+  - Payments
+  - Digital Wallet
+  tags_raw:
+  - Tokenization
+  - Mastercard
+  - Payments
+  - Digital Wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-mastercard-issuer-tokenization-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/tokenization-api/mastercard-tokenization-api-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-mastercard-issuer-tokenization-overlay.yaml
+  x-base-url-note: 'Templated per issuer in NovoPayment''s own spec (servers[0] = https://[URLIssuer]/v2):
+    the Mastercard tokenization contract runs on the issuer''s host, so no single NovoPayment base URL
+    is published. Kept verbatim rather than substituted with a different NovoPayment service.'
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+  baseURL: https://[URLIssuer]/v2
+- aid: novopayment:merchant-presented-qr
+  name: NovoPayment Merchant Presented QR
+  description: Merchant Presented QR is a Service that includes payment or transactions process with tokens.
+    A Registered Merchant on the service can expose a QR in the store, and the users of an Issuer´s Tokenized
+    Wallet can read the QR Code and introduce the payment information. This system includes the process
+    of generating the QR Token for merchants, Reading that QR and making payment with token.
+  humanURL: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  tags:
+  - QR Payments
+  - Digital Wallet
+  - Merchants
+  - Payments
+  tags_raw:
+  - QR Payments
+  - Digital Wallets
+  - Merchants
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-merchant-presented-qr-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/merchant-presented-qr-api/merchant-presented-qr-api-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-merchant-presented-qr-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/api/v1/mpqr
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:oauth2-data-encryption
+  name: NovoPayment Security OAuth2 API
+  description: '"The OAuth 2.0 authorization framework allows a third-party application to gain limited
+    access to an HTTP service, either on behalf of the resource owner by orchestrating an approval interaction
+    between the resource owner and the HTTP service, or by allowing the third-party application to access
+    it on its own behalf" This means that you can allow certain users/apps to access your resources on
+    a limited basis.'
+  humanURL: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  tags:
+  - Authentication
+  - Security
+  - Encryption
+  tags_raw:
+  - OAuth
+  - Authentication
+  - Security
+  - Encryption
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-oauth2-data-encryption-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/security-oauth2-api/security-oauth2-api-v1.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-oauth2-data-encryption-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/oauth2/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:onboarding
+  name: NovoPayment Onboarding API
+  description: The Onboarding API, groups together a pool of operations for the creation of a request
+    for a digital bank account. Below operations are available for onboarding API Validate Identity Document.
+    This operation verifies that the Identity Document sent is not registered with active status. Device
+    Registration This operation allows to register a new device or update an existing one.
+  humanURL: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  tags:
+  - Onboarding
+  - Digital Banking
+  - KYC
+  - Account
+  tags_raw:
+  - Onboarding
+  - Digital Banking
+  - KYC
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-onboarding-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/onboarding-api/onboarding-api-spec-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-onboarding-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/onboarding/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:operations
+  name: NovoPayment Operations API
+  description: 'The transaction operations API can be used to generate the transactional operations that
+    can be configured in an existing account or card program. Below operations are available for Transaction
+    Operations API: - Create transaction operations This operation can be used to create a transactional
+    operation associated with a tenant.'
+  humanURL: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  tags:
+  - Transaction
+  - Digital Banking
+  - Payments
+  tags_raw:
+  - Transactions
+  - Digital Banking
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-operations-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/operations-api/operations-api-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-operations-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/operations/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:payment-authorizer
+  name: NovoPayment Payment Authorizer API
+  description: 'The Payment Authorizer API enables the authorization process of a transaction from a payment
+    gateway. In addition, this API can retrieve the details of a transaction and execute the reversal
+    and refund of purchase. Below operations are available for this API: - Payment Authorizer - Payment
+    Detail - Payment Reverse - Payment Refund'
+  humanURL: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  tags:
+  - Digital Acquiring
+  - Authorization
+  - Payments
+  - Merchants
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-payment-authorizer-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/payment-authorizer-api/payment-authorizer-api-v1.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-payment-authorizer-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/paymentauthorizer/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:profile
+  name: NovoPayment Profile API
+  description: Below operations are available for Profile API Get Customer Configuration Parameters This
+    operation allows to consult the different configurations of a customer. Customer Configuration Update
+    This operation allows to update a customer-specific configuration. Customer Document Upload This operation
+    allows to uppload of the requested documents for the validation of all the account information. Later,
+    the tenant may request additional documents.
+  humanURL: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  tags:
+  - Configuration
+  - Digital Banking
+  - Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-profile-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/profile-api/profile-api-spec-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-profile-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/profiles/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:push-provisioning
+  name: NovoPayment Push Provisioning API
+  description: Use Cases  If you are a Bank that wants to give your customers the possibility to seamless
+    register their debit and credit cards in payment platforms such as Apple Pay, Samsung Pay and Google
+    Pay, as easily as including only one button on your website or app, this API is the solution. NovoPayment
+    does the heavy lifting for you, we take care of providing the service for you, so you can focus on
+    the core of your business and the UX/UI.
+  humanURL: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  tags:
+  - Push Provisioning
+  - Digital Wallet
+  - Tokenization
+  - Apple Pay
+  tags_raw:
+  - Push Provisioning
+  - Digital Wallets
+  - Tokenization
+  - Apple Pay
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-push-provisioning-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/push-provisioning/push-provisioning-api-spec-v1.yaml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-push-provisioning-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/pushprovisioning/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:real-time-payments
+  name: NovoPayment Real-Time Payments API
+  description: The Real-time payments API leverage the newest technologies to pull/push payments amongst
+    VISA or MasterCard branded products such as debit, prepaid, and credit cards to manage transactions
+    between individual banked consumers (P2P). All this developed with effective integrations and collaborations
+    with relevant local and global payment networks and the domestic markets.
+  humanURL: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  tags:
+  - Real-Time Payments
+  - Payments
+  - Money Transfer
+  - Visa
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-real-time-payments-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://dcrpi6aufyoyb.cloudfront.net/main/realtime-payment-api/realtime-payment-api-v1.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: Overlay
+    url: overlays/novopayment-real-time-payments-overlay.yaml
+  baseURL: https://sandbox-api.novopayment.com/realtimepayments/v1
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-discovery-notes:
+  checked: '2026-09-17'
+  contract_discovery: 'The 15 OpenAPI 3.0 documents were not at any conventional path — /openapi.json,
+    /swagger.json and /api-docs all 404 on developer.novopayment.com. Each API reference page embeds the
+    URL of its own spec on the provider CDN (dcrpi6aufyoyb.cloudfront.net/main/<api>/...), which is what
+    the portal''s Export button serves. Ownership confirmed on the specs themselves: servers[] are sandbox-api.novopayment.com
+    / cert-api.novopayment.com and info.contact is support@novopayment.com.'
+  gated_or_broken:
+  - url: https://developer.novopayment.com/api/digital-acquiring/card-file-ecommerce-tokenization-api-v1.0
+    status: 403
+    note: API reference page refuses anonymous access; tokenization docs require an approved project
+  - url: https://developer.novopayment.com/api/payments/alias-remote-api-v1.0
+    status: 403
+    note: API reference page refuses anonymous access
+  - url: https://developer.novopayment.com/api/payments/inquiry-api-v1.0
+    status: 403
+    note: API reference page refuses anonymous access
+  - url: https://developer.novopayment.com/api/payments/security-api-v1.0
+    status: 403
+    note: API reference page refuses anonymous access
+  - url: https://developer.novopayment.com/api/error-codes
+    status: 403
+    note: Consolidated error-code reference refuses anonymous access; codes were derived from the specs
+      instead
+  - url: https://developer.novopayment.com/sdk/tokenization/chapter-initialization
+    status: 403
+    note: All 25 mobile SDK chapters refuse anonymous access
+  - url: https://dcrpi6aufyoyb.cloudfront.net/main/exchange-rates-api/exchange-rates-api-v1.yaml
+    status: 403
+    note: 'PROVIDER-SIDE BREAK: the Exchange Rates API reference page links this spec, but the CDN object
+      returns AccessDenied, so that contract cannot be read by anyone. The other 15 spec URLs on the same
+      distribution all return 200.'
+  absent:
+  - no /.well-known/ document on any of 6 hosts
+  - no A2A agent card
+  - no MCP server
+  - no public package-registry SDK
+  - no public GitHub repositories
+  - no status page
+  - no public changelog
+  - no published prices
+  - no published rate limits
+x-enrichment:
+  date: '2026-09-17'
+  status: enriched
+  artifacts_added: 65
+  pass: local-v3
