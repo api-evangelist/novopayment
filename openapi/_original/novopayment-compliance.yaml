@@ -1,0 +1,365 @@
+openapi: 3.0.0
+info:
+  description: >
+    The Compliance API allows you to validate the identity of the
+    person who is registering in the system, with facial, document, and address
+    verification among others. It is easy to implement and is applicable for all
+    onboardings.
+
+    In addition, we have a series of endpoints that help identify, detect, and assess risks by consulting different sources of information (Anti-money laundering - AML, office of foreign assets control - OFAC) helping you make calculated decisions for your business.
+
+
+    Novopayment is committed to the security of its customers.
+  version: v1
+  title: Compliance API
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/kyc/v1
+paths:
+  "/customers/{customerId}/info":
+    post:
+      summary: KYC Info
+      description: Use this endpoint to update all KYC information (AML, OFAC,
+        Biometric, etc.) obtained in the process of registering a client
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQKYCInfo"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSKYCInfo200"
+        "400":
+          $ref: "#/components/responses/RSKYCInfo400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+  examples:
+    RQEndpointKYCInfo:
+      value:
+        biometricValidation:
+          frontImageBase64: abc123=
+          backImageBase64: abc123=
+          selfieImageBase64: abc123=
+          faceMatched: true
+          isValidDocument: true
+          imgSpoofed: false
+          validationDate: "2022-08-02T00:00:00Z"
+        complianceLists:
+          listKey: OFAC
+          name: OFAC
+          hasHit: false
+          score: 0.8
+          validationDate: "2022-08-02T00:00:00Z"
+    RSKYCInfo:
+      value:
+        code: 200.08.000
+        message: Process OK
+        datetime: "2022-09-13T11:09:54.203-0500"
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestParamsRequired:
+      value:
+        code: 400.08.001
+        message: Params Required
+        datetime: "2020-01-03T16:05:56.517Z"
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+          - message: "attributeOneCamelCase: Can not be null"
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: "2020-01-03T16:05:56.517Z"
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: "2020-01-03T16:05:56.517Z"
+  parameters:
+    customerId:
+      name: customerId
+      in: path
+      description: |
+        Unique customer identifier.
+      required: true
+      schema:
+        type: string
+  schemas:
+    RQKYCInfo:
+      type: object
+      required:
+        - biometricValidation
+        - complianceLists
+      properties:
+        biometricValidation:
+          type: object
+          description: >
+            This object contains the summary of the images and validations that
+            helped identify the identity of the client in the registry
+          required:
+            - frontImageBase64
+            - backImageBase64
+            - selfieImageBase64
+            - faceMatched
+            - isValidDocument
+            - validationDate
+          properties:
+            frontImageBase64:
+              type: array
+              description: Document’s front image in Base64 format.
+              example: abc123=
+              maxLength: 1
+            backImageBase64:
+              type: array
+              description: Document’s back image in Base64 format.
+              example: abc123=
+              maxLength: 1
+            selfieImageBase64:
+              type: array
+              description: Selfie image in Base64 format.
+              example: abc123=
+              maxLength: 1
+            faceMatched:
+              type: boolean
+              description: |
+                Whether the face-match score resulted in a true match.
+              example: false
+              enum:
+                - true
+                - false
+              minLength: 5
+              maxLength: 5
+            isValidDocument:
+              type: boolean
+              description: |
+                True or False. Whether the document number exists or not.
+              example: false
+              enum:
+                - true
+                - false
+              minLength: 5
+              maxLength: 5
+            imgSpoofed:
+              type: boolean
+              description: >
+                Whether the identity document is real (not from a screenshot) or
+                it’s valid base on its template.Possible values: False if the
+                process was not spoofed.​
+              example: false
+              enum:
+                - true
+                - false
+              minLength: 5
+              maxLength: 5
+            validationDate:
+              type: string
+              example: "2020-01-03T16:05:56.517Z"
+              description: Date the validation was performed.
+              format: date-time
+        complianceLists:
+          type: object
+          description: |
+            list of compliance institutions where the client was consulted
+          required:
+            - listKey
+            - name
+            - hasHit
+            - validationDate
+          properties:
+            listKey:
+              type: string
+              description: List unique key currently scanned.
+              example: OFAC
+              maxLength: 30
+            name:
+              type: string
+              description: A descriptive name of the list.
+              example: OFAC
+              maxLength: 50
+            hasHit:
+              type: boolean
+              description: |
+                Whether the customer has hits or not on the current list.
+              example: false
+              enum:
+                - true
+                - false
+              minLength: 5
+              maxLength: 5
+            score:
+              type: number
+              description: |
+                Resulting score. E.g: 1 meaning 100% full match on the list.
+              example: 0.8
+              multipleOf: 28.2
+            validationDate:
+              type: string
+              example: "2020-01-03T16:05:56.517Z"
+              description: Date the validation was performed.
+              format: date-time
+    RSKYCInfo200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+    RSKYCInfo400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+  requestBodies:
+    RQKYCInfo:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQKYCInfo"
+          examples:
+            KYC Info:
+              $ref: "#/components/examples/RQEndpointKYCInfo"
+      required: true
+  responses:
+    RSKYCInfo200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSKYCInfo200"
+          examples:
+            Customer Monitoring:
+              value:
+                code: 200.08.000
+                message: Process OK
+                datetime: "2022-09-13T11:09:54.203-0500"
+    RSKYCInfo400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSKYCInfo400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Request Params Required:
+              $ref: "#/components/examples/RequestParamsRequired"
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"

@@ -1,12 +1,22 @@
-generated: '2026-07-11'
+generated: '2026-09-17'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: developer.novopayment.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Oct  4 04:37:21 2026 GMT
+  cert_expires: Dec  5 03:39:20 2026 GMT
   hsts: false
+- host: sandbox-api.novopayment.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Mar  2 23:59:59 2027 GMT
+  hsts: null
+- host: cert-api.novopayment.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Mar  2 23:59:59 2027 GMT
+  hsts: null
 domains:
 - domain: novopayment.com
   dnssec: false

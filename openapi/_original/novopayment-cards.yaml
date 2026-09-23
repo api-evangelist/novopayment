@@ -1,0 +1,5926 @@
+---
+openapi: 3.0.0
+info:
+  description: >
+    Card Issuing, Switching, and Transaction Processing groups together
+    the activities surrounding creating card programs, issuing cards to
+    customers, managing those cards, and processing the transactions those
+    customers make. These components can be implemented modularly. For example,
+    an issuer may want to only employ NovoPayment’s Switch, while another uses
+    only Issuing capabilities and handles transaction authorization in-house.
+
+
+    To get started with Card Issuing, Switching, and Transaction Processing, an issuer needs to determine two things:
+
+
+    1. The processing model.
+
+
+    2. The characteristics of the program
+
+
+    **Processing Model**
+
+
+    There are three processing models that NovoPayment offers. The model selected will impact the characteristics of the program.
+
+
+    - Switching: Transactions are received by NovoPayment’s transactional switch and routed to the appropriate issuer endpoint. The implementation of this processing model is most appropriate when multiple issuers are part of your program and each issuer has program rules established in their core.
+
+
+    - Pre-Authorizer: Transactional data is received by NovoPayment, assessed for compliance against established program criteria, and routed to the issuer for final transaction approval. Typically implemented when the issuer holds account records and balances and will determine approval based on availability of funds. Prior to passing the transaction to the issuer, NovoPayment validates the transaction for compliance against all established rule parameters.
+
+
+    - Full-Authorizer: NovoPayment receives and determines the outcome of a transaction based on configured program rules and available balances or credit limits. For this model, customer and account information is stored in NovoPayment’s Banking Core.
+
+
+    Pre-Authorizer and Full-Authorizer models require that program information be configured in NovoPayment’s Banking Core.
+
+
+    NovoPayment offers an extensive set of card program configurations that apply to all the cards issued within a program. Programs are configured in NovoPayment’s Banking Core.
+
+
+    For open-loop programs, a key component to establishing a program is a BIN (Bank Identification Number). The BIN will vary based on the network you select and the card type. NovoPayment supports Visa and Mastercard prepaid, debit, and credit cards.
+
+
+    BINs 8-digits long and are assigned to specific card programs. They can be further allocated to specific programs by assigning  9th digit to sub-programs (for example for promotional campaigns).
+
+
+    Additionally, cards can be physical or virtual, and they can hold one of the 180 currencies supported by NovoPayment’s Banking Core. This information is not contained in the BIN but is captured as part of the program.
+
+
+    Besides the network and card type, a host of configurations are available for cards issued within a program. Some of these configurations can be made more stringent at the card level via APIs. These configurations can be implemented for open and closed loop programs. Sample configurations include:
+
+
+    - Card activation: determine when cards become active and mechanism for activation.
+
+
+    - Card expiration: set the default card duration. This is also configurable per card via API.
+
+
+    - Account limits: set a maximum account size and maximum amount of activity an account can transact monthly.
+
+    - Card operations: establish allowed operations such as cash-in, cash-out, P2P, etc.
+
+
+    - Transaction limits: set single transaction maximum limits, as well as total daily, weekly, and monthly maximum spend limits. This is also configurable per card via API.
+
+
+    - Operation limits: cap the count of transactions that can be performed on a daily, weekly, and monthly basis.
+
+
+    - Fees: configure fees for performing certain transactions.
+
+    - Other limits based on available transaction information. Such as:
+
+      - Channel limits: determine which channels cards can be used in (e.g. ATMs, eCommerce, POS) and limit operations for those channels.
+
+      - Merchant list: specify in which types of businesses the card can be used. This is also configurable per card via API.
+
+      - International use: restrictions for domestic or international transactions, or with specific currencies.
+
+
+    Finally, as part of the card program for Virtual Cards, a Dynamic CCV2 can be configured. When in place, NovoPayment will generate a new CVV2 upon request by a customer completing an online purchase. This number is then validated for consistency when NovoPayment receives the transaction for authorization.
+
+
+    Once a card program has been established, the Cards API is used to issue cards by creating customers and accounts and specifying any configurable information for the cards.
+
+
+    Cards can then be managed using a suite of endpoints geared towards activating cards, blocking/ unblocking, establishing additional limits at the card level.
+
+
+    Finally, the Cards API is used to perform a variety of purchase, funding, and money movement transactions that add give customers additional ways to use their cards.
+  version: v1.3
+  title: Cards API
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/api/v1.3
+tags:
+  - name: Issuance
+  - name: Balances
+  - name: Movements
+  - name: Support
+  - name: Customer
+  - name: Settings
+paths:
+  "/cards/issuance":
+    post:
+      tags:
+        - Issuance
+      summary: Card And Account Bundled
+      description: >
+        The main mechanism for issuing cards, the Card and Account Bundled
+        endpoint combines the creation of an account with its respective
+        account holder and the issuance of a card. If an account for the
+        cardholder already exists (for example if the customer already onboarded
+        onto your application) then the account number you’ve assigned can be
+        submitted to NovoPayment to create the registry and issue the card. A
+        lower level of information needs to be transmitted to NovoPayment in
+        this scenario.  Alternatively, when NovoPayment is the one creating the
+        account, the data collected as part of account and cardholder creation
+        can be submitted to an AML/KYC provider to review the applicant.
+        NovoPayment orchestrates the service and sends the relevant data.
+
+
+        Cards issued can be named or unnamed. Unnamed cards do not have a cardholder associated with them. This process is typically done to have a stack of assignable prepaid cards which can be provided to consumers and then assigned via the Cardholder Creation endpoint.
+
+
+        Once card and account information has been submitted, virtual cards can be issued instantly. Card embossing for physical cards can also begin immediately depending on your process configuration.
+      operationId: CardAndAccountBundled
+      requestBody:
+        $ref: "#/components/requestBodies/RQCardAndAccountBundled"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardAndAccountBundled200"
+        "400":
+          $ref: "#/components/responses/RSCardAndAccountBundled400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}":
+    get:
+      tags:
+        - Issuance
+      summary: Card Information
+      description: >
+        Enable a cardholder to retrieve and view information about a card.
+        This operation would be performed to show card details in a UI, or to
+        retrieve a Dynamic CVV2 when shopping online with a virtual card.
+
+
+        Using the Card ID, NovoPayment will return information regarding the cardholder, CVV2, card type, card status, and more.
+      operationId: CardInformation
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+        - $ref: "#/components/parameters/cvvNumber"
+        - $ref: "#/components/parameters/dynCvvNumber"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardInformation200"
+        "400":
+          $ref: "#/components/responses/RSCardInformation400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/status":
+    put:
+      tags:
+        - Issuance
+      summary: Card Active Status
+      description: >
+        A cardholder can activate a card in several ways, based on program
+        configurations and mechanism you wish to extend. Whether it is by keying
+        in card information into a mobile or web UI, inputting their PIN in an
+        ATM, or calling your customer support line, this endpoint allows you to
+        send confirmation to NovoPayment that the card is active and can be used
+        for transactions.
+
+
+      operationId: CardActiveStatus
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCardActiveStatus"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardActiveStatus200"
+        "400":
+          $ref: "#/components/responses/RSCardActiveStatus400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/block":
+    post:
+      tags:
+        - Support
+      summary: Block Card
+      description: >
+        By providing a card ID, block all transactions from approval. This
+        operation can be reversed through the Unblock Card endpoint. Cards that
+        are to be replaced must be blocked before a replacement can be
+        requested.
+      operationId: BlockCard
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQBlockCard"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSBlockCard200"
+        "400":
+          $ref: "#/components/responses/RSBlockCard400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/tophysical":
+    put:
+      tags:
+        - Issuance
+      summary: Virtual To Physical Card
+      description: >
+        Depending on your program configurations, a virtual and/or physical
+        is created upon application approval. When both types of cards are
+        issued immediately upon approval, they each receive a different PAN
+        number, though both are associated to the same underlying account.
+
+
+        In a case when only a virtual card is issued, through the Virtual to
+        physical card endpoint a cardholder can convert their virtual card into
+        a physical card which will have the same PAN number.
+
+
+        The virtual card is blocked until unblocked by the physical card being
+        activated.
+      operationId: VirtualToPhysicalCard
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQVirtualToPhysicalCard"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSVirtualToPhysicalCard200"
+        "400":
+          $ref: "#/components/responses/RSVirtualToPhysicalCard400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/balance":
+    get:
+      tags:
+        - Balances
+      summary: Account Balance By CardId
+      description: >
+        The Account Balance by CardId endpoint is used to retrieve balance available, 
+        blocked and current  information for a specific card. 
+        This would typically be done automatically when a user logs into their portal.
+      operationId: AccountBalanceByCardId
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSAccountBalanceByCardId200"
+        "400":
+          $ref: "#/components/responses/RSAccountBalanceByCardId400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/transactions":
+    get:
+      tags:
+        - Movements
+      summary: Transaction Movements Query
+      description: >
+        Allows your system to perform a query to retrieve the details of a
+        card transactions for a specified card for a client to visualize. A
+        general search can be filtered based on the direction of the
+        transaction, specific transaction codes, and/or a specific date of
+        transactions. You can optionally limit the maximum number of
+        transactions to return, including how to paginate the information.
+
+
+        The query will return all available transaction details including transaction ID, date, amounts (separating fees), participating cards or accounts and more.
+      operationId: CardMovementsQuery
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/date"
+        - $ref: "#/components/parameters/days"
+        - $ref: "#/components/parameters/transactionCode"
+        - $ref: "#/components/parameters/transactionType"
+        - $ref: "#/components/parameters/hasAuthCode"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardMovementsQuery200"
+        "400":
+          $ref: "#/components/responses/RSCardMovementsQuery400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/pin":
+    post:
+      tags:
+        - Support
+      summary: Card PIN Assignment
+      description: |
+        For a newly issued card, the Card PIN Assignment is used to set the
+        card’s four-digit PIN which will be used for cash out transactions or
+        transaction confirmation. To update a PIN for cards which already have
+        one, the Card PIN Update endpoint is used.
+      operationId: CardPINAssignment
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCardPinAssignment"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardPinAssignment200"
+        "400":
+          $ref: "#/components/responses/RSCardPinAssignment400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+    put:
+      tags:
+        - Support
+      summary: Card PIN Update
+      description: |
+        For debit and prepaid cards which already have a four-digit PIN assigned, the Card PIN Update is used to update the card’s PIN.
+
+        To set a PIN for a newly issued card, the Card PIN Assignment endpoint is used.
+      operationId: CardPINUpdate
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCardPinUpdate"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardPinUpdate200"
+        "400":
+          $ref: "#/components/responses/RSCardPinUpdate400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/qr":
+    get:
+      tags:
+        - Support
+      summary: Card QR Code
+      description: |
+        You can request the generation of a QR code representing the details of
+        a card for a cardholder to scan and retrieve card details.
+        This is typically done to expedite the onboarding of a card onto your
+        system (for example, to add card details for activating a card).
+        The QR code does not have an expiration date.
+      operationId: CardQRCode
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardQRImage200"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/replacement":
+    post:
+      tags:
+        - Issuance
+      summary: Card Replacement
+      description: |
+        If a card has been lost, stolen, or generally needs to be replaced, this
+        functionality is leveraged by an end user or a back-office administrator
+        to request a replacement card for a cardholder (with a new PAN number).
+        Only physical cards can be replaced with this endpoint.
+
+        Cards must be blocked to be replaced. If an attempt is made to replace an active unblocked card, 
+        an error message will be received. If a temporary block is needed instead of a card replacement, 
+        that can be accomplished using the Block Card endpoint.
+
+
+       
+      operationId: CardReplacement
+      requestBody:
+        $ref: "#/components/requestBodies/RQCardReplacement"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardReplacement200"
+        "400":
+          $ref: "#/components/responses/RSCardReplacement400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/cashin":
+    post:
+      tags:
+        - Balances
+      summary: Cash In
+      description: |
+        For transactions which NovoPayment does not process, you can submit
+        information to update a user’s account balance via the Cash In endpoint
+        when an operation is performed to add value to an account (ATM deposit,
+        transfers from another card, etc.). Information regarding the transaction
+        is submitted to NovoPayment and a transaction ID is generated in response.
+      operationId: CashIn
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCashIn"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCashIn200"
+        "400":
+          $ref: "#/components/responses/RSCashIn400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/reversecashin":
+    post:
+      tags:
+        - Balances
+      summary: Cash In Reverse
+      description: |
+        Once a cash in transaction has been processed, the transaction can be
+        reversed by providing the transaction ID. This causes the credit
+        transaction to be debited from the account.
+      operationId: CashInReverse
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCashInReverse"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCashInReverse200"
+        "400":
+          $ref: "#/components/responses/RSCashInReverse400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/cashout":
+    post:
+      tags:
+        - Balances
+      summary: Cash Out
+      description: |
+        For transactions which NovoPayment does not process, you can submit
+        information to update a user’s account balance via the Cash Out endpoint
+        when an operation is performed to decrease value to an account
+        (ATM withdrawal, transfer to another card, etc.).
+
+
+        Information regarding the transaction is submitted to NovoPayment and a
+        transaction ID is generated in response.
+      operationId: CashOut
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCashOut"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCashOut200"
+        "400":
+          $ref: "#/components/responses/RSCashOut400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/reversecashout":
+    post:
+      tags:
+        - Balances
+      summary: Cash Out Reverse
+      description: |
+        Once a cash out transaction has been processed, the transaction can be
+        reversed by providing the transaction ID. This causes the debit
+        transaction to be credited to the account.
+      operationId: CashOutReverse
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCashOutReverse"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCashOutReverse200"
+        "400":
+          $ref: "#/components/responses/RSCashOutReverse400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/cardholders/{cardId}/operationlimits":
+    patch:
+      tags:
+        - Settings
+      summary: Customize Operation Limits
+      description: >
+       The Customize Operation Limits establishes limits at an account level that differs 
+       from those established by the card program
+
+
+        The Customize Operations Limits endpoint is used to place restrictions on the amount 
+        that can be spent with a card or the number of transactions that can be done with a 
+        card on a daily, weekly, or monthly basis.
+
+
+        This endpoint can be used to implement or update restrictions, 
+        and can be sent only with the values that are to be modified
+        (e.g. only the monthly limit for amounts).
+      operationId: CustomizeOperationLimits
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCustomizeOperationLimits"
+      responses:
+        "200":
+          $ref: "#/components/responses/RS200"
+        "400":
+          $ref: "#/components/responses/RSLimits400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/sendmoney":
+    post:
+      tags:
+        - Balances
+      summary: Send Money
+      description: |
+        Leveraging the Send money endpoint, a user can send funds to another
+        cardholder that’s a part of the same financial institution.
+
+        The card ID of the recipient must be provided, along with the amount
+        to be provided.
+      operationId: SendMoney
+      requestBody:
+        $ref: "#/components/requestBodies/RQSendMoney"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSTransaction200"
+        "400":
+          $ref: "#/components/responses/RSSendMoney400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/transactions/{transactionIdentifier}":
+    get:
+      tags:
+        - Movements
+      summary: Transaction Detail
+      description: |
+        Allows your system to perform a query to retrieve details of a specific
+        transaction for a specified card for a client to visualize. In response,
+        all the relevant transaction details will be included. This endpoint
+        only supports Cash In, Cash Out, and Send Money (P2P, P2M, A2A)
+        transactions.
+
+
+        Note: Only transactions which NovoPayment processed will have full
+        details returned. If the transaction is submitted to NovoPayment via the
+        Cash In or Cash Out endpoints (meaning your system processed the
+        transaction), fewer details will be available.
+      operationId: TransactionDetail
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+        - $ref: "#/components/parameters/transactionIdentifier"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSTransactionDetail200"
+        "400":
+          $ref: "#/components/responses/RSTransactionDetail400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/transactions/summary":
+    get:
+      tags:
+        - Movements
+      summary: Transaction Summary
+      description: |
+        Allows your system to perform a query to retrieve a report of card
+        transactions, by transaction type, for a specified card for a client to
+        visualize. The search is for a date range of transactions, maximum of
+        three months, and can be optionally filtered based on the direction of
+        the transaction or a specific type of transaction.
+
+
+        The query will return details grouped by type of transaction, the total
+        amount transacted, and fees charged. To view details of a specific
+        transaction, use the Transaction Detail endpoint.
+      operationId: TransactionSummary
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+        - $ref: "#/components/parameters/transactionCode"
+        - $ref: "#/components/parameters/transactionType"
+        - $ref: "#/components/parameters/dateFromSummary"
+        - $ref: "#/components/parameters/dateToSummary"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSTransactionSummary200"
+        "400":
+          $ref: "#/components/responses/RSTransactionSummary400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/unblock":
+    post:
+      tags:
+        - Support
+      summary: Unblock Card
+      description: |
+        By providing a card ID, remove a block previously placed though the
+        Block Card endpoint.
+      operationId: UnblockCard
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQUnblockCard"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSUnblockCard200"
+        "400":
+          $ref: "#/components/responses/RSUnblockCard400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/cardholders":
+    post:
+      tags:
+        - Issuance
+      summary: Cardholder Association
+      description: >
+        After (prepaid) unnamed cards have been issued and provided to the holder
+        of the card, they can be assigned to that holder by creating a record of
+        that cardholder in the system.
+
+
+        It should be noted that if the cardholder is not yet registered, a new one will be created, 
+        however, if the cardholder already exists, their data will be update.
+
+
+        Once linked, a cardholder can activate the card.
+
+      operationId: CardCardholdersAssociation
+      requestBody:
+        $ref: "#/components/requestBodies/RQCardCardholders"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardIdUserId200"
+        "400":
+          $ref: "#/components/responses/RSCardHolderCreate400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+    put:
+      tags:
+        - Customer
+      summary: Cardholder Update
+      description: > 
+        Updates the card issuer data such as names, address, phone, marital status, nationality, email, gender, date of birth, place of birth, and agency.
+
+
+        Only the data provided in the request object will be updated. Parameters not provided in the request will not be updated.
+
+
+        The fields account number, card identifier, document number, document type, and verification digit will not be updated.
+    
+      operationId: CardCardholdersUpdate
+      requestBody:
+        $ref: "#/components/requestBodies/RQCardCardholdersUpdate"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCardIdUserId200"
+        "400":
+          $ref: "#/components/responses/RSCardHolderCreate400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/cards/{cardId}/transactionrules":
+    post:
+      tags:
+        - Settings
+      summary: Associate Transaction Rules
+      description: >
+        Allows the cardholder to associate specific transaction rules to
+        a card, providing greater control over transaction behavior.
+
+
+        This operation can be used to block certain types of transactions or
+        define security parameters based on predefined rules.
+
+
+        With the cardId, NovoPayment will record the specified transaction
+        rules, ensuring that all transactions comply with the defined security
+        settings.
+
+      operationId: AssociateTransactionalRules
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQCreateTransactionRules"
+      responses:
+        "200":
+          $ref: "#/components/responses/RS200"
+        "400":
+          $ref: "#/components/responses/RSTransactionRules400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+    get:
+      tags:
+        - Settings
+      summary: List Transaction Rules
+      description: >
+        Allows the cardholder to retrieve and view the transactional rules
+        associated with a card.
+
+
+        This operation makes it easier for users to understand what
+        restrictions or security settings are applied to their transactions.
+
+
+        Using the cardId, NovoPayment will return a list of active transaction
+        rules associated with a specific card.
+
+      operationId: ListTransactionRules
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSListTransactionRules200"
+        "400":
+          $ref: "#/components/responses/RSListTransactionRules400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+    patch:
+      tags:
+        - Settings
+      summary: Update Transaction Rules
+      description: >
+        Allows the cardholder to activate or deactivate specific transactional
+        rules associated with a card.
+
+
+        This operation provides the ability to dynamically manage
+        transaction permissions, improving security and control over
+        card usage.
+
+
+        With the cardId, NovoPayment will update the status of the specified
+        transactional rules, determining whether transactions in categories
+        such as: e-commerce, ATMs, or Points of Sale (POS) are allowed or
+        restricted.
+
+      operationId: EnableDisableTransactionalRules
+      parameters:
+        - $ref: "#/components/parameters/cardId"
+      requestBody:
+        $ref: "#/components/requestBodies/RQUpdateTransactionRules"
+      responses:
+        "200":
+          $ref: "#/components/responses/RS200"
+        "400":
+          $ref: "#/components/responses/RSEnableDisableTransactionalRules400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+  examples:
+    TransactionSummaryOK:
+      value:
+        code: 200.01.000
+        message: Process Ok
+        datetime: "2020-01-03T16:05:56.517Z"
+        data:
+          - transactionCode: "05"
+            transactionName: cashin
+            totalAmount: 1000
+            totalCommissionFee: 20
+            dateFrom: "2020-12-01"
+            dateTo: "2020-12-31"
+            transactionType: C
+            totalTransactions: 10
+          - transactionCode: "06"
+            transactionName: cashout
+            totalAmount: 1000
+            totalCommissionFee: 20
+            dateFrom: "2020-12-01"
+            dateTo: "2020-12-31"
+            transactionType: D
+            totalTransactions: 5
+          - transactionCode: "07"
+            transactionName: cashout reverse
+            totalAmount: 1000
+            totalCommissionFee: 20
+            dateFrom: "2020-12-01"
+            dateTo: "2020-12-31"
+            transactionType: C
+            totalTransactions: 5
+    TransactionMovementsQueryOK:
+      value:
+        code: 200.01.000
+        message: Process Ok
+        datetime: "2020-01-03T16:05:56.517Z"
+        data:
+          - originName: JOHN DOE
+            originAccount: "1900"
+            referenceNumber: "3218000002"
+            transactionCode: "05"
+            transactionType: C
+            amount: 5.22
+            date: 01-12-2020 15:57:11
+            merchantName: RECARGA API CLIENT
+            commissionFee: 1.87
+            transactionIdentifier: "e092dc4c33c046fc9240e2b89ec21e0b"
+            authCode: "123456"
+          - originName: JOHN DOE
+            originAccount: "1900"
+            receivingName: ERICK JONES
+            receivingAccount: "1710"
+            referenceNumber: "6012005019"
+            transactionCode: "01"
+            transactionType: D
+            amount: 80.55
+            date: 04-12-2020 22:20:59
+            merchantName: TRANSFERENCIA API CLIENT
+            commissionFee: 1.23
+            description: Payment
+            transactionIdentifier: "e092dc4c33c046fc9240e2b89ec21e0b"
+            authCode: "123456"
+          - originName: EMMA MILLER
+            originAccount: "1910"
+            receivingName: JOHN DOE
+            receivingAccount: "1900"
+            referenceNumber: "6014060006"
+            transactionCode: "02"
+            transactionType: C
+            amount: 25.15
+            date: 03-12-2020 07:50:06
+            merchantName: TRANSFER API CUSTOMER
+            commissionFee: 1.00
+            description: Payment
+            transactionIdentifier: "e092dc4c33c046fc9240e2b89ec21e0b"
+            authCode: "123456"
+        metadata:
+          pageable:
+            total: 25
+            limit: 5
+            currentPage: 1
+            lastPage: 5
+            firstPageUrl: ?page=1&limit=5
+            lastPageUrl: ?page=5&limit=5
+            nextPageUrl: ?page=2&limit=5
+            prevPageUrl: null
+            from: 1
+            to: 5
+    CardInformationOk:
+      value:
+        code: "200.01.000"
+        message: "Process Ok"
+        datetime: "2020-01-03T16:05:56.517Z"
+        data:
+          cardToken: "acd/Pzd5vXKdL9Ndy5NfOmtFpCUWlY23xnzuvSOXVzw="
+          userToken: "z644+UkTtgJyBpyvluZf2SeACehU5urUSHMEl/Bx17M="
+          accountNumber: "*****4107"
+          mask: "***********6778"
+          holderName: "FNAME LNAME"
+          cvvNumber: "NtJeltpWKD7Vf1laGK7nPg=="
+          dynCvvNumber: "zdE2bZJzN/likYFBuI4xng=="
+          cardStatus: "ACTIVE"
+          cardType: "VIRTUAL"
+          blockType:
+            code: "PB"
+            msg: "Preventive blockage"
+    NoResultsFound:
+      value:
+        code: 200.00.364
+        message: No results found
+        datetime: 2020-01-03T16:05:56.517Z
+    AccessTokenExpired:
+      value:
+        code: 401.01.993
+        message: Access token expired
+        datetime: 2020-01-03T16:05:56.517Z
+    CardIsAlreadyActivated:
+      value:
+        code: 400.01.007
+        message: Card is already activated
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidBlockCode:
+      value:
+        code: 400.01.014
+        message: Invalid block code
+        datetime: 2020-01-03T16:05:56.517Z
+    UnableToProcessTransaction:
+      value:
+        code: 400.01.437
+        message: Unable to process transaction
+        datetime: 2020-01-03T16:05:56.517Z    
+    TheCardIsNotAssociatedWithTheAccount:
+      value:
+        code: 400.01.485
+        message: The card is not associated with the account
+        datetime: 2020-01-03T16:05:56.517Z
+    ProductStatusCouldNotBeUpdated:
+      value:
+        code: 400.01.317
+        message: Product status could not be updated
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidCardType:
+      value:
+        code: 400.01.394
+        message: Invalid Card Type
+        datetime: 2020-01-03T16:05:56.517Z
+    EmptyParameters:
+      value:
+        code: 400.01.080
+        message: Empty parameters
+        datetime: 2020-01-03T16:05:56.517Z
+        data:
+          - messageBusiness: "You must enter at least the date or the number of days"
+    AccessTokenNotApproved:
+      value:
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03T16:05:56.517Z
+    AccountIsAlreadyRegistered:
+      value:
+        code: 400.01.015
+        message: Account is already registered
+        datetime: 2020-01-03T16:05:56.517Z
+    UserNotFound:
+      value:
+        code: 400.01.033
+        message: User not found
+        datetime: 2020-01-03T16:05:56.517Z
+    BranchIsNotRegistered:
+      value:
+        code: 400.01.016
+        message: Branch is not registered
+        datetime: 2020-01-03T16:05:56.517Z
+    CardActivated:
+      value:
+        code: 400.01.378
+        message: Card activated. You must cancel the card to complete the replenishment
+          flow.
+        datetime: 2020-01-03T16:05:56.517Z
+    CardIsBlocked:
+      value:
+        code: 400.01.008
+        message: Card is blocked
+        datetime: 2020-01-03T16:05:56.517Z
+    CardIsExpired:
+      value:
+        code: 400.01.407
+        message: Card is expired
+        datetime: 2020-01-03T16:05:56.517Z
+    CardIsPermanentlyBlocked:
+      value:
+        code: 400.01.409
+        message: The card is permanently blocked
+        datetime: 2020-01-03T16:05:56.517Z
+    ClientAlreadyRegisteredInThisProgram:
+      value:
+        code: 400.01.005
+        message: Client already registered in this program
+        datetime: 2020-01-03T16:05:56.517Z
+    CardNotFound:
+      value:
+        code: 400.01.487
+        message: Card not found
+        datetime: 2025-01-31T22:39:11.547Z
+    DateRangeCannotExceed90Days:
+      value:
+        code: 400.01.366
+        message: Date range cannot exceed 90 days
+        datetime: 2020-01-03T16:05:56.517Z
+    EncryptionError:
+      value:
+        code: 400.01.994
+        message: Encryption error
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidEncryptedData:
+      value:
+        code: 400.01.320
+        message: Invalid Encrypted Data
+        datetime: 2020-01-03T16:05:56.517Z
+    ExceedsTheLimitAmount:
+      value:
+        code: 400.01.354
+        message: Exceeds the limit amount
+        datetime: 2020-01-03T16:05:56.517Z
+    HeaderParamsRequired:
+      value:
+        code: 400.01.001
+        message: Header Params Required
+        datetime: 2020-01-03T16:05:56.517Z
+    InsufficientFunds:
+      value:
+        code: 400.01.044
+        message: Insufficient funds
+        datetime: 2020-01-03T16:05:56.517Z
+    InternalServerError:
+      value:
+        code: 500.01.999
+        message: Internal Server Error
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidCardStatus:
+      value:
+        code: 400.01.362
+        message: Invalid card status
+        datetime: 2020-01-03T16:05:56.517Z    
+    InvalidTransactionType:
+      value:
+        code: 400.01.361
+        message: Invalid transaction type
+        datetime: 2020-01-03T16:05:56.517Z
+    TheCardIsAlreadyLinkedToAnAccount:
+      value:
+        code: 400.01.486
+        message: The card is already linked to an account
+        datetime: 2020-01-03T16:05:56.517Z    
+    InvalidDateRange:
+      value:
+        code: 400.01.365
+        message: Invalid date range
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidParameters:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        data:
+          - message: "Field email: must not be blank"
+          - message: "Field email: must not be null"
+          - message: "Field to: must not be blank"
+          - message: "Field to: must not be null"
+          - message: "Field subject: must not be blank"
+          - message: "Field subject: must not be null"
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidParametersRules:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        data:
+          - message: "Field transactionRule: is required, it must be not empty or blank"
+          - message: "Field status: is not valid"
+        datetime: 2025-01-03T16:05:56.517Z
+    InvalidParametersCardAndAccount:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03T16:05:56.517Z
+        data:
+          - message: "Field programId: is required, it must be not empty or blank"
+          - message: "Field cardHolder.documentNumber: exceeded character limit (23)"
+          - message: "Field cardHolder.maternalSurname: is not valid"  
+    InvalidParametersCardReplacement:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03T16:05:56.517Z
+        data:
+          - message: "Field programId: is required, it must be not empty or blank"
+          - message: "Field userId: exceeded character limit (36)"
+          - message: "Field type: is not valid" 
+    InvalidParametersCardHolderCreate:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03T16:05:56.517Z
+        data:
+          - message: "Field accountNumber: exceeded character limit (28)"
+          - message: "Field verificationDigit: is not valid"
+          - message: "Field cardId: is required, it must be not empty or blank"  
+    InvalidParametersCardStatus:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03T16:05:56.517Z
+        data:
+          - message: "Field cardStatus: invalid value, allow only A" 
+    InvalidParametersCashInAndCashOut:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03T16:05:56.517Z
+        data:
+          - message: "Field fee: exceeded character limit (10)"
+          - message: "Field amount: Amount cannot be a negative"
+          - message: "Field description: Invalid characters in description" 
+    InvalidParametersCashInAndCashOutReverse:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03T16:05:56.517Z
+        data:
+          - message: "Field transactionIdentifier: transactionIdentifier is required"
+          - message: "Field transactionIdentifier: transactionIdentifier length is invalid"
+          - message: "Field transactionIdentifier: Invalid characters in transactionId"                       
+    InvalidPinFormat:
+      value:
+        code: 400.01.012
+        message: Invalid PIN format
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidProgramId:
+      value:
+        code: 400.01.006
+        message: Invalid program Id
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidCardId:
+      value:
+        code: 400.01.009
+        message: Invalid Card ID
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: 2020-01-03T16:05:56.517Z
+    TheTransactionHasNotBeenProcessedDueToProblemsInTheValidationOfTheBusiness:
+      value:
+        code: 400.01.801
+        message: The transaction has not been processed due to problems in the validation of the business
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidTenantId:
+      value:
+        code: 400.01.004
+        message: Invalid tenant ID
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidTransactionCode:
+      value:
+        code: 400.01.338
+        message: Invalid transaction code
+        datetime: 2020-01-03T16:05:56.517Z
+    InvalidUserId:
+      value:
+        code: 400.01.377
+        message: Invalid User ID
+        datetime: 2020-01-03T16:05:56.517Z
+    ItWasNotPossibleToGetTheCardDetail:
+      value:
+        code: 400.01.375
+        message: It was not possible to get the card detail
+        datetime: 2020-01-03T16:05:56.517Z
+    KycValidationsError:
+      value:
+        code: 400.01.400
+        message: KYC validations error*
+        datetime: 2020-01-03T16:05:56.517Z
+    CardHasAlreadyBeenAssignedAPin:
+      value:
+        code: 400.01.450
+        message: Card has already been assigned a pin*
+        datetime: 2020-01-03T16:05:56.517Z
+    CardIsInactive:
+          value:
+            code: 400.01.456
+            message: Card is inactive
+            datetime: 2025-01-03T16:05:56.517Z
+    ExceedsWithdrawalFrequencyLimit:
+      value:
+        code: 400.01.522
+        message: Exceeds withdrawal frequency limit
+        datetime: 2020-01-03T16:05:56.517Z
+    MaximumNumberOfTransactionsReached:
+      value:
+        code: 400.01.051
+        message: Maximum number of transactions reached
+        datetime: 2020-01-03T16:05:56.517Z
+    TransactionRejected:
+      value:
+        code: 400.01.050
+        message: Transaction rejected
+        datetime: 2020-01-03T16:05:56.517Z
+    OfacRecordFound:
+      value:
+        code: 400.01.108
+        message: OFAC record found*
+        datetime: 2020-01-03T16:05:56.517Z
+    DuplicateOperation:
+      value:
+        code: 400.01.109
+        message: Duplicate operation
+        datetime: 2020-01-03T16:05:56.517Z
+    PageNumberIsOutsideTheAllowedRange:
+      value:
+        code: 400.01.369
+        message: Page number is outside the allowed range
+        datetime: 2020-01-03T16:05:56.517Z
+    PagingLimitIsOutsideTheAllowedRange:
+      value:
+        code: 400.01.368
+        message: Paging limit is outside the allowed range
+        datetime: 2020-01-03T16:05:56.517Z
+    TaxCannotBeANegativeValue:
+      value:
+        code: 400.01.370
+        message: Tax cannot be a negative value
+        datetime: 2020-01-03T16:05:56.517Z
+    TaxCannotBeHigherThanTheAmount:
+      value:
+        code: 400.01.371
+        message: Tax cannot be higher than the amount
+        datetime: 2020-01-03T16:05:56.517Z
+    TheAllowedBalanceLimitHasBeenReached:
+      value:
+        code: 400.01.397
+        message: The allowed balance limit has been reached
+        datetime: 2020-01-03T16:05:56.517Z
+    TheCardDoesNotHaveALinkedAccount:
+      value:
+        code: 400.01.374
+        message: The card does not have a linked account
+        datetime: 2020-01-03T16:05:56.517Z
+    TheCardIsNotActive:
+      value:
+        code: 400.01.367
+        message: The card is not active
+        datetime: 2020-01-03T16:05:56.517Z
+    ThereIsMoreThanOneActiveRegisteredCard:
+      value:
+        code: 400.01.379
+        message: There is more than one active registered card, you must indicate the
+          cardId you want to replace.
+        datetime: 2020-01-03T16:05:56.517Z
+    TransactionAlreadyCancelled:
+      value:
+        code: 400.01.340
+        message: Transaction already cancelled
+        datetime: 2020-01-03T16:05:56.517Z
+    TransactionNotFound:
+      value:
+        code: 400.01.110
+        message: Transaction not found
+        datetime: 2020-01-03T16:05:56.517Z
+    WeWereUnableToProcessYourRequest:
+      value:
+        code: 400.01.32
+        message: We were unable to process your request
+        datetime: 2020-01-03T16:05:56.517Z4
+    OriginalPinNoMatch:
+      value:
+        code: 400.01.013
+        message: Original PIN no match
+        datetime: 2020-01-03T16:05:56.517Z4
+    NewPinMustBeDifferentToOriginal:
+      value:
+        code: 400.01.078
+        message: New PIN must be different to original
+        datetime: 2020-01-03T16:05:56.517Z4
+    PinAlreadyUsed:
+      value:
+        code: 400.01.079
+        message: PIN already used
+        datetime: 2020-01-03T16:05:56.517Z4
+    CardHasNoPin:
+      value:
+        code: 400.01.363
+        message: Card has no pin
+        datetime: 2020-01-03T16:05:56.517Z4
+    SendMoneyExample:
+      value:
+        sender:
+          cardId: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
+        receiver:
+          cardId: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
+        amount: 100
+        fee: 10
+        tax: 1.05
+        description: Invoice payment
+        source: Bank transfer
+        externalId: b3779728-90a6-11eb-a8b3-0242ac130003
+
+  parameters:
+    cardId:
+      name: cardId
+      in: path
+      description: Unique card identification (uuid format)
+      required: true
+      example: 502c2656-7110-4994-a820-f593e468c6b4
+      schema:
+        type: string
+        maxLength: 36
+        minLength: 36
+    userId:
+      name: userId
+      in: path
+      description: Unique card identification (uuid format)
+      required: true
+      example: 502c2656-7110-4994-a820-f593e468c6b4
+      schema:
+        type: string
+        maxLength: 36
+    transactionIdentifier:
+      name: transactionIdentifier
+      in: path
+      description: ID of pet to return
+      required: true
+      schema:
+        type: string
+    cvvNumber:
+      name: cvvNumber
+      in: query
+      description: |
+        Use this value to show the static security code.
+
+        **Default value**: false
+      required: false
+      schema:
+        type: boolean
+        example: false
+    dynCvvNumber:
+      name: dynCvvNumber
+      in: query
+      description: >
+        Use this value to show the dynamic security code.
+
+
+        **Default value**: false
+
+        **Note**: You can only retrieve the dynamic CVV if you have this configuration in NovoPayment's system.
+      required: false
+      schema:
+        type: boolean
+        example: false
+    limit:
+      name: limit
+      in: query
+      description: >
+        Maximum number of transactions by page.
+
+
+        **Note**: The default value is twenty five (25), that is, if this value is not sent in the request, if a number less than 1 or a greater number is sent, pagination is performed with twenty five (25) records per page.
+
+
+        **Allowed range**: 1 - 25
+      required: false
+      schema:
+        type: integer
+        maxLength: 3
+    page:
+      name: page
+      in: query
+      description: >
+        This is the page number that you want to consult, this number can't
+        be zero.
+      required: false
+      schema:
+        type: integer
+        maxLength: 2
+    date:
+      name: date
+      in: query
+      description: >
+        Indicates the month and year to be consulted, or if receives only
+        one number this will.
+
+
+        **Format**: MM/YYYY.
+
+
+        **Required if days field is not sent**
+      required: false
+      schema:
+        type: string
+        maxLength: 7
+    days:
+      name: days
+      in: query
+      description: >
+        Indicates the number of days to be consulted. With value 1 you will
+        get todays transactions, 15 will get the transactions from the last 15
+        days, and 30 will get the last 30 days transactions.
+
+
+        **Required if date field is not sent**
+      required: false
+      schema:
+        type: integer
+        maxLength: 2
+    transactionCode:
+      name: transactionCode
+      in: query
+      description: >
+        Refer to: [Transaction
+        Code](https://developer.novopayment.com/api/request-and-response-codes#item-transactioncode)
+      required: false
+      schema:
+        type: string
+        maxLength: 2
+    transactionType:
+      name: transactionType
+      in: query
+      description: |
+        Type of the transaction executed
+
+        **Allowed values**:
+        D: Debit
+        C: Credit
+      required: false
+      schema:
+        type: string
+        maxLength: 1
+    dateFrom:
+      name: dateFrom
+      in: query
+      description: >
+        Consultation start date, expressed in ISO 8601 format.
+
+        date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21
+      required: true
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+    dateTo:
+      name: dateTo
+      in: query
+      description: >
+        Final consultation date, expressed in ISO 8601 format.
+
+        date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21
+      required: true
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+    dateFromSummary:
+      name: dateFrom
+      in: query
+      description: >
+        Consultation start date, expressed in ISO 8601 format.
+        
+        date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21
+      required: false
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+    dateToSummary:
+      name: dateTo
+      in: query
+      description: >
+        Final consultation date, expressed in ISO 8601 format.
+          
+        date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21
+      required: false
+      schema:
+        type: string
+        minLength: 10
+        maxLength: 10
+    hasAuthCode:
+          name: hasAuthCode
+          in: query
+          description: |
+            Contains or does not contain authCode
+          required: false
+          schema:
+            type: boolean
+            example: true  
+  schemas:
+    ObjCardHolder:
+      type: object
+      required:
+        - accountNumber
+        - documentType
+        - documentNumber
+        - firstName
+        - lastName
+      properties:
+        accountNumber:
+          type: string
+          description: |
+            Unique record for registered account
+
+            **Allowed characters**: numeric
+          example: 123456789
+          maxLength: 28
+        documentType:
+          type: string
+          description: |
+            National ID Type
+
+            **Possible values**:
+            CC: National Id
+            PP: Passport
+            EX: Residency (Green Card)
+          example: CC
+          maxLength: 2
+          enum:
+            - CC
+            - PP
+            - EX
+        documentNumber:
+          type: string
+          description: >
+            Document number that will be combined with the documentType to
+            generate a unique identification
+
+
+            **Allowed characters**: alphanumeric.
+          example: 16084704
+          maxLength: 23
+        verificationDigit:
+          type: string
+          description: |
+            Document verification number
+
+            **Allowed characters**: numeric
+          example: 6
+          maxLength: 1
+        firstName:
+          type: string
+          description: |
+            User first name
+
+            **Allowed characters**: alphabetic
+          example: John
+          maxLength: 32
+        middleName:
+          type: string
+          description: |
+            User second name
+
+            **Allowed characters**: alphabetic
+          example: Jesse
+          maxLength: 32
+        lastName:
+          type: string
+          description: |
+            Last Name (Paternal)
+
+            **Allowed characters**: alphabetic
+          example: Doe
+          maxLength: 32
+        maternalSurname:
+          type: string
+          description: |
+            Last Name (Maternal)
+
+            **Allowed characters**: alphabetic
+          example: Anders
+          maxLength: 32
+        birthDate:
+          type: string
+          description: >
+            User birth date in ISO 8601 format
+
+            date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6"), for example, 2017-07-21
+          example: 2017-07-21
+          format: date
+        birthPlace:
+          type: string
+          description: |
+            Birth place in "City, Country" format
+
+            **Allowed characters**:
+            alphabetic, special characters (. #-)
+          example: New Orleans, EEUU
+          maxLength: 32
+        nationality:
+          type: string
+          description: >
+            Citizenship. Refer to: [List Of
+            Nationalities](https://www.gov.uk/government/publications/nationalities/list-of-nationalities)
+          example: American
+          maxLength: 20
+        gender:
+          type: string
+          description: |
+            User gender
+
+            **Allowed values**:
+            M: male
+            F: female
+          example: M
+          maxLength: 1
+          enum:
+            - M
+            - F
+        maritalStatus:
+          type: string
+          description: |
+            Marital status
+
+            **Allowed values**:
+            S: single
+            D: divorced
+            M: married
+          example: S
+          maxLength: 1
+          enum:
+            - S
+            - D
+            - M
+        phone:
+          type: string
+          description: |
+            Phone number including country code
+
+            **Allowed characters**: numeric
+          example: 12124567890
+          maxLength: 20
+        email:
+          type: string
+          description: |
+            Email
+          example: username@domain.com
+          maxLength: 50
+        address:
+          type: string
+          description: |
+            Address
+
+            **Allowed characters**:
+            alphabetic, special characters (. #-)
+          example: Mr John Smith. 132 My Street Kingston
+          maxLength: 150
+        codeAddress:
+          type: string
+          description: |
+            ZIP code associated with the address
+
+            **Allowed characters**: numeric
+          example: 12401
+          maxLength: 9
+        city:
+          type: string
+          description: |
+            City related to the address
+
+            **Allowed characters**:
+            alphabetic, special characters (. #-)
+          example: New York
+          maxLength: 20
+        state:
+          type: string
+          description: |
+            State, province, or geopolitical area
+
+            **Allowed characters**:
+            alphabetic, special characters (. #-)
+          example: New York State
+          maxLength: 20
+        country:
+          type: string
+          description: >
+            Country name related to the address
+
+            **Refer to**: [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+          example: United States
+          maxLength: 42
+        branchId:
+          type: string
+          description: |
+            Branch where the card will be issued
+
+            **Allowed values**: numeric.
+          example: 1
+          maxLength: 2
+    RQCardAndAccountBundled:
+      type: object
+      required:
+        - programId
+        - type
+        - cardHolder
+      properties:
+        programId:
+          type: string
+          description: Card Program Identifier to which the card to be issued belongs, this data is provided by NovoPayment.
+          example: 454165454
+          maxLength: 10
+        type:
+          type: string
+          description: Type of issuance
+          example: named
+          enum:
+            - unnamed
+            - named
+          maxLength: 10
+        termsAcceptanceDate:
+          type: string
+          description: >
+            Date and time when the user accepts the client's terms and conditions.
+
+
+            date-time – the date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
+          example: 2020-01-03T16:05:56.517Z
+          minLength: 24
+          maxLength: 24
+        cardHolder:
+          type: object
+          required:
+            - documentType
+            - documentNumber
+            - firstName
+            - lastName
+          description: Cardholder identification (Customized Object)
+          properties:
+            accountNumber:
+              type: string
+              description: |
+                Unique record for registered account
+
+                **Allowed characters**: Alphanumeric
+              example: 123456789
+              maxLength: 28
+            documentType:
+              type: string
+              description: |
+                Type of identification used by the person registering.
+
+                **Possible values**:
+                CC: National ID
+                PP: Passport
+                EX: Residency (Green Card)
+              example: CC
+              enum:
+                - CC
+                - PP
+                - EX
+              minLength: 2
+              maxLength: 2
+            documentNumber:
+              type: string
+              description: >
+                Document number that will be combined with the documentType to
+                generate a unique identification
+
+
+                **Allowed characters**: alphanumeric
+              example: 16084704
+              maxLength: 23
+            verificationDigit:
+              type: string
+              description: |
+                Verification digit of the identification document, which depends on the country of issuance.
+
+                **Allowed characters**: numeric
+              example: 6
+              maxLength: 1
+            firstName:
+              type: string
+              description: |
+                First name of the person registering.
+
+                **Allowed characters**: alphabetic
+              example: John
+              maxLength: 32
+            middleName:
+              type: string
+              description: |
+                Middle name of the person registering, optional field as some individuals may have only one name.
+
+                **Allowed characters**: alphabetic
+              example: Jesse
+              maxLength: 32
+            lastName:
+              type: string
+              description: |
+                Last name of the person registering
+
+                **Allowed characters**: alphabetic
+              example: Doe
+              maxLength: 32
+            maternalSurname:
+              type: string
+              description: |
+                Maternal surname of the person registering, optional field as some individuals may have only one surname.
+
+                **Allowed characters**: alphabetic
+              example: Anders
+              maxLength: 32
+            birthDate:
+              type: string
+              description: >
+                Birth date of the person registering. User birth date in ISO 8601 format
+
+
+                date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21
+              example: 2017-07-21
+              minLength: 10
+              maxLength: 10
+            birthPlace:
+              type: string
+              description: |
+                A specific place, whether it be a city, town, or state, where the person was born.
+
+                **Allowed characters**: alphabetic, special characters (. # -)
+              example: New Orleans, EEUU
+              maxLength: 32
+            nationality:
+              type: string
+              description: >
+                Indicates the citizenship or place of origin of the person registering.
+
+
+                **Refer to**: [List Of Nationalities](https://www.gov.uk/government/publications/nationalities/list-of-nationalities)
+              example: American
+              maxLength: 20
+            gender:
+              type: string
+              description: |
+                Gender identification personal in relation to the traditional categories of male or female.
+
+                **Allowed values**:
+                M: male
+                F: female
+              example: M
+              enum:
+                - M
+                - F
+              maxLength: 1
+            maritalStatus:
+              type: string
+              description: |
+                Legal or social status of a person in terms of their marital relationship.
+
+                **Allowed values**:
+                S: single
+                D: divorced
+                M: married
+              example: S
+              enum:
+                - S
+                - D
+                - M
+              maxLength: 1
+            phone:
+              type: string
+              description: |
+                Number used for customer contact. Can be provided with or without country code in parentheses.
+
+                **Allowed formats**:
+                - 963856324 (local number)
+                - (57)963856324 (with country code in parentheses)
+                
+                **Allowed characters**: numeric, parentheses
+              example: (57)963856324
+              maxLength: 20
+            email:
+              type: string
+              description: Email owned by the person registering.
+              example: username@domain.com
+              maxLength: 50
+            address:
+              type: string
+              description: |
+                The physical location where the person usually resides.
+
+                **Allowed characters**: alphabetic, special characters (. # -)
+              example: 666, 5TH Avenue, 35th Floor, New York
+              maxLength: 150
+            codeAddress:
+              type: string
+              description: |
+               The postal code is a scheme assigned to different areas or locations within a country, a code that serves to facilitate and mechanize the routing of a piece of mail. Generally, it is a series of digits, although in some countries, it includes letters.
+
+                **Allowed characters**: Alphanumeric.
+              example: "12401"
+              maxLength: 8
+            city:
+              type: string
+              description: |
+                City to which the provided address belongs
+
+                **Allowed characters**: alphabetic, special characters (. # -)
+              example: New York
+              maxLength: 20
+            state:
+              type: string
+              description: |
+                Represents the state/department to which the city of the provided address belongs.
+
+                **Allowed characters**: alphabetic, special characters (. # -)
+              example: New York State
+              maxLength: 20
+            country:
+              type: string
+              description: >
+                It is the alpha-2 or alpha-3 code of the ISO-3166-1 standard.
+
+                **Refer to**: [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+              example: CAN
+              maxLength: 3
+            branchId:
+              type: string
+              description: |
+               Unique identifier of the office/branch representing the client
+
+                **Allowed values**: numeric
+              example: 1
+              maxLength: 2
+    RQCardActiveStatus:
+      type: object
+      required:
+        - cardStatus
+      properties:
+        cardStatus:
+          type: string
+          description: |
+            Indicate card activation through the field.
+
+            **Allowed values**:
+            A: active
+          example: A
+          enum:
+            - A
+          maxLength: 1
+    RQBlockCard:
+      type: object
+      required:
+        - blockType
+        - observations
+      properties:
+        blockType:
+          type: string
+          description: |
+            Blocking code in ISO8583 format
+            Sample:
+            - 41: Lost card
+            - 43: Stolen card
+            - PB: Preventive
+            - 17: Cancelled card
+
+            Allowed values: 41, 43, PB, 17
+          example: 41
+          enum:
+            - "41"
+            - "43"
+            - "17"
+            - PB
+          maxLength: 2
+        observations:
+          type: string
+          description: |
+            Describes the reason for blocking the card
+
+            **Allowed characters**: alphanumeric
+          example: Lost card
+          maxLength: 255
+    RQVirtualToPhysicalCard:
+      type: object
+      required:
+        - observation
+      properties:
+        observation:
+          type: string
+          description: |
+            Description of the reason for the change of card type.
+
+            **Note**: This field can be empty
+          example: change per customer request.
+          maxLength: 100
+    RQCardPinAssignment:
+      type: object
+      required:
+        - pin
+      properties:
+        pin:
+          type: string
+          description: Four-digit pin of the encrypted card using AES256 algorithm
+          example: 052olf8m99453jCPWTOL3Q==
+          maxLength: 24
+    RQCardPinUpdate:
+      type: object
+      required:
+        - pin
+        - newPin
+      properties:
+        pin:
+          type: string
+          description: Four-digit pin of the encrypted card using AES256 algorithm
+          example: 052olf8m99453jCPWTOL3Q==
+          maxLength: 24
+        newPin:
+          type: string
+          description: Four-digit pin of the encrypted card using AES256 algorithm
+          example: 052olf8m99453jCPWTOL3Q==
+          maxLength: 24
+    RQCardReplacement:
+      type: object
+      required:
+        - programId
+        - type
+        - userId
+      properties:
+        programId:
+          type: string
+          description: |
+            Card Program Identifier to which the card to be issued belongs, this data is provided by NovoPayment.
+
+            __Allowed characters:__ alphanumeric
+          example: 454165454
+          maxLength: 10
+        type:
+          type: string
+          description: |
+            Type of issuance
+
+            __Allowed values: unnamed, named__
+          example: named
+          maxLength: 8
+          enum:
+            - unnamed
+            - named
+        userId:
+          type: string
+          description: >
+           Field indicating the unique user identifier, provided by NovoPayment during issuance (uuid format). 
+          example: d78ddf88-d5eb-11ec-9d64-0242ac120003
+          minLength: 36
+          maxLength: 36
+    RQCashIn:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          description: Field that indicates amount
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        fee:
+          type: number
+          description: Fee for the transaction
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        description:
+          type: string
+          description: |
+            Field that indicates description.
+
+            **Valid characters:**
+            A-Z (uppercase letters)
+            a-z (lowercase letters)
+            0-9 (integers)
+              (space)
+            . (period)
+            , (comma)
+            / (forward slash)
+            - (hyphen)
+            &amp; (ampersand)
+            ' (single quote)
+            @ (stylized D for Discover cards)
+            ´ (accent marks)
+            ¨ (umlaut)
+          example: Transaction credit 0125146
+          maxLength: 100
+        source:
+          type: string
+          description: |
+            Field that indicates the source of founds.
+
+            **Valid characters:**
+            A-Z (uppercase alphabetic)
+            a-z (lowercase alphabetic)
+            0-9 (numerics)
+              (space)
+            ´ (accent marks)
+            ¨ (umlaut)
+          example: Bank transfer
+          maxLength: 50
+        externalId:
+          type: string
+          description: >
+            Field that indicates unique identification value of third-party
+            related to the operation.
+
+
+            **Valid characters:**
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            - (hyphen)
+          example: b3779728-90a6-11eb-a8b3-0242ac130003
+          maxLength: 50
+    RQCashInReverse:
+      type: object
+      required:
+        - transactionIdentifier
+        - amount
+      properties:
+        transactionIdentifier:
+          type: string
+          description: |
+            Unique transaction identification (uuid format).
+
+
+            **Allowed**: alphanumeric
+          example: 4d89f38361df418db1bc2898d31aa3d7
+          maxLength: 32
+          minLength: 32
+        amount:
+          type: number
+          description: >
+            Field that indicates amount.
+
+
+            **Note:** The sum of amount and fee must not exceed the amount of 999999.99
+          maxLength: 10
+          example: 99999999.99
+          format: double
+        fee:
+          type: number
+          description: >
+            Fee for the transaction.
+
+
+            **Note:** The sum of amount and fee must not exceed the amount of 999999.99 and the value of this field must be exactly that of the original transaction.
+          maxLength: 10
+          example: 99999999.99
+          format: double
+        description:
+          type: string
+          description: |
+            Field that indicates description.
+
+            **Valid characters:**
+            A-Z (uppercase letters)
+            a-z (lowercase letters)
+            0-9 (integers)
+            &nbsp; (space)
+            . (period)
+            , (comma)
+            / (forward slash)
+            - (hyphen)
+            &amp; (ampersand)
+            ' (single quote)
+            @ (stylized D for Discover cards)
+            ´ (accent marks)
+            ¨ (umlaut)
+            
+            **Note:** The value of this field must be exactly that of the original transaction.
+          example: Transaction credit 0125146
+          maxLength: 100
+        source:
+          type: string
+          description: |
+            Field that indicates the source of founds.
+
+            **Valid characters:**
+            A-Z (uppercase letters)
+            a-z (lowercase letters)
+            0-9 (integers)
+            &nbsp; (space)
+            ´ (accent marks)
+            ¨ (umlaut)
+            
+            **Note:** The value of this field must be exactly that of the original transaction.
+          example: Bank transfer
+          maxLength: 50
+        externalId:
+          type: string
+          description: >
+            Field that indicates unique identification value of third-party
+            related to the operation.
+
+
+            **Valid characters:**
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            - (hyphen)
+            
+            
+            **Note:** The value of this field must be exactly that of the original transaction.
+          example: b3779728-90a6-11eb-a8b3-0242ac130003
+          maxLength: 50
+    RQCashOut:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          description: |
+            Field that indicates amount
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        fee:
+          type: number
+          description: |
+            Fee for the transaction
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        tax:
+          type: number
+          description: >
+            Amount of tax for the operation, this field should have at least
+            one digit and maximum 10 digits.
+          maxLength: 10
+          example: 99999999.99
+          format: double  
+        description:
+          type: string
+          description: |
+            Field that indicates description.
+
+            **Valid characters:**
+            A-Z (uppercase letters)
+            a-z (lowercase letters)
+            0-9 (integers)
+            (space)
+            . (period)
+            , (comma)
+            / (forward slash)
+            - (hyphen)
+            &amp; (ampersand)
+            ' (single quote)
+            @ (stylized D for Discover cards)
+            ´ (accent marks)
+            ¨ (umlaut)
+          example: Transaction credit 0125146
+          maxLength: 100
+        source:
+          type: string
+          description: |
+            Field that indicates the source of founds.
+
+            **Valid characters:**
+            A-Z (uppercase alphabetic)
+            a-z (lowercase alphabetic)
+            0-9 (numerics)
+            (space)
+            ´ (accent marks)
+            ¨ (umlaut)
+          example: Bank transfer
+          maxLength: 50
+        externalId:
+          type: string
+          description: >
+            Field that indicates unique identification value of third-party
+            related to the operation.
+
+
+            **Valid characters:**
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            - (hyphen)
+          example: b3779728-90a6-11eb-a8b3-0242ac130003
+          maxLength: 50
+    RQCashOutReverse:
+      type: object
+      required:
+        - transactionIdentifier
+        - amount
+      properties:
+        transactionIdentifier:
+          type: string
+          description: |
+            Unique transaction identification (uuid format).
+
+
+            **Allowed**: alphanumeric
+          example: 4d89f38361df418db1bc2898d31aa3d7
+          maxLength: 32
+          minLength: 32
+        amount:
+          type: number
+          description: >
+            Field that indicates amount.
+
+
+            **Note:** The sum of amount and fee must not exceed the amount of 999,999.99.
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        fee:
+          type: number
+          description: >
+            Fee for the transaction.
+
+
+            **Note:** The sum of amount and fee must not exceed the amount of 999,999.99 and the value of this field must be exactly that of the original transaction.
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        tax:
+          type: number
+          description: >
+            Amount of tax for the operation, this field should have at least
+            one digit and maximum 8 digits.
+          format: double  
+          maxLength: 10
+          example: 99999999.99  
+        description:
+          type: string
+          description: |
+            Field that indicates description.
+
+            **Valid characters:**
+            A-Z (uppercase letters)
+            a-z (lowercase letters)
+            0-9 (integers)
+              (space)
+            . (period)
+            , (comma)
+            / (forward slash)
+            - (hyphen)
+            & (ampersand)
+            ' (single quote)
+            @ (stylized D for Discover cards)
+            ´ (accent marks)
+            ¨ (umlaut)
+            
+            **Note:** The value of this field must be exactly that of the original transaction.
+          example: Transaction credit 0125146
+          maxLength: 100
+        source:
+          type: string
+          description: |
+            Field that indicates the source of founds.
+
+            **Valid characters:**
+            A-Z (uppercase letters)
+            a-z (lowercase letters)
+            0-9 (integers)
+              (space)
+            ´ (accent marks)
+            ¨ (umlaut)
+            
+            **Note:** The value of this field must be exactly that of the original transaction.
+          example: Bank transfer
+          maxLength: 50
+        externalId:
+          type: string
+          description: >
+            Field that indicates unique identification value of third-party
+            related to the operation.
+
+
+            **Valid characters:**
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            - (hyphen)
+            
+            **Note:** The value of this field must be exactly that of the original transaction.
+          example: b3779728-90a6-11eb-a8b3-0242ac130003
+          maxLength: 50
+    RQUnblockCard:
+      type: object
+      required:
+        - observations
+      properties:
+        observations:
+          type: string
+          description: |
+            Description of the reason to unblock the card
+
+            **Allowed characters:** alphanumeric
+          example: Card found
+          maxLength: 255
+    RQCardCardholders:
+      type: object
+      required:
+        - accountNumber
+        - cardId
+        - documentType
+        - documentNumber
+        - firstName
+        - lastName
+      properties:
+        accountNumber:
+          type: string
+          maxLength: 28
+          description: Unique record for registered account
+          example: 123456789
+        cardId:
+          type: string
+          maxLength: 36
+          description: Unique card identification (uuid format)
+          example: 123456789
+        documentType:
+              type: string
+              description: |
+                Type of identification used by the person registering.
+
+                **Possible values**:
+                CC: National ID
+                PP: Passport
+                EX: Residency (Green Card)
+              example: CC
+              enum:
+                - CC
+                - PP
+                - EX
+              minLength: 2
+              maxLength: 2
+        documentNumber:
+              type: string
+              description: >
+                Document number that will be combined with the documentType to
+                generate a unique identification
+
+
+                **Allowed characters**: Alphanumeric
+              example: 16084704
+              maxLength: 23
+        verificationDigit:
+              type: string
+              description: |
+                Verification digit of the identification document, which depends on the country of issuance.
+
+                **Allowed characters**: Numeric
+              example: 6
+              maxLength: 1
+        firstName:
+              type: string
+              description: |
+                First name of the person registering.
+
+                **Allowed characters**: Alphabetic
+
+                **Conditionals**: To update names, firstName and lastName are mandatory
+              example: John
+              maxLength: 32
+        middleName:
+              type: string
+              description: |
+                Middle name of the person registering, optional field as some individuals may have only one name.
+
+                **Allowed characters**: Alphabetic
+
+                **Conditionals**: To update names, firstName and lastName are mandatory
+              example: Jesse
+              maxLength: 32
+        lastName:
+              type: string
+              description: |
+                Last name of the person registering
+
+                **Allowed characters**: Alphabetic
+
+                **Conditionals**: To update names, firstName and lastName are mandatory
+              example: Doe
+              maxLength: 32
+        maternalSurname:
+              type: string
+              description: |
+                Maternal surname of the person registering, optional field as some individuals may have only one surname.
+
+                **Allowed characters**: Alphabetic
+
+                **Conditionals**: To update names, firstName and lastName are mandatory
+              example: Anders
+              maxLength: 32
+        birthDate:
+              type: string
+              description: >
+                Birth date of the person registering. User birth date in ISO 8601 format
+
+
+                date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21
+              example: 2017-07-21
+              minLength: 10
+              maxLength: 10
+        birthPlace:
+              type: string
+              description: |
+                A specific place, whether it be a city, town, or state, where the person was born.
+
+                **Allowed characters**: Alphabetic, special characters (. # -)
+              example: New Orleans, EEUU
+              maxLength: 32
+        nationality:
+              type: string
+              description: >
+                Indicates the citizenship or place of origin of the person registering.
+
+
+                **Refer to**: [List Of Nationalities](https://www.gov.uk/government/publications/nationalities/list-of-nationalities)
+              example: American
+              maxLength: 20
+        gender:
+              type: string
+              description: |
+                Gender identification personal in relation to the traditional categories of male or female.
+
+                **Allowed values**:
+                M: male
+                F: female
+              example: M
+              enum:
+                - M
+                - F
+              maxLength: 1
+        maritalStatus:
+              type: string
+              description: |
+                Legal or social status of a person in terms of their marital relationship.
+
+                **Allowed values**:
+                S: single
+                D: divorced
+                M: married
+              example: S
+              enum:
+                - S
+                - D
+                - M
+              maxLength: 1
+        phone:
+              type: string
+              description: |
+                Number used for customer contact. Can be provided with or without country code in parentheses.
+
+                **Allowed formats**:
+                - 963856324 (local number)
+                - (57)963856324 (with country code in parentheses)
+                
+                **Allowed characters**: numeric, parentheses
+              example: (57)963856324
+              maxLength: 20
+        email:
+              type: string
+              description: Email owned by the person registering.
+              example: username@domain.com
+              maxLength: 50
+        address:
+              type: string
+              description: |
+                The physical location where the person usually resides.
+
+                **Allowed characters**: Alphabetic, special characters (. # -)
+
+                **Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory
+              example: 666, 5TH Avenue, 35th Floor, New York
+              maxLength: 150
+        codeAddress:
+              type: string
+              description: |
+                The postal code is a scheme assigned to different areas or locations within a country, a code that serves to facilitate and mechanize the routing of a piece of mail. Generally, it is a series of digits, although in some countries, it includes letters.
+
+                **Allowed characters**: Alphanumeric.
+
+                **Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                
+              example: "12401"
+              maxLength: 8
+        city:
+              type: string
+              description: |
+                City to which the provided address belongs
+
+                **Allowed characters**: Alphabetic, special characters (. # -)
+
+                **Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                
+              example: New York
+              maxLength: 20
+        state:
+              type: string
+              description: |
+                Represents the state/department to which the city of the provided address belongs.
+
+                **Allowed characters**: Alphabetic, special characters (. # -)
+
+                **Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                
+              example: New York State
+              maxLength: 20
+        country:
+              type: string
+              description: >
+                It is the alpha-2 or alpha-3 code of the ISO-3166-1 standard.
+                
+
+                **Refer to**: [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes).
+                
+
+                **Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                
+              example: CAN
+              maxLength: 3
+        branchId:
+              type: string
+              description: |
+                Unique identifier of the office/branch representing the client
+
+                **Allowed values**: Numeric
+              example: 1
+              maxLength: 2
+    RQSendMoney:
+      type: object
+      required:
+        - amount
+      properties:
+        sender:
+          type: object
+          $ref: "#/components/schemas/ObjCardId"
+        receiver:
+          type: object
+          $ref: "#/components/schemas/ObjCardId"
+        amount:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 999999.99
+          description: >
+            Amount of the operation, this field should have at least one digit
+            and maximum 8 digits.
+          example: 300.05
+        fee:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 999999.99
+          description: >
+            Amount of fee for the operation, this field should have at least
+            one digit and maximum 8 digits.
+          example: 1.5
+        tax:
+          type: number
+          description: >
+            Amount of tax for the operation, this field should have at least
+            one digit and maximum 8 digits.
+          example: 1.05
+        description:
+          type: string
+          maxLength: 100
+          description: |
+            Field that indicates description.
+
+            Valid characters:
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            (space)
+
+            . (period)
+
+            , (comma)
+
+            / (forward slash)
+
+            - (hyphen) & (ampersand)
+
+            ' (single quote)
+
+            @ (stylized D for Discover cards)
+
+            ´ (accent marks)
+
+            ¨ (umlaut)
+          example: Transaction credit 0125146
+        source:
+          type: string
+          maxLength: 50
+          description: |
+            Field that indicates the source of founds.
+
+            Valid characters:
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers) (space)
+
+            ´ (accent marks)
+
+            ¨ (umlaut)
+          example: Bank transfer
+        externalId:
+          type: string
+          maxLength: 50
+          description: >
+            Field that indicates unique identification value of third-party
+            related to the operation.
+
+
+            Valid characters:
+
+
+            A-Z (uppercase letters)
+
+
+            a-z (lowercase letters)
+
+
+            0-9 (integers)
+
+
+            - (hyphen)
+          example: b3779728-90a6-11eb-a8b3-0242ac130003
+    ObjCardId:
+      type: object
+      required:
+        - cardId
+      properties:
+        cardId:
+          type: string
+          maxLength: 36
+          description: |
+            Unique card identification (uuid format)
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+    RQCustomizeOperationLimits:
+      type: object
+      required:
+        - operations
+      properties:
+        operations:
+          type: array
+          items:
+            $ref: "#/components/schemas/ObjCustomizeOperationLimitsOperations"         
+    ObjCustomizeOperationLimitsAmountLimit:
+      type: object
+      properties:
+        daily:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99999999.99
+          description: |
+            Daily limit amount.
+            Note: If no decimals are sent, the service will autocomplete with two decimals in zero.
+            Sample: 12.30, 12.00, 12, 12.1, 12.33
+          example: 1000.55
+        weekly:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99999999.99
+          description: |
+            Weekly limit amount.
+            Note: If no decimals are sent, the service will autocomplete with two decimals in zero.
+            Sample: 12.30, 12.00, 12, 12.1, 12.33
+          example: 7003.55
+        monthly:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99999999.99
+          description: |
+            Monthly limit amount.
+            Note: If no decimals are sent, the service will autocomplete with two decimals in zero.
+            Sample: 12.30, 12.00, 12, 12.1, 12.33
+          example: 30016.55
+    ObjCustomizeOperationLimitsCountLimit:
+      type: object
+      properties:
+        daily:
+          type: number
+          format: integer
+          minimum: 0
+          maximum: 9999
+          description: Daily count amount.
+          example: 4
+        weekly:
+          type: number
+          format: integer
+          minimum: 0
+          maximum: 9999
+          description: Weekly count amount.
+          example: 28
+        monthly:
+          type: number
+          format: integer
+          minimum: 0
+          maximum: 9999
+          description: Monthly count amount.
+          example: 112
+    ObjCustomizeOperationLimitsOperations:
+      type: object
+      required: 
+        - amountLimit
+        - countLimit
+        - operationName
+      properties:
+        operationName:
+          type: string
+          example: cahsIn
+          description: |
+            Type of operation to which the limits will be updated
+             **Allowed values **:
+            cashIn,
+            cashout,
+            p2pTransferIn,
+            p2pTransferOut,
+            p2mTransferIn,
+            p2mTransferOut,
+            atmWithdrawals,
+            posPurchases,
+            ecommerce
+        amountLimit:
+          $ref: "#/components/schemas/ObjCustomizeOperationLimitsAmountLimit"
+        countLimit:
+          $ref: "#/components/schemas/ObjCustomizeOperationLimitsCountLimit"          
+    RSCardAndAccountBundled200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          required:
+            - cardId
+            - userId
+            - userToken
+          type: object
+          properties:
+            cardId:
+              type: string
+              description: Unique card identification (uuid format)
+              example: d2cb2441-0034-4211-93af-dcddc892a680
+              minLength: 36
+              maxLength: 36
+            userId:
+              type: string
+              description: Unique user identification (uuid format)
+              example: t2cb2442-0035-4211-93af-xcddx893a681
+              minLength: 36
+              maxLength: 36
+            userToken:
+              type: string
+              description: >
+                Encrypted form for a user created with a [AES256
+                algorithm](https://www.rfc-editor.org/rfc/rfc3565)
+                
+                
+                __Encrypted information:__ Document number | document type | account number
+              example: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
+              minLength: 32
+              maxLength: 32
+    RQUpdateTransactionRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/ObjListTransactionRules"  
+    RQCreateTransactionRules:
+      type: array
+      items:
+        $ref: "#/components/schemas/ObjCreateTransactionRules"
+    RSCardAndAccountBundled400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.00.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Params required
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardInformation200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - cardToken
+            - userToken
+            - accountNumber
+            - mask
+            - holderName
+            - cardStatus
+            - cardType
+          properties:
+            cardToken:
+              type: string
+              example: amDfBsZl6gw5giqm10rf6FaKKeEOeYopAQccozz7nk=
+              description: >
+                Card data encrypted with the [AES256
+                Algorithm](https://www.rfc-editor.org/rfc/rfc3565)
+
+
+                The cardToken attribute is composed of the following values:
+
+                - PAN: Card's primary account number
+
+                - Expiration Date: Card expiration date
+
+                - SALT: Random Value String
+
+
+                <PAN><EXPIRATION_DATE><SALT>
+              maxLength: 44
+              minLength: 44
+            userToken:
+              type: string
+              example: camDfBsZl6gw5giqm10rfyPqi/vfK3KvGyHpcVqWYoE=
+              description: >
+                User data encrypted with the [AES256
+                Algorithm](https://www.rfc-editor.org/rfc/rfc3565)
+                
+                
+                __Encrypted information:__ Document number | document type | account number
+              maxLength: 32
+              minLength: 32
+            accountNumber:
+              type: string
+              example: "*****1234"
+              description: Unique register for the account
+              maxLength: 28
+            mask:
+              type: string
+              description: Masked card number
+              example: 463521******4123
+              minLength: 16
+              maxLength: 16
+            holderName:
+              type: string
+              description: Custom field for the card
+              example: John Doe
+              maxLength: 32
+            cvvNumber:
+              type: string
+              description: >
+                Encrypted form [AES256
+                Algorithm](https://www.rfc-editor.org/rfc/rfc3565) of the card's
+                static security code
+              example: zWNTka0/Pvl8MnFGqPhE5A==
+              minLength: 32
+              maxLength: 32
+            dynCvvNumber:
+              type: string
+              description: >
+                Encrypted form [AES256
+                Algorithm](https://www.rfc-editor.org/rfc/rfc3565) of the card's
+                dynamic security code
+              example: zWNTka0/Pvl8MnFGqPhE5A==
+              minLength: 32
+              maxLength: 32
+            cardStatus:
+              type: string
+              description: |
+                Current status of the card
+
+                **Possible values**:
+                ACTIVE
+                INACTIVE
+              enum:
+                - ACTIVE
+                - INACTIVE
+              example: ACTIVE
+              minLength: 6
+              maxLength: 8
+            cardType:
+              type: string
+              description: |
+                Type of card
+
+                **Possible values:**
+                VIRTUAL
+                PHYSICAL
+              enum:
+                - VIRTUAL
+                - PHYSICAL
+              example: VIRTUAL
+              minLength: 7
+              maxLength: 8
+            blockType:
+              type: object
+              required:
+                - code
+                - msg
+              properties:
+                code:
+                  type: string
+                  description: |
+                    Type of lock presented by the card
+
+                    **Allowed values**:
+                    41: Lost card
+                    43: Stolen card
+                    PB: Preventive Block
+                    17: Cancelled card
+                  enum:
+                    - "41"
+                    - "43"
+                    - PB
+                    - "17"
+                  example: PB
+                  minLength: 2
+                  maxLength: 2
+                msg:
+                  type: string
+                  description: |
+                    Message associated to the block
+
+                    **Allowed characters**: alphabetic
+                  example: Temporary block
+                  maxLength: 32
+    RSCardInformation400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardActiveStatus200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardActiveStatus400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSBlockCard200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSBlockCard400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSVirtualToPhysicalCard200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSVirtualToPhysicalCard400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSAccountBalanceByCardId200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - availableBalance
+            - currentBalance
+            - balanceBlocked
+          properties:
+            availableBalance:
+              type: string
+              description: Available balance
+            currentBalance:
+              type: string
+              description: Current balance
+            balanceBlocked:
+              type: string
+              description: Balance blocked
+    RSAccountBalanceByCardId400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardMovementsQuery200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+        - metadata
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - referenceNumber
+              - transactionCode
+              - transactionType
+              - amount
+              - date
+              - merchantName
+              - commissionFee
+              - originAccount
+              - originName
+              - tax
+              - transactionIdentifier
+              - source
+            properties:
+              referenceNumber:
+                type: string
+                description: Reference number associated to a transaction
+                example: "003218000002"
+                maxLength: 12
+              transactionCode:
+                type: string
+                description: |
+                  Code that identifies the type of transaction
+
+                  **Allowed values**:
+                  21:Cash-in
+                  40:Send money,
+                  00:e-Commerce/Card Present Purchase
+                example: "05"
+                minLength: 2
+                maxLength: 2
+              transactionType:
+                type: string
+                description: |
+                  Type of the transaction executed
+
+                  **Allowed Values**:
+                  D:Debit
+                  C:Credit
+                example: C
+                minLength: 1
+                maxLength: 1
+              amount:
+                type: number
+                format: double
+                maximum: 9999999999.99
+                description: |
+                  Amount of the transaction
+
+                  **Allowed characters**: numeric
+                example: 15.35
+              date:
+                type: string
+                description: |
+                  Transaction Timestamp
+
+                  **Format:** YYYY-MM-DDThh:mm:ss.sss+00:00
+                example: 01-12-2020 15:57:11
+                maxLength: 19
+                format: date-time
+              merchantName:
+                type: string
+                description: |
+                  Name of the merchant
+
+                  **Allowed characters**: alphanumeric
+                example: RECARGA API CLIENT
+                maxLength: 40
+              commissionFee:
+                type: number
+                format: double
+                maximum: 9999999999.99
+                description: |
+                  Amount of the charged fee
+
+                  **Allowed characters**: numeric
+                example: 1.82
+              originAccount:
+                type: string
+                description: |
+                  Last 4 digits of the account that originated the transaction
+
+                  **Allowed characters**: numeric
+                example: 1900
+                minLength: 4
+                maxLength: 4
+              receivingAccount:
+                type: string
+                description: |
+                  Last 4 digits of the account that received the transaction
+
+                  **Allowed characters**: numeric
+                example: 1910
+                minLength: 4
+                maxLength: 4
+              originName:
+                type: string
+                description: |
+                  Name of the person who sent the money
+
+                  **Allowed characters**: Alphanumeric
+                example: JOHN DOE
+                maxLength: 100
+              receivingName:
+                type: string
+                description: |
+                  Name of the person who receives the money
+
+                  **Allowed characters**: Alphanumeric
+                example: LAURA SMITH
+                maxLength: 100
+              description:
+                type: string
+                description: |
+                  Field that indicates description
+
+                  **Allowed characters**: Alphanumeric
+                example: Payment
+                maxLength: 100
+              externalId:
+                type: string
+                description: Field that indicates unique identification value of third-party
+                  related to the operation.
+                example: aa9ee572-cbc6-4a89-8542-679c5da5a3a2
+                maxLength: 50
+              source:
+                type: string
+                description: |
+                  Field that indicates the source of funds.
+
+                  **Allowed characters**: alphabetic
+                example: Source 1
+                maxLength: 50
+              channel:
+                type: string
+                description: |
+                  Interface that originates the petition.
+
+                  **Allowed characters**: alphabetic
+                example: WEB
+                maxLength: 50
+              tax:
+                type: number
+                format: double
+                maximum: 9999999999.99
+                description: >
+                  Amount of tax for the operation
+
+
+                  **This field should have at least one digit and maximum 10 digits**
+                example: 1.15  
+              transactionIdentifier:
+                type: string
+                description: |
+                  Unique transaction identification (uuid format).
+
+
+                  **Allowed**: alphanumeric
+                example: 3155310
+                maxLength: 32
+                minLength: 32
+              authCode:
+                type: string
+                description: |
+                  Transaction authorization code
+                example: "123456"
+                maxLength: 6   
+        metadata:
+          type: object
+          properties:
+            pageable:
+              required:
+                - total
+                - limit
+                - currentPage
+                - lastPage
+              type: object
+              properties:
+                total:
+                  type: number
+                  description: Total records
+                  example: 25
+                  format: integer
+                  maximum: 99999999999
+                limit:
+                  type: number
+                  description: Number of records per page
+                  example: 5
+                  format: integer
+                  maximum: 99999999999
+                currentPage:
+                  type: number
+                  description: Actual page
+                  example: 1
+                  format: integer
+                  maximum: 99999999999
+                lastPage:
+                  type: number
+                  description: Last page
+                  example: 5
+                  format: integer
+                  maximum: 99999999999
+                firstPageUrl:
+                  type: string
+                  description: URL of the first page
+                  example: ?page=1&limit=5
+                  maxLength: 50
+                lastPageUrl:
+                  type: string
+                  description: URL of the last page
+                  example: ?page=5&limit=5
+                  maxLength: 50
+                nextPageUrl:
+                  type: string
+                  description: URL of the next page
+                  example: ?page=2&limit=5
+                  maxLength: 50
+                prevPageUrl:
+                  type: string
+                  description: URL of the previous page
+                  example: ?page=2&limit=5
+                  maxLength: 50
+    RSCardMovementsQuery400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardPinAssignment200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardPinAssignment400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardPinUpdate200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardPinUpdate400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardReplacement200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - cardId
+            - userId
+            - userToken
+          properties:
+            cardId:
+              type: string
+              description: Unique card identification (uuid format)
+              minLength: 36
+              maxLength: 36
+              example: f25d7a9e-d5eb-11ec-9d64-0242ac120002
+            userId:
+              type: string
+              description: Unique user identification (uuid format)
+              minLength: 36
+              maxLength: 36
+              example: d78ddf88-d5eb-11ec-9d64-0242ac120003
+            userToken:
+              type: string
+              description: >
+                Encrypted form for a user created with a [AES256
+                algorithm](https://www.rfc-editor.org/rfc/rfc3565)
+
+
+                __Encrypted information:__ Document number | document type | account number
+              minLength: 32
+              maxLength: 32
+              example: DLUhTMjU2IiwiYWxnIjoiUlNBLU9BRVA
+    RSCardReplacement400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.005
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Client already registered in this program
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCardQRImage200:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+          example: 2020-01-03T16:05:56.517Z
+        data:
+          type: object
+          $ref: "#/components/schemas/ObjCardQRCodeData"
+    ObjCardQRCodeData:
+      type: object
+      required:
+        - image
+      properties:
+        image:
+          type: string
+          description: |
+            Image type Object that contains the QR Code image.
+          example: iVBORw0KGgoAAAANSUhEUgAAAgAAAAFVCAIA…
+    RSCashIn200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - transactionIdentifier
+            - authCode
+            - status
+          properties:
+            authCode:
+              type: string
+              description: |
+                Transaction authorization code
+              example: "123456"
+              maxLength: 6
+            status:
+              type: string
+              description: |
+                Transaction status
+              example: "AUTHORIZED"
+              maxLength: 32
+            transactionIdentifier:
+              type: string
+              description: |
+                Unique transaction identification (uuid format).
+
+
+                **Allowed**: alphanumeric
+              example: 4d89f38361df418db1bc2898d31aa3d7
+              maxLength: 32
+              minLength: 32
+    RSCashIn400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCashInReverse200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - transactionIdentifier
+          properties:
+            authCode:
+              type: string
+              description: |
+               Transaction authorization code
+              example: "123456"
+              maxLength: 6
+            status:
+              type: string
+              description: |
+               Transaction status
+              example: "AUTHORIZED"
+              maxLength: 32
+            transactionIdentifier:
+              type: string
+              description: |
+               Unique transaction identification (uuid format).
+
+
+                **Allowed**: alphanumeric
+              example: 4d89f38361df418db1bc2898d31aa3d7
+              maxLength: 32
+              minLength: 32
+    RSCashInReverse400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCashOut200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - transactionIdentifier
+            - authCode
+            - status
+          properties:
+            authCode:
+              type: string
+              description: |
+                Transaction authorization code
+              example: "123456"
+              maxLength: 6
+            status:
+              type: string
+              description: |
+                Transaction status
+              example: "AUTHORIZED"
+              maxLength: 32
+            transactionIdentifier:
+              type: string
+              description: |
+                Unique transaction identification
+              example: 3155310
+              maxLength: 32
+    RSCashOut400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSCashOutReverse200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - transactionIdentifier
+          properties:
+            authCode:
+              type: string
+              description: |
+                Transaction authorization code
+              example: "123456"
+              maxLength: 6
+            status:
+              type: string
+              description: |
+                Transaction status
+              example: "AUTHORIZED"
+              maxLength: 32
+            transactionIdentifier:
+              type: string
+              description: |
+               Unique transaction identification (uuid format).
+
+
+                **Allowed**: alphanumeric
+              example: 4d89f38361df418db1bc2898d31aa3d7
+              maxLength: 32
+              minLength: 32
+    RSCashOutReverse400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSTransactionDetail200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+            - referenceNumber
+            - transactionCode
+            - transactionType
+            - amount
+            - date
+            - merchantName
+            - commissionFee
+            - originAccount
+            - receivingAccount
+            - brandType
+            - description
+            - source
+            - transactionIdentifier
+          properties:
+            referenceNumber:
+              type: string
+              description: Reference number associated to a transaction
+              example: 6014260007
+              maxLength: 12
+            transactionCode:
+              type: string
+              description: |
+                Code that identifies the type of transaction
+
+                **Allowed values: **
+                21:Cash-in
+                40:Send money
+                00:e-Commerce/Card Present Purchase
+              example: 1
+              enum:
+                - "21"
+                - "40"
+                - "00"
+              maxLength: 2
+            transactionType:
+              type: string
+              description: |
+                Type of the transaction executed
+
+                **Allowed values: **
+                D:Debit
+                C:Credit
+              enum:
+                - C
+                - D
+              example: C
+              maxLength: 1
+            amount:
+              type: number
+              description: |
+                Amount of the transaction
+              format: double
+              maximum: 9999999999.99
+              example: 95
+            date:
+              type: string
+              description: Transaction timestamp expressed in ISO 8601 format
+              format: date-time
+              example: 06-12-2020 11:00:35
+            merchantName:
+              type: string
+              description: |
+                Name of the merchant
+
+                **Allowed characters:** Alphanumeric
+              example: TRANSFERENCIA API CLIENT
+              maxLength: 40
+            commissionFee:
+              type: number
+              description: |
+                Amount of the charged fee.
+
+                **Allowed characters:** numeric
+              maximum: 9999999999.99
+              example: -1
+            originAccount:
+              type: string
+              description: |
+                Las 4 digits of the account that originated the transaction
+
+                **Allowed characters:** numeric
+              example: 1600
+              maxLength: 4
+            receivingAccount:
+              type: string
+              description: |
+                Las 4 digits of the account that received the transaction.
+
+                **Allowed characters:** numeric
+              example: 1900
+              maxLength: 4
+            originName:
+              type: string
+              description: |
+                Name of the person who sent the money.
+
+                **Allowed characters:** alphabetic
+              example: GABRIEL TORRES
+              maxLength: 100
+            receivingName:
+              type: string
+              description: |
+                Name of the person who receives the money.
+
+                **Allowed characters:** alphabetic
+              example: JOHN DOE
+              maxLength: 100
+            description:
+              type: string
+              description: |
+                Field that indicates description.
+
+                **Allowed characters:** alphanumeric
+              example: Payment
+              maxLength: 100
+            externalId:
+              type: string
+              description: >
+                Field that indicates unique identification value of third-party
+                related to the operation.
+              example: b3779728-90a6-11eb-a8b3-0242ac130003
+              maxLength: 50
+            source:
+              type: string
+              description: |
+                Field that indicates the source of founds.
+
+                **Allowed characters:** alphabetic
+              example: Bank Transfer
+              maxLength: 50
+            channel:
+              type: string
+              description: |
+                Interface that originates the petition.
+
+                **Allowed characters:** alphabetic
+              example: WEB
+              maxLength: 50
+            tax:
+              type: number
+              description: >
+                Amount of tax for the operation, this field should have at least
+                one digit and maximum 10 digits.
+
+                **Allowed characters:** numeric
+              maximum: 9999999999.99
+              example: 2
+            transactionIdentifier:
+                type: string
+                description: |
+                  Unique transaction identification (uuid format).
+
+
+                  **Allowed**: alphanumeric
+                example: 3155310
+                maxLength: 32
+                minLength: 32 
+            authCode:
+              type: string
+              description: |
+                Transaction authorization code
+              example: "123456"
+              maxLength: 6      
+    RSTransactionDetail400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSTransactionSummary200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - transactionCode
+              - transactionName
+              - totalAmount
+              - totalCommissionFee
+              - totalCommissionTax
+              - dateFrom
+              - dateTo
+              - transactionType
+              - totalTransactions
+            properties:
+              transactionCode:
+                type: string
+                description: >
+                  Refer to: [Transaction
+                  code](https://developer.novopayment.com/api/request-and-response-codes#item-transactioncode)
+
+
+                  **Allowed values:** 01, 02, 05, 06, 07
+                enum:
+                  - "01"
+                  - "02"
+                  - "05"
+                  - "06"
+                  - "07"
+                example: 5
+                maxLength: 2
+              transactionName:
+                type: string
+                description: Field indicating transaction name.
+                maxLength: 4
+                example: cashin
+              totalAmount:
+                description: Field that indicates the total amount of each transaction.
+                type: number
+                format: double
+                maximum: 99999999.99
+                example: 1000
+              totalCommissionFee:
+                description: Field that indicates the total amount of commissions charged.
+                type: number
+                format: double
+                maximum: 99999999.99
+                example: 20
+              totalCommissionTax:
+                description: Field indicating the total amount of taxes charged.
+                type: number
+                format: double
+                maximum: 99999999.99
+                example: 2
+              dateFrom:
+                type: string
+                description: Consultation start date
+                format: date
+                example: 2020-12-01
+              dateTo:
+                type: string
+                description: Final consultation date
+                format: date
+                example: 2020-12-31
+              transactionType:
+                type: string
+                description: |
+                  Type of the transaction executed
+
+                  **Allowed values: **
+                  D:Debit
+                  C:Credit
+                enum:
+                  - D
+                  - C
+                example: C
+                maxLength: 1
+              totalTransactions:
+                description: Total number of transactions obtained in the query.
+                type: number
+                format: integer
+                maximum: 9999999999
+                example: 5
+    RSTransactionSummary400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSUnblockCard200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSUnblockCard400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          description: Operation Timestamp
+          format: date-time
+    RSTransaction200:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+          example: 2020-01-03T16:05:56.517Z
+        data:
+          type: object
+          $ref: "#/components/schemas/ObjTransactionData"
+    ObjTransactionData:
+      type: object
+      required:
+        - transactionIdentifier
+        - authCode
+        - status
+      properties:
+        authCode:
+          type: string
+          maxLength: 6
+          description: |
+            Transaction authorization code
+          example: "123456"
+        status:
+          type: string
+          maxLength: 32
+          description: |
+            Transaction status
+          example: "AUTHORIZED"
+        transactionIdentifier:
+          type: string
+          maxLength: 32
+          description: |
+            Unique transaction identification.
+          example: "4d89f38361df418db1bc2898d31aa3d7"
+    RSCardIdUserId200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+          example: 2020-01-03T16:05:56.517Z
+        data:
+          type: object
+          $ref: "#/components/schemas/ObjCardIdUserIdData"
+    ObjCardIdUserIdData:
+      type: object
+      required:
+        - cardId
+        - userId
+      properties:
+        cardId:
+          type: string
+          maxLength: 36
+          description: |
+            Unique card identification (uuid format)
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+        userId:
+          type: string
+          maxLength: 36
+          description: |
+            Unique user identification (uuid format)
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+    RSCardHolderCreate400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z   
+    RSSendMoney400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+    RS400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2024-07-21T17:32:28Z         
+    RSTransactionRules400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2024-07-21T17:32:28Z
+    RSListTransactionRules400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2024-07-21T17:32:28Z
+    RSListTransactionRules200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2024-07-21T17:32:28Z
+          example: 2025-01-03T16:05:56.517Z
+        data:
+          type: array
+          $ref: "#/components/schemas/ObjListTransactionRules"
+    ObjListTransactionRules:
+      type: object
+      required:
+        - transactionRule
+        - status
+      properties:
+        transactionRule:
+          type: string
+          minLength: 3
+          maxLength: 10
+          description: |
+            Transaction rule name
+          enum:
+            - ecommerce
+            - atm
+            - pos
+          example: ecommerce
+        status:
+          type: string
+          minLength: 6
+          maxLength: 10
+          description: |
+            Rule status. Indicates whether the transaction is enabled or disabled
+          enum:
+            - active
+            - inactive
+          example: active
+    ObjCreateTransactionRules:
+      type: object
+      required:
+        - transactionRule
+      properties:
+        transactionRule:
+          type: string
+          minLength: 3
+          maxLength: 10
+          description: |
+            Transaction rule name
+          enum:
+            - ecommerce
+            - atm
+            - pos
+          example: ecommerce
+    RS200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: >
+            Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+          example: 2020-01-03T16:05:56.517Z
+    RS401:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          minLength: 24
+          maxLength: 24
+    RS500:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03T16:05:56.517Z
+          minLength: 24
+          maxLength: 24
+  requestBodies:
+    RQCardAndAccountBundled:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCardAndAccountBundled"
+      required: true
+    RQCardActiveStatus:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCardActiveStatus"
+      required: true
+    RQBlockCard:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQBlockCard"
+      required: true
+    RQVirtualToPhysicalCard:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQVirtualToPhysicalCard"
+      required: true
+    RQCardPinAssignment:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCardPinAssignment"
+      required: true
+    RQCardPinUpdate:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCardPinUpdate"
+      required: true
+    RQCardReplacement:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCardReplacement"
+      required: true
+    RQCashIn:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCashIn"
+      required: true
+    RQCashInReverse:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCashInReverse"
+      required: true
+    RQCashOut:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCashOut"
+      required: true
+    RQCashOutReverse:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCashOutReverse"
+      required: true
+    RQUnblockCard:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQUnblockCard"
+      required: true
+    RQCardCardholders:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCardCardholders"
+    RQCardCardholdersUpdate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCardCardholders"
+    RQSendMoney:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQSendMoney"
+            example: null
+          examples:
+            Default:
+              $ref: "#/components/examples/SendMoneyExample"
+    RQCustomizeOperationLimits:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCustomizeOperationLimits"
+    RQUpdateTransactionRules:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQUpdateTransactionRules"
+    RQCreateTransactionRules:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCreateTransactionRules"
+  responses:
+    RSCardAndAccountBundled200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardAndAccountBundled200"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  cardId: "d2cb2441-0034-4211-93af-dcddc892a680"
+                  userId: "d2cb2441-0034-4211-93af-dcddc892a680"
+                  userToken: "FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0"
+    RSCardAndAccountBundled400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardAndAccountBundled400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Program Id:
+              $ref: "#/components/examples/InvalidProgramId"
+            Account Is Already Registered:
+              $ref: "#/components/examples/AccountIsAlreadyRegistered"
+            Branch Is Not Registered:
+              $ref: "#/components/examples/BranchIsNotRegistered"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCardAndAccount"
+    RSCardInformation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardInformation200"
+          examples:
+            No Results Found:
+              $ref: "#/components/examples/NoResultsFound"
+            Card Information Ok:
+              $ref: "#/components/examples/CardInformationOk"
+    RSCardInformation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardInformation400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            The Card Does Not Have A Linked Account:
+              $ref: "#/components/examples/TheCardDoesNotHaveALinkedAccount"
+            It Was Not Possible To Get The Card Detail:
+              $ref: "#/components/examples/ItWasNotPossibleToGetTheCardDetail"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"  
+    RSCardActiveStatus200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardActiveStatus200"
+          examples:
+            Default:
+              value:
+                code: "200.01.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSCardActiveStatus400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardActiveStatus400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCardStatus"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"
+            The Card Does Not Have A Linked Account:
+              $ref: "#/components/examples/TheCardDoesNotHaveALinkedAccount"
+            Card is already activated:
+              $ref: "#/components/examples/CardIsAlreadyActivated"
+    RSBlockCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSBlockCard200"
+          examples:
+            Default:
+              value:
+                code: "200.01.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSBlockCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSBlockCard400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Card is permanently blocked:
+              $ref: "#/components/examples/CardIsPermanentlyBlocked"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Exceeds Withdrawal Frequency Limit:
+              $ref: "#/components/examples/ExceedsWithdrawalFrequencyLimit"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"
+            Invalid Block Code:
+              $ref: "#/components/examples/InvalidBlockCode"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidCardId"
+    RSVirtualToPhysicalCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSVirtualToPhysicalCard200"
+          examples:
+            Default:
+              value:
+                code: "200.01.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSVirtualToPhysicalCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSVirtualToPhysicalCard400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Product Status Could Not Be Updated:
+              $ref: "#/components/examples/ProductStatusCouldNotBeUpdated"
+            Invalid Card Type:
+              $ref: "#/components/examples/InvalidCardType"
+            Invalid Transaction Type:
+              $ref: "#/components/examples/InvalidTransactionType"
+
+    RSAccountBalanceByCardId200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSAccountBalanceByCardId200"
+          examples:
+            Default:
+              value:
+                code: "200.01.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  availableBalance: "153.69"
+                  currentBalance: "153.69"
+                  balanceBlocked: "0"
+    RSAccountBalanceByCardId400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSAccountBalanceByCardId400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidCardId"
+    RSCardMovementsQuery200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardMovementsQuery200"
+          examples:
+            No Results Found:
+              $ref: "#/components/examples/NoResultsFound"
+            Transaction Movements Query OK:
+              $ref: "#/components/examples/TransactionMovementsQueryOK"
+    RSCardMovementsQuery400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardMovementsQuery400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Transaction Code:
+              $ref: "#/components/examples/InvalidTransactionCode"
+            Invalid Date Range:
+              $ref: "#/components/examples/InvalidDateRange"
+            Date Range Cannot Exceed 90 Days:
+              $ref: "#/components/examples/DateRangeCannotExceed90Days"
+            Paging Limit Is Outside The Allowed Range:
+              $ref: "#/components/examples/PagingLimitIsOutsideTheAllowedRange"
+            Page Number Is Outside The Allowed Range:
+              $ref: "#/components/examples/PageNumberIsOutsideTheAllowedRange"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidCardId"
+            Empty Parameters:
+              $ref: "#/components/examples/EmptyParameters"
+    RSCardPinAssignment200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardPinAssignment200"
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSCardPinAssignment400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardPinAssignment400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Pin Format:
+              $ref: "#/components/examples/InvalidPinFormat"
+            Encryption Error:
+              $ref: "#/components/examples/EncryptionError"
+            Invalid Encrypted Data :
+              $ref: "#/components/examples/InvalidEncryptedData"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Card Has Already Been Assigned A Pin:
+              $ref: "#/components/examples/CardHasAlreadyBeenAssignedAPin"  
+    RSCardPinUpdate200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardPinUpdate200"
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSCardPinUpdate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardReplacement400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Pin Format:
+              $ref: "#/components/examples/InvalidPinFormat"
+            Original Pin No Match:
+              $ref: "#/components/examples/OriginalPinNoMatch"
+            New Pin Must Be Different To Original:
+              $ref: "#/components/examples/NewPinMustBeDifferentToOriginal"
+            Pin Already Used:
+              $ref: "#/components/examples/PinAlreadyUsed"
+            Card Has No Pin:
+              $ref: "#/components/examples/CardHasNoPin"
+            Encryption Error:
+              $ref: "#/components/examples/EncryptionError"
+            Invalid Encrypted Data:
+              $ref: "#/components/examples/InvalidEncryptedData"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+    RSCardReplacement200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardReplacement200"
+          examples:
+            Default:
+              value:
+                code: "200.01.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  cardId: "d2cb2441-0034-4211-93af-dcddc892a680"
+                  userId: "d2cb2441-0034-4211-93af-dcddc892a680"
+                  userToken: "FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0"
+    RSCardReplacement400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardReplacement400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Client Already Registered In This Program:
+              $ref: "#/components/examples/ClientAlreadyRegisteredInThisProgram"
+            Invalid Program Id:
+              $ref: "#/components/examples/InvalidProgramId"
+            Invalid User Id:
+              $ref: "#/components/examples/InvalidUserId"
+            Card Activated:
+              $ref: "#/components/examples/CardActivated"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCardReplacement"
+            The Card Is Not Associated With The Account:
+              $ref: "#/components/examples/TheCardIsNotAssociatedWithTheAccount"
+            Invalid Block Code:
+              $ref: "#/components/examples/InvalidBlockCode"
+    RSCardQRImage200:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardQRImage200"
+          examples:
+            Default:
+              value:
+                code: 200.00.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  image: iVBORw0KGgoAAAANSUhEUgAAAgAAAAFVCAIA
+    RSCashIn200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashIn200"
+          examples:
+            Process Ok:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  authCode: "123456"
+                  status: "AUTHORIZED"
+                  transactionIdentifier: "000003155310"
+            Pending:
+              value:
+                code: "200.00.001"
+                datetime: "2025-08-13T15:52:03.411Z"
+                message: "Pending"
+    RSCashIn400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashIn400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            CardIsBlocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Transaction Code:
+              $ref: "#/components/examples/InvalidTransactionCode"
+            Exceeds The Limit Amount:
+              $ref: "#/components/examples/ExceedsTheLimitAmount"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            Card Is Expired:
+              $ref: "#/components/examples/CardIsExpired"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCashInAndCashOut"
+            Exceeds Withdrawal Frequency Limit:
+              $ref: "#/components/examples/ExceedsWithdrawalFrequencyLimit"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"
+            Unable To Process Transaction:
+              $ref: "#/components/examples/UnableToProcessTransaction"
+            Duplicate Operation:
+              $ref: "#/components/examples/DuplicateOperation"
+    RSCashInReverse200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashInReverse200"
+          examples:
+            Process Ok:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  authCode: "123456"
+                  status: "AUTHORIZED"
+                  transactionIdentifier: "4d89f38361df418db1bc2898d31aa3d7"
+            Pending:
+              value:
+                code: "200.00.001"
+                datetime: "2025-08-13T15:52:03.411Z"
+                message: "Pending"
+    RSCashInReverse400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashInReverse400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            CardIsBlocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCashInAndCashOutReverse"
+            Transaction Not Found:
+              $ref: "#/components/examples/TransactionNotFound"
+            Transaction Already Cancelled:
+              $ref: "#/components/examples/TransactionAlreadyCancelled"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            The Transaction Has Not Been Processed Due To Problems In The Validation Of The Business:
+              $ref: "#/components/examples/TheTransactionHasNotBeenProcessedDueToProblemsInTheValidationOfTheBusiness"
+            Transaction Rejected:
+              $ref: "#/components/examples/TransactionRejected"
+            Duplicate Operation:
+              $ref: "#/components/examples/DuplicateOperation"
+    RSCashOut200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashOut200"
+          examples:
+            Process Ok:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  authCode: "123456"
+                  status: "AUTHORIZED"
+                  transactionIdentifier: "4d89f38361df418db1bc2898d31aa3d7"
+            Pending:
+              value:
+                code: "200.00.001"
+                datetime: "2025-08-13T15:52:03.411Z"
+                message: "Pending"
+    RSCashOut400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashOut400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            CardIsBlocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Transaction Code:
+              $ref: "#/components/examples/InvalidTransactionCode"
+            Exceeds The Limit Amount:
+              $ref: "#/components/examples/ExceedsTheLimitAmount"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            Card Is Expired:
+              $ref: "#/components/examples/CardIsExpired"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCashInAndCashOut"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"
+            Unable To Process Transaction:
+              $ref: "#/components/examples/UnableToProcessTransaction"
+            Duplicate Operation:
+              $ref: "#/components/examples/DuplicateOperation"
+    RSCashOutReverse200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashOutReverse200"
+          examples:
+            Process Ok:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  authCode: "123456"
+                  status: "AUTHORIZED"
+                  transactionIdentifier: "4d89f38361df418db1bc2898d31aa3d7"
+            Pending:
+              value:
+                code: "200.00.001"
+                datetime: "2025-08-13T15:52:03.411Z"
+                message: "Pending"
+    RSCashOutReverse400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCashOutReverse400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCashInAndCashOutReverse"
+            Transaction Not Found:
+              $ref: "#/components/examples/TransactionNotFound"
+            Transaction Already Cancelled:
+              $ref: "#/components/examples/TransactionAlreadyCancelled"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            The Transaction Has Not Been Processed Due To Problems In The Validation Of The Business:
+              $ref: "#/components/examples/TheTransactionHasNotBeenProcessedDueToProblemsInTheValidationOfTheBusiness"
+            Transaction Rejected:
+              $ref: "#/components/examples/TransactionRejected"
+            Duplicate Operation:
+              $ref: "#/components/examples/DuplicateOperation"
+    RSTransactionDetail200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSTransactionDetail200"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  referenceNumber: "006014260007"
+                  transactionCode: "01"
+                  transactionType: "D"
+                  amount: 95.25
+                  date: "2020-01-03T16:05:56.517Z"
+                  merchantName: "Mega Store Inc"
+                  commissionFee: 1.15
+                  originAccount: "1600"
+                  receivingAccount: "1900"
+                  originName: "GABRIEL TORRES"
+                  receivingName: "JOHN DOE"
+                  description: "Payment"
+                  externalId: "b3779728-90a6-11eb-a8b3-0242ac130003"
+                  source: "Bank transfer"
+                  channel: "WEB"
+                  authCode: "991982"
+                 # tax: "1"
+    RSTransactionDetail400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSTransactionDetail400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Transaction Not Found:
+              $ref: "#/components/examples/TransactionNotFound"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidCardId"
+    RSTransactionSummary200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSTransactionSummary200"
+          examples:
+            No Results Found:
+              $ref: "#/components/examples/NoResultsFound"
+            Transaction Summary OK:
+              $ref: "#/components/examples/TransactionSummaryOK"
+    RSTransactionSummary400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSTransactionSummary400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Transaction Code:
+              $ref: "#/components/examples/InvalidTransactionCode"
+            Invalid Date Range:
+              $ref: "#/components/examples/InvalidDateRange"
+            Date Range Cannot Exceed 90 Days:
+              $ref: "#/components/examples/DateRangeCannotExceed90Days"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidCardId"
+    RSUnblockCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUnblockCard200"
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSUnblockCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUnblockCard400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Card is permanently blocked:
+              $ref: "#/components/examples/CardIsPermanentlyBlocked"
+    RSCardIdUserId200:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardIdUserId200"
+          examples:
+            Default:
+              value:
+                code: "200.01.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  cardId: "d2cb2441-0034-4211-93af-dcddc892a680"
+                  userId: "d2cb2441-0034-4211-93af-dcddc892a680"
+    RSTransaction200:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSTransaction200"
+          examples:
+            Process Ok:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  authCode: "123456"
+                  status: "AUTHORIZED"
+                  transactionIdentifier: "000003155310"
+            Pending:
+              value:
+                code: "200.00.001"
+                datetime: "2025-08-13T15:52:03.411Z"
+                message: "Pending"
+    RSCardHolderCreate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardHolderCreate400"
+          examples:
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"  
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCardHolderCreate"
+            The Card Is Already Linked To An Account:
+              $ref: "#/components/examples/TheCardIsAlreadyLinkedToAnAccount"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            Card Is Expired:
+              $ref: "#/components/examples/CardIsExpired"
+            Card Activated:
+              $ref: "#/components/examples/CardActivated"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Account Is Already Registered:
+              $ref: "#/components/examples/AccountIsAlreadyRegistered"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidCardId"          
+    RSLimits400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCardHolderCreate400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            User Not Found:
+              $ref: "#/components/examples/UserNotFound"
+    RSSendMoney400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSSendMoney400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Insufficient Funds:
+              $ref: "#/components/examples/InsufficientFunds"
+            Exceeds The Limit Amount:
+              $ref: "#/components/examples/ExceedsTheLimitAmount"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            Maximum Number Of Transactions Reached:
+              $ref: "#/components/examples/MaximumNumberOfTransactionsReached"
+            CardIsExpired:
+              $ref: "#/components/examples/CardIsExpired"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParametersCashInAndCashOut"
+            Exceeds Withdrawal Frequency Limit:
+              $ref: "#/components/examples/ExceedsWithdrawalFrequencyLimit"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"  
+            Unable To Process Transaction:
+              $ref: "#/components/examples/UnableToProcessTransaction"
+            Duplicate Operation:
+              $ref: "#/components/examples/DuplicateOperation"
+    RS400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Insufficient Funds:
+              $ref: "#/components/examples/InsufficientFunds"
+            We Were Unable To Process Your Request:
+              $ref: "#/components/examples/WeWereUnableToProcessYourRequest"
+            Invalid Transaction Code:
+              $ref: "#/components/examples/InvalidTransactionCode"
+            Exceeds The Limit Amount:
+              $ref: "#/components/examples/ExceedsTheLimitAmount"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            Tax Cannot Be Higher Than The Amount:
+              $ref: "#/components/examples/TaxCannotBeHigherThanTheAmount"
+            Maximum Number Of Transactions Reached:
+              $ref: "#/components/examples/MaximumNumberOfTransactionsReached"
+            CardIsExpired:
+              $ref: "#/components/examples/CardIsExpired"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Exceeds Withdrawal Frequency Limit:
+              $ref: "#/components/examples/ExceedsWithdrawalFrequencyLimit"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId" 
+    RSTransactionRules400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSTransactionRules400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"
+            Card Is Inactive:
+              $ref: "#/components/examples/CardIsInactive"
+            Card Is Blocked:
+              $ref: "#/components/examples/CardIsBlocked"
+            Client Already Registered In This Program:
+              $ref: "#/components/examples/ClientAlreadyRegisteredInThisProgram"
+            Card Not Found:
+              $ref: "#/components/examples/CardNotFound"          
+    RSListTransactionRules400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSTransactionRules400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            The Card Is Not Active:
+              $ref: "#/components/examples/TheCardIsNotActive"
+            Invalid CardId:
+              $ref: "#/components/examples/InvalidCardId"
+            Card Not Found:
+              $ref: "#/components/examples/CardNotFound"
+            Card Is Inactive:
+                $ref: "#/components/examples/CardIsInactive"
+            Card Is Blocked:
+                $ref: "#/components/examples/CardIsBlocked"
+            Client Already Registered In This Program:
+              $ref: "#/components/examples/ClientAlreadyRegisteredInThisProgram"
+    RSEnableDisableTransactionalRules400:
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/RSTransactionRules400"
+                examples:
+                  Header Params Required:
+                    $ref: "#/components/examples/HeaderParamsRequired"
+                  Invalid Tenant Id:
+                    $ref: "#/components/examples/InvalidTenantId"
+                  Invalid Parameters:
+                    $ref: "#/components/examples/InvalidParametersRules"
+                  The Card Is Not Active:
+                    $ref: "#/components/examples/TheCardIsNotActive"
+                  Invalid CardId:
+                    $ref: "#/components/examples/InvalidCardId"
+                  Card Not Found:
+                    $ref: "#/components/examples/CardNotFound"
+                  Card Is Inactive:
+                      $ref: "#/components/examples/CardIsInactive"
+                  Card Is Blocked:
+                      $ref: "#/components/examples/CardIsBlocked"
+                  Client Already Registered In This Program:
+                    $ref: "#/components/examples/ClientAlreadyRegisteredInThisProgram"
+    RSListTransactionRules200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSListTransactionRules200"
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  - transactionRule: ecommerce
+                    status: active
+                  - transactionRule: atm
+                    status: inactive
+    RS200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS200"
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"

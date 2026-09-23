@@ -1,0 +1,84 @@
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://developer.novopayment.com/guides/quick-start,
+  https://developer.novopayment.com/api, the 15 published OpenAPI documents, and direct probes of
+  status.novopayment.com and novopayment.statuspage.io on 2026-09-17
+description: >-
+  What NovoPayment publishes about versioning, promotion between environments, deprecation and
+  operational transparency for its API surface.
+versioning:
+  scheme: url-path major version
+  current:
+    - api: cards
+      version: v1.3
+    - api: mastercard-issuer-tokenization
+      version: v2.0
+    - api: real-time-payments
+      version: v1.0.0
+    - api: all others
+      version: v1
+  policy_published: false
+  note: >-
+    Version appears in both the base path and the documentation URL. NovoPayment publishes no written
+    versioning policy: nothing states how long a major version is supported, how a breaking change is
+    announced, or whether minor versions are additive.
+environments:
+  - name: sandbox
+    host: sandbox-api.novopayment.com
+    access: self-service after registration and project creation
+  - name: uat
+    host: not published
+    access: >-
+      by request — the developer hub says you fill in a form about your project and receive a
+      confirmation email once NovoPayment approves the promotion
+  - name: production
+    host: not published
+    access: by request, same approval path as UAT
+environments_note: >-
+  Credentials differ per environment. Only the sandbox host appears in the published specs; the
+  Issuer Tokenization spec points at cert-api.novopayment.com, a certification host.
+deprecation:
+  policy_published: false
+  headers:
+    deprecation: not used
+    sunset: not used
+  rfc8594: false
+  deprecated_operations: 0
+  evidence: >-
+    No operation in any of the 15 published specs carries deprecated: true, and no Deprecation or
+    Sunset response header is declared. The one deprecation signal anywhere on the hub is a chapter
+    titled "New Payment Deprecated" inside the gated mobile Tokenization SDK documentation, which
+    returns 403 to an anonymous client.
+status_page:
+  published: false
+  probes:
+    - url: https://status.novopayment.com/
+      status: 0
+      result: host does not resolve
+    - url: https://novopayment.statuspage.io/
+      status: 200
+      result: >-
+        Atlassian's own Statuspage marketing page, not a NovoPayment status page — the body contains
+        no mention of NovoPayment
+    - url: https://novopayment.com/status/
+      status: 200
+      result: WordPress soft-404 (identical byte length to other non-existent paths)
+sla:
+  published: false
+  note: >-
+    No uptime commitment, support-response target or incident-communication policy is published on
+    the public developer hub or the marketing site. The only quantified operational statement found
+    is "the funds will be available within 30 minutes" in the Real-Time Payments spec.
+changelog:
+  published: false
+  note: >-
+    No dated API changelog is published. The gated SDK documentation includes a Changelog chapter
+    (403 anonymous), so a changelog exists for approved integrators but not for the public.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

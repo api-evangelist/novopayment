@@ -1,0 +1,62 @@
+specification: API Commons Webhooks
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/novopayment-payment-authorizer-openapi.yml,
+  openapi/novopayment-merchant-presented-qr-openapi.yml,
+  openapi/novopayment-onboarding-openapi.yml,
+  openapi/novopayment-issuer-tokenization-openapi.yml,
+  openapi/novopayment-mastercard-issuer-tokenization-openapi.yml
+description: >-
+  NovoPayment publishes no AsyncAPI document and no event catalogue, but its contracts do carry an
+  asynchronous notification surface: a per-request callback URL on payment authorization, a payment
+  notification operation on the QR contract, and device push-token registration on onboarding. This
+  file records that surface as the provider actually documents it; nothing is invented.
+asyncapi_published: false
+event_catalog_published: false
+webhooks:
+  - name: payment-authorizer callback
+    mechanism: client-supplied callback URL
+    field: notifyUrl
+    declared_in: openapi/novopayment-payment-authorizer-openapi.yml
+    description: >-
+      "Service address to receive information of the request (webhook)." Supplied per payment request
+      (max 100 characters, alphanumeric plus - . / : and @). NovoPayment POSTs transaction
+      information to it as the authorization progresses.
+    payload_schema_published: false
+    retry_policy_published: false
+    signature_verification_published: false
+    note: >-
+      The callback payload shape, retry behaviour and any signing scheme are NOT documented in the
+      public contract — a consumer knows where the notification goes but not what arrives or how to
+      verify it.
+  - name: merchant QR payment notification
+    mechanism: inbound notification operation
+    path: POST /notifications/payment
+    operation_id: notificationsPayment
+    declared_in: openapi/novopayment-merchant-presented-qr-openapi.yml
+    description: >-
+      "Notify status for a payment." Carries srcClientId, srcDigitalCardId and eventTimestamp;
+      secured with the same OAuth2 client-credentials scheme plus X-Pay-Token and the apikey query
+      parameter.
+    payload_schema_published: true
+    schema: components.schemas.RQNotificationPayment
+  - name: device push token registration
+    mechanism: token registration operation
+    declared_in: openapi/novopayment-onboarding-openapi.yml
+    description: >-
+      "Token Update — allows to register or update a push token of a device. This token is used to
+      send notifications related to transactional and non-transactional flows. Applies only for
+      Android and iOS platforms."
+    channel: mobile push (APNs/FCM), not HTTP webhook
+subscription_management:
+  published: false
+  note: >-
+    There is no webhook registration, listing, secret-rotation or replay endpoint. Delivery targets
+    are named inline per request, so an integrator cannot enumerate or rotate them through the API.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

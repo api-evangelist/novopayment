@@ -1,0 +1,205 @@
+specification: API Commons Conventions
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/novopayment-*-openapi.yml (15 provider-published specs) plus
+  https://developer.novopayment.com/guides/how-it-works/get-access-token and
+  https://developer.novopayment.com/guides/quick-start
+description: >-
+  Cross-cutting runtime semantics of the NovoPayment API surface: how a client authenticates, what
+  headers every call carries, how responses are shaped, and what can and cannot be taken back.
+authentication:
+  style: oauth2-client-credentials
+  scheme_name: oAuth2ClientCredentials
+  token_url: https://sandbox-api.novopayment.com/oauth2/token
+  token_endpoint_spec: openapi/novopayment-oauth2-data-encryption-openapi.yml
+  request_encoding: application/x-www-form-urlencoded
+  token_type: BearerToken
+  token_lifetime_seconds: 1799
+  lifetime_source: >-
+    expires_in in the published 200 example of POST /token in the Security OAuth2 API spec
+  scopes: none published
+  credentials: >-
+    client_id + client_secret issued per project per environment; the developer hub states
+    credentials differ across sandbox, UAT and production
+  additional_schemes:
+    - name: apikey
+      location: query
+      apis:
+        - merchant-presented-qr
+      note: >-
+        The Merchant Presented QR API additionally requires a public apikey query parameter and an
+        X-Pay-Token header; these are declared as plain parameters in the spec rather than as
+        securitySchemes, so tooling that reads only components.securitySchemes will miss them.
+    - name: X-Pay-Token
+      location: header
+      apis:
+        - merchant-presented-qr
+      lifetime_seconds: 480
+  cross_link: authentication/novopayment-authentication.yml
+headers:
+  request:
+    - name: X-Tenant-Id
+      required: true
+      purpose: Identifies the tenant making the call; every operation is tenant-scoped.
+    - name: X-Transaction-Id
+      required: varies
+      purpose: >-
+        Client-generated unique id for end-to-end tracing and debugging. Required on some operations,
+        optional on others; it is a trace id, NOT an idempotency key — the specs never state that
+        replaying the same value suppresses a duplicate write.
+    - name: X-Request-Id
+      required: false
+      purpose: Unique id for the API request, used as the reference across NovoPayment's internal processes.
+    - name: X-Time-Zone
+      required: false
+      purpose: Time zone of the request.
+    - name: Accept
+      required: true
+      purpose: Must include application/json.
+  response:
+    documented: false
+    note: >-
+      The published specs declare no response headers — no request-id echo, no rate-limit headers,
+      no Deprecation or Sunset headers.
+idempotency:
+  coverage: none
+  mechanism: none
+  scope: []
+  evidence: >-
+    The string "idempoten" does not appear in any of the 15 published specs, and no Idempotency-Key
+    or equivalent header is declared on any of the 163 operations. X-Transaction-Id is documented
+    purely as a tracing id.
+  consequence: >-
+    An agent retrying a timed-out POST — Cash In, a transfer, a card issuance, a token provision —
+    has no published guarantee against double execution. Reconciliation must be done by querying the
+    transaction (the Cards, Operations and Real-Time Payments APIs all expose lookup operations)
+    before retrying.
+reversibility:
+  grade: documented
+  reason: >-
+    Reversal operations exist and are first-class in the contracts, but no document states the window
+    inside which they are valid, so this cannot be graded verified.
+  operations:
+    - api: payment-authorizer
+      operation: Payment Reverse
+      method: POST
+      path: /paymentreverse
+      operation_id: null
+      reverses: authorization
+      window: not stated
+    - api: payment-authorizer
+      operation: Payment Refund
+      method: PATCH
+      path: /payments/{transactionId}
+      operation_id: null
+      reverses: captured payment
+      window: not stated
+    - api: real-time-payments
+      operation: Reverse Funds
+      method: POST
+      path: /moneytransfer/transactions/funds/reverse/{transactionId}
+      operation_id: reverse
+      reverses: funds transfer
+      window: not stated
+    - api: real-time-payments
+      operation: Reverse Adjustment
+      method: POST
+      path: /moneytransfer/transactions/adjustments/{transactionId}
+      operation_id: adjustment
+      reverses: adjustment
+      window: not stated
+    - api: cards
+      operation: Cash In Reverse
+      method: POST
+      path: /cards/{cardId}/reversecashin
+      operation_id: CashInReverse
+      reverses: cash-in to a card
+      window: not stated
+    - api: cards
+      operation: Cash Out Reverse
+      method: POST
+      path: /cards/{cardId}/reversecashout
+      operation_id: CashOutReverse
+      reverses: cash-out from a card
+      window: not stated
+    - api: alias-directory
+      operation: Delete Alias by aliasId
+      method: DELETE
+      path: /alias/{aliasId}
+      operation_id: DeleteAliasByAliasId
+      reverses: alias registration
+      window: not stated
+      restorable: not documented
+  not_reversible:
+    - api: onboarding
+      note: >-
+        Onboarding sessions and identity-document validations declare no cancel or void operation in
+        the published specs.
+  note: >-
+    NovoPayment states funds are available within 30 minutes on a real-time payment; that is a
+    settlement statement, not a reversal window, and is not used here as one.
+dry_run_mode:
+  supported: false
+  note: >-
+    No published operation takes a simulate/preview/dry-run flag. Rehearsal is done in the sandbox
+    environment instead (see sandbox/novopayment-sandbox.yml).
+pagination:
+  style: none published
+  note: >-
+    No limit/offset/page/cursor parameter appears anywhere in the 163 published operations; list
+    responses are returned whole. Collection growth behaviour is undocumented.
+filtering:
+  style: per-operation query parameters
+  examples:
+    - favoriteName
+    - externalConsumerID
+    - stan
+    - rrn
+    - type
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+request_tracing:
+  header: X-Transaction-Id
+  echoed_in_response: not documented
+  secondary: X-Request-Id
+versioning:
+  style: url-path
+  examples:
+    - https://sandbox-api.novopayment.com/accounts/v1
+    - https://sandbox-api.novopayment.com/api/v1.3
+    - https://sandbox-api.novopayment.com/realtimepayments/v1
+  note: >-
+    Major version sits in the path; the docs URL carries the same version (…/accounts-api-v1.0,
+    …/cards-api-v1.3). Two tokenization contracts coexist at different versions (Issuer Tokenization
+    v1.0, Mastercard Tokenization v2.0).
+  cross_link: lifecycle/novopayment-lifecycle.yml
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  fields:
+    - code
+    - message
+    - datetime
+    - info
+    - errors
+  note: >-
+    The same envelope is returned on success and failure; the ten-character code (HTTP
+    status.product segment.detail) is the machine-readable outcome, not the HTTP status.
+  cross_link: errors/novopayment-error-codes.yml
+rate_limit_signaling:
+  documented: false
+  headers: []
+  exhaustion_status: not documented
+  note: >-
+    No 429 response is declared on any of the 163 published operations and no rate-limit header is
+    documented anywhere on the developer hub.
+  cross_link: rate-limits/novopayment-rate-limits.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

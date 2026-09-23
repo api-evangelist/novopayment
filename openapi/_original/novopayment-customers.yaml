@@ -1,0 +1,4475 @@
+---
+openapi: 3.0.0
+info:
+  description: >
+    The Customers API allows to handle the different type of customers
+    that can be served by NovoPayment’s platform. This includes individuals,
+    commercial and merchant customers. For most of the operations to be
+    performed in the platform you will need to provide the customer id in order
+    to complete the operation.
+
+
+    Below operations are available for Customers API
+
+
+    **Create Commercial Customers**
+
+
+    This operation can be used for commercial customer creation.
+
+
+    **Create Merchant Customers**
+
+
+    This operation can be used to create a merchant customer type.
+
+
+    **Create Individual Customers**
+
+
+    This operation can be used to create an individual customer type.
+
+
+    **Customer Employment Information Update**
+
+
+    This operation updates the customer work information for the tenant´s administration staff.
+
+
+    **Get Customer Action Logs**
+
+
+    This operation allows to consult the list of actions carried out by the customer in all the options of the application.
+
+
+    **Get Customer Risk Indicators**
+
+
+    This operation allows to consult the customer's risk information studied by the anti-money laundering system (AML).
+
+
+    **Get List of Customers**
+
+
+    This operation allows to consult the information of all the customers that have registered into the system, these customers may have or may have not associated any account and card.
+
+
+    **Get Supporting Documents**
+
+
+    This operation allows to consult the list of support documents mandatories established by the tenant to validate the customer's profile (Utility bill, Proof of employment, etc.).
+
+
+    **Get a Customer Document**
+
+
+    This operation allows to consult one of the customer's support documents from a document id.
+  version: v1
+  title: Customers API
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/customers/v1
+paths:
+  "/recipients/products/{productId}/decision":
+    put:
+      summary: Approve Or Decline A Recipient
+      description: >
+        Use the endpoint to approve or decline a recipient of a specific account.
+      requestBody:
+        $ref: "#/components/requestBodies/RQApproveOrDeclineARecipient"
+      operationId: ApproveOrDeclineARecipient
+      parameters:
+        - $ref: "#/components/parameters/productId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSApproveOrDeclineARecipient200"
+        "400":
+          $ref: "#/components/responses/RSApproveOrDeclineARecipient400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /commercial:
+    post:
+      summary: Create Commercial Customers
+      description: |
+        This operation can be used for commercial customer creation.
+      requestBody:
+        $ref: "#/components/requestBodies/RQCreateCommercialCustomers"
+      operationId: CreateCommercialCustomers
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCreateCommercialCustomers200"
+        "400":
+          $ref: "#/components/responses/RSCreateCommercialCustomers400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /individuals:
+    post:
+      summary: Create Individual Customer
+      description: >
+        In cases where you are collecting and validating customer
+        information for onboarding, the Create Individual Customer functionality
+        is used to add all the onboarding information captured about a customer
+        to NovoPayment’s databases. This functionality is for retail/consumer
+        banking accounts.
+      requestBody:
+        $ref: "#/components/requestBodies/RQCreateIndividualCustomer"
+      operationId: CreateIndividualCustomer
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCreateIndividualCustomer200"
+        "400":
+          $ref: "#/components/responses/RSCreateIndividualCustomer400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /merchant:
+    post:
+      summary: Create Merchant Customers
+      description: |
+        Operation that allows to create a merchant type customer.
+      requestBody:
+        $ref: "#/components/requestBodies/RQCreateMerchantCustomer"
+      operationId: CreateMerchantCustomers
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCreateMerchantCustomer200"
+        "400":
+          $ref: "#/components/responses/RSCreateMerchantCustomer400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}/employees":
+    post:
+      summary: Customer Employment Information Update
+      description: >
+        This operation updates the customer work information for the
+        tenant´s administration staff.
+      requestBody:
+        $ref: "#/components/requestBodies/RQCustomerEmploymentInformationUpdate"
+      operationId: CustomerEmploymentInformationUpdate
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCustomerEmploymentInformationUpdate200"
+        "400":
+          $ref: "#/components/responses/RSCustomerEmploymentInformationUpdate400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}/generalinfo":
+    get:
+      summary: Customer General Information
+      description: |
+        This operation returns the customer-general information.
+      operationId: CustomerGeneralInformation
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCustomerGeneralInformation200"
+        "400":
+          $ref: "#/components/responses/RSCustomerGeneralInformation400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /customers:
+    get:
+      summary: Customer List
+      description: |
+        This operation allows to get the customer list registered in the system.
+      operationId: CustomerList
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCustomerList200"
+        "400":
+          $ref: "#/components/responses/RSCustomerList400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}/documents/{documentId}":
+    get:
+      summary: Get A Customer Document
+      description: >
+        This operation allows to consult one of the customer's support
+        documents from a document id.
+      operationId: GetACustomerDocument
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+        - $ref: "#/components/parameters/documentId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSGetACustomerDocument200"
+        "400":
+          $ref: "#/components/responses/RSGetACustomerDocument400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+    patch:
+      summary: Update Customer Identity Documents
+      description: |
+        This operation allows to update a customer identity-specific document.
+
+        This endpoint only updates the fields that are sent in the request body.
+      requestBody:
+        $ref: "#/components/requestBodies/RQUpdateCustomerIdentityDocuments"
+      operationId: UpdateCustomerIdentityDocuments
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+        - $ref: "#/components/parameters/documentId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSUpdateCustomerIdentityDocuments200"
+        "400":
+          $ref: "#/components/responses/RSUpdateCustomerIdentityDocuments400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}/logs":
+    get:
+      summary: Get Customer Action Logs
+      description: >
+        This operation allows to consult the list of actions carried out by
+        the customer in all the options of the application.
+      operationId: GetCustomerActionLogs
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSGetCustomerActionLogs200"
+        "400":
+          $ref: "#/components/responses/RSGetCustomerActionLogs400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}/risks":
+    get:
+      summary: Get Customer Risk Indicators
+      description: >
+        This operation allows to consult the customer's risk information
+        studied by the anti-money laundering system (AML).
+      operationId: GetCustomerRiskIndicators
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSGetCustomerRiskIndicators200"
+        "400":
+          $ref: "#/components/responses/RSGetCustomerRiskIndicators400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}/documents":
+    get:
+      summary: Get Supporting Documents
+      description: >
+        This operation allows to consult the list of support documents
+        mandatories established by the tenant to validate the customer's profile
+        (Utility bill, Proof of employment, etc.).
+      operationId: GetSupportingDocuments
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSGetSupportingDocuments200"
+        "400":
+          $ref: "#/components/responses/RSGetSupportingDocuments400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}/unsubscribe":
+    post:
+      summary: Unsubscribe Customer
+      description: >
+        This operation allows to unsubscribe a customer. This operation
+        cannot be undone.
+      requestBody:
+        $ref: "#/components/requestBodies/RQUnsubscribeCustomer"
+      operationId: UnsubscribeCustomer
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSUnsubscribeCustomer200"
+        "400":
+          $ref: "#/components/responses/RSUnsubscribeCustomer400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/customers/{customerId}":
+    patch:
+      summary: Update Customer
+      description: |
+        This operation allows to update customer-specific information.
+
+        This endpoint only updates the fields that are sent in the request body.
+      requestBody:
+        $ref: "#/components/requestBodies/RQUpdateCustomer"
+      operationId: UpdateCustomer
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSUpdateCustomer200"
+        "400":
+          $ref: "#/components/responses/RSUpdateCustomer400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+  examples:
+    HeaderParamsRequired:
+      value:
+        code: 400.18.001
+        message: Header Params Required
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestParamsRequired:
+      value:
+        code: 400.18.003
+        message: Params required
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidAccessToken:
+      value:
+        code: 401.18.990
+        message: Invalid Access Token
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.18.991
+        message: Access Token not approved
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidSignature:
+      value:
+        code: 401.18.992
+        message: Invalid signature
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenExpired:
+      value:
+        code: 401.18.993
+        message: Access token expired
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidTenantId:
+      value:
+        code: 400.18.004
+        message: Invalid tenant ID
+        datetime: "2020-01-03T16:05:56.517Z"
+    InternalServerError:
+      value:
+        code: 500.18.001
+        message: Internal Server Error
+        datetime: "2020-01-03T16:05:56.517Z"
+    CustomerNotFound:
+      value:
+        code: 400.18.382
+        message: Customer not found
+        datetime: "2020-01-03T16:05:56.517Z"
+    ParameterFormatError:
+      value:
+        code: 400.18.081
+        message: Parameter format error
+        datetime: "2020-01-03T16:05:56.517Z"
+    OFACRecordFound:
+      value:
+        code: 400.18.108
+        message: OFAC record found
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestedResourceNotFound:
+      value:
+        code: 400.18.022
+        message: The requested resource was not found.
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidData:
+      value:
+        code: 400.18.089
+        message: Invalid data.
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestedProductNotExist:
+      value:
+        code: 400.18.068
+        message: It is not possible to obtain information about the requested product.
+        datetime: "2020-01-03T16:05:56.517Z"
+    DatabaseError:
+      value:
+        code: 400.18.020
+        message: Database result was ok, but it was not possible recognize data base
+          response.
+        datetime: "2020-01-03T16:05:56.517Z"
+    GeneralError:
+      value:
+        code: 400.18.021
+        message: Something unexpected has happened, please try again.
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestNotFound:
+      value:
+        code: 400.18.025
+        message: We can not find what youre looking for.
+        datetime: "2020-01-03T16:05:56.517Z"
+    OpenEscalationsExist:
+      value:
+        code: 400.18.035
+        message: Open escalations exist.
+        datetime: "2020-01-03T16:05:56.517Z"
+    ProductStatusNotUpdated:
+      value:
+        code: 400.18.317
+        message: Product status could not be updated.
+        datetime: "2020-01-03T16:05:56.517Z"
+    UsernameUsed:
+      value:
+        code: 400.18.063
+        message: Someone else already has this username.
+        datetime: "2020-01-03T16:05:56.517Z"
+    RegisteredUserWithThatEmail:
+      value:
+        code: 400.18.065
+        message: There is already a registered user with that email.
+        datetime: "2020-01-03T16:05:56.517Z"
+    AllowedAPrimaryDocument:
+      value:
+        code: 400.18.411
+        message: Only one primary document is allowed.
+        datetime: "2020-01-03T16:05:56.517Z"
+    ThereIsNoMainDocument:
+      value:
+        code: 400.18.412
+        message: There is more than one identity document present in the list, but none
+          of them is marked as primary.
+        datetime: "2020-01-03T16:05:56.517Z"
+    CustomerNotSaved:
+      value:
+        code: 400.18.418
+        message: The customer could not be saved.
+        datetime: "2020-01-03T16:05:56.517Z"
+    NoSearchResultsWereFound:
+      value:
+        code: 400.18.343
+        message: No search results were found.
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestedDocumentNotUploaded:
+      value:
+        code: 400.18.390
+        message: The requested document has not been uploaded yet.
+        datetime: "2020-01-03T16:05:56.517Z"
+    PersonNotRegistered:
+      value:
+        code: 400.18.055
+        message: This person is not registered.
+        datetime: "2020-01-03T16:05:56.517Z"
+    CustomerHasOpenAccounts:
+      value:
+        code: 400.18.420
+        message: Customer has open accounts.
+        datetime: "2020-01-03T16:05:56.517Z"
+    CustomerStatusNotAllowed:
+      value:
+        code: 400.18.027
+        message: Customer status is not allowed for this action.
+        datetime: "2020-01-03T16:05:56.517Z"
+    DocumentNumberExist:
+      value:
+        code: 400.18.405
+        message: Document number already exist.
+        datetime: "2020-01-03T16:05:56.517Z"
+    PrimaryIdentityDocumentRequired:
+      value:
+        code: 400.18.422
+        message: Customer must have at least one primary identity document.
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestedIdentityDocumentNotExist:
+      value:
+        code: 400.18.423
+        message: The requested identity document does not exist or does not belong to
+          the customer.
+        datetime: "2020-01-03T16:05:56.517Z"
+  parameters:
+    productId:
+      name: productId
+      in: path
+      description: A unique identifier that associates the data from the product with
+        the recipient.
+      required: true
+      schema:
+        type: integer
+        example: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+        maxLength: 38
+    customerId:
+      name: customerId
+      in: path
+      description: Unique customer identifier.
+      required: true
+      schema:
+        type: string
+        example: 69E2DBE6B18C7ACD
+        maxLength: 40
+    documentId:
+      name: documentId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: 2
+    documentTypeId:
+      name: documentTypeId
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 3
+    statusId:
+      name: statusId
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - active
+          - inactive
+    top:
+      name: top
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 4
+    fromCreatedDate:
+      name: fromCreatedDate
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 2021/01/29 10:53:54
+    toCreatedDate:
+      name: toCreatedDate
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 2021/01/29 10:53:54
+    documentNumber:
+      name: documentNumber
+      in: query
+      required: false
+      schema:
+        type: string
+        example: C96485632
+    firstNames:
+      name: firstNames
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Jhon
+    lastNames:
+      name: lastNames
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Doe
+    documentIso2:
+      name: documentIso2
+      in: query
+      required: true
+      schema:
+        type: string
+        example: US
+    fromReviewDate:
+      name: fromReviewDate
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 2021/01/29 10:53:54
+    toReviewDate:
+      name: toReviewDate
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 2021/01/29 10:53:54
+  schemas:
+    RQApproveOrDeclineARecipient:
+      type: object
+      required:
+        - actionId
+        - comments
+        - updatedBy
+      properties:
+        actionId:
+          type: integer
+          description: |
+            Action to perform
+
+            **Allowed values:**
+
+            0: Decline
+
+            1: Approve
+          enum:
+            - 0
+            - 1
+          maxLength: 200
+        comments:
+          type: string
+          description: Comments related to the action.
+          example: Invalid Recipient.
+          maxLength: 200
+        updatedBy:
+          type: string
+          description: The user who performs the action.
+          example: Master
+          maxLength: 100
+    RQCreateCommercialCustomers:
+      type: object
+      required:
+        - legalName
+        - tradingName
+        - industryType
+        - entityType
+        - entityPurpose
+        - registrationNumber
+        - incorporationDate
+        - identifications
+        - webSite
+        - contacts
+        - addresses
+      properties:
+        legalName:
+          type: string
+          description: >
+            Entity legal name as mentioned in official documentation.
+
+
+            __*Only letters, numbers and the following special characters are allowed: dash, apostrophes, period, coma and spaces.__
+          example: commercial LegalName
+          maxLength: 50
+        tradingName:
+          type: string
+          description: >
+            Entity commercial name as mentioned in official documentation.
+
+
+            __*Only letters, numbers and the following special characters are allowed: dash, apostrophes, period, coma and spaces.__
+          example: commercial Trading Name
+          maxLength: 50
+        industryType:
+          type: string
+          description: >
+            Industry Type.
+
+
+            **Refer to:** [Industry Type](https://developer.novopayment.com/api/request-and-response-codes#item-industrytype)
+          example: 44122
+          maxLength: 50
+        entityType:
+          type: string
+          description: >
+            Entity Type.
+
+
+            **Refer to:** [Entity Type](https://developer.novopayment.com/api/request-and-response-codes#item-entitytype)
+          example: UNIQUE OWNER
+          maxLength: 50
+        entityPurpose:
+          type: string
+          description: Entity Purpose Description.
+          example: commercial Purpose.
+          maxLength: 50
+        registrationNumber:
+          type: string
+          description: Tax id number or tax record number of the business.
+          example: 9834092375230
+          maxLength: 50
+        incorporationDate:
+          type: string
+          description: |
+            Operation timestamp expressed in ISO 8601.
+          example: "2020-01-03T16:05:56.517Z"
+          maxLength: 50
+        identifications:
+          type: array
+          description: >
+            Array allows to add more than one business id to a business
+            BUSINESS_TAX_ID BUSINESS_NUMBER TAXPAYER_IDENTIFICATION_NUMBER.
+          required:
+            - type
+            - value
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: >
+                  Identification.
+
+
+                  *Format:* BUSINESS_TAX_ID, BUSINESS_NUMBER o TAXPAYER_IDENTIFICATION_NUMBER
+                enum:
+                  - BUSINESS_TAX_ID
+                  - BUSINESS_NUMBER
+                  - TAXPAYER_IDENTIFICATION_NUMBER
+                maxLength: 50
+              value:
+                type: string
+                description: |
+                  Identification number associated to the format.
+                example: XX-XXXXXXX
+                maxLength: 50
+        webSite:
+          type: string
+          description: Company website.
+          example: https://by.com
+          maxLength: 50
+        contacts:
+          type: array
+          description: An array containing contact information.
+          required:
+            - type
+            - value
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: A standard set of values that indicate the contact type [EMAIL,
+                  PHONE].
+                enum:
+                  - EMAIL
+                  - PHONE
+                maxLength: 50
+              value:
+                type: string
+                description: >
+                  If type is 'email', string must be match email format, the '+'
+                  character is not allowed. If type is 'phone', string must be
+                  in an international format, the + symbol and the 1-3 digit
+                  country calling code.
+                example: email@email.com
+                maxLength: 50
+        addresses:
+          type: array
+          description: >
+            An array containing business's addresses; Address should follow
+            USPS normalization practices (Example: "St" instead of "street",
+            common unit designator "APT" instead of "apartment"). Periods "."
+            are not allowed. Zip+4 is not required.
+          required:
+            - addressType
+          items:
+            type: object
+            properties:
+              addressType:
+                type: string
+                description: Address type.
+                example: RESIDENCE
+                maxLength: 20
+              addressLine1:
+                type: string
+                description: Address Line One.
+                example: address line 1
+                maxLength: 100
+              addressLine2:
+                type: string
+                description: Address Line Two.
+                example: address line 2
+                maxLength: 100
+              homeNumber:
+                type: string
+                description: House number.
+                example: Office 124
+                maxLength: 50
+              buildingNumber:
+                type: string
+                description: Building number.
+                example: Building C
+                maxLength: 50
+              city:
+                type: string
+                description: City.
+                example: New York
+                maxLength: 100
+              zipCode:
+                type: string
+                description: ZIP code.
+                example: 94398
+                maxLength: 10
+              country:
+                type: string
+                description: Country in ISO code 2 digits.
+                example: US
+                maxLength: 2
+    RQCreateIndividualCustomer:
+      type: object
+      required:
+        - generalInformation
+        - identityDocumentList
+        - personalAddress
+        - contactInformation
+      properties:
+        userCredentials:
+          type: object
+          description: Customized object contains the user credentials information.
+          properties:
+            username:
+              type: string
+              description: Username in the application.
+              example: JDOE
+              maxLength: 20
+            password:
+              type: string
+              description: Encrypted user password in the application.
+              example: SDFSD890V131MNHJK543ER32SD
+              maxLength: 50                      
+        generalInformation:
+          type: object
+          description: Customized object contains the general information customer.
+          required:
+            - firstNames
+            - lastNames
+            - civilStatus
+            - birthCountry
+          properties:
+            firstNames:
+              type: string
+              description: Customer first name.
+              example: John
+              maxLength: 50
+            lastNames:
+              type: string
+              description: Customer last name.
+              example: Doe
+              maxLength: 50
+            isPep:
+              type: boolean
+              description: Is a person politically exposed person?
+              example: true
+            gender:
+              type: object
+              description: Customized object contains the gender information.
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  description: >
+                    **Refer to:**
+                    [Gender](https://developer.novopayment.com/api/request-and-response-codes#item-gender)
+                  example: 1
+                  maxLength: 5
+            civilStatus:
+              type: object
+              description: Customized object contains the civil status information.
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  description: >
+                    __**Refer to:** [Civil
+                    Status](https://developer.novopayment.com/api/request-and-response-codes#item-civilstatus)__
+                  example: 1
+                  maxLength: 5
+            birthCountry:
+              type: object
+              description: Customized object contains the country information.
+              required:
+                - iso2
+              properties:
+                iso2:
+                  type: string
+                  description: >
+                    **Refer to:** [ISO Country
+                    Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                  example: US
+                  maxLength: 2
+            birthState:
+              type: object
+              description: Customized object contains the state information.
+              properties:
+                name:
+                  type: string
+                  description: Customer birth state name.
+                  example: New York
+                  maxLength: 100
+            birthCity:
+              type: object
+              description: Customized object contains the city information.
+              properties:
+                name:
+                  type: string
+                  description: Customer birth city.
+                  example: New York
+                  maxLength: 100
+            birthDate:
+              type: string
+              description: Customer birth Date.
+              example: 1985/01/07
+              maxLength: 50
+            educationLevel:
+              type: object
+              description: Customized object contains the education level information.
+              properties:
+                id:
+                  type: string
+                  description: >
+                    **Refer to:** [Education
+                    Level](https://developer.novopayment.com/api/request-and-response-codes#item-educationlevel)
+                  example: 1
+                  maxLength: 50
+        identityDocuments:
+          type: array
+          description: Customized object contains the identity document list information
+            customer.
+          required:
+            - documentType
+            - documentNumber
+            - isPrimary
+          items:
+            type: object
+            properties:
+              documentType:
+                type: object
+                description: Customized object contains the document type information.
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    description: >
+                      **Refer to:** [Document
+                      Type](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+                    example: 3
+                    maxLength: 5
+              documentNumber:
+                type: string
+                description: Customer document number.
+                example: C96485632
+                maxLength: 25
+              isPrimary:
+                type: boolean
+                description: |
+                  It is your main document.
+
+                  **Possible values:**
+
+                  True: if it is a primary document.
+
+                  False: Not is a primary document.
+                example: true
+              issueDate:
+                type: string
+                description: Document issue date.
+                example: 2020/01/01
+              expirationDate:
+                type: string
+                description: Document expiration Date.
+                example: 2030/01/01
+              country:
+                type: object
+                description: Customized object contains the document country level information.
+                required:
+                  - iso2
+                properties:
+                  iso2:
+                    type: string
+                    description: >
+                      **Refer to:** [ISO Country
+                      Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                    example: US
+                    maxLength: 2
+              firstNames:
+                type: string
+                description: Document firsts names.
+                example: John
+                maxLength: 75
+              lastNames:
+                type: string
+                description: Document last names.
+                example: Doe
+                maxLength: 75
+              gender:
+                type: object
+                description: Customized object contains the gender information.
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    description: >
+                      **Refer to:**
+                      [Gender](https://developer.novopayment.com/api/request-and-response-codes#item-gender)
+                    example: 1
+                    maxLength: 5
+              birthDate:
+                type: string
+                description: Customer birth date.
+                example: 1985/01/07
+        personalAddress:
+          type: object
+          description: Customized object contains the personal address information customer.
+          required:
+            - country
+            - streetAddress
+          properties:
+            country:
+              type: object
+              description: Customized object contains the country information.
+              required:
+                - iso2
+              properties:
+                iso2:
+                  type: string
+                  description: >
+                    **Refer to:** [ISO Country
+                    Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                  example: US
+                  maxLength: 2
+            state:
+              type: object
+              description: Customized object contains the state information.
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the state of residence.
+                  example: New York
+                  maxLength: 100
+            city:
+              type: object
+              description: Customized object contains the city information.
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the city of residence.
+                  example: New York
+                  maxLength: 100
+            streetAddress:
+              type: string
+              description: Address line 1.
+              example: 01W.31thSt,NewYork
+              maxLength: 100
+            address2:
+              type: string
+              description: Additional address or line 2.
+              example: JohnDoeBuilding
+              maxLength: 100
+            zipCode:
+              type: string
+              description: ZIP code for home address.
+              example: 10011
+              maxLength: 10
+            buildingNumber:
+              type: string
+              description: Building o tower number.
+              example: 10
+              maxLength: 50
+            homeNumber:
+              type: string
+              description: Home or apartment number.
+              example: 101
+              maxLength: 50
+        contactInformation:
+          type: object
+          description: Customized object contains the contact information customer.
+          required:
+            - phoneCodeIso2
+            - phoneNumber
+          properties:
+            phoneCodeIso2:
+              type: string
+              description: >
+                **Refer to:** [ISO Country
+                Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+              example: US
+              maxLength: 2
+            phoneNumber:
+              type: string
+              description: Phone number.
+              example: 6450000000
+              maxLength: 30
+            email:
+              type: string
+              description: Email.
+              example: johnDoe@example.com
+              maxLength: 50
+        occupation:
+          type: object
+          description: >
+            Customized object contains the customer occupation information.
+
+
+            __*Note: Depending on the regulation followed by the financial institution, this object may be Required.__
+          required:
+            - name
+            - employerName
+          properties:
+            name:
+              type: string
+              description: Occupation name.
+              example: technology VP
+              maxLength: 100
+            employerName:
+              type: string
+              description: Employer name.
+              example: NOVOPAYMENT
+              maxLength: 50
+            occupationType:
+              type: integer
+              description: |
+                Occupation type
+
+                **Allowed values:**
+
+                1.Dependent employee
+
+                2.Self- employee
+
+                3.Student
+
+                4.Retired
+
+                5.Unemployed
+
+                6.Other
+              enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                - 6
+              maxLength: 1
+        termsAcceptanceDate:
+          type: string
+          description: Date on which the terms and conditions were accepted.
+          example: 2022-08-02T00:00:00
+    RQCreateMerchantCustomer:
+      type: object
+      required:
+        - legalName
+        - tradingName
+        - mcc
+        - annualCardVolum
+        - maxTransactionAmount
+        - defaultStatementDescriptor
+        - hasAcceptedCreditCardsPreviously
+        - industryType
+        - entityType
+        - entityPurpose
+        - registrationNumber
+        - incorporationDate
+        - identifications
+        - webSite
+        - contacts
+        - addresses
+      properties:
+        legalName:
+          type: string
+          description: >
+            Legal name of the entity, just like is presented in the official
+            documentation. Only letters, numbers and the following special
+            characters are allowed: dash, apostrophes, period, coma and spaces.
+          example: commercial LegalName
+          maxLength: 50
+        tradingName:
+          type: string
+          description: >
+            Commercial name of the entity, the. Way it appears in official
+            documentation Only letters, numbers and the following special
+            characters are allowed: dash, apostrophes, period, coma and spaces.
+          example: commercial TradingName.
+          maxLength: 50
+        mcc:
+          type: string
+          description: Merchant Category Code that this merchant will be classified under.
+          example: 7834
+          maxLength: 4
+        annualCardVolum:
+          type: number
+          description: Approximate annual credit card sales expected to be processed in
+            cents by this merchant.
+          example: 1000
+          maxLength: 12
+        maxTransactionAmount:
+          type: number
+          description: Maximum amount that can be transacted for a single transaction in
+            cents.
+          example: 2000
+          maxLength: 12
+        defaultStatementDescriptor:
+          type: string
+          description: Billing descriptor displayed on the buyer’s bank or card statement.
+          example: Prestige World Wide
+          maxLength: 20
+        hasAcceptedCreditCardsPreviously:
+          type: boolean
+          description: Defaults to false if not passed.
+          example: true
+        industryType:
+          type: string
+          description: >
+            **Refer to:** [Industry
+            Type](https://developer.novopayment.com/api/request-and-response-codes#item-industrytype)
+          example: 44122
+          maxLength: 50
+        entityType:
+          type: string
+          description: >
+            **Refer to:** [Entity
+            Type](https://developer.novopayment.com/api/request-and-response-codes#item-entitytype)
+          example: UNIQUE OWNER
+          maxLength: 50
+        entityPurpose:
+          type: string
+          description: commercial Purpose
+          example: commercial Purpose
+          maxLength: 50
+        registrationNumber:
+          type: string
+          description: Tax id number or tax record number of the business.
+          example: 9834092375230
+          maxLength: 50
+        incorporationDate:
+          type: string
+          description: Date of the business incorporation in ISO 8601 format.
+          example: "2020-01-03T16:05:56.517Z"
+        identifications:
+          type: array
+          description: This array allows to add more than one business id to a business
+            BUSINESS_TAX_ID BUSINESS_NUMBER TAXPAYER_IDENTIFICATION_NUMBER.
+          required:
+            - type
+            - value
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: >
+                  Identification.
+
+
+                  *Format:* BUSINESS_TAX_ID, BUSINESS_NUMBER o TAXPAYER_IDENTIFICATION_NUMBER
+                enum:
+                  - BUSINESS_TAX_ID
+                  - BUSINESS_NUMBER
+                  - TAXPAYER_IDENTIFICATION_NUMBER
+                maxLength: 50
+              value:
+                type: string
+                description: Identification number associated to the format.
+                example: XX-XXXXXXX
+                maxLength: 50
+        webSite:
+          type: string
+          description: Company website.
+          example: https://by.com
+          maxLength: 50
+        contacts:
+          type: array
+          description: An array containing contact information.
+          required:
+            - type
+            - value
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: A standard set of values that indicate the contact type [EMAIL,
+                  PHONE].
+                enum:
+                  - EMAIL
+                  - PHONE
+                maxLength: 50
+              value:
+                type: string
+                description: >
+                  If type is 'email', string must be match email format, the '+'
+                  character is not allowed. If type is 'phone', string must be
+                  in an international format, the + symbol and the 1-3 digit
+                  country calling code.
+                example: email@email.com
+                maxLength: 50
+        addresses:
+          type: array
+          description: >
+            An array containing business's addresses. Address should follow
+            USPS normalization practices. (Example: "St" instead of "street",
+            common unit designator "APT" instead of "apartment"). Periods "."
+            are not allowed. Zip+4 is not required.
+          required:
+            - addressType
+          items:
+            type: object
+            properties:
+              addressType:
+                type: string
+                description: Address type.
+                example: RESIDENCE
+                maxLength: 20
+              addressLine1:
+                type: string
+                description: Address Line One.
+                example: address line 1
+                maxLength: 100
+              addressLine2:
+                type: string
+                description: Address Line Two.
+                example: address line 2
+                maxLength: 100
+              homeNumber:
+                type: string
+                description: House number.
+                example: Office 124
+                maxLength: 50
+              buildingNumber:
+                type: string
+                description: Building number.
+                example: Building C
+                maxLength: 50
+              city:
+                type: string
+                description: City.
+                example: New York
+                maxLength: 100
+              zipCode:
+                type: string
+                description: ZIP code.
+                example: 94398
+                maxLength: 10
+              country:
+                type: string
+                description: Country in ISO code 2 digits.
+                example: US
+                maxLength: 2
+    RQCustomerEmploymentInformationUpdate:
+      type: object
+      required:
+        - customerId
+        - position
+        - employeeStatus
+        - employeeNumber
+        - tenantDepartamentId
+        - adminUser
+      properties:
+        customerId:
+          type: string
+          description: Customer identifier.
+          example: 43DED66474E259FD
+          maxLength: 40
+        position:
+          type: string
+          description: Position where the customer works.
+          example: Project Manager
+          maxLength: 100
+        employeeStatus:
+          type: string
+          description: Customer status within the company.
+          example: ACTIVE
+          maxLength: 20
+        employeeNumber:
+          type: integer
+          description: Customer's phone number.
+          example: 18666666666
+          maxLength: 30
+        tenantDepartamentId:
+          type: string
+          description: Tenant identifier.
+          example: corporate
+          maxLength: 20
+        adminUser:
+          type: string
+          description: User who performs the respective action.
+          example: MASTER
+          maxLength: 20
+    RQUnsubscribeCustomer:
+      type: object
+      required:
+        - reasonId
+      properties:
+        reasonId:
+          type: string
+          description: >
+            Reason ID a customer was unsubscribed.
+
+
+            **Refer to:** [Block Reason](https://developer.novopayment.com/api/request-and-response-codes#item-blockreason)
+          example: 5
+          maxLength: 5
+        observations:
+          type: string
+          description: Observations related to the customer unsubscribe action.
+          example: The customer does not want to continue subscribing to the finance
+            entity.
+          maxLength: 4000
+    RQUpdateCustomer:
+      type: object
+      properties:
+        userCredentials:
+          type: object
+          description: |
+            User credentials object.
+            Contains the user credentials information.
+          properties:
+            username:
+              type: string
+              description: Username in the application.
+              example: JDOE
+              maxLength: 20
+        generalInformation:
+          type: object
+          description: |
+            General information object.
+            Contains the general customer’s information.
+          properties:
+            firstNames:
+              type: string
+              description: Customer first name.
+              example: John
+              maxLength: 50
+            lastNames:
+              type: string
+              description: Customer last name.
+              example: Doe
+              maxLength: 50
+            genderId:
+              type: string
+              description: >
+                **Refer to:**
+                [Gender](https://developer.novopayment.com/api/request-and-response-codes#item-gender)
+              example: 1
+              maxLength: 5
+            civilStatusId:
+              type: string
+              description: >
+                **Refer to:** [Civil
+                Status](https://developer.novopayment.com/api/request-and-response-codes#item-civilstatus)
+              example: 1
+              maxLength: 5
+            birthCountry:
+              type: object
+              description: |
+                Birth country object.
+                Contains the birth country information.
+              properties:
+                id:
+                  type: string
+                  description: >
+                    Birth country ID.
+
+
+                    __* Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                  example: US
+                  maxLength: 5
+                iso2:
+                  type: string
+                  description: >
+                    Code of country iso 2.
+
+
+                    **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                  example: US
+                  maxLength: 2
+            birthState:
+              type: object
+              description: |
+                Birth state object.
+                Contains the birth state information.
+              properties:
+                id:
+                  type: string
+                  description: >
+                    Customer birth state ID
+
+
+                    __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                  example: New York
+                  maxLength: 5
+                name:
+                  type: string
+                  description: >
+                    Customer birth state name.
+
+
+                    __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                  example: New York
+                  maxLength: 100
+            birthCity:
+              type: object
+              description: |
+                Birth City Object.
+                Contains the birth city information.
+              properties:
+                id:
+                  type: string
+                  description: >
+                    Customer birth city ID.
+
+
+                    __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                  example: New York
+                  maxLength: 8
+                name:
+                  type: string
+                  description: >
+                    Customer birth city name.
+
+
+                    __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                  example: New York
+                  maxLength: 100
+            birthDate:
+              type: string
+              description: Customer birthdate.
+              example: 1985/01/07
+              maxLength: 50
+            educationLevelId:
+              type: string
+              description: >
+                Education Level ID.
+
+
+                **Refer to:** [Education Level](https://developer.novopayment.com/api/request-and-response-codes#item-educationlevel)
+              example: 1
+              maxLength: 5
+        personalAddress:
+          type: object
+          description: |
+            Personal address object.
+            Contains the customer’s personal address information.
+          properties:
+            country:
+              type: object
+              description: Customized object contains the country information.
+              properties:
+                id:
+                  type: string
+                  description: >
+                    The country ID that corresponds to the address.
+
+
+                    __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                  example: US
+                  maxLength: 5
+                iso2:
+                  type: string
+                  description: >
+                    Code of country iso 2.
+
+
+                    **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                  example: US
+                  maxLength: 2
+            state:
+              type: object
+              description: Customized object contains the state information.
+              properties:
+                id:
+                  type: string
+                  description: >
+                    Customer state ID.
+
+
+                    __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                  example: US
+                  maxLength: 5
+                name:
+                  type: string
+                  description: >
+                    Customer state name.
+
+
+                    __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                  example: New York
+                  maxLength: 100
+            city:
+              type: object
+              description: Customized object contains the city information.
+              properties:
+                id:
+                  type: string
+                  description: >
+                    Customer state ID.
+
+
+                    __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                  example: US
+                  maxLength: 8
+                name:
+                  type: string
+                  description: >
+                    Customer state name.
+
+
+                    __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                  example: New York
+                  maxLength: 100
+            streetAddress:
+              type: string
+              description: Address line 1.
+              example: 01W.31thSt,NewYork
+              maxLength: 100
+            address2:
+              type: string
+              description: Additional address or line 2.
+              example: JohnDoeBuilding
+              maxLength: 100
+            zipCode:
+              type: string
+              description: ZIP code for home address.
+              example: 10011
+              maxLength: 10
+            buildingNumber:
+              type: string
+              description: Building o tower number.
+              example: 10
+              maxLength: 50
+            homeNumber:
+              type: string
+              description: Home or apartment number.
+              example: 101
+              maxLength: 50
+        contactInformation:
+          type: object
+          description: |
+            Contact information object.
+            Contains the customer’s contact information.
+          properties:
+            phoneCodeIso2:
+              type: string
+              description: >
+                Phone code Iso2.
+
+
+                **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+              example: US
+              maxLength: 2
+            phoneNumber:
+              type: string
+              description: Phone number.
+              example: 6450000000
+              maxLength: 30
+            email:
+              type: string
+              description: Email.
+              example: johnDoe@example.com
+              maxLength: 50
+    RQUpdateCustomerIdentityDocuments:
+      type: object
+      properties:
+        documentTypeId:
+          type: string
+          description: >
+            Document type.
+
+
+            **Refer to:** [Document Type](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+          example: 3
+          maxLength: 5
+        documentNumber:
+          type: string
+          description: Document number.
+          example: C96485632
+          maxLength: 25
+        firstNames:
+          type: string
+          description: First name of the document.
+          example: John
+          maxLength: 75
+        lastNames:
+          type: string
+          description: Last name of the document.
+          example: Doe
+          maxLength: 75
+        isPrimary:
+          type: boolean
+          description: |
+            Specifies whether the document is primary.
+
+            **Allowed values:**
+            true, if the document is primary
+            false, if the document is not primary
+          enum:
+            - true
+            - false
+        issueDate:
+          type: string
+          description: Document issue date.
+          example: 2020/01/01
+        expirationDate:
+          type: string
+          description: Document expiration date.
+          example: 2030/01/01
+        country:
+          type: object
+          description: |
+            Country object.
+            Contains the country information.
+          properties:
+            id:
+              type: string
+              description: >
+                Birth country ID.
+
+
+                __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+              example: 233
+              maxLength: 5
+            iso2:
+              type: string
+              description: >
+                Country code Iso 2.
+
+
+                **Refer to:** [Block Reason](https://developer.novopayment.com/api/request-and-response-codes#item-blockreason)
+              example: US
+              maxLength: 2
+        birthDate:
+          type: string
+          description: Identity document birth date.
+          example: 1985/01/07
+    RSApproveOrDeclineARecipient200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSApproveOrDeclineARecipient400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCreateCommercialCustomers200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - customerId
+          properties:
+            customerId:
+              type: string
+              description: Unique customer identifier.
+              example: 49BCD622C6A07726594D63AAB2F436D366782AD1
+              maxLength: 40
+    RSCreateCommercialCustomers400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCreateIndividualCustomer200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - customer
+          properties:
+            customer:
+              type: object
+              required:
+                - customerId
+                - legalName
+                - createdDate
+              properties:
+                customerId:
+                  type: string
+                  description: Unique customer identifier.
+                  example: 56BA34F664FB9B90
+                  maxLength: 40
+                legalName:
+                  type: string
+                  description: Customer's full name.
+                  example: John Doe
+                  maxLength: 100
+                createdDate:
+                  type: string
+                  description: Customer creation date.
+                  example: 2022/02/09 16:13:53
+                status:
+                  type: object
+                  description: Customized object contains the customer status information.
+                  required:
+                    - id
+                    - name
+                  properties:
+                    id:
+                      type: string
+                      description: Identifier of the current state of the customer.
+                      example: 1
+                      maxLength: 40
+                    name:
+                      type: string
+                      description: Identifier of the current state of the customer.
+                      example: Active
+                      maxLength: 100
+    RSCreateIndividualCustomer400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCreateMerchantCustomer200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - customerId
+          properties:
+            customerId:
+              type: string
+              description: Unique customer identifier.
+              example: 49BCD622C6A07726594D63AAB2F436D366782AD1
+              maxLength: 40
+    RSCreateMerchantCustomer400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerEmploymentInformationUpdate200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerEmploymentInformationUpdate400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerGeneralInformation200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - customer
+          properties:
+            customer:
+              type: object
+              description: |
+                Customer object.
+                Contains the customer’s general information.
+              required:
+                - customerId
+                - customerStatus
+                - customerType
+                - userCredentials
+                - generalInformation
+                - identityDocuments
+                - personalAddress
+                - contactInformation
+                - createdDate
+                - reviewedDate
+                - updatedDate
+              properties:
+                customerId:
+                  type: string
+                  description: Unique customer identifier.
+                  example: 56BA34F664FB9B90
+                  maxLength: 40
+                customerStatus:
+                  type: object
+                  description: |
+                    Customer status object.
+                    Contains the customer´s status information.
+                  required:
+                    - id
+                    - name
+                  properties:
+                    id:
+                      type: string
+                      description: Customer status ID.
+                      example: 1
+                      maxLength: 5
+                    name:
+                      type: string
+                      description: Customer status name.
+                      example: Active
+                      maxLength: 25
+                customerType:
+                  type: object
+                  description: |
+                    Customer type object
+                    Contains the customer´s type information.
+                  required:
+                    - id
+                    - name
+                  properties:
+                    id:
+                      type: string
+                      description: Customer type ID.
+                      example: 1
+                      maxLength: 5
+                    name:
+                      type: string
+                      description: Customer type name.
+                      example: retail
+                      maxLength: 20
+                userCredentials:
+                  type: object
+                  description: |
+                    User credentials object.
+                    Contains the user credentials information.
+                  properties:
+                    username:
+                      type: string
+                      description: Username in the application.
+                      example: JDOE
+                      maxLength: 20
+                generalInformation:
+                  type: object
+                  description: |
+                    General information object.
+                    Contains the general information customer.
+                  required:
+                    - firstNames
+                    - lastNames
+                    - civilStatus
+                    - birthCountry
+                    - birthState
+                    - birthCity
+                    - birthDate
+                  properties:
+                    firstNames:
+                      type: string
+                      description: Customer first name.
+                      example: John
+                      maxLength: 50
+                    lastNames:
+                      type: string
+                      description: Customer last name.
+                      example: Doe
+                      maxLength: 50
+                    gender:
+                      type: object
+                      description: Customized object contains the gender information.
+                      required:
+                        - id
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: >
+                            **Refer to:**
+                            [Gender](https://developer.novopayment.com/api/request-and-response-codes#item-gender)
+                          example: 1
+                          maxLength: 5
+                        name:
+                          type: string
+                          description: Gender name.
+                          example: Male
+                          maxLength: 20
+                    civilStatus:
+                      type: object
+                      description: Customized object contains the civil status information.
+                      required:
+                        - id
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: >
+                            **Refer to:** [Civil
+                            Status](https://developer.novopayment.com/api/request-and-response-codes#item-civilstatus)
+                          example: 1
+                          maxLength: 5
+                        name:
+                          type: string
+                          description: Civil status name.
+                          example: Single
+                          maxLength: 20
+                    birthCountry:
+                      type: object
+                      description: Customized object contains the country information.
+                      required:
+                        - id
+                        - iso2
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: Birth country ID.
+                          example: 233
+                          maxLength: 5
+                        iso2:
+                          type: string
+                          description: >
+                            **Refer to:** [ISO Country
+                            Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                          example: US
+                          maxLength: 2
+                        name:
+                          type: string
+                          description: Country name.
+                          example: United States
+                          maxLength: 60
+                    birthState:
+                      type: object
+                      description: Customized object contains the state information.
+                      required:
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: Customer birth state ID.
+                          example: 2707
+                          maxLength: 5
+                        name:
+                          type: string
+                          description: Customer birth state name.
+                          example: New York
+                          maxLength: 100
+                    birthCity:
+                      type: object
+                      description: Customized object contains the city information.
+                      required:
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: Customer birth city ID.
+                          example: 918537
+                          maxLength: 8
+                        name:
+                          type: string
+                          description: Customer birth city name.
+                          example: New York Cit
+                          maxLength: 100
+                    birthDate:
+                      type: string
+                      description: Customer birth Date.
+                      example: 1985/01/07
+                      maxLength: 50
+                    educationLevel:
+                      type: object
+                      description: Customized object contains the education level information.
+                      required:
+                        - id
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: >
+                            **Refer to:** [Education
+                            Level](https://developer.novopayment.com/api/request-and-response-codes#item-educationlevel)
+                          example: 4
+                          maxLength: 5
+                        name:
+                          type: string
+                          description: Education level name.
+                          example: Collegue/University
+                          maxLength: 20
+                identityDocuments:
+                  type: array
+                  description: |
+                    Identity documents array object.
+                    Contains a customer's identity document information list.
+                  required:
+                    - identityDocumentId
+                    - documentType
+                    - documentNumber
+                    - isPrimary
+                    - issueDate
+                    - expirationDate
+                    - country
+                    - firstNames
+                    - lastNames
+                    - gender
+                    - birthDate
+                  items:
+                    type: object
+                    properties:
+                      identityDocumentId:
+                        type: string
+                        description: Identity document ID.
+                        example: 1
+                        maxLength: 38
+                      documentType:
+                        type: object
+                        description: Customized object contains the document type information.
+                        required:
+                          - id
+                          - name
+                        properties:
+                          id:
+                            type: string
+                            description: >
+                              **Refer to:** [Document
+                              Type](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+                            example: 3
+                            maxLength: 5
+                          name:
+                            type: string
+                            description: Document type name.
+                            example: Passport
+                            maxLength: 20
+                      documentNumber:
+                        type: string
+                        description: Customer´s document number.
+                        example: C96485632
+                        maxLength: 25
+                      isPrimary:
+                        type: boolean
+                        description: |
+                          It is your main document.
+
+                          **Possible values:**
+
+                          True: if it is a primary document.
+
+                          False: Not is a primary document.
+                        example: true
+                      issueDate:
+                        type: string
+                        description: Document issue date.
+                        example: 2020/01/01
+                      expirationDate:
+                        type: string
+                        description: Document expiration Date.
+                        example: 2030/01/01
+                      country:
+                        type: object
+                        description: |
+                          Country object.
+                          Contains the document country information.
+                        required:
+                          - id
+                          - iso2
+                          - name
+                        properties:
+                          id:
+                            type: string
+                            description: The country ID that corresponds to the identity document.
+                            example: 233
+                            maxLength: 5
+                          iso2:
+                            type: string
+                            description: >
+                              **Refer to:** [ISO Country
+                              Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                            example: US
+                            maxLength: 2
+                          name:
+                            type: string
+                            description: Country name.
+                            example: United States
+                            maxLength: 60
+                      firstNames:
+                        type: string
+                        description: First name of the document.
+                        example: John
+                        maxLength: 75
+                      lastNames:
+                        type: string
+                        description: Last name of the document.
+                        example: Doe
+                        maxLength: 75
+                      gender:
+                        type: object
+                        description: |
+                          Gender object.
+                          Contains the gender information.
+                        required:
+                          - id
+                          - name
+                        properties:
+                          id:
+                            type: string
+                            description: >
+                              **Refer to:**
+                              [Gender](https://developer.novopayment.com/api/request-and-response-codes#item-gender)
+                            example: 1
+                            maxLength: 5
+                          name:
+                            type: string
+                            description: Gender name.
+                            example: Male
+                            maxLength: 20
+                      birthDate:
+                        type: string
+                        description: Customer´s birth date.
+                        example: 1985/01/07
+                      passedAllChecks:
+                        type: boolean
+                        description: |
+                          Document verification.
+
+                          **Possible values:**
+
+                          true, the documents were verified
+
+                          false, the documents were not verified
+                        example: true
+                      vendor:
+                        type: string
+                        description: Vendor responsible for scanning and validating the authenticity of
+                          the documents.
+                        example: Vendor
+                        maxLength: 100
+                personalAddress:
+                  type: object
+                  description: |
+                    Personal address object
+                    Contains the customer’s personal address information.
+                  required:
+                    - country
+                    - state
+                    - city
+                    - streetAddress
+                    - address2
+                    - zipCode
+                    - buildingNumber
+                    - homeNumber
+                  properties:
+                    country:
+                      type: object
+                      description: Customized object contains the country information.
+                      required:
+                        - id
+                        - iso2
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: The country ID that corresponds to the address.
+                          example: 233
+                          maxLength: 5
+                        iso2:
+                          type: string
+                          description: >
+                            **Refer to:** [ISO Country
+                            Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                          example: US
+                          maxLength: 2
+                        name:
+                          type: string
+                          description: Country name .
+                          example: United States
+                          maxLength: 60
+                    state:
+                      type: object
+                      description: Customized object contains the state information.
+                      required:
+                        - id
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: The state ID that corresponds to the address.
+                          example: 2707
+                          maxLength: 5
+                        name:
+                          type: string
+                          description: The state name that corresponds to the address.
+                          example: New York
+                          maxLength: 100
+                    city:
+                      type: object
+                      description: Customized object contains the city information.
+                      required:
+                        - id
+                        - name
+                      properties:
+                        id:
+                          type: string
+                          description: The city ID that corresponds to the address.
+                          example: 918537
+                          maxLength: 8
+                        name:
+                          type: string
+                          description: The city name that corresponds to the address.
+                          example: New York
+                          maxLength: 100
+                    streetAddress:
+                      type: string
+                      description: Address line 1.
+                      example: 01 W. 31th St, New York
+                      maxLength: 100
+                    address2:
+                      type: string
+                      description: Additional address or line 2.
+                      example: John Doe Building
+                      maxLength: 100
+                    zipCode:
+                      type: string
+                      description: ZIP code for home address.
+                      example: 10011
+                      maxLength: 10
+                    buildingNumber:
+                      type: string
+                      description: Building o tower number.
+                      example: 10
+                      maxLength: 50
+                    homeNumber:
+                      type: string
+                      description: Home or apartment number.
+                      example: 101
+                      maxLength: 50
+                contactInformation:
+                  type: object
+                  description: |
+                    Contact information object
+                    Contains the contact information customer.
+                  required:
+                    - phoneCodeIso2
+                    - phoneCode
+                    - phoneNumber
+                    - email
+                  properties:
+                    phoneCodeIso2:
+                      type: string
+                      description: >
+                        **Refer to:** [ISO Country
+                        Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                      example: US
+                      maxLength: 2
+                    phoneCode:
+                      type: string
+                      description: Phone code ID.
+                      example: 1
+                      maxLength: 5
+                    phoneNumber:
+                      type: string
+                      description: Phone number.
+                      example: 6450000000
+                      maxLength: 30
+                    email:
+                      type: string
+                      description: Email.
+                      example: johnDoe@example.com
+                      maxLength: 50
+                createdDate:
+                  type: string
+                  description: Customer creation date.
+                  example: 2020/01/01
+                reviewedDate:
+                  type: string
+                  description: Customer´s review date.
+                  example: 2020/01/01
+                updatedDate:
+                  type: string
+                  description: Customer´s update last date.
+                  example: 2022/01/13
+                businessUnit:
+                  type: object
+                  description: |
+                    Business unit object.
+                    Contains the customer-defined business unit.
+                  properties:
+                    id:
+                      type: string
+                      description: Business unit ID.
+                      example: 37
+                      maxLength: 2
+                    code:
+                      type: string
+                      description: Bussiness unit ID.
+                      example: NO_AM_RET
+                      maxLength: 30
+                    name:
+                      type: string
+                      description: Business unit Name.
+                      example: NORTH_AMERICA-Retail
+                      maxLength: 50
+    RSCustomerGeneralInformation400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerList200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - customers
+          properties:
+            customers:
+              type: array
+              required:
+                - customerId
+                - createdDate
+                - identityDocument
+                - firstNames
+                - lastNames
+                - status
+                - reviewedDate
+              items:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    description: Id of the customer's last session.
+                    example: 49BCD622C6A0772
+                    maxLength: 32
+                  customerId:
+                    type: string
+                    description: Unique customer identifier.
+                    example: 56BA34F664FB9B90
+                    maxLength: 40
+                  createdDate:
+                    type: string
+                    description: Customer creation date.
+                    example: 2021/01/29 10:53:54
+                  identityDocument:
+                    type: object
+                    description: |
+                      Identity object.
+                      This object contains the primary document information.
+                    required:
+                      - documentType
+                      - documentNumber
+                      - country
+                    properties:
+                      documentType:
+                        type: object
+                        description: |
+                          Document Type object.
+                          This object contains the customer's document type.
+                        required:
+                          - id
+                          - name
+                        properties:
+                          id:
+                            type: string
+                            description: >
+                              **Refer to:** [Document
+                              Type](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+                            example: 3
+                            maxLength: 5
+                          name:
+                            type: string
+                            description: Document type name.
+                            example: Passport
+                            maxLength: 50
+                      documentNumber:
+                        type: string
+                        description: Customer's document number.
+                        example: AX106589
+                        maxLength: 25
+                      country:
+                        type: object
+                        description: >
+                          Country Object.
+
+                          This object contains the document's issuing country information.
+                        required:
+                          - iso2
+                          - name
+                        properties:
+                          iso2:
+                            type: string
+                            description: >
+                              Country ISO-2.
+
+                              Country of the customer´s primary document.
+
+
+                              **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                            example: US
+                            maxLength: 2
+                          name:
+                            type: string
+                            description: |
+                              Country name.
+                              Country of the customer´s primary document.
+                            example: United States
+                            maxLength: 60
+                  firstNames:
+                    type: string
+                    description: Customer names.
+                    example: John
+                    maxLength: 50
+                  lastNames:
+                    type: string
+                    description: Customer surnames.
+                    example: Doe
+                    maxLength: 50
+                  status:
+                    type: object
+                    description: |
+                      Status Object.
+                      This object contains the customer status information.
+                    required:
+                      - id
+                      - name
+                    properties:
+                      id:
+                        type: string
+                        description: Customer status ID.
+                        example: 1
+                        maxLength: 5
+                      name:
+                        type: string
+                        description: Customer status name.
+                        example: Active
+                        maxLength: 50
+                  reviewedDate:
+                    type: string
+                    description: Date the customer was reviewed.
+                    example: 2021/01/29 10:53:54
+    RSCustomerList400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSGetACustomerDocument200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - documentId
+          properties:
+            base64Content:
+              type: string
+              description: Base64 encoding of the consulted document.
+              example: JVBERi0xLjcNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFIvTGFuZyhlcy1DTykgL1N0cnVjdFRyZWVSb290IDEwIDAgUi9NYXJrSW5mbzw8L01hcmtlZCB0cnVlPj4vTWV0YWRhdGEgMjAgMCBSL1ZpZXdlclByZWZlcmVuY2VzIDIxIDAgUj4+DQplbmRvYmoNCjIgMCBvYmoNCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWyAzIDAgUl0gPj4NCmVuZG9iag0KMyAwIG9iag0KPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9SZXNvdXJjZXM8PC9Gb250PDwvRjEgNSAwIFI+Pi9FeHRHU3RhdGU8PC9HUzcgNyAwIFIvR1M4IDggMCBSPj4vUHJvY1NldFsvUERGL1RleHQvSW1hZ2VCL0ltYWdlQy9JbWFnZUldID4+L01lZGlhQm94WyAwIDAgNjEyIDc5Ml0gL0NvbnRlbnRzIDQgMCBSL0dyb3VwPDwvVHlwZS9Hcm91cC9TL1RyYW5zcGFyZW5jeS9DUy9EZXZpY2VSR0I+Pi9UYWJzL1MvU3RydWN0UGFyZW50cyAwPj4NCmVuZG9iag0KNCAwIG9iag0KPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAyMDA+Pg0Kc3RyZWFtDQp4nKWOOwvCQBCE+4P7D1PuCrncxpgYEAuTUxRjlEQsxMJCUxl8/H/wfDTWbrHs7Ay7H8L6euwwGoVlPi9gw+Wxa0GnR+BqHo8xKXLctLLGviqTCBaJ72kW4X7SatdDp9Wk0SqcCkSMjdGctRKfsxAMB0b8KhVrUu9cfG5Wp2gf/ibatxp+1UyrPRUcxFTlWxahkoM+uRXH1HBGFTiIyC0cS/Sx1pzQ8jVUfECz0Mp5jI1W//BKZk3/h/eN+aXD7yO4MscTHM0=
+            extension:
+              type: string
+              description: Extension of the uploaded file.
+              example: pdf
+              maxLength: 50
+            size:
+              type: string
+              description: File size in bytes.
+              example: 15
+              maxLength: 38
+            name:
+              type: string
+              description: Name of the document.
+              example: Proof of Employe
+              maxLength: 50
+            documentId:
+              type: integer
+              description: Id of the consulted document.
+              example: 2
+              maxLength: 20
+    RSGetACustomerDocument400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSGetCustomerActionLogs200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: array
+          required:
+            - logId
+            - date
+            - event
+            - rc
+            - msg
+            - logType
+          items:
+            type: object
+            properties:
+              logId:
+                type: integer
+                description: Log identifier.
+                example: 362670
+                maxLength: 38
+              date:
+                type: string
+                description: Event execution date.
+                example: 2021/06/09 15:30:50
+              event:
+                type: string
+                description: Detail of the event executed.
+                example: Get support document
+                maxLength: 200
+              rc:
+                type: string
+                description: Response code of the executed action.
+                example: 0
+                maxLength: 10
+              msg:
+                type: string
+                description: Response message of the executed action.
+                example: OK
+                maxLength: 100
+              logType:
+                type: integer
+                description: log type to save.
+                example: 2
+                maxLength: 2
+    RSGetCustomerActionLogs400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSGetCustomerRiskIndicators200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: array
+          required:
+            - customerId
+            - businessUnitId
+            - alertId
+            - createDate
+          items:
+            type: object
+            properties:
+              customerId:
+                type: string
+                description: Identifier of the consulted customer.
+                example: 43DED66474E259FD
+                maxLength: 40
+              businessUnitId:
+                type: integer
+                description: Identifier of the Business Unit to which the customer belongs.
+                example: 4
+                maxLength: 38
+              alertId:
+                type: string
+                description: Alert identifier of the risk module created; in case the general
+                  risk level exceeds the standards established by the tenant.
+                example: AML_CDD_01_4007
+                maxLength: 50
+              partyRiskScore:
+                type: number
+                description: The risk score represented by the customer is based on the general
+                  calculation of all types of risk scores.
+                example: 197
+                maxLength: 28
+              pepScore:
+                type: number
+                description: Risk score represented by the customer under the concept of
+                  Politically Exposed Person (PEP).
+                example: 0
+                maxLength: 28
+              sarFieldScore:
+                type: number
+                description: Risk score represented by the customer under the concept of
+                  reported suspicious activities.
+                example: 0
+                maxLength: 28
+              accountTypeScore:
+                type: number
+                description: Risk score represented by the customer based on the types of
+                  account associated with it.
+                example: 10
+                maxLength: 28
+              collateralTypeScore:
+                type: number
+                description: Risk score represented by the customer based on collateral
+                  concepts.
+                example: 0
+                maxLength: 28
+              highRiskBussinessScore:
+                type: number
+                description: Represents the level of risk associated with the customer based on
+                  its type of sector, based on the NAICS catalog.
+                example: 0
+                maxLength: 28
+              clientSegmentScore:
+                type: number
+                description: Represents the level of risk associated with customer segmentation.
+                example: 10
+                maxLength: 28
+              openChannelScore:
+                type: number
+                description: Represents the level of risk calculated based on the channel used
+                  by the client at the time of registration and subsequent
+                  account opening.
+                example: 10
+                maxLength: 28
+              occupationScore:
+                type: number
+                description: Risk level calculated based on the type of occupation of the client
+                  selected during their registration process, and which is
+                  directly related to the SOC occupation catalog.
+                example: 10
+                maxLength: 28
+              serviceTypeScore:
+                type: number
+                description: Risk score associated with the types of services and transactional
+                  operations that the customer will use when having an active
+                  account.
+                example: 115
+                maxLength: 28
+              createDate:
+                type: string
+                description: Creation date of customer risk scores.
+                example: 2021/05/21 09:43:53
+    RSGetCustomerRiskIndicators400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSGetSupportingDocuments200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - documents
+          properties:
+            documents:
+              type: array
+              required:
+                - documentId
+                - name
+                - description
+                - referenceDocumentLink
+                - validExtension
+                - minSize
+                - maxSize
+                - maxUploadDays
+                - uploadDateLimit
+                - uploadInformation
+              items:
+                type: object
+                properties:
+                  documentId:
+                    type: integer
+                    description: Document identifier.
+                    example: 2
+                    maxLength: 38
+                  name:
+                    type: string
+                    description: Name of the document.
+                    example: Proof of Employment
+                    maxLength: 50
+                  description:
+                    type: string
+                    description: Description document.
+                    example: Proof of employment issued by the company
+                    maxLength: 200
+                  referenceDocumentLink:
+                    type: string
+                    description: Document reference URL.
+                    example: https://www.documents.com/pub/irs-pdf/fw8ben.pdf
+                    maxLength: 100
+                  validExtension:
+                    type: string
+                    description: |
+                      Array of extensions allowed for loading the document.
+
+                      __*Allowed values : [".xls, .pdf, .png"]__
+                    example:
+                      - pdf
+                    maxLength: 40
+                  minSize:
+                    type: number
+                    description: Minimum file size in kbs.
+                    example: 54000
+                    maxLength: 38
+                  maxSize:
+                    type: number
+                    description: Maximum file weight in kbs.
+                    example: 750000
+                    maxLength: 38
+                  maxUploadDays:
+                    type: integer
+                    description: Number of days to upload the file.
+                    example: 15
+                    maxLength: 38
+                  uploadDateLimit:
+                    type: string
+                    description: Document upload deadline.
+                    example: "2021-10-10"
+                  uploadInformation:
+                    type: object
+                    description: An object that contains the upload information for the file.
+                    required:
+                      - documentUploadId
+                      - requestDate
+                      - documentStatus
+                      - fileInfo
+                    properties:
+                      documentUploadId:
+                        type: integer
+                        description: Document upload identifier.
+                        example: 14
+                        maxLength: 38
+                      requestDate:
+                        type: string
+                        description: Document upload request date.
+                        example: "2021-10-01"
+                      documentStatus:
+                        type: object
+                        description: Object containing the status of the document.
+                        required:
+                          - statusId
+                          - description
+                        properties:
+                          statusId:
+                            type: integer
+                            description: Document status identifier.
+                            example: 1
+                            maxLength: 38
+                          description:
+                            type: string
+                            description: Description of the document status.
+                            example: Uploaded
+                            maxLength: 50
+                      fileInfo:
+                        type: object
+                        description: An object that contains the information about the file when it is
+                          uploaded.
+                        required:
+                          - fileName
+                          - fileSize
+                          - extension
+                          - uploadDate
+                        properties:
+                          fileName:
+                            type: string
+                            description: Uploaded file name.
+                            example: proofofemploye.pdf
+                            maxLength: 100
+                          fileSize:
+                            type: number
+                            description: Uploaded File Size in kbs.
+                            example: 78000
+                            maxLength: 38
+                          extension:
+                            type: string
+                            description: File extension uploaded.
+                            example: pdf
+                            maxLength: 10
+                          uploadDate:
+                            type: string
+                            description: Date the file was uploaded.
+                            example: "2021-10-02"
+    RSGetSupportingDocuments400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSUnsubscribeCustomer200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSUnsubscribeCustomer400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSUpdateCustomer200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - customer
+          properties:
+            userCredentials:
+              type: object
+              description: |
+                User credentials object.
+                Contains the user credentials information.
+              properties:
+                username:
+                  type: string
+                  description: Username in the application.
+                  example: JDOE
+                  maxLength: 20
+            generalInformation:
+              type: object
+              description: |
+                General information object.
+                Contains the general customer’s information.
+              properties:
+                firstNames:
+                  type: string
+                  description: Customer first name.
+                  example: John
+                  maxLength: 50
+                lastNames:
+                  type: string
+                  description: Customer last name.
+                  example: Doe
+                  maxLength: 50
+                genderId:
+                  type: string
+                  description: >
+                    **Refer to:**
+                    [Gender](https://developer.novopayment.com/api/request-and-response-codes#item-gender)
+                  example: 1
+                  maxLength: 5
+                civilStatusId:
+                  type: string
+                  description: >
+                    **Refer to:** [Civil
+                    Status](https://developer.novopayment.com/api/request-and-response-codes#item-civilstatus)
+                  example: 1
+                  maxLength: 5
+                birthCountry:
+                  type: object
+                  description: |
+                    Birth country object.
+                    Contains the birth country information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        Birth country ID.
+
+
+                        __* Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                      example: US
+                      maxLength: 5
+                    iso2:
+                      type: string
+                      description: >
+                        Code of country iso 2.
+
+
+                        **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                      example: US
+                      maxLength: 2
+                birthState:
+                  type: object
+                  description: |
+                    Birth state object.
+                    Contains the birth state information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        Customer birth state ID
+
+
+                        __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                      example: New York
+                      maxLength: 5
+                    name:
+                      type: string
+                      description: >
+                        Customer birth state name.
+
+
+                        __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                      example: New York
+                      maxLength: 100
+                birthCity:
+                  type: object
+                  description: |
+                    Birth City Object.
+                    Contains the birth city information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        Customer birth city ID.
+
+
+                        __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                      example: New York
+                      maxLength: 8
+                    name:
+                      type: string
+                      description: >
+                        Customer birth city name.
+
+
+                        __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                      example: New York
+                      maxLength: 100
+                birthDate:
+                  type: string
+                  description: Customer birthdate.
+                  example: 1985/01/07
+                  maxLength: 50
+                educationLevelId:
+                  type: string
+                  description: >
+                    Education Level ID.
+
+
+                    **Refer to:** [Education Level](https://developer.novopayment.com/api/request-and-response-codes#item-educationlevel)
+                  example: 1
+                  maxLength: 5
+            personalAddress:
+              type: object
+              description: |
+                Personal address object.
+                Contains the customer’s personal address information.
+              properties:
+                country:
+                  type: object
+                  description: Customized object contains the country information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        The country ID that corresponds to the address.
+
+
+                        __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                      example: 233
+                      maxLength: 5
+                    iso2:
+                      type: string
+                      description: >
+                        Code of country iso 2.
+
+
+                        **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                      example: US
+                      maxLength: 2
+                state:
+                  type: object
+                  description: Customized object contains the state information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        Customer state ID.
+
+
+                        __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                      example: US
+                      maxLength: 5
+                    name:
+                      type: string
+                      description: >
+                        Customer state name.
+
+
+                        __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                      example: New York
+                      maxLength: 100
+                city:
+                  type: object
+                  description: Customized object contains the city information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        Customer state ID.
+
+
+                        __*Required field when the solution considers an integration with NovoPayment's locations catalog.__
+                      example: US
+                      maxLength: 8
+                    name:
+                      type: string
+                      description: >
+                        Customer state name.
+
+
+                        __*Required when the solution is not integrated with NovoPayment's locations catalog and a State ID is not considered.__
+                      example: New York
+                      maxLength: 100
+                streetAddress:
+                  type: string
+                  description: Address line 1.
+                  example: 01W.31thSt,NewYork
+                  maxLength: 100
+                address2:
+                  type: string
+                  description: Additional address or line 2.
+                  example: JohnDoeBuilding
+                  maxLength: 100
+                zipCode:
+                  type: string
+                  description: ZIP code for home address.
+                  example: 10011
+                  maxLength: 10
+                buildingNumber:
+                  type: string
+                  description: Building o tower number.
+                  example: 10
+                  maxLength: 50
+                homeNumber:
+                  type: string
+                  description: Home or apartment number.
+                  example: 101
+                  maxLength: 50
+            contactInformation:
+              type: object
+              description: |
+                Contact information object.
+                Contains the customer’s contact information.
+              properties:
+                phoneCodeIso2:
+                  type: string
+                  description: >
+                    Phone code Iso2.
+
+
+                    **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                  example: US
+                  maxLength: 2
+                phoneNumber:
+                  type: string
+                  description: Phone number.
+                  example: 6450000000
+                  maxLength: 30
+                email:
+                  type: string
+                  description: Email.
+                  example: johnDoe@example.com
+                  maxLength: 50
+    RSUpdateCustomer400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSUpdateCustomerIdentityDocuments200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          properties:
+            identityDocument:
+              type: object
+              description: Identity Document Object.Contains the details of identity
+                documents.
+              required:
+                - identityDocumentId
+              properties:
+                identityDocumentId:
+                  type: string
+                  description: Identity document ID.
+                  example: 32
+                  maxLength: 38
+                documentType:
+                  type: object
+                  description: |
+                    Document type object.
+                    Contains the document type information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        Document type.
+
+
+                        **Refer to:** [Document Type](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+                      example: 3
+                      maxLength: 5
+                    name:
+                      type: string
+                      description: Document type name.
+                      example: Passport
+                      maxLength: 20
+                documentNumber:
+                  type: string
+                  description: Document number.
+                  example: C96485632
+                  maxLength: 25
+                firstNames:
+                  type: string
+                  description: First name of the document.
+                  example: John
+                  maxLength: 75
+                lastNames:
+                  type: string
+                  description: Last name of the document.
+                  example: Doe
+                  maxLength: 75
+                isPrimary:
+                  type: boolean
+                  description: |
+                    It is your main document.
+
+                    **Possible values:**
+
+                    True: if it is a primary document.
+
+                    False: Not is a primary document.
+                  example: true
+                issueDate:
+                  type: string
+                  description: Document issue date.
+                  example: 2020/01/01
+                expirationDate:
+                  type: string
+                  description: Document expiration Date.
+                  example: 2030/01/01
+                country:
+                  type: object
+                  description: |
+                    Country object.
+                    Contains the country information.
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      description: Birth country ID.
+                      example: 233
+                      maxLength: 5
+                    iso2:
+                      type: string
+                      description: >
+                        Code of country iso 2.
+
+
+                        **Refer to:** [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+                      example: US
+                      maxLength: 2
+                    name:
+                      type: string
+                      description: Country name.
+                      example: United States
+                      maxLength: 60
+                gender:
+                  type: object
+                  description: |
+                    Gender object.
+                    Contains the document gender information.
+                  properties:
+                    id:
+                      type: string
+                      description: >
+                        Gender ID.
+
+
+                        **Refer to:** [Gender](https://developer.novopayment.com/api/request-and-response-codes#item-gender)
+                      example: 1
+                      maxLength: 5
+                    name:
+                      type: string
+                      description: Gender name.
+                      example: Male
+                      maxLength: 20
+                birthDate:
+                  type: string
+                  description: Identity document birth date.
+                  example: 1985/01/07
+    RSUpdateCustomerIdentityDocuments400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS401:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS500:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Opertion Timestamp
+          format: date-time
+  requestBodies:
+    RQApproveOrDeclineARecipient:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQApproveOrDeclineARecipient"
+      required: true
+    RQCreateCommercialCustomers:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCreateCommercialCustomers"
+      required: true
+    RQCreateIndividualCustomer:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCreateIndividualCustomer"
+      required: true
+    RQCreateMerchantCustomer:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCreateMerchantCustomer"
+      required: true
+    RQCustomerEmploymentInformationUpdate:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCustomerEmploymentInformationUpdate"
+      required: true
+    RQUnsubscribeCustomer:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQUnsubscribeCustomer"
+      required: true
+    RQUpdateCustomer:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQUpdateCustomer"
+      required: true
+    RQUpdateCustomerIdentityDocuments:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQUpdateCustomerIdentityDocuments"
+      required: true
+  responses:
+    RSApproveOrDeclineARecipient200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSApproveOrDeclineARecipient200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSApproveOrDeclineARecipient400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSApproveOrDeclineARecipient400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Open Escalations Exist:
+              $ref: "#/components/examples/OpenEscalationsExist"
+            Requested Resource Not Found:
+              $ref: "#/components/examples/RequestedResourceNotFound"
+            Product Status Not Updated:
+              $ref: "#/components/examples/ProductStatusNotUpdated"
+    RSCreateCommercialCustomers200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateCommercialCustomers200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  customerId: 49BCD622C6A07726594D63AAB2F436D366782AD1
+    RSCreateCommercialCustomers400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateCommercialCustomers400"
+          examples:
+            Parameter Format Error:
+              $ref: "#/components/examples/ParameterFormatError"
+    RSCreateIndividualCustomer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateIndividualCustomer200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  customer:
+                    customerId: 56BA34F664FB9B90
+                    legalName: John Doe
+                    createdDate: 2022/02/09 16:13:53
+                    status:
+                      id: 1
+                      name: Active
+    RSCreateIndividualCustomer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateIndividualCustomer400"
+          examples:
+            Request Params Required:
+              $ref: "#/components/examples/RequestParamsRequired"
+            Username Used:
+              $ref: "#/components/examples/UsernameUsed"
+            Registered User With That Email:
+              $ref: "#/components/examples/RegisteredUserWithThatEmail"
+            Invalid Data:
+              $ref: "#/components/examples/InvalidData"
+            Allowed A Primary Document:
+              $ref: "#/components/examples/AllowedAPrimaryDocument"
+            There Is No Main Document:
+              $ref: "#/components/examples/ThereIsNoMainDocument"
+            Customer Not Saved:
+              $ref: "#/components/examples/CustomerNotSaved"
+    RSCreateMerchantCustomer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateMerchantCustomer200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  customerId: 49BCD622C6A07726594D63AAB2F436D366782AD1
+    RSCreateMerchantCustomer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateMerchantCustomer400"
+          examples:
+            Parameter Format Error:
+              $ref: "#/components/examples/ParameterFormatError"
+    RSCustomerEmploymentInformationUpdate200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerEmploymentInformationUpdate200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSCustomerEmploymentInformationUpdate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerEmploymentInformationUpdate400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Open Escalations Exist:
+              $ref: "#/components/examples/OpenEscalationsExist"
+            Requested Resource Not Found:
+              $ref: "#/components/examples/RequestedResourceNotFound"
+            Product Status Not Updated:
+              $ref: "#/components/examples/ProductStatusNotUpdated"
+    RSCustomerGeneralInformation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerGeneralInformation200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  customer:
+                    customerId: 56BA34F664FB9B90
+                    customerStatus:
+                      id: 1
+                      name: Active
+                    customerType:
+                      id: 1
+                      name: retail
+                    userCredentials:
+                      userName: JDOE
+                    generalInformation:
+                      firstNames: John
+                      lastNames: Doe
+                      gender:
+                        id: 1
+                        name: Male
+                      civilStatus:
+                        id: 1
+                        name: Single
+                      birthCountry:
+                        id: 233
+                        iso2: US
+                        name: United States
+                      birthState:
+                        id: 2707
+                        name: New York
+                      birthCity:
+                        id: 918537
+                        name: New York City
+                      birthDate: 1985/01/07
+                      educationLevel:
+                        id: 4
+                        name: Collegue/University
+                      identityDocuments:
+                        - identityDocumentId: 1
+                          documentType:
+                            id: 3
+                            name: Passport
+                          documentNumber: C96485632
+                          isPrimary: true
+                          issueDate: 2020/01/01
+                          expirationDate: 2030/01/01
+                          country:
+                            id: 233
+                            iso2: US
+                            name: United States
+                          firstNames: John
+                          lastNames: Doe
+                          gender:
+                            id: 1
+                            name: Male
+                          birthDate: 1985/01/07
+                          passedAllChecks: true
+                          vendor: Vendor
+                      personalAddress:
+                        country:
+                          id: 233
+                          iso2: US
+                          name: United States
+                        state:
+                          id: 2707
+                          name: New York
+                        city:
+                          id: 918537
+                          name: New York
+                        streetAddress: 01 W. 31th St, New York
+                        address2: John Doe Building
+                        zipCode: 10011
+                        buildingNumber: 10
+                        homeNumber: 101
+                      contactInformation:
+                        phoneCodeIso2: US
+                        phoneCode: 1
+                        phoneNumber: 6450000000
+                        email: johnDoe@example.com
+                      createdDate: 2020/01/01
+                      reviewedDate: 2020/01/01
+                      updatedDate: 2022/01/13
+                      businessUnit:
+                        id: 37
+                        code: NO_AM_RET
+                        name: NORTH_AMERICA-Retail
+    RSCustomerGeneralInformation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerGeneralInformation400"
+          examples:
+            Customer Not Found:
+              $ref: "#/components/examples/CustomerNotFound"
+    RSCustomerList200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerList200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  customers:
+                    - sessionId: 49BCD622C6A0772
+                      customerId: 56BA34F664FB9B90
+                      createdDate: 2021/01/29 10:53:54
+                      identityDocument:
+                        documentType:
+                          id: 3
+                          name: Passport
+                        documentNumber: AX106589
+                        country:
+                          iso2: US
+                          name: United States
+                      firstNames: John
+                      lastNames: Doe
+                      status:
+                        id: 1
+                        name: Active
+                      reviewedDate: 2021/01/29 10:53:54
+    RSCustomerList400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerList400"
+          examples:
+            No Search Results Were Found:
+              $ref: "#/components/examples/NoSearchResultsWereFound"
+    RSGetACustomerDocument200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetACustomerDocument200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  base64Content: JVBERi0xLjcNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFIvTGFuZyhlcy1DTykgL1N0cnVjdFRyZWVSb290IDEwIDAgUi9NYXJrSW5mbzw8L01hcmtlZCB0cnVlPj4vTWV0YWRhdGEgMjAgMCBSL1ZpZXdlclByZWZlcmVuY2VzIDIxIDAgUj4+DQplbmRvYmoNCjIgMCBvYmoNCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWyAzIDAgUl0gPj4NCmVuZG9iag0KMyAwIG9iag0KPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9SZXNvdXJjZXM8PC9Gb250PDwvRjEgNSAwIFI+Pi9FeHRHU3RhdGU8PC9HUzcgNyAwIFIvR1M4IDggMCBSPj4vUHJvY1NldFsvUERGL1RleHQvSW1hZ2VCL0ltYWdlQy9JbWFnZUldID4+L01lZGlhQm94WyAwIDAgNjEyIDc5Ml0gL0NvbnRlbnRzIDQgMCBSL0dyb3VwPDwvVHlwZS9Hcm91cC9TL1RyYW5zcGFyZW5jeS9DUy9EZXZpY2VSR0I+Pi9UYWJzL1MvU3RydWN0UGFyZW50cyAwPj4NCmVuZG9iag0KNCAwIG9iag0KPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAyMDA+Pg0Kc3RyZWFtDQp4nKWOOwvCQBCE+4P7D1PuCrncxpgYEAuTUxRjlEQsxMJCUxl8/H/wfDTWbrHs7Ay7H8L6euwwGoVlPi9gw+Wxa0GnR+BqHo8xKXLctLLGviqTCBaJ72kW4X7SatdDp9Wk0SqcCkSMjdGctRKfsxAMB0b8KhVrUu9cfG5Wp2gf/ibatxp+1UyrPRUcxFTlWxahkoM+uRXH1HBGFTiIyC0cS/Sx1pzQ8jVUfECz0Mp5jI1W//BKZk3/h/eN+aXD7yO4MscTHM0=
+                  extension: pdf
+                  size: 15,0
+                  name: Proof of Employe
+                  documentId: 2
+    RSGetACustomerDocument400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetACustomerDocument400"
+          examples:
+            Requested Document Not Uploaded:
+              $ref: "#/components/examples/RequestedDocumentNotUploaded"
+    RSGetCustomerActionLogs200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetCustomerActionLogs200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  - logId: 362670
+                    date: 2021/06/09 15:30:50
+                    event: Get support document
+                    rc: 0
+                    msg: OK
+                    logType: 2
+    RSGetCustomerActionLogs400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetCustomerActionLogs400"
+          examples:
+            Request Params Required:
+              $ref: "#/components/examples/RequestParamsRequired"
+    RSGetCustomerRiskIndicators200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetCustomerRiskIndicators200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  - customerId: 43DED66474E259FD
+                    businessUnitId: 4
+                    alertId: AML_CDD_01_4007
+                    partyRiskScore: 197
+                    pepScore: 0
+                    sarFieldScore: 0
+                    accountTypeScore: 10
+                    collateralTypeScore: 0
+                    highRiskBusinessScore: 0
+                    clientSegmentScore: 10
+                    openChannelScore: 10
+                    occupationScore: 10
+                    serviceTypeScore: 115
+                    createDate: 2021/05/21 09:43:53
+    RSGetCustomerRiskIndicators400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetCustomerRiskIndicators400"
+          examples:
+            Request Params Required:
+              $ref: "#/components/examples/RequestParamsRequired"
+    RSGetSupportingDocuments200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetSupportingDocuments200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  documents:
+                    - documentId: 2
+                      name: Proof of Employe
+                      description: Proof of employment issued by the company
+                      referenceDocumentLink: https://www.irs.gov/pub/irs-pdf/fw8ben.pdf
+                      validExtension:
+                        - .xls
+                        - .pdf
+                        - .png
+                      minSize: 54000
+                      maxSize: 750000
+                      maxUploadDays: 15
+                      uploadDateLimit: "2021-10-10"
+                      uploadInformation:
+                        documentUploadId: 14
+                        requestedDate: "2021-10-01"
+                        documentStatus:
+                          statusId: 1
+                          description: Uploaded
+                        fileInfo:
+                          fileName: proofofemploye.pdf
+                          fileSize: 78000
+                          extension: pdf
+                          uploadDate: "2021-10-02"
+    RSGetSupportingDocuments400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetSupportingDocuments400"
+          examples:
+            Request Params Required:
+              $ref: "#/components/examples/RequestParamsRequired"
+    RSUnsubscribeCustomer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUnsubscribeCustomer200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSUnsubscribeCustomer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUnsubscribeCustomer400"
+          examples:
+            Person Not Registered:
+              $ref: "#/components/examples/PersonNotRegistered"
+            Customer Has Open Accounts:
+              $ref: "#/components/examples/CustomerHasOpenAccounts"
+    RSUpdateCustomer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUpdateCustomer200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  userCredentials:
+                    username: JDOE
+                  generalInformation:
+                    firstNames: John
+                    lastNames: Doe
+                    genderId: 1,
+                    civilStatusId: 1
+                    birthCountry:
+                      id: US
+                      iso2: US
+                    birthState:
+                      id: New York
+                      name: New York
+                    birthCity:
+                      id: New York
+                      name: New York
+                    birthDate: 1985/01/07
+                    educationLevelId: 1
+                  personalAddress:
+                    country:
+                      id: 233
+                      iso2: US
+                    state:
+                      id: US
+                      name: New York
+                    city:
+                      id: US
+                      name: New York
+                    streetAddress: 01W.31thSt,NewYork
+                    address2: JohnDoeBuilding
+                    zipCode: 10011
+                    buildingNumber: 10
+                    homeNumber: 101
+                  contactInformation:
+                    phoneCodeIso2: US
+                    phoneNumber: 6450000000
+                    email: johnDoe@example.com
+    RSUpdateCustomer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUpdateCustomer400"
+          examples:
+            Requested Resource Not Found:
+              $ref: "#/components/examples/RequestedResourceNotFound"
+            Registered User With That Email:
+              $ref: "#/components/examples/RegisteredUserWithThatEmail"
+            Invalid Data:
+              $ref: "#/components/examples/InvalidData"
+            Customer Not Found:
+              $ref: "#/components/examples/CustomerNotFound"
+    RSUpdateCustomerIdentityDocuments200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUpdateCustomerIdentityDocuments200"
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  identityDocuments:
+                    identityDocumentId: 1
+                    documentType:
+                      id: 3
+                      name: Passport
+                    documentNumber: C96485632
+                    firstNames: John
+                    lastNames: Doe
+                    isPrimary: true
+                    issueDate: 2020/01/01
+                    expirationDate: 2030/01/01
+                    country:
+                      id: 233
+                      iso2: US
+                      name: United States
+                    gender:
+                      id: 1
+                      name: Male
+                    birthDate: 1985/01/07
+    RSUpdateCustomerIdentityDocuments400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSUpdateCustomerIdentityDocuments400"
+          examples:
+            Customer Status Not Allowed:
+              $ref: "#/components/examples/CustomerStatusNotAllowed"
+            Invalid Data:
+              $ref: "#/components/examples/InvalidData"
+            Document Number Exist:
+              $ref: "#/components/examples/DocumentNumberExist"
+            Primary Identity Document Required:
+              $ref: "#/components/examples/PrimaryIdentityDocumentRequired"
+            Requested Identity Document Not Exist:
+              $ref: "#/components/examples/RequestedIdentityDocumentNotExist"
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"

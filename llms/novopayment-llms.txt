@@ -1,0 +1,76 @@
+# NovoPayment
+
+> NovoPayment is a Miami-headquartered banking-as-a-service and embedded-finance platform serving
+> banks, fintechs, retailers and payment companies across the Americas. It publishes 15 OAuth2-secured
+> REST contracts (163 operations, OpenAPI 3.0) across six product families on its developer hub.
+
+Generated: 2026-09-17 by API Evangelist (https://apievangelist.com) from NovoPayment's own published
+OpenAPI documents and developer hub. NovoPayment publishes no llms.txt of its own; this file is a
+third-party index, not a provider document.
+
+## Access model
+
+- Authentication: OAuth 2.0 client credentials. POST https://sandbox-api.novopayment.com/oauth2/token
+  (form-encoded grant_type=client_credentials, client_id, client_secret) returns a BearerToken with
+  expires_in 1799 seconds. No scopes are published.
+- Headers: X-Tenant-Id (required), X-Transaction-Id (trace id, NOT idempotency), X-Request-Id,
+  X-Time-Zone.
+- Environments: sandbox (self-service after registration + project creation), UAT and production
+  (granted on request after NovoPayment reviews the project). Credentials differ per environment.
+- Errors: first-party {code, message, datetime} envelope on every response. The ten-character code
+  (HTTP status.product segment.detail) carries the outcome, not the HTTP status. Not RFC 9457.
+
+## Product families
+
+- Card Solutions: https://developer.novopayment.com/api/card-solutions
+- Digital Banking: https://developer.novopayment.com/api/digital-banking
+- Digital Acquiring: https://developer.novopayment.com/api/digital-acquiring
+- Digital Wallets: https://developer.novopayment.com/api/digital-wallets
+- Payments: https://developer.novopayment.com/api/payments
+- Tokenization: https://developer.novopayment.com/api/tokenization
+
+## APIs
+
+- Accounts API (31 ops): accounts, balances, transfers, card association — https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+- Cards API v1.3 (25 ops): issuance, PIN, blocks, cash in/out and reversals, transaction rules — https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+- Onboarding API (22 ops): document verification, OTP, profile, regulatory capture, account approval — https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+- Customers API (14 ops): individual, commercial and merchant customers, documents, risk indicators — https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+- Alias Directory API (14 ops): aliases, payment instruments, favourites — https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+- Issuer Tokenization API (12 ops): token provisioning and lifecycle for issuers — https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+- Push Provisioning API (10 ops): push cards to Apple Pay, Google Pay, Samsung Pay — https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+- Real-Time Payments API (7 ops): push/pull funds, reversal, query, summary — https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- Operations API (6 ops): transactional operations on accounts and card programs — https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+- Profile API (6 ops): customer configuration parameters — https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+- Merchant Presented QR (6 ops): QR generation, payment, status notification — https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+- Payment Authorizer API (4 ops): authorize, detail, refund, reverse — https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+- MasterCard Tokenization API v2.0 (4 ops): issuer-hosted tokenization — https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+- Compliance API (1 op): KYC facial, document and address verification — https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+- Security OAuth2 API (1 op): token issuance — https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+
+## Guides
+
+- Quick Start: https://developer.novopayment.com/guides/quick-start
+- How It Works: https://developer.novopayment.com/guides/how-it-works
+- Register and create projects: https://developer.novopayment.com/guides/how-it-works/register-and-create-projects
+- Get an access token: https://developer.novopayment.com/guides/how-it-works/get-access-token
+- Data encryption: https://developer.novopayment.com/guides/data-encryption
+- Glossary: https://developer.novopayment.com/glossary
+- Mobile Tokenization SDK (documentation gated — 403 anonymous): https://developer.novopayment.com/SDK/tokenization
+
+## What NovoPayment does not publish
+
+- No idempotency key on any of the 163 operations.
+- No rate limits, no 429 response, no RateLimit-* headers.
+- No pagination parameters on any list operation.
+- No prices, plans or rate card — commercial terms go through the commercial team.
+- No status page, no public changelog, no deprecation or versioning policy.
+- No SDK on any public package registry; no public GitHub repositories.
+- No /.well-known/ document on any host, no MCP server, no A2A agent card.
+- Certifications are named in the developer hub footer (PCI, ISO 27001/27017/27018, SOC 1, SOC 2,
+  Visa Ready) with no attestation documents or trust centre.
+
+## Legal
+
+- Terms: https://developer.novopayment.com/terms-and-conditions-use
+- Privacy: https://developer.novopayment.com/privacy-policy
+- Ethics reporting line: https://novopayment.com/reporting-channel/

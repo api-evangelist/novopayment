@@ -1,0 +1,96 @@
+specification: API Commons Conformance
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://developer.novopayment.com/api/getting-started (certification list and badge assets in the
+  developer hub footer) and the 15 provider-published OpenAPI documents
+description: >-
+  Industry, cross-cutting and domain standards the NovoPayment contracts and developer hub either
+  declare or demonstrably do not. Every entry cites where the evidence sits.
+conformance:
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      components.securitySchemes.oAuth2ClientCredentials (type oauth2, clientCredentials flow,
+      tokenUrl https://sandbox-api.novopayment.com/oauth2/token) in 12 of the 15 published specs,
+      plus a dedicated Security OAuth2 API contract for POST /token.
+  - id: oidc
+    conforms: false
+    evidence: >-
+      No openIdConnect security scheme and no /.well-known/openid-configuration on any host probed
+      2026-09-17.
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      No response in any published spec uses application/problem+json; errors carry a first-party
+      {code, message, datetime} envelope (errors/novopayment-problem-types.yml).
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key or equivalent header on any of the 163 published operations; the string
+      "idempoten" does not appear in any spec.
+  - id: pagination
+    conforms: false
+    evidence: No limit/offset/page/cursor parameter is declared on any published operation.
+  - id: rate-limit-headers
+    conforms: false
+    evidence: No 429 response and no RateLimit-* / X-RateLimit-* header is declared or documented.
+  - id: iso-8583
+    conforms: partial
+    evidence: >-
+      The Cards and Payment Authorizer specs name ISO 8583 and the decline detail segment tracks
+      ISO 8583 reason codes (044 insufficient funds, 511-520 pick-up/fraud), but NovoPayment exposes
+      them over REST/JSON rather than as an ISO 8583 message interface.
+  - id: iso-4217
+    conforms: true
+    evidence: Currency fields across the Accounts, Cards and Real-Time Payments specs are declared as ISO 4217 codes.
+  - id: iso-3166
+    conforms: true
+    evidence: Country fields across the Customers, Onboarding and Cards specs are declared as ISO 3166 codes.
+  - id: emvco-qr
+    conforms: partial
+    evidence: >-
+      The Merchant Presented QR contract references EMVCo in its QR payload handling; NovoPayment
+      does not publish an EMVCo certification statement.
+  - id: iso-20022
+    conforms: false
+    evidence: >-
+      No ISO 20022 message type (pacs/pain/camt) appears anywhere in the published contracts; the
+      Real-Time Payments API is a first-party JSON interface over the card rails (Visa/Mastercard).
+domain_standard:
+  market: payments / banking-as-a-service (Latin America)
+  declared_in_contract: false
+  note: >-
+    REWARD-ONLY check, recorded as absent rather than invented. NovoPayment's contracts declare no
+    financial-services domain standard for their own market — no ISO 20022 message schema, no FDX or
+    Open Banking UK/Berlin Group resource shapes, no PSD2 endpoints, no FAPI security profile. Card
+    network rails (Visa, Mastercard tokenization; ISO 8583 reason codes) are present but are wrapped
+    in NovoPayment's own JSON shapes, so an integrator who already speaks a banking standard still
+    needs a bespoke connector.
+certifications_published:
+  source: https://developer.novopayment.com/api/getting-started
+  location: developer hub footer, with badge assets under /sites/default/files/certifications/
+  named:
+    - PCI Compliance
+    - ISO 27001
+    - ISO 27017
+    - ISO 27018
+    - AICPA/SOC 1
+    - AICPA/SOC 2
+    - Visa Ready
+  attestation_documents_published: false
+  note: >-
+    The certifications are named and badged on the developer hub but no report, certificate, scope
+    statement or trust centre is published; there is no trust.novopayment.com and no request path for
+    an attestation. Named claims only.
+regulatory_context:
+  regime: financial-services
+  note: >-
+    NovoPayment operates as an infrastructure provider to regulated institutions across the Americas;
+    the public surface carries no licence register, no regulator identifier and no jurisdiction list.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

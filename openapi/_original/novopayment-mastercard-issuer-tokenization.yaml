@@ -1,0 +1,2024 @@
+---
+openapi: 3.0.0
+info:
+  title: MasterCard Tokenization API
+  description: >
+    ## Introduction ##
+
+    NovoPayment, as a Token Service Provider, has a collection of APIs that
+    enables Issuers to participate in the Tokenization ecosystem; we are
+    responsible for the interaction between the Issuer and the franchises.
+
+
+    Providing security in the process, ease of implementation and support for
+    your development teams throughout the project.
+
+
+    The integration between the Issuer and this portfolio services are with API
+    Rest, all these services are useful for the Issuer, who is responsible for
+    providing the cards and carrying out the process of validation and approval
+    of the tokens.
+
+
+    The set of APIs that the Issuer needs to develop are listed below, depending
+    on the relation between Novo and the client.
+
+
+    When an issuer is a client of our issuance services, the verification and
+    approval processes are performed by us. For that reason, only need to develop
+
+    this set of APIs:
+    - [Send Verification Verify Code](ToDo_URL_SendVerifyCode)
+
+    - [Notification](ToDo_Notification)
+
+    ## Headers Params ##
+    
+    **Header fields**
+    
+    | Name             | Description                                                  | Value                                | Required/Optional/Conditional |
+
+    |------------------|--------------------------------------------------------------|--------------------------------------|-------------------------------|
+
+    | Accept-Language | Language used.                                              | en                                   | Required                      |
+
+    | Content-Type    | Response body type. Operation related information.          | application/json                    | Required                      |
+
+    | Accept          | Content types that are acceptable related to this operation.| application/json                    | Conditional                   |
+
+    | Authorization   | Application authentication information based on the RFC6750 OAUTH 2 specification, under the client’s credentials. | 'Bearer ' + accesToken        | Required                      |
+
+    | X-Token         | Application authentication information based on the RFC7515 JWS under petition signature. | 'JWS ' + token               | Required                      |
+
+    | X-Tenant-Id     | Identifies the tenant that is calling the operation.        | < tenantId >                          | Required                      |
+
+    | X-Time-Zone     | Time Zone of the request.                                    | < timeZone >                          | Optional                      |
+
+    | X-Request-Id   | Unique ID for the API request. This ID is the reference in all the API’s processes. | String (1-36)                 | Optional                      |
+
+    _**Note:**_
+
+    _The issuer must give to NovoPayment the RSA encryption certificates for JWE
+
+    and JWS. In addition, NovoPayment will give the corresponding certificates
+
+    to the issuer._
+    
+  version: v2.0
+tags:
+  - name: Tokenization Process
+  - name: Life Cycle Management
+#  
+#Tokenization Process Endpoints
+servers:
+  - description: Certification
+    url: https://[URLIssuer]/v2
+paths:
+  /sendverifycode:
+    post:
+      servers:
+        - description: External
+          url: "https://[URLIssuer]"
+      tags:
+        - Tokenization Process
+      summary: Send Verify Code
+      description: |
+        Our endpoint empowers issuers to seamlessly receive and deliver a One-Time Password (OTP) to cardholders. 
+        This temporary verification code is essential for cardholders to confirm their identity when registering 
+        their card with merchants, ensuring a secure and smooth transaction experience. 
+        
+      operationId: SendVerifyCode
+      requestBody:
+        $ref: "#/components/requestBodies/RQSendVerifyCode"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSFromIssuer_200"
+        "400":
+          $ref: "#/components/responses/RSFromIssuer_400"
+        "401":
+          $ref: "#/components/responses/RSInvalidSignature"
+        "500":
+          $ref: "#/components/responses/RSInternalServerError" 
+  /notifications/serviceactivated:
+    post:
+      servers:
+        - description: External
+          url: "https://[URLIssuer]"
+      tags:
+        - Tokenization Process
+      summary: Notifications Service Activated
+      description: |
+        The Issuer exposes this endpoint to receive the notifications about token’s creation. 
+        
+      operationId: serviceactivated
+      requestBody:
+        $ref: "#/components/requestBodies/RQNotServiceActivated"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSFromIssuer_200"
+        "400":
+          $ref: "#/components/responses/RSFromIssuer_400"
+        "401":
+          $ref: "#/components/responses/RSInvalidSignature"
+        "500":
+          $ref: "#/components/responses/RSInternalServerError"
+  /notifications/tokenupdated:
+    post:
+      servers:
+        - description: External
+          url: "https://[URLIssuer]"
+      tags:
+        - Tokenization Process
+      summary: Notifications about Token Updated
+      description: |
+        The Issuer exposes this endpoint to receive notifications about the token’s status changes.
+          Available Types:
+          REDIGITIZATION_COMPLETE
+          DELETED_FROM_CONSUMER_APP
+          STATUS_UPDATE    
+      operationId: tokenupdated
+      requestBody:
+        $ref: "#/components/requestBodies/RQNotTokenUpdated"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSFromIssuer_200"
+        "400":
+          $ref: "#/components/responses/RSFromIssuer_400"
+        "401":
+          $ref: "#/components/responses/RSInvalidSignature"
+        "500":
+          $ref: "#/components/responses/RSInternalServerError"
+  /notifications/suspiciousevents:
+    post:
+      servers:
+        - description: External
+          url: "https://[URLIssuer]"
+      tags:
+        - Tokenization Process
+      summary: Notifications about Suspicious Events
+      description: |
+        The Issuer exposes this endpoint to receive notifications 
+        about the token when any suspicious events are detected.
+      operationId: suspiciousevents
+      requestBody:
+        $ref: "#/components/requestBodies/RQNotSuspiciousEvents"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSFromIssuer_200"
+        "400":
+          $ref: "#/components/responses/RSFromIssuer_400"
+        "401":
+          $ref: "#/components/responses/RSInvalidSignature"
+        "500":
+          $ref: "#/components/responses/RSInternalServerError"
+  
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+  
+  examples:
+    HeaderParamsRequired:
+      value:
+        code: 400.22.001
+        message: Header Params Required
+        datetime: "2022-04-25T23:19:12.000Z"
+    JWEInvalidFormat:
+      value:
+        code: 400.22.002
+        message: JWE Invalid format
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidTenantID:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: "2022-04-25T23:19:12.000Z"
+    UnableProcessRequest:
+      value:
+        code: 400.22.324
+        message: We were unable to process your request
+        datetime: "2022-04-25T23:19:12.000Z"
+    IntegrationError:
+      value:
+        code: 400.22.376
+        message: Integration Error
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: "2022-04-25T23:19:12.000Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: "2022-04-25T23:19:12.000Z"
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: "2022-04-25T23:19:12.000Z"
+    InternalServerError:
+      value:
+        code: 500.22.999
+        message: Internal Server Error
+        datetime: "2022-04-25T23:19:12.000Z"
+    HeaderParamsRequiredTk:
+      value:
+        code: 400.22.001
+        message: Header Params Required
+        datetime: "2022-04-25T23:19:12.000Z"
+    ErrorGeneralService:
+      value:
+        code: 400.22.350
+        message: Error General Service.
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidParams:
+      value:
+        code: 400.22.396
+        message: Invalid parameters.
+        datetime: "2024-07-17T00:57:36.360Z"
+    ConfigurationNotFound:
+      value:
+        code: 400.22.356
+        message: Component configuration not found.
+        datetime: "2024-07-17T00:57:36.360Z"
+    EncryptionError:
+      value:
+        code: 400.22.994
+        message: Encryption error
+        datetime: "2024-07-17T00:57:36.360Z"
+    InvalidSignatureTk:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: "2024-07-17T00:57:36.360Z"         
+    DecryptionError:
+      value:
+        code: 401.22.997
+        message: Decryption Error
+        datetime: "2024-07-17T00:57:36.360Z"    
+    InternalServerErrorTk:
+      value:
+        code: 500.22.999
+        message: Internal Server Error
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidadCardId:
+      value:
+        code: 400.22.009
+        message: Invalid Card Id
+        datetime: "2022-04-25T23:19:12.000Z"
+    ParamsRequired:
+      value:
+        code: 400.22.324
+        message: We were unable to process your request
+        datetime: "2022-04-25T23:19:12.000Z"
+        data: >
+               "fieldName":
+                [
+                 "reasonCodes",
+                 "tokenUniqueReference"
+                ]
+    RQNotServiceActivated:
+      value:
+        requestId: 808808080808
+        reasonCode: SERVICE_ACTIVATED
+        dateTime: 2026-07-04T19:08:56.123Z
+        notificationBody: 
+          services: [DIGITIZATION]
+          correlationId: D98765432104
+          decision: APPROVED
+          decisionMadeBy: RULES
+          tokenActivatedDateTime: 2022-04-25T23:19:12.000Z
+          numberOfActivationAttempts: RULES
+          numberOfActiveTokens: 0
+          tokenAssuranceLevel: 0
+          tokenInformation: 
+            source: ON_FILE
+            tokenType: ECOM
+            tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+            tokenRequestorId: 40022358888
+            accountPanSuffix: 1234
+            serviceRequestDateTime: 2015-07-04T12:08:56.123-07:00
+            panUniqueReference: FWSPMC000000000159f71f703d2141efaf04dd26803f922b
+            tokenRequestorName: My Merchant
+            cardId: 5DA...27
+            walletId: 123
+            paymentAppInstanceId: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e
+            secureElementId: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e93452c            
+            termsAndConditionsAssetId: a9f027e5-629d-11e3-949a-0800200c9a66
+            termsAndConditionsAcceptedTimestamp: 2015-07-04T12:09:56.123-07:00
+            productConfigurationId: 1234
+            consumerLanguage: en
+            encryptedPayload: 
+              source: ON_FILE
+              dataValidUntilTimestamp: 2015-07-04T12:09:56.123-07:00
+              cardAccountData: 
+                accountNumber: 5808123456789808
+                expiryMonth: 12
+                expiryYear: 15
+                securityCode: 808
+              financialAccountData: 
+                financialAccountId: 5123456789012345
+                interbankCardAssociationId: 1234
+                countryCode: GBR
+              tokenData: 
+                token: 5345678901234521
+                expiryMonth: 12
+                expiryYear: 15
+                sequenceNumber: 01
+              paymentAccountReference: 512381d9f8e0629211e3949a08002
+              accountHolderData: 
+                accountHolderName: John Doe
+                accountHolderEmailAddress: abcdef@xyz.com
+                accountHolderMobilePhoneNumber: 
+                  countryDialInCode: 1
+                  phoneNumber: 4692392391
+                accountHolderAddress: 
+                  line1: 100 1st Street
+                  line2: Apt. 4B
+                  city: St. Louis
+                  countrySubdivision: MO
+                  postalCode: 61000
+                  country: USA
+                sourceIp: 127.0.0.1
+                deviceLocation: 38.63/-90.2
+                consumerIdentifier: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e93452c1b24f24a24b
+    
+    RQNotificationRedigitizationComplete:
+      value:  
+          requestId: 808808080808
+          reasonCode: REDIGITIZATION_COMPLETE
+          dateTime: 2026-07-04T19:08:56.123Z
+          notificationBody: 
+            tokens:              
+              - tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+                tokenRequestorId: 40022358888
+                tokenRequestorName: My Merchant
+                cardId: 5DA...27
+                tokenExpiry: 0721
+                encryptedPayload: 
+                  panUniqueReference: FWSPMC000000000159f71f703d2141efaf04dd26803f922b
+                  dataValidUntilTimestamp: 2015-07-04T12:09:56.123-07:00
+                  source: ON_FILE
+                  cardAccountData: 
+                    accountNumber: 5808123456789808
+                    expiryMonth: 12
+                    expiryYear: 15
+                    securityCode: 123                  
+                  financialAccountData: 
+                    financialAccountId: 5123456789012345
+                    interbankCardAssociationId: 1234
+                    countryCode: GBR                  
+                  tokenData: 
+                    token: 5345678901234521
+                    expiryMonth: 12
+                    expiryYear: 15
+                    sequenceNumber: 01                  
+                  paymentAccountReference: 512381d9f8e0629211e3949a08002
+    RQNotificationSU_TokenExpiry:
+      value:  
+          requestId: 808808080808
+          reasonCode: REDIGITIZATION_COMPLETE
+          dateTime: 2026-07-04T19:08:56.123Z
+          notificationBody: 
+            tokens: 
+              tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+              tokenRequestorId: 40022358888
+              tokenRequestorName: My Merchant
+              cardId: 5DA...27
+              tokenExpiry: 0721
+              encryptedPayload: 
+                dataValidUntilTimestamp: 2015-07-04T12:09:56.123-07:00
+                tokenData: 
+                  token: 5345678901234521
+                  expiryMonth: 12
+                  expiryYear: 15
+                  sequenceNumber: 01
+    RQNotificationSU_PANSameRange:
+      value:  
+          requestId: 808808080808
+          reasonCode: REDIGITIZATION_COMPLETE
+          dateTime: 2026-07-04T19:08:56.123Z
+          notificationBody: 
+            tokens: 
+              tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+              tokenRequestorId: 40022358888
+              tokenRequestorName: My Merchant
+              cardId: 5DA...27
+              tokenExpiry: 0721
+              encryptedPayload: 
+                dataValidUntilTimestamp: 2015-07-04T12:09:56.123-07:00
+                cardAccountData: 
+                  accountNumber: 5808123456789808
+                  expiryMonth: 12
+                  expiryYear: 15
+                  securityCode: 123
+                tokenData: 
+                  token: 5345678901234521
+                  expiryMonth: 12
+                  expiryYear: 15
+                  sequenceNumber: 01
+    RQNotificationSU_Suspend:
+      value:  
+          requestId: 808808080808
+          reasonCode: STATUS_UPDATE
+          dateTime: 2026-07-04T19:08:56.123Z
+          notificationBody: 
+            tokens: 
+              tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+              tokenRequestorId: 40022358888
+              tokenRequestorName: My Merchant
+              cardId: 5DA...27
+              status: SUSPENDED
+              suspendedBy: >
+               [ISSUER]
+              tokenExpiry: 0721
+    RQNotificationSU_Activated:
+      value:  
+          requestId: 808808080808
+          reasonCode: STATUS_UPDATE
+          dateTime: 2026-07-04T19:08:56.123Z
+          notificationBody: 
+            tokens: 
+              tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+              tokenRequestorId: 40022358888
+              tokenRequestorName: My Merchant
+              cardId: 5DA...27
+              status: ACTIVE
+              tokenExpiry: 0721
+              
+    RQNotificationSU_DeletedFromApp:
+      value:  
+          requestId: 808808080808
+          reasonCode: DELETED_FROM_CONSUMER_APP
+          dateTime: 2026-07-04T19:08:56.123Z
+          notificationBody: 
+            tokens: 
+              tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+              tokenRequestorId: 40022358888
+              tokenRequestorName: My Merchant
+              cardId: 5DA...27
+    RQNotificationSU_AuthenticationPerf:
+      value:  
+          requestId: 808808080808
+          reasonCode: AUTHENTICATION_PERFORMED
+          dateTime: 2026-07-04T19:08:56.123Z
+          notificationBody: 
+            tokens: 
+              tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+              tokenRequestorId: 40022358888
+              tokenRequestorName: My Merchant
+              cardId: 5DA...27
+              tokenExpiry: 0721
+    RQNotificationSuspiciousEvents:
+      value:
+        requestId: 808808080808
+        reasonCode: SUSPICIOUS_EVENTS
+        dateTime: 2026-07-04T19:08:56.123Z
+        notificationBody: 
+          tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+          tokenRequestorId: 40022358888
+          tokenRequestorName: My Merchant
+          cardId: 5DA...27
+          status: ACTIVE
+          paymentAppInstanceId: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e
+          events:
+            - eventName: REPLENISH
+              walletAtcStatus:
+                - unusedDiscarded: 1234
+                  usedForContactless: 1234
+                  usedForDsrp: 1234
+                  unusedActive: 1234
+              SystemAtcStatus:
+                - atcNotFound: 1234
+                  atcAlreadyProcessed: 1234
+                  atcReportedUsedByWallet: 1234
+                  unusedActive: 1234
+  parameters:
+    vCardId:
+      name: vCardId
+      in: path
+      description: |
+        This value is generated on Universal Card Enrollment. Only applicable for VISA.
+      required: true
+      example: 502c2656-7110-4994-a820-f593e468c6b4
+      schema:
+        type: string
+        maxLength: 42
+    
+  schemas:
+    RQSendVerifyCode:
+      type: object
+      required:
+        - correlationId 
+        - requestId
+        - activationCode
+        - codeExpiration
+        - activationMethod
+      properties:
+        correlationId:
+          type: string
+          description: |
+            Identification of the Tokenization Process. This value linked 
+            both processes.
+          example: D98765432104
+          maxLength: 14
+        requestId:
+          type: string
+          $ref: "#/components/schemas/prm_requestId"
+        tokenRequestorID:
+          type: integer
+          description: |
+            Unique ID assigned to the entity that is requesting the token.
+          example: 40022358888
+        tokenRequestorName:
+          type: string
+          description: |
+            Name of the token requestor.
+          example: My Merchant
+        tokenUniqueReference:
+          type: string
+          description: |
+            Unique ID associating a token with a card. This ID can be used in 
+            future calls to make operations related to the token in the I-TSP, 
+            for example events related to the management of the life cycle.
+          example: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+          maxLength: 64
+        panUniqueID:
+          type: string
+          description: |
+            Unique ID representing a card. This ID can be used instead of the 
+            PAN number for tokenization calls.
+          example: V-3019231458906209630635
+        cardId: 
+          type: string
+          description: |
+            Unique Identification for the card in NovoPayment Issuance Services.
+            This value only exists for Issuers that are clients of NovoPayment 
+            Issuance Services.
+          maxLength: 40
+        clientWalletAccountID:
+          type: string
+          description: |
+            Identifier of the wallet that sends the request. Client provided 
+            consumer ID that identifies the wallet account holder entity. 
+            Only available for VISA.
+          maxLength: 32
+        otpMaxReached:
+          type: boolean
+          description: |
+            If this field is active, it means the user with the referenced token 
+            has exceeded the number of requests for authentication methods or OTP 
+            requests, thus, the response must not include the value when requesting 
+            them again. Only available for VISA.
+        activationCode:
+          type: string
+          description: |
+             The value that the cardholder needs to validate his/her identity.
+          example: A1B2C3D4
+          maxLength: 8
+        reasonCodes: 
+          type: array
+          description: |
+            Array of OTP reason codes.
+            Allowed values: 
+            - ADD_CARD: The account holder is being authenticated after adding 
+            the card to the token requestor.
+            - VERIFY_ACCOUNT: The account holder is being authenticated to verify 
+            account ownership.
+            - OTHER: The account holder is being authenticated for a reason not 
+            enumerated in this list. Conditional - Only present for Consent Service
+          example: 
+            - ADD_CARD
+        codeExpiration:
+          type: string
+          description: |
+             Token expiration date. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+          example: 2026-07-04T19:08:56.123Z
+        activationMethod:
+          $ref: "#/components/schemas/ObjActivationMethod"
+    RQNotServiceActivated:
+      type: object
+      required:
+        - requestId
+        - reasonCode
+        - dateTime
+        - notificationBody
+      properties:
+        requestId:
+          type: string
+          $ref: "#/components/schemas/prm_requestId"
+        reasonCode:
+          type: string
+          description: | 
+              SERVICE_ACTIVATED
+          example: SERVICE_ACTIVATED
+        dateTime:
+          type: string
+          description: |
+             dateTime. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+          example: 2026-07-04T19:08:56.123Z
+        notificationBody:
+          type: object
+          $ref: "#/components/schemas/ObjBodyServiceActivated"
+    RQNotTokenUpdated:
+      type: object
+      required:
+        - requestId
+        - reasonCode
+        - dateTime
+        - notificationBody
+      properties:
+        requestId:
+          type: string
+          $ref: "#/components/schemas/prm_requestId"
+        reasonCode:
+          type: string
+          description: | 
+              The reason that cause the notification.
+              Available values:
+              REDIGITIZATION_COMPLETE : The token has been re-digitized to the device in the token expiry and FPAN update to a new range use cases.
+              DELETED_FROM_CONSUMER_APP : The token has been deleted from the consumer application. The token may still be active in MDES
+              STATUS_UPDATE : The status of the tokens has been changed when the token is activated, suspended, deleted, or inactivated.
+              AUTHENTICATION_PERFORMED - Account holder authentication was performed on the token. 
+              PAYMT_CHANNEL_PREFERENCE_UPDATED - Cardholder has updated the payment channels the token is allowed to be used for (India only).
+              FUNDING_ACCOUNT_UPDATE - Token and FPAN mapping has been updated due to FPAN or expiry or Financial account has been changed but Token is not changed. The status did not change as a result.
+          enum:
+            - REDIGITIZATION_COMPLETE
+            - DELETED_FROM_CONSUMER_APP
+            - STATUS_UPDATE
+            - AUTHENTICATION_PERFORMED
+            - PAYMT_CHANNEL_PREFERENCE_UPDATED
+            - FUNDING_ACCOUNT_UPDATE
+          example: STATUS_UPDATE
+        dateTime:
+          type: string
+          description: |
+             dateTime. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+          example: 2026-07-04T19:08:56.123Z
+        notificationBody:
+          $ref: "#/components/schemas/ObjBodyTokenUpdated"
+
+    RQNotSuspiciousEvents:
+      type: object
+      required:
+        - requestId
+        - reasonCode
+        - dateTime
+        - notificationBody
+      properties:
+        requestId:
+          type: string
+          $ref: "#/components/schemas/prm_requestId"
+        reasonCode:
+          type: string
+          description: | 
+              SUSPICIOUS_EVENTS
+          enum:
+            - SUSPICIOUS_EVENTS
+          example: SUSPICIOUS_EVENTS
+        dateTime:
+          type: string
+          description: |
+             dateTime. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+          example: 2026-07-04T19:08:56.123Z
+        notificationBody:
+          $ref: "#/components/schemas/ObjBodyNotSuspiciousEv"
+    
+    ObjBodyNotSuspiciousEv:
+      required:
+      - tokenUniqueReference
+      - events
+      type: object
+      properties:
+        tokenUniqueReference:
+          type: string
+          $ref: "#/components/schemas/prm_tokenUniqueReference"
+        tokenRequestorId:
+          type: string
+          $ref: "#/components/schemas/prm_tokenRequestorID"
+        tokenRequestorName:
+          type: string
+          $ref: "#/components/schemas/prm_tokenRequestorName"
+        cardId:
+          type: string
+          $ref: "#/components/schemas/prm_cardId"
+        status:
+          type: string
+          description: >
+           The current status of token. 
+           Available Values:
+           INACTIVE - Token has not yet been activated
+           ACTIVE - Token is active and ready to transact
+           SUSPENDED - Token is suspended and unable to transact
+           DEACTIVATED - Token has been permanently deactivated. 
+           Present only if reasonCode = "STATUS_UPDATE". 
+          minLength: 1
+          maxLength: 32
+          example: ACTIVE
+        paymentAppInstanceId:
+          type: string
+          description: The identifier of the Payment App instance within a device
+            that will be provisioned with a token. Only present when supplied by a
+            Wallet Provider.
+          minLength: 1
+          maxLength: 48
+          example: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e
+        events:
+          $ref: '#/components/schemas/SuspiciousEvent'
+    SuspiciousEvent:
+      required:
+      - eventName
+      type: object
+      properties:
+        eventName:
+          type: string
+          description: The name of the suspicious event. Must be one of; REPLENISH
+            - There were suspicious ATC values reporting during Replenish
+          minLength: 1
+          maxLength: 32
+          example: REPLENISH
+        walletAtcStatus:
+          $ref: '#/components/schemas/WalletAtcStatus'
+          description: The ATCs statuses are reported by the wallet. Required if 
+            EventName is REPLENISH.
+        systemAtcStatus:
+          $ref: '#/components/schemas/SystemAtcStatus'
+          description: The ATCs statuses as reported by authorization network. 
+            Required if EventName is REPLENISH
+    SystemAtcStatus:
+      type: object
+      properties:
+        atcNotFound:
+          type: array
+          description: The ATCs reported by the authorization network as not found.
+            Max length - Not applicable. Type - Array[String].
+          items:
+            type: string
+            example: "1234"
+        atcAlreadyProcessed:
+          type: array
+          description: The ATCs reported by the authorization network as processed
+            for a transaction. Max length - Not applicable. Type - Array[String].
+          items:
+            type: string
+            example: "1234"
+        atcReportedUsedByWallet:
+          type: array
+          description: The ATCs prviously reported by the wallet as processed or discarded.
+            Max length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: "1234"
+        unusedActive:
+          type: array
+          description: The ATCs reported by the wallet that are unused active. Max
+            length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: "1234"
+      description: The ATCs statuses as reported by authorization network. Conditional
+        – required if EventName is REPLENISH
+    WalletAtcStatus:
+      type: object
+      properties:
+        unusedDiscarded:
+          type: array
+          description: The ATCs reported by the wallet that are unused discarded.
+            Max length - Not applicable. Type - Array[String].
+          items:
+            type: string
+            example: "1234"
+        usedForContactless:
+          type: array
+          description: The ATCs reported by the wallet that are used for contactless
+            transaction. Max length - Not applicable. Type - Array[String].
+          items:
+            type: string
+            example: "1234"
+        usedForDsrp:
+          type: array
+          description: The ATCs reported by the wallet that are used for DSRP transaction.
+            Max length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: "1234"
+        unusedActive:
+          type: array
+          description: The ATCs reported by the wallet that are unused active. Max
+            length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: "1234"
+      description: The ATCs statuses are reported by the wallet. Conditional – required
+        if EventName is REPLENISH
+    ObjActivationMethod:
+      type: object
+      required:
+        - type
+        - destiny
+      description: |
+        Object with the information of the identification method chosen 
+        by the cardholder.
+      properties:
+        type:
+          type: string
+          description: |
+            Specifies the activation method type. Must be one of:
+            - TEXT_TO_CARDHOLDER_NUMBER = Text message to Account holder's 
+            mobile phone number. Value will be the Account holder's masked 
+            mobile phone number.
+            - EMAIL_TO_CARDHOLDER_ADDRESS = Email to Account holder's email 
+            address. Value will be the Account holder's masked email address
+            - CARDHOLDER_TO_CALL_AUTOMATED_NUMBER = Account holder-initiated 
+            call to automated call center phone number. Value will be the phone 
+            number for the Account holder to call
+            - CARDHOLDER_TO_CALL_MANNED_NUMBER = Account holder-initiated call 
+            to manned call center phone number. Value will be the phone number 
+            for the Account holder to call
+            - CARDHOLDER_TO_VISIT_WEBSITE = Account holder to visit a website. 
+            Value will be the website URL
+            - CARDHOLDER_TO_USE_MOBILE_APP = Account holder to use a specific 
+            mobile app to activate token. Value will be replaced by a formatted 
+            string
+            - ISSUER_TO_CALL_CARDHOLDER_NUMBER = Issuer-initiated voice call to 
+            Account holder's phone. Value will be the Account holder's masked 
+            voice call phone number.
+          example: TEXT_TO_CARDHOLDER_NUMBER
+        destiny:
+          type: string
+          description: |
+            Specifies the activation method value.
+          example: 
+            "someaccount@novopayment.com"
+          maxLength: 64
+        otpMethodIdentifier: 
+          type: string
+          description: |
+            Unique ID that allows to associate an OTP action to the cardholder. 
+            This value is delivered by the issuer when the I-TSP calls the 
+            endpoint Cardholder Verification Methods. Only available for VISA.
+          maxLength: 32
+    ObjStepUpMethods:
+      type: object
+      required:
+        - type
+        - value
+        - identifier
+      properties:
+        type:
+          type: string
+          description: |
+            It is required when the authentication method of the cardholder is
+            returned.
+
+            Allowed values:
+            - OTPSMS
+            - OTPEMAIL
+            - APP_TO_APP
+            - CUSTOMERSERVICE
+            - OUTBOUNDCALL
+          enum:
+            - OTPSMS
+            - OTPEMAIL
+            - APP_TO_APP
+            - CUSTOMERSERVICE
+            - OUTBOUNDCALL
+          maxLength: 32
+          example: OTPSMS
+        value:
+          type: string
+          description: |
+            Value of the identification method of the cardholder.
+          maxLength: 64
+        identifier:
+          type: string
+          description: |
+            Identifier of the identification method of the cardholder that can
+            be used for future calls to send the OTP.
+          maxLength: 32
+        sourceAddress:
+          type: string
+          description: |
+            Indicates the source address from which the OTP is sent.
+          maxLength: 64
+        otpMethodPlatform:
+          type: string
+          description: |
+            Used with the APP_TO_APP type, this field contains the appropriate
+            OS platform for the associated issuer mobile banking application.
+
+            Authorized values:
+            - IOS
+            - ANDROID
+            - WINDOWS
+            - WEB
+          enum:
+            - IOS
+            - ANDROID
+            - WINDOWS
+            - WEB
+          maxLength: 64
+    ObjBodyServiceActivated:
+      type: object
+      required:
+        - services
+        - correlationId
+        - decision
+        - tokenInformation
+        - decisionMadeBy
+        - tokenActivatedDateTime
+      properties:
+        services:
+          type: array
+          $ref: "#/components/schemas/prm_services"
+        correlationId:
+          type: string
+          description: |
+            Identification of the Tokenization Process. This value linked 
+            both processes.
+          example: D98765432104
+          maxLength: 14
+        decision:
+          type: string
+          $ref: "#/components/schemas/prm_decision"
+        decisionMadeBy:
+          type: string
+          $ref: "#/components/schemas/prm_decisionMadeBy"
+        tokenActivatedDateTime:
+          $ref: "#/components/schemas/prm_tokenActivatedDateTime"
+        numberOfActivationAttempts:
+          $ref: "#/components/schemas/prm_decisionMadeBy"
+        numberOfActiveTokens:
+          $ref: "#/components/schemas/prm_numberOfActivationAttempts"
+        tokenAssuranceLevel:
+          $ref: "#/components/schemas/prm_tokenAssuranceLevel"
+        tokenInformation:
+          type: object
+          $ref: "#/components/schemas/ObjTokenInformation_ActSer"
+          
+    ObjBodyTokenUpdated:
+      type: object
+      required:
+        - tokens
+      properties:
+        tokens:
+          type: array
+          description: Arrary that contains the Tokens which were updated.
+          items:
+            $ref: '#/components/schemas/ObjToken_StatusUpdate'
+    
+    ObjTokenInformation_ActSer:
+      type: object
+      required:
+        - source
+        - tokenType
+        - tokenUniqueReference
+        - tokenRequestorId
+        - accountPanSuffix
+        - serviceRequestDateTime
+      properties:
+        source:
+          type: string
+          $ref: "#/components/schemas/prm_source"
+        tokenType:
+          type: string
+          $ref: "#/components/schemas/prm_tokenType"
+        tokenUniqueReference:
+          type: string
+          $ref: "#/components/schemas/prm_tokenUniqueReference"
+        tokenRequestorId:
+          type: string
+          $ref: "#/components/schemas/prm_tokenRequestorID"
+        accountPanSuffix:
+          type: string
+          description: The last few digits (typically four) of the Account PAN being
+            digitized.
+          minLength: 4
+          maxLength: 8
+          example: "1234"
+        serviceRequestDateTime:
+          type: string
+          description: The date and time the service for the PAN was requested. Expressed
+            in ISO 8601 extended format as one of the following - YYYY-MM-DDThh:mm:ss[
+            .sss ]Z, YYYY-MM-DDThh:mm:ss[ .sss ]±hh:mm . Where [ .sss ] is optional
+            and can be 1 to 3 digits.
+          minLength: 20
+          maxLength: 29
+          example: 2015-07-04T12:08:56.123-07:00
+        panUniqueReference:
+          type: string
+          $ref: "#/components/schemas/prm_panUniqueReference"
+        tokenRequestorName:
+          type: string
+          $ref: "#/components/schemas/prm_tokenRequestorName"
+        cardId:
+          type: string
+          $ref: "#/components/schemas/prm_cardId"
+        walletId:
+          type: string
+          description: The identifier of the Wallet Provider who requested the digitization.
+            Only present when the token is provided to a Wallet Provider.
+          minLength: 1
+          maxLength: 3
+          example: "123"
+        paymentAppInstanceId:
+          type: string
+          description: The identifier of the Payment App instance within a device
+            that will be provisioned with a token. Only present when supplied by a
+            Wallet Provider. Max length - 48. Type - String.
+          minLength: 1
+          maxLength: 48
+          example: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e
+        secureElementId:
+          type: string
+          description: The identifier of the Secure Element to be provisioned with
+            the token. Present only when the token is provisioned to a Secure Element
+            and when provided by the Wallet Provider.
+          minLength: 1
+          maxLength: 128
+          example: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e93452c
+        termsAndConditionsAssetId:
+          type: string
+          description: The Terms and Conditions as presented to and accepted by the
+            Account holder.
+          minLength: 1
+          maxLength: 64
+          example: a9f027e5-629d-11e3-949a-0800200c9a66
+        termsAndConditionsAcceptedTimestamp:
+          type: string
+          description: The date and time the Terms and Conditions were accepted by
+            the Account holder. Expressed in ISO 8601 extended format as one of the
+            following - YYYY-MM-DDThh:mm:ss[ .sss ]Z, YYYY-MM-DDThh:mm:ss[ .sss ]±hh:mm
+            . Where [ .sss ] is optional and can be 1 to 3 digits.
+          minLength: 20
+          maxLength: 29
+          example: 2015-07-04T12:09:56.123-07:00
+        productConfigurationId:
+          type: string
+          description: Freeform identifier for the product configuration as assigned
+            by the Issuer.
+          minLength: 1
+          maxLength: 64
+          example: "1234"
+        consumerLanguage:
+          type: string
+          description: Language preference selected by the consumer. Formatted as
+            an ISO-639-1 two-letter language code.
+          minLength: 2
+          maxLength: 2
+          example: en
+        encryptedPayload:
+          type: string
+          $ref: "#/components/schemas/ObjencryptedPayload_ServiceActivated"
+          description: Payload Encrypted, contains information detailed about Card, Account
+              Cardholder and Token Details
+    ObjencryptedPayload_ServiceActivated:
+      required:
+      - cardAccountData
+      type: object
+      properties:
+        source:
+          type: string
+          $ref: "#/components/schemas/prm_source"
+        dataValidUntilTimestamp:
+          type: string
+          description: >
+            The date/time after which this encrypted object is considered invalid. If present, all systems must reject this encrypted object after this time and treat it as invalid data. Must be expressed in ISO 8601 extended format as one of the following:
+              - YYYY-MM-DDThh:mm:ss[.sss]Z
+              - YYYY-MM-DDThh:mm:ss[.sss]±hh:mm
+
+            Where [.sss] is optional and can be 1 to 3 digits. Must be a value no more than 30 days in the future. Mastercard recommends using a value of (Current Time + 30 minutes).
+          minLength: 20
+          maxLength: 29
+          example: 2015-07-04T12:09:56.123-07:00
+        cardAccountData:
+          $ref: '#/components/schemas/ObjcardAccountData'
+        financialAccountData:
+          $ref: '#/components/schemas/ObjFinancialAccountData'
+        tokenData:
+          $ref: '#/components/schemas/ObjTokenData'
+          description: The token information.
+        paymentAccountReference:
+          type: string
+          description: The unique account reference assigned to the PAN.
+          minLength: 29
+          maxLength: 29
+          example: 512381d9f8e0629211e3949a08002
+        accountHolderData:
+          $ref: '#/components/schemas/ObjAccountHolderData'
+    ObjencryptedPayload_StatusUpdate:
+      required:
+      - panUniqueReference
+      type: object
+      properties:
+        panUniqueReference:
+          type: string
+          $ref: "#/components/schemas/prm_panUniqueReference"
+        source: 
+          type: string
+          $ref: "#/components/schemas/prm_source"
+        dataValidUntilTimestamp:
+          type: string
+          description: >
+            The date/time after which this encrypted object is considered invalid. If present, all systems must reject this encrypted object after this time and treat it as invalid data. Must be expressed in ISO 8601 extended format as one of the following:
+              - YYYY-MM-DDThh:mm:ss[.sss]Z
+              - YYYY-MM-DDThh:mm:ss[.sss]±hh:mm
+
+            Where [.sss] is optional and can be 1 to 3 digits. Must be a value no more than 30 days in the future. Mastercard recommends using a value of (Current Time + 30 minutes).
+          minLength: 20
+          maxLength: 29
+          example: 2015-07-04T12:09:56.123-07:00
+        cardAccountData:
+          $ref: '#/components/schemas/ObjcardAccountData'
+          description: Required if reasonCode is "FUNDING_ACCOUNT_UPDATE".
+        tokenData:
+          $ref: '#/components/schemas/ObjTokenData'
+          description: Required if reasonCode is "REDIGITIZATION_COMPLETE" or "FUNDING_ACCOUNT_UPDATE".
+        paymentAccountReference:
+          type: string
+          description: The unique account reference assigned to the PAN.
+          minLength: 29
+          maxLength: 29
+          example: 512381d9f8e0629211e3949a08002
+        financialAccountData:
+          $ref: '#/components/schemas/ObjFinancialAccountData'
+    
+    ObjcardAccountData:
+      required:
+      - accountNumber
+      type: object
+      properties:
+        accountNumber:
+          type: string
+          $ref: '#/components/schemas/prm_accountNumber'
+        expiryMonth:
+          type: string
+          $ref: '#/components/schemas/prm_CardExpiryMonth'
+        expiryYear:
+          type: string
+          $ref: '#/components/schemas/prm_CardExpiryYear'
+        securityCode:
+          type: string
+          $ref: '#/components/schemas/prm_CardSecurityCode'
+      description: The card information for the account that is being tokenized. 
+
+    ObjFinancialAccountData:
+      required:
+      - countryCode
+      - financialAccountId
+      - interbankCardAssociationId
+      type: object
+      properties:
+        financialAccountId:
+          type: string
+          description: The identifier of the financial account being tokenized.  This
+            could be a bank account number or other types of financial accounts.
+          minLength: 9
+          maxLength: 64
+          example: "5123456789012345"
+        interbankCardAssociationId:
+          type: string
+          description: The id assigned by Mastercard to the financial institution.
+          minLength: 3
+          maxLength: 11
+          example: "1234"
+        countryCode:
+          type: string
+          description: The country of the financial account. Expressed as a 3-letter
+            (alpha-3) country code as defined in ISO 3166-1.
+          minLength: 3
+          maxLength: 3
+          example: GBR
+      description: The financial account information for the account that is being
+        tokenized. – Required if there is a bank account or other type of financial account being tokenized.
+        Only applicable for MasterCard.
+
+    ObjTokenData:
+      required:
+      - expiryMonth
+      - expiryYear
+      - token
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token issued for this service request.
+          minLength: 12
+          maxLength: 19
+          example: "5345678901234521"
+        expiryMonth:
+          type: string
+          $ref: '#/components/schemas/prm_TokenExpiryMonth'
+        expiryYear:
+          type: string
+          $ref: '#/components/schemas/prm_TokenExpiryYear'
+        sequenceNumber:
+          type: string
+          $ref: '#/components/schemas/prm_sequenceNumber'
+          description: Only present if reason code is Redigitization, not present otherwise.
+      description: Detailed information of the token.
+
+    ObjAccountHolderData:
+      type: object
+      properties:
+        accountHolderName:
+          type: string
+          description: The name of the account holder in the format LASTNAME/FIRSTNAME
+            or FIRSTNAME LASTNAME . Max length - 27. Type - String.
+          minLength: 1
+          maxLength: 27
+          example: John Doe
+        accountHolderEmailAddress:
+          type: string
+          description: The email address of the account holder. Not required - Optionally present in pushAccount request.
+            Not present otherwise.
+          minLength: 6
+          maxLength: 320
+          example: abcdef@xyz.com
+        accountHolderMobilePhoneNumber:
+          $ref: '#/components/schemas/ObjPhoneNumber'
+        accountHolderAddress:
+          $ref: '#/components/schemas/ObjAccountHolderAddress'
+        sourceIp:
+          type: string
+          description: The IP of the device initiating the request.
+          minLength: 7
+          maxLength: 64
+          example: 127.0.0.1
+        deviceLocation:
+          type: string
+          description: Latitude and longitude where the device the consumer is attempting
+            to authorize is located. In the format "(sign) latitude/(sign) longitude"
+            with a precision of 2 decimal places. Ex:"38.63/-90.2". Latitude is between
+            -90 and 90. Longitude between -180 and 180.
+          minLength: 1
+          maxLength: 64
+          example: 38.63/-90.2
+        consumerIdentifier:
+          type: string
+          description: Consumer Identifier provided by the token requestor. Not required – Optionally present in AuthorizeService
+            when provided by the wallet provider.
+          minLength: 1
+          maxLength: 88
+          example: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e93452c1b24f24a24b
+      description: Information related to the account holder, such as name, address, etc.
+
+    ObjPhoneNumber:
+      type: object
+      properties:
+        countryDialInCode:
+          type: string
+          description: The country code for the phone number. E.g. 1 for US or 44 for UK.
+          minLength: 1
+          maxLength: 4
+          example: "1"
+        phoneNumber:
+          type: string
+          description: The phone number, may contain country code along with phone
+            number when countryDialInCode is not present.
+          minLength: 1
+          maxLength: 20
+          example: "4692392391"
+      description: The mobile phone number of the account holder. Not required.
+    
+    ObjAccountHolderAddress:
+      type: object
+      properties:
+        line1:
+          type: string
+          description: First line of the billing address. 
+          minLength: 1
+          maxLength: 64
+          example: 100 1st Street
+        line2:
+          type: string
+          description: Second line of the billing address.
+          minLength: 1
+          maxLength: 64
+          example: Apt. 4B
+        city:
+          type: string
+          description: The city of the billing address.
+          minLength: 1
+          maxLength: 32
+          example: St. Louis
+        countrySubdivision:
+          type: string
+          description: The country subdivision (for example, the state in the U.S.)
+            of the billing address.
+          minLength: 1
+          maxLength: 12
+          example: MO
+        postalCode:
+          type: string
+          description: The postal code (for example, zipcode in the U.S.) of the billing
+            address.
+          minLength: 1
+          maxLength: 16
+          example: "61000"
+        country:
+          type: string
+          description: The country of the billing address. Expressed as a 3-letter
+            (alpha-3) country code as defined in ISO 3166-1. 
+          minLength: 3
+          maxLength: 3
+          example: USA
+      description: The address for the account holder. Verified as part of reaching
+        the digitization decision. Max length - Not applicable.
+
+    ObjToken_StatusUpdate:
+      type: object
+      required:
+        - tokenUniqueReference
+      properties:
+        tokenUniqueReference:
+          type: string
+          $ref: "#/components/schemas/prm_tokenUniqueReference"
+        tokenRequestorId:
+          type: string
+          $ref: "#/components/schemas/prm_tokenRequestorID"
+        tokenRequestorName:
+          type: string
+          $ref: "#/components/schemas/prm_tokenRequestorName"
+        cardId:
+          type: string
+          $ref: "#/components/schemas/prm_cardId"
+        status:
+          type: string
+          $ref: "#/components/schemas/prm_status"
+        suspendedBy:
+          type: array
+          description: >
+            The origin of the token suspension, Present only if status = SUSPENDED except for VISA.
+            Available Values:
+            ISSUER = Suspended by the Issuer. 
+            PaymentAppProvider unable to unsuspend this token, 
+            TOKEN_REQUESTOR = Suspended by the Token Requestor,  
+            MOBILE_PIN_LOCKED =  Suspended  due to the Mobile PIN being locked, 
+            CARDHOLDER = Suspended by the Cardholder. 
+          enum:
+            - ISSUER
+            - PaymentAppProvider
+            - TOKEN_REQUESTOR
+            - MOBILE_PIN_LOCKED
+            - CARDHOLDER
+          items:
+            type: string
+            example: ISSUER
+        tokenExpiry:
+          type: string
+          description: >
+           The expiry of the Token PAN given in MMYY format. 
+           Present only if reasonCode is "REDIGITIZATION_COMPLETE".
+          minLength: 4
+          maxLength: 4
+          example: "0721"
+        encryptedPayload:
+          type: object
+          $ref: "#/components/schemas/ObjencryptedPayload_StatusUpdate"
+    prm_requestId:
+          type: string
+          description: |
+            Unique ID assigned to the request. Use this identification in 
+            case you need to report issues.
+          example: "123456"
+          maxLength: 64
+    prm_services:
+          type: array
+          description: Array of services that are being requested for the account.
+            Must be one of ; DIGITIZATION = Provision the Funding Account to a device.
+            Max length - Not applicable. Type - Array [String].
+          items:
+            type: string
+            example: DIGITIZATION
+    prm_decisionMadeBy:
+          type: string
+          description: |
+            Related to how the decision was taken, aply for MasterCard; 
+            for VISA the content is goint to be UNDEFINED.
+          enum:
+            - ELIGIBILITY_REQUEST
+            - AUTHORIZATION_REQUEST
+            - RULES
+            - UNDEFINED
+          example: RULES
+          maxLength: 14
+    prm_decision:
+          type: string
+          description: |
+            Status of the token.
+          enum:
+            - APPROVED
+            - REQUIRE_ADDITIONAL_AUTHENTICATION
+            - DECLINED
+          example: APPROVED
+          maxLength: 14
+    prm_status:
+          type: string
+          description: >
+           The current status of token. 
+           Available Values:
+           INACTIVE - Token has not yet been activated
+           ACTIVE - Token is active and ready to transact
+           SUSPENDED - Token is suspended and unable to transact
+           DEACTIVATED - Token has been permanently deactivated. 
+           Present only if reasonCode = "STATUS_UPDATE". 
+          minLength: 1
+          maxLength: 32
+          example: ACTIVE
+    prm_source:
+          type: string
+          description: |
+            Origin of the card information.
+
+            Available values:
+            - ON_FILE
+            - ADDED_MANUALLY
+            - ADDED_VIA_APPLICATION
+            - ADDED_VIA_BROWSER
+            - EXISTING_TOKEN_CREDENTIAL
+            - ADDED_VIA_CHIP_DATA
+          enum:
+            - ON_FILE
+            - ADDED_MANUALLY
+            - ADDED_VIA_APPLICATION
+            - ADDED_VIA_BROWSER
+            - EXISTING_TOKEN_CREDENTIAL
+            - ADDED_VIA_CHIP_DATA
+          maxLength: 32
+          example: ON_FILE
+    prm_tokenType:
+          type: string
+          description: The type of token requested for this digitization. 
+            Valid values are 
+            - SE Token is a Secure Element, this kind of token is for Wallets.
+            - HCE Token is used for contactless payments with NFC Chip.
+            - COF Card on File Token, normally is used for recurrent payments.
+            - ECOM Token is used for online payments, or payments started by the end-user.
+            - QRC Token is used for QR Payments, only applicable for VISA.
+          enum:
+            - SE
+            - HCE
+            - COF
+            - ECOM
+            - QRC
+          minLength: 1
+          maxLength: 16
+          example: ECOM
+    prm_tokenUniqueReference:
+          type: string
+          description: |
+            Unique ID associating a token with a card. 
+            This ID can be used in future calls to make operations related to the token in the I-TSP, 
+            for example events related to the management of the life cycle.
+          example: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+          maxLength: 64
+    prm_tokenRequestorID:
+          type: integer
+          description: |
+            Unique ID assigned to the entity that is requesting the token.
+          example: 40022358888
+    prm_tokenRequestorName:
+          type: string
+          description: |
+            Name of the token requestor.
+          example: My Merchant
+    prm_tokenActivatedDateTime:
+          type: string
+          description: >
+            Time Stamp in ISO 8601 format
+            for example, 2017-07-21T17:32:28Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    prm_numberOfActivationAttempts:
+          type: integer
+          description: Number of intents with the OTP.
+          minLength: 1
+          maxLength: 1
+    prm_numberOfActiveTokens:
+          type: integer
+          description: Number of activate tokens that the card has.
+            Max number of active tokens per car is 99.
+          minLength: 1
+          maxLength: 2
+    prm_tokenAssuranceLevel:
+          type: integer
+          description: The assurance level of the token.
+            Between 0 and 99.
+          minLength: 1
+          maxLength: 2
+    prm_cardId:
+          type: string
+          description: |
+            Unique Card Identifier at NovoPayment’s Issuance Service, of Original Card.
+          maxLength: 40
+          example: 5DA...27
+    prm_accountNumber:
+          type: string
+          description: The Primary Account Number of the card (PAN).
+          minLength: 9
+          maxLength: 19
+          example: "5808123456789808"
+    prm_CardExpiryMonth:
+          type: string
+          description: The month of the expiration date of the card to be digitized.
+            Note that the expiry date may not be in the past. May be omitted if the
+            card does not have an expiry date.
+            (Numeric).
+          minLength: 2
+          maxLength: 2
+          example: "12"
+    prm_CardExpiryYear:
+          type: string
+          description: The year of the expiration date of the card to be digitized.
+            Note that the expiry date may not be in the past. May be omitted if the
+            card does not have an expiry date.
+            (Numeric).
+          minLength: 2
+          maxLength: 2
+          example: "15"
+    prm_CardSecurityCode:
+          type: string
+          description: The CVC2 for the card to be digitized, as entered by the Cardholder.
+            Verified as part of reaching the digitization decision.
+          minLength: 3
+          maxLength: 3
+          example: "123"
+    prm_TokenExpiryMonth:
+          type: string
+          description: The month of the expiration date.(Numeric)
+          minLength: 2
+          maxLength: 2
+          example: "12"
+    prm_TokenExpiryYear:
+          type: string
+          description: The year of the expiration date. (Numeric)
+          minLength: 2
+          maxLength: 2
+          example: "15"
+    prm_paymentAccountReference:
+          type: string
+          description: The unique account reference assigned to the PAN.
+          minLength: 29
+          maxLength: 29
+          example: 512381d9f8e0629211e3949a08002
+    prm_sequenceNumber:
+          type: string
+          description: Sequence number of the Token. Conditional – required in AuthorizeServiceResponseData.
+            Optional otherwise.
+          minLength: 2
+          maxLength: 2
+          example: "01"
+    prm_panUniqueReference:
+          type: string
+          description: Reference to the PAN that is unique per Token Requestor.
+          minLength: 1
+          maxLength: 64
+          example: FWSPMC000000000159f71f703d2141efaf04dd26803f922b
+
+    RSFromIssuer_BadRequest:
+      type: object
+      required:
+        - code
+        - data
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: |
+            Presented when error codes in business logic.
+            Available Values
+            400.22.002	JWE invalid format
+            400.22.003	Params Required
+            400.22.009	Invalid Card ID
+
+          enum:
+            - 400.22.002
+            - 400.22.003
+            - 400.22.009
+          maxLength: 10
+          example: 400.22.009
+        data:
+          type: object
+          description: 
+             Required when Error Code is Params Required, include the list.
+          maxLength: 2
+          example: [fieldName]
+        message:
+          type: string
+          description: Response code description
+          example: Params required
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          description: >
+            Operation Time Stamp in ISO 8601 format<br>date-time - the
+            date-time notation as defined by [RFC 3339, section
+            5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example,
+            2017-07-21T17:32:28Z
+          minLength: 24
+          maxLength: 24
+
+    RSFromIssuer_ParamsRequired:
+      type: object
+      required:
+        - code
+        - data
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: |
+            Presented when error codes in business logic.
+            400.22.003	Params Required
+          enum:
+            - 400.22.003
+          maxLength: 10
+          example: 400.22.003
+        data:
+          type: object
+          description: 
+             Required when Error Code is Params Required, include the list.
+          maxLength: 2
+          example: [fieldName]
+        message:
+          type: string
+          description: Response code description
+          example: Params required
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          description: >
+            Operation Time Stamp in ISO 8601 format<br>date-time - the
+            date-time notation as defined by [RFC 3339, section
+            5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example,
+            2017-07-21T17:32:28Z
+          minLength: 24
+          maxLength: 24
+
+    RSIssuer_InvalidSignature:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: |
+            Presented when error codes in business logic.
+            Available Value
+            401.22.992	Invalid signature
+          enum:
+            - 401.22.992
+          maxLength: 10
+          example: VSE40007
+        message:
+          type: string
+          description: Response code description
+          example: Invalid signature
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          description: >
+            Operation Time Stamp in ISO 8601 format<br>date-time - the
+            date-time notation as defined by [RFC 3339, section
+            5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example,
+            2017-07-21T17:32:28Z
+          minLength: 24
+          maxLength: 24 
+
+    RS200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.22.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+            for example, 2017-07-21T17:32:28Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Params required
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          description: >
+            Operation Time Stamp in ISO 8601 format<br>date-time - the
+            date-time notation as defined by [RFC 3339, section
+            5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example,
+            2017-07-21T17:32:28Z
+          minLength: 24
+          maxLength: 24
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS404:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 404.22.900
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Not Found
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RSInternalServerError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS400Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.001
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Header Params Required
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          description: >
+            Operation Time Stamp in ISO 8601 format<br>date-time - the
+            date-time notation as defined by [RFC 3339, section
+            5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example,
+            2017-07-21T17:32:28Z
+          minLength: 24
+          maxLength: 24
+    RS401Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.992
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid signature
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS500Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+          
+  requestBodies:
+    RQSendVerifyCode:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQSendVerifyCode"
+    RQNotServiceActivated:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQNotServiceActivated"
+          examples:
+            SERVICE_ACTIVATED:
+              $ref: "#/components/examples/RQNotServiceActivated"
+    RQNotTokenUpdated:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQNotTokenUpdated"
+          examples:
+            REDIGITIZATION_COMPLETE:
+              $ref: "#/components/examples/RQNotificationRedigitizationComplete"
+            DELETED_FROM_CONSUMER_APP:
+              $ref: "#/components/examples/RQNotificationSU_DeletedFromApp"
+            SUSPENDED:
+              $ref: "#/components/examples/RQNotificationSU_Suspend"
+            ACTIVATED:
+              $ref: "#/components/examples/RQNotificationSU_Activated"
+            TOKEN_EXPIRY:
+              $ref: "#/components/examples/RQNotificationSU_TokenExpiry"
+            PAN_SAME_RANGE:
+              $ref: "#/components/examples/RQNotificationSU_PANSameRange"
+            AUTHENTICATION_PERFORMED:
+              $ref: "#/components/examples/RQNotificationSU_AuthenticationPerf"
+    RQNotSuspiciousEvents:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQNotSuspiciousEvents"
+          examples:
+            SUSPICIOUS_EVENTS:
+              $ref: "#/components/examples/RQNotificationSuspiciousEvents"         
+
+  responses:    
+    RS200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS200"
+          examples:
+            Default:
+              value:
+                code: "200.22.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+    RSInvalidSignature:
+      description: Invalid Signature
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSIssuer_InvalidSignature"
+          examples:
+            JWE Invalid format:
+              $ref: "#/components/examples/InvalidSignature"
+
+    RSInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSInternalServerError"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"
+    RSFromNovo_400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            JWE Invalid format:
+              $ref: "#/components/examples/JWEInvalidFormat"
+            Invalid Tenant ID:
+              $ref: "#/components/examples/InvalidTenantID"
+            Unable process request:
+              $ref: "#/components/examples/UnableProcessRequest"
+    
+    RSFromNovo_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RSFromNovo_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS404"
+    
+    RSFromIssuer_200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS200"
+          examples:
+            Default:
+              value:
+                code: "200.22.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+    
+    RSFromIssuer_400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSFromIssuer_BadRequest"
+          examples:
+            JWE Invalid format:
+              $ref: "#/components/examples/JWEInvalidFormat"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidadCardId"
+            Params Required:
+              $ref: "#/components/examples/ParamsRequired"
+    

@@ -1,0 +1,6970 @@
+specification: API Commons DataModel
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: derived
+source: openapi/novopayment-*-openapi.yml components.schemas across 15 provider-published specs
+description: Entity graph derived from the schema components of NovoPayment's published OpenAPI documents. Structural
+  edges come from $ref links; id-reference edges are inferred from '<entity>Id' fields and are marked medium confidence
+  because NovoPayment does not publish an object reference or id-prefix scheme.
+core_domains:
+- domain: Customers & onboarding
+  apis:
+  - customers
+  - onboarding
+  - compliance
+  - profile
+  root_identifiers:
+  - customerId
+  - onboardingSessionId
+  - documentId
+- domain: Accounts & movements
+  apis:
+  - accounts
+  - operations
+  root_identifiers:
+  - accountId
+  - transactionId
+  - operationId
+- domain: Cards & tokens
+  apis:
+  - cards
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  root_identifiers:
+  - cardId
+  - tokenId
+  - tokenReferenceId
+- domain: Payments & acceptance
+  apis:
+  - payment-authorizer
+  - real-time-payments
+  - merchant-presented-qr
+  - alias-directory
+  root_identifiers:
+  - transactionId
+  - transferId
+  - aliasId
+  - paymentInstrumentId
+entity_count: 470
+entities:
+- name: Account
+  apis:
+  - alias-directory
+  field_count: 11
+  fields:
+  - accountId
+  - accountIdentify
+  - accountInternalId
+  - accountName
+  - accountNumber
+  - accountNumberEncrypt
+  - accountType
+  - bankCode
+  - bankName
+  - countryCode
+  - currencyCode
+  relationships:
+  - type: has_one
+    to: AccountType
+    via: accountType
+- name: AccountType
+  apis:
+  - alias-directory
+  field_count: 3
+  fields:
+  - description
+  - idCode
+  - title
+  relationships: []
+- name: Address
+  apis:
+  - alias-directory
+  - real-time-payments
+  field_count: 7
+  fields:
+  - city
+  - country
+  - line1
+  - line2
+  - name
+  - postalCode
+  - state
+  relationships: []
+- name: AliasFavorite
+  apis:
+  - alias-directory
+  field_count: 5
+  fields:
+  - alias
+  - aliasType
+  - favoriteId
+  - favoriteInformation
+  - favoriteName
+  relationships: []
+- name: BankAccountPaymentInstrument
+  apis:
+  - push-provisioning
+  field_count: 14
+  fields:
+  - accountName
+  - accountNumber
+  - accountNumberType
+  - accountType
+  - address
+  - bankCode
+  - bankCodeType
+  - bankIdentifierCode
+  - bankName
+  - branchCode
+  - cardId
+  - countryCode
+  relationships:
+  - type: has_one
+    to: BillingAddress
+    via: address
+- name: BillingAddress
+  apis:
+  - push-provisioning
+  field_count: 7
+  fields:
+  - addressLine1
+  - addressLine2
+  - addressLine3
+  - city
+  - country
+  - postalCode
+  - state
+  relationships: []
+- name: CardHolder
+  apis:
+  - alias-directory
+  - real-time-payments
+  field_count: 6
+  fields:
+  - address
+  - documentNumber
+  - documentType
+  - email
+  - firstName
+  - lastName
+  relationships:
+  - type: has_one
+    to: Address
+    via: address
+  - type: has_one
+    to: DocumentType
+    via: documentType
+- name: CardHolderBasic
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - firstName
+  - lastName
+  relationships: []
+- name: CardHolderFavorite
+  apis:
+  - alias-directory
+  field_count: 6
+  fields:
+  - address
+  - documentNumber
+  - documentType
+  - email
+  - firstName
+  - lastName
+  relationships:
+  - type: has_one
+    to: Address
+    via: address
+  - type: has_one
+    to: DocumentType
+    via: documentType
+- name: CardPaymentInstrument
+  apis:
+  - push-provisioning
+  field_count: 8
+  fields:
+  - accountNumber
+  - billingAddress
+  - cardId
+  - cardType
+  - expirationDate
+  - issuerName
+  - nameOnCard
+  - type
+  relationships:
+  - type: has_one
+    to: BillingAddress
+    via: billingAddress
+- name: CreateAccountRequest
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - account
+  - aliasId
+  relationships:
+  - type: has_one
+    to: Account
+    via: account
+- name: CreateAccountResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: CreateAliasFavoriteRequest
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - aliasFavorite
+  - aliasParent
+  relationships: []
+- name: CreateAliasFavoriteResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: CreateAliasInfoRequest
+  apis:
+  - alias-directory
+  field_count: 6
+  fields:
+  - accounts
+  - alias
+  - aliasType
+  - cardHolder
+  - directoryCountry
+  - paymentInstrument
+  relationships:
+  - type: has_one
+    to: AccountsInput
+    via: accounts
+  - type: has_one
+    to: CardHolder
+    via: cardHolder
+  - type: has_one
+    to: PaymentInstrument
+    via: paymentInstrument
+- name: CreateAliasResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: CreatePaymentInstrumentRequest
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - aliasId
+  - paymentInstrument
+  relationships:
+  - type: has_one
+    to: PaymentInstrument
+    via: paymentInstrument
+- name: CreatePaymentInstrumentResponse
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - aliasId
+  - paymentInstrumentId
+  relationships: []
+- name: DeleteAccountResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: DeleteAliasFavoriteResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: DeleteBankAccountPaymentInstrument
+  apis:
+  - push-provisioning
+  field_count: 5
+  fields:
+  - accountName
+  - accountNumber
+  - accountNumberType
+  - cardId
+  - type
+  relationships: []
+- name: DeleteCardPaymentInstrument
+  apis:
+  - push-provisioning
+  field_count: 3
+  fields:
+  - accountNumber
+  - cardId
+  - type
+  relationships: []
+- name: DeletePaymentInstrumentResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: FilterDetail
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - field
+  - value
+  relationships: []
+- name: FindAlias
+  apis:
+  - alias-directory
+  field_count: 6
+  fields:
+  - accounts
+  - alias
+  - aliasType
+  - cardHolder
+  - directoryCountry
+  - directoryId
+  relationships:
+  - type: has_one
+    to: Accounts
+    via: accounts
+  - type: has_one
+    to: CardHolderBasic
+    via: cardHolder
+- name: FindAliasRequest
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - alias
+  - filter
+  relationships:
+  - type: has_one
+    to: Filter
+    via: filter
+- name: FindAliasResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: GetAliasFavoriteResponse
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: GetBankAccountPaymentInstrument
+  apis:
+  - push-provisioning
+  field_count: 13
+  fields:
+  - accountName
+  - accountNumber
+  - accountNumberType
+  - address
+  - bankCode
+  - bankCodeType
+  - bankIdentifierCode
+  - bankName
+  - branchCode
+  - countryCode
+  - currencyCode
+  - status
+  relationships:
+  - type: has_one
+    to: BillingAddress
+    via: address
+- name: GetCardPaymentInstrument
+  apis:
+  - push-provisioning
+  field_count: 11
+  fields:
+  - accountNumber
+  - billingAddress
+  - cardType
+  - expirationDate
+  - issuerName
+  - nameOnCard
+  - panReferenceID
+  - paymentAccountReference
+  - status
+  - tokenDetails
+  - type
+  relationships:
+  - type: has_one
+    to: BillingAddress
+    via: billingAddress
+  - type: has_one
+    to: TokenDetails
+    via: tokenDetails
+- name: MoneyTransferRequest
+  apis:
+  - real-time-payments
+  field_count: 6
+  fields:
+  - domesticTransaction
+  - recipient
+  - sender
+  - transactionAmount
+  - transactionCode
+  - transactionReference
+  relationships:
+  - type: has_one
+    to: Recipient
+    via: recipient
+  - type: has_one
+    to: Sender
+    via: sender
+  - type: has_one
+    to: TransactionAmount
+    via: transactionAmount
+- name: MoneyTransferResponse
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: ObTokenizationConfiguration
+  apis:
+  - merchant-presented-qr
+  field_count: 2
+  fields:
+  - channelSecurityContext
+  - tokenizationProfiles
+  relationships: []
+- name: ObjAccountHolderAddress
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 6
+  fields:
+  - city
+  - country
+  - countrySubdivision
+  - line1
+  - line2
+  - postalCode
+  relationships: []
+- name: ObjAccountHolderData
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 7
+  fields:
+  - accountHolderAddress
+  - accountHolderEmailAddress
+  - accountHolderMobilePhoneNumber
+  - accountHolderName
+  - consumerIdentifier
+  - deviceLocation
+  - sourceIp
+  relationships:
+  - type: has_one
+    to: ObjAccountHolderAddress
+    via: accountHolderAddress
+  - type: has_one
+    to: ObjPhoneNumber
+    via: accountHolderMobilePhoneNumber
+- name: ObjAccountLevelInfoResp
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - linkEnrollment
+  - replaceEnrollment
+  - rpinEnrollment
+  relationships:
+  - type: has_one
+    to: ObjLinkEnrollment
+    via: linkEnrollment
+  - type: has_one
+    to: ObjReplaceEnrollment
+    via: replaceEnrollment
+  - type: has_one
+    to: ObjRpinEnrollment
+    via: rpinEnrollment
+- name: ObjAcquirerIdentifiers
+  apis:
+  - merchant-presented-qr
+  field_count: 2
+  fields:
+  - acquirerId
+  - acquirerMerchantId
+  relationships: []
+- name: ObjActivationMethod
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 3
+  fields:
+  - destiny
+  - otpMethodIdentifier
+  - type
+  relationships: []
+- name: ObjApproveProvisionIssuerDiscretionaryData
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - fileControlInformation
+  - issuerApplicationDiscretionaryData
+  relationships: []
+- name: ObjAssuranceData
+  apis:
+  - merchant-presented-qr
+  field_count: 25
+  fields:
+  - cardAssuranceData
+  - cardVerificationEntity
+  - cardVerificationMethod
+  - cardVerificationResults
+  - cardVerificationTimestamp
+  - cardholderAssuranceData
+  - cardholderAuthenticationEntity
+  - cardholderAuthenticationMethod
+  - cardholderAuthenticationResults
+  - cardholderAuthenticationTimestamp
+  - consumerAssuranceData
+  - consumerVerificationEntity
+  relationships: []
+- name: ObjBillingAddress
+  apis:
+  - issuer-tokenization
+  - push-provisioning
+  field_count: 7
+  fields:
+  - city
+  - countryCode
+  - line1
+  - line2
+  - name
+  - postalCode
+  - state
+  relationships: []
+- name: ObjBillingAddressEnablement
+  apis:
+  - push-provisioning
+  field_count: 6
+  fields:
+  - addressLine1
+  - city
+  - countryCode
+  - phoneNumber
+  - postalCode
+  - stateProvinceCode
+  relationships: []
+- name: ObjBodyNotSuspiciousEv
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 7
+  fields:
+  - cardId
+  - events
+  - paymentAppInstanceId
+  - status
+  - tokenRequestorId
+  - tokenRequestorName
+  - tokenUniqueReference
+  relationships:
+  - type: has_one
+    to: SuspiciousEvent
+    via: events
+  - type: has_one
+    to: prm_cardId
+    via: cardId
+  - type: has_one
+    to: prm_tokenRequestorID
+    via: tokenRequestorId
+  - type: has_one
+    to: prm_tokenRequestorName
+    via: tokenRequestorName
+  - type: has_one
+    to: prm_tokenUniqueReference
+    via: tokenUniqueReference
+- name: ObjBodyServiceActivated
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 9
+  fields:
+  - correlationId
+  - decision
+  - decisionMadeBy
+  - numberOfActivationAttempts
+  - numberOfActiveTokens
+  - services
+  - tokenActivatedDateTime
+  - tokenAssuranceLevel
+  - tokenInformation
+  relationships:
+  - type: has_many
+    to: prm_services
+    via: services
+  - type: has_one
+    to: ObjTokenInformation_ActSer
+    via: tokenInformation
+  - type: has_one
+    to: prm_decision
+    via: decision
+  - type: has_one
+    to: prm_decisionMadeBy
+    via: decisionMadeBy
+  - type: has_one
+    to: prm_decisionMadeBy
+    via: numberOfActivationAttempts
+  - type: has_one
+    to: prm_numberOfActivationAttempts
+    via: numberOfActiveTokens
+  - type: has_one
+    to: prm_tokenActivatedDateTime
+    via: tokenActivatedDateTime
+  - type: has_one
+    to: prm_tokenAssuranceLevel
+    via: tokenAssuranceLevel
+- name: ObjCardDataApplePay
+  apis:
+  - push-provisioning
+  field_count: 5
+  fields:
+  - activationData
+  - encryptedPassData
+  - ephemeralPublicKey
+  - paymentAccountReference
+  - vCardId
+  relationships: []
+- name: ObjCardEncryptionEncryptedData
+  apis:
+  - push-provisioning
+  field_count: 9
+  fields:
+  - accountNumber
+  - billingAddress
+  - cardBrand
+  - cardType
+  - expirationMonth
+  - expirationYear
+  - nameOnAccount
+  - signedNonce
+  - user
+  relationships:
+  - type: has_one
+    to: ObjBillingAddressEnablement
+    via: billingAddress
+  - type: has_one
+    to: ObjUserEnablement
+    via: user
+- name: ObjCardHolder
+  apis:
+  - cards
+  field_count: 21
+  fields:
+  - accountNumber
+  - address
+  - birthDate
+  - birthPlace
+  - branchId
+  - city
+  - codeAddress
+  - country
+  - documentNumber
+  - documentType
+  - email
+  - firstName
+  relationships: []
+- name: ObjCardHolderInfo
+  apis:
+  - issuer-tokenization
+  field_count: 7
+  fields:
+  - BillingAddress
+  - cvv2
+  - expirationDate
+  - highValueCustomer
+  - name
+  - primaryAccountNumber
+  - riskAssessmentScore
+  relationships:
+  - type: has_one
+    to: ObjBillingAddress
+    via: BillingAddress
+- name: ObjCardHolderInfo_LifeCycle
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - expirationDate
+  - primaryAccountNumber
+  relationships: []
+- name: ObjCardHolderInfo_PANExpiryDate
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - expirationDate
+  - primaryAccountNumber
+  relationships: []
+- name: ObjCardHolderInfo_Provisioning
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - cvv2
+  - expirationDate
+  - primaryAccountNumber
+  relationships: []
+- name: ObjCardIdUserIdData
+  apis:
+  - cards
+  field_count: 2
+  fields:
+  - cardId
+  - userId
+  relationships: []
+- name: ObjCardInfoList
+  apis:
+  - issuer-tokenization
+  field_count: 11
+  fields:
+  - cardId
+  - cardProduct
+  - cardProductId
+  - cardStatus
+  - cardStatusId
+  - cardType
+  - cardTypeId
+  - customerName
+  - expirationDate
+  - maskedNumber
+  - pan
+  relationships: []
+- name: ObjCardholderVerification
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - lifeCycleTraceID
+  - status
+  - timestamp
+  relationships: []
+- name: ObjCheckEligibilityApplicationInfo
+  apis:
+  - issuer-tokenization
+  field_count: 10
+  fields:
+  - appLaunchURL
+  - appLaunchURLScheme
+  - associatedApplicationIdentifiers
+  - associatedStoreIdentifiers
+  - messagePushTopic
+  - messageServiceURL
+  - supportsFPANNotifications
+  - supportsTokenNotifications
+  - transactionPushTopic
+  - transactionServiceURL
+  relationships: []
+- name: ObjCheckEligibilityCardMetadataInfo
+  apis:
+  - issuer-tokenization
+  field_count: 13
+  fields:
+  - applicationInfo
+  - backgroundColor
+  - cardArtData
+  - cardIssuer
+  - contactInfo
+  - foregroundColor
+  - labelColor
+  - longDescription
+  - privacyPolicyURL
+  - profileID
+  - shortDescription
+  - termsAndConditionsID
+  relationships:
+  - type: has_many
+    to: ObjCheckEligibilityCardArtRefID
+    via: cardArtData
+  - type: has_one
+    to: ObjCheckEligibilityApplicationInfo
+    via: applicationInfo
+  - type: has_one
+    to: ObjCheckEligibilityContactInfo
+    via: contactInfo
+- name: ObjCheckEligibilityContactInfo
+  apis:
+  - issuer-tokenization
+  field_count: 4
+  fields:
+  - contactEmail
+  - contactName
+  - contactNumber
+  - contactWebsite
+  relationships: []
+- name: ObjConsumerInformation
+  apis:
+  - push-provisioning
+  field_count: 12
+  fields:
+  - consent
+  - countryCode
+  - emails
+  - externalConsumerID
+  - externalConsumerIDOwnerBID
+  - firstName
+  - lastName
+  - locale
+  - middleName
+  - nationalIdentifiers
+  - phones
+  - status
+  relationships: []
+- name: ObjCustomizeOperationLimitsAmountLimit
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - daily
+  - monthly
+  - weekly
+  relationships: []
+- name: ObjCustomizeOperationLimitsCountLimit
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - daily
+  - monthly
+  - weekly
+  relationships: []
+- name: ObjCustomizeOperationLimitsOperations
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - amountLimit
+  - countLimit
+  - operationName
+  relationships:
+  - type: has_one
+    to: ObjCustomizeOperationLimitsAmountLimit
+    via: amountLimit
+  - type: has_one
+    to: ObjCustomizeOperationLimitsCountLimit
+    via: countLimit
+- name: ObjDeviceBindingInfo
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - deviceID
+  - deviceIndex
+  - deviceName
+  relationships: []
+- name: ObjDeviceInformation
+  apis:
+  - issuer-tokenization
+  field_count: 19
+  fields:
+  - deviceBrand
+  - deviceID
+  - deviceIDType
+  - deviceIPAddressV4
+  - deviceIndex
+  - deviceLanguageCode
+  - deviceLocation
+  - deviceManufacturer
+  - deviceModel
+  - deviceName
+  - deviceNumber
+  - deviceType
+  relationships: []
+- name: ObjDeviceInformationEligibility
+  apis:
+  - issuer-tokenization
+  field_count: 16
+  fields:
+  - deviceBrand
+  - deviceID
+  - deviceIDType
+  - deviceIPAddressV4
+  - deviceLanguageCode
+  - deviceLocation
+  - deviceManufacturer
+  - deviceModel
+  - deviceName
+  - deviceNumber
+  - deviceType
+  - locationSource
+  relationships: []
+- name: ObjDeviceInformation_ForBinding
+  apis:
+  - issuer-tokenization
+  field_count: 17
+  fields:
+  - deviceBrand
+  - deviceID
+  - deviceIDType
+  - deviceIPAddressV4
+  - deviceIndex
+  - deviceLanguageCode
+  - deviceLocation
+  - deviceManufacturer
+  - deviceModel
+  - deviceName
+  - deviceNumber
+  - deviceType
+  relationships: []
+- name: ObjDpaAddress
+  apis:
+  - merchant-presented-qr
+  field_count: 11
+  fields:
+  - addressId
+  - city
+  - countryCode
+  - createTime
+  - lastTimeUsed
+  - line1
+  - line2
+  - line3
+  - name
+  - state
+  - zip
+  relationships: []
+- name: ObjDpaData
+  apis:
+  - merchant-presented-qr
+  field_count: 13
+  fields:
+  - applicationType
+  - dpaAddress
+  - dpaEmailAddress
+  - dpaLogoUri
+  - dpaName
+  - dpaPhoneNumber
+  - dpaPresentationName
+  - dpaSupportEmailAddress
+  - dpaSupportPhoneNumber
+  - dpaSupportUri
+  - dpaUri
+  - merchantAccountInformation
+  relationships:
+  - type: has_one
+    to: ObjDpaAddress
+    via: dpaAddress
+  - type: has_one
+    to: ObjDpaPhoneNumber
+    via: dpaPhoneNumber
+  - type: has_one
+    to: ObjDpaPhoneNumber
+    via: dpaSupportPhoneNumber
+  - type: has_one
+    to: ObjTerminalData
+    via: terminalData
+- name: ObjDpaPhoneNumber
+  apis:
+  - merchant-presented-qr
+  field_count: 2
+  fields:
+  - countryCode
+  - phoneNumber
+  relationships: []
+- name: ObjDpaTransactionOptions
+  apis:
+  - merchant-presented-qr
+  field_count: 16
+  fields:
+  - acquirerId
+  - acquirerMid
+  - additionalSellerData
+  - consumerInputData
+  - dpaAcceptedBillingCountries
+  - dpaAcceptedShippingCountries
+  - dpaLocale
+  - dpaName
+  - merchantCategoryCode
+  - merchantChannel
+  - merchantCountryCode
+  - merchantOrderId
+  relationships:
+  - type: has_one
+    to: ObjtransactionAmount
+    via: transactionAmount
+- name: ObjEnrollCardBasicCardInfo
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - expirationDate
+  - last4
+  - paymentAccountReference
+  - vCardId
+  relationships:
+  - type: has_one
+    to: ObjExpirationDate
+    via: expirationDate
+- name: ObjEnrollCardCard
+  apis:
+  - push-provisioning
+  field_count: 6
+  fields:
+  - BillingAddress
+  - accountNumber
+  - cvv2
+  - expirationDate
+  - nameOnCard
+  - paymentAccountReference
+  relationships:
+  - type: has_one
+    to: ObjBillingAddress
+    via: BillingAddress
+  - type: has_one
+    to: ObjExpirationDate
+    via: expirationDate
+- name: ObjExpirationDate
+  apis:
+  - issuer-tokenization
+  - push-provisioning
+  field_count: 2
+  fields:
+  - month
+  - year
+  relationships: []
+- name: ObjFinancialAccountData
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 3
+  fields:
+  - countryCode
+  - financialAccountId
+  - interbankCardAssociationId
+  relationships: []
+- name: ObjGooglePayCardData
+  apis:
+  - push-provisioning
+  field_count: 5
+  fields:
+  - encAddress
+  - encMobileNumber
+  - expirationDate
+  - last4
+  - opaquePaymentCard
+  relationships:
+  - type: has_one
+    to: ObjBillingAddress
+    via: encAddress
+  - type: has_one
+    to: ObjExpirationDate
+    via: expirationDate
+  - type: has_one
+    to: ObjPhoneNumber
+    via: encMobileNumber
+- name: ObjGroupResp
+  apis:
+  - issuer-tokenization
+  field_count: 5
+  fields:
+  - groupID
+  - groupType
+  - rejectCode
+  - rejectDesc
+  - responseStatus
+  relationships: []
+- name: ObjIntent
+  apis:
+  - push-provisioning
+  field_count: 2
+  fields:
+  - type
+  - value
+  relationships: []
+- name: ObjListTransactionRules
+  apis:
+  - cards
+  field_count: 2
+  fields:
+  - status
+  - transactionRule
+  relationships: []
+- name: ObjMerchantInfo
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - merchantID
+  - merchantName
+  relationships: []
+- name: ObjNotificationEncryptedData
+  apis:
+  - issuer-tokenization
+  field_count: 4
+  fields:
+  - cardholderInfo
+  - deviceInfo
+  - riskInfo
+  - tokenInfo
+  relationships:
+  - type: has_one
+    to: ObjCardHolderInfo
+    via: cardholderInfo
+  - type: has_one
+    to: ObjDeviceInformation
+    via: deviceInfo
+  - type: has_one
+    to: ObjRiskInfo
+    via: riskInfo
+  - type: has_one
+    to: ObjTokenInfo
+    via: tokenInfo
+- name: ObjPanLifecycleEncryptedData
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - cardholderInfo
+  - replaceCardholderInfo
+  relationships:
+  - type: has_one
+    to: ObjCardHolderInfo_LifeCycle
+    via: cardholderInfo
+  - type: has_one
+    to: ObjCardHolderInfo_LifeCycle
+    via: replaceCardholderInfo
+- name: ObjPhoneNumber
+  apis:
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  field_count: 7
+  fields:
+  - countryDialInCode
+  - encAddress
+  - encMobileNumber
+  - expirationDate
+  - last4
+  - opaquePaymentCard
+  - phoneNumber
+  relationships:
+  - type: has_one
+    to: ObjBillingAddress
+    via: encAddress
+  - type: has_one
+    to: ObjBillingAddress
+    via: encMobileNumber
+  - type: has_one
+    to: ObjExpirationDate
+    via: expirationDate
+- name: ObjReplaceEnrollment
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - rejectCode
+  - rejectDesc
+  - responseStatus
+  relationships: []
+- name: ObjRiskInfo
+  apis:
+  - issuer-tokenization
+  field_count: 34
+  fields:
+  - accountHolderName
+  - accountToDeviceBindingAge
+  - activeTokensOnAllDeviceForAccount
+  - daysSinceConsumerDataLastAccountChange
+  - daysSinceLastAccountActivity
+  - deviceBluetoothMac
+  - deviceCountry
+  - deviceIMEI
+  - deviceLostMode
+  - deviceSerialNumber
+  - deviceTimeZone
+  - deviceTimeZoneSetting
+  relationships: []
+- name: ObjRpinEnrollment
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - rejectCode
+  - rejectDesc
+  - responseStatus
+  relationships: []
+- name: ObjSendPasscodeCardHolderInfo
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - otpDestiny
+  - primaryAccountNumber
+  relationships: []
+- name: ObjStepUpMethods
+  apis:
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  field_count: 5
+  fields:
+  - identifier
+  - otpMethodPlatform
+  - sourceAddress
+  - type
+  - value
+  relationships: []
+- name: ObjTerminalData
+  apis:
+  - merchant-presented-qr
+  field_count: 2
+  fields:
+  - initiationMethod
+  - posEntryMode
+  relationships: []
+- name: ObjTermsAndConditions
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - date
+  - id
+  relationships: []
+- name: ObjTokenData
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - expiryMonth
+  - expiryYear
+  - sequenceNumber
+  - token
+  relationships:
+  - type: has_one
+    to: prm_TokenExpiryMonth
+    via: expiryMonth
+  - type: has_one
+    to: prm_TokenExpiryYear
+    via: expiryYear
+  - type: has_one
+    to: prm_sequenceNumber
+    via: sequenceNumber
+- name: ObjTokenInfo
+  apis:
+  - issuer-tokenization
+  field_count: 18
+  fields:
+  - autoFillIndicator
+  - lastTokenStatusUpdatedTime
+  - numberOfActiveTokensForPAN
+  - numberOfInactiveTokensForPAN
+  - numberOfSuspendedTokensForPAN
+  - originalToken
+  - originalTokenReferenceID
+  - originalTokenRequestorID
+  - originalTokenType
+  - originaltokenAssuranceMethod
+  - token
+  - tokenActivationDate
+  relationships:
+  - type: has_one
+    to: ObjExpirationDate
+    via: tokenExpirationDate
+- name: ObjTokenInformation_ActSer
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 17
+  fields:
+  - accountPanSuffix
+  - cardId
+  - consumerLanguage
+  - encryptedPayload
+  - panUniqueReference
+  - paymentAppInstanceId
+  - productConfigurationId
+  - secureElementId
+  - serviceRequestDateTime
+  - source
+  - termsAndConditionsAcceptedTimestamp
+  - termsAndConditionsAssetId
+  relationships:
+  - type: has_one
+    to: ObjencryptedPayload_ServiceActivated
+    via: encryptedPayload
+  - type: has_one
+    to: prm_cardId
+    via: cardId
+  - type: has_one
+    to: prm_panUniqueReference
+    via: panUniqueReference
+  - type: has_one
+    to: prm_source
+    via: source
+  - type: has_one
+    to: prm_tokenRequestorID
+    via: tokenRequestorId
+  - type: has_one
+    to: prm_tokenRequestorName
+    via: tokenRequestorName
+  - type: has_one
+    to: prm_tokenType
+    via: tokenType
+  - type: has_one
+    to: prm_tokenUniqueReference
+    via: tokenUniqueReference
+- name: ObjTokenInquiryEncryptedData
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - deviceInfo
+  - riskInfo
+  - tokenInfo
+  relationships:
+  - type: has_one
+    to: ObjDeviceInformation
+    via: deviceInfo
+  - type: has_one
+    to: ObjRiskInfo
+    via: riskInfo
+  - type: has_one
+    to: ObjTokenInfo
+    via: tokenInfo
+- name: ObjTokenInquiryIssuerDiscretionaryData
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - fileControlInformation
+  - issuerApplicationDiscretionaryData
+  relationships: []
+- name: ObjTokenInquiryOptInfo
+  apis:
+  - issuer-tokenization
+  field_count: 4
+  fields:
+  - otpCodeExpiration
+  - otpCodeIndicator
+  - otpVerificationAttempts
+  - otpVerificationRetryCounts
+  relationships: []
+- name: ObjTokenInquiryPanTokenDetails
+  apis:
+  - issuer-tokenization
+  field_count: 11
+  fields:
+  - clientWalletAccountID
+  - entityOfLastAction
+  - lastFourOfPAN
+  - operatorID
+  - panReferenceID
+  - panSource
+  - tokenReferenceID
+  - tokenRequestorID
+  - tokenStatus
+  - tokenType
+  - walletAccountEmailAddressHash
+  relationships: []
+- name: ObjTokenUserInfo
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - tokenUserAppType
+  - tokenUserID
+  relationships: []
+- name: ObjToken_StatusUpdate
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 8
+  fields:
+  - cardId
+  - encryptedPayload
+  - status
+  - suspendedBy
+  - tokenExpiry
+  - tokenRequestorId
+  - tokenRequestorName
+  - tokenUniqueReference
+  relationships:
+  - type: has_one
+    to: ObjencryptedPayload_StatusUpdate
+    via: encryptedPayload
+  - type: has_one
+    to: prm_cardId
+    via: cardId
+  - type: has_one
+    to: prm_status
+    via: status
+  - type: has_one
+    to: prm_tokenRequestorID
+    via: tokenRequestorId
+  - type: has_one
+    to: prm_tokenRequestorName
+    via: tokenRequestorName
+  - type: has_one
+    to: prm_tokenUniqueReference
+    via: tokenUniqueReference
+- name: ObjTransactionData
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - authCode
+  - status
+  - transactionIdentifier
+  relationships: []
+- name: ObjUpdateCardMetadataInfo
+  apis:
+  - issuer-tokenization
+  field_count: 13
+  fields:
+  - CMapplicationInfo
+  - backgroundColor
+  - cardArtData
+  - cardIssuer
+  - contactInfo
+  - foregroundColor
+  - labelColor
+  - longDescription
+  - privacyPolicyURL
+  - profileID
+  - shortDescription
+  - termsAndConditionsID
+  relationships:
+  - type: has_many
+    to: ObjCheckEligibilityCardArtRefID
+    via: cardArtData
+  - type: has_one
+    to: ObjCheckEligibilityApplicationInfo
+    via: CMapplicationInfo
+  - type: has_one
+    to: ObjCheckEligibilityContactInfo
+    via: contactInfo
+- name: ObjUpdateCardMetadataResponseDetails
+  apis:
+  - issuer-tokenization
+  field_count: 5
+  fields:
+  - errorCode
+  - panReferenceID
+  - statusCode
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships: []
+- name: ObjUserEnablement
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - email
+  - firstName
+  - lastName
+  - phoneNumber
+  relationships: []
+- name: ObjcardAccountData
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - accountNumber
+  - expiryMonth
+  - expiryYear
+  - securityCode
+  relationships:
+  - type: has_one
+    to: prm_CardExpiryMonth
+    via: expiryMonth
+  - type: has_one
+    to: prm_CardExpiryYear
+    via: expiryYear
+  - type: has_one
+    to: prm_CardSecurityCode
+    via: securityCode
+  - type: has_one
+    to: prm_accountNumber
+    via: accountNumber
+- name: ObjencryptedPayload_ServiceActivated
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 7
+  fields:
+  - accountHolderData
+  - cardAccountData
+  - dataValidUntilTimestamp
+  - financialAccountData
+  - paymentAccountReference
+  - source
+  - tokenData
+  relationships:
+  - type: has_one
+    to: ObjAccountHolderData
+    via: accountHolderData
+  - type: has_one
+    to: ObjFinancialAccountData
+    via: financialAccountData
+  - type: has_one
+    to: ObjTokenData
+    via: tokenData
+  - type: has_one
+    to: ObjcardAccountData
+    via: cardAccountData
+  - type: has_one
+    to: prm_source
+    via: source
+- name: ObjencryptedPayload_StatusUpdate
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 7
+  fields:
+  - cardAccountData
+  - dataValidUntilTimestamp
+  - financialAccountData
+  - panUniqueReference
+  - paymentAccountReference
+  - source
+  - tokenData
+  relationships:
+  - type: has_one
+    to: ObjFinancialAccountData
+    via: financialAccountData
+  - type: has_one
+    to: ObjTokenData
+    via: tokenData
+  - type: has_one
+    to: ObjcardAccountData
+    via: cardAccountData
+  - type: has_one
+    to: prm_panUniqueReference
+    via: panUniqueReference
+  - type: has_one
+    to: prm_source
+    via: source
+- name: ObjtransactionAmount
+  apis:
+  - merchant-presented-qr
+  field_count: 3
+  fields:
+  - additionalAmounts
+  - transactionAmount
+  - transactionCurrencyCode
+  relationships: []
+- name: PaymentInstrument
+  apis:
+  - alias-directory
+  field_count: 7
+  fields:
+  - bankAccountNumber
+  - brandType
+  - cardToken
+  - cvvNumber
+  - description
+  - issuerCountryCode
+  - issuerName
+  relationships: []
+- name: PaymentInstrumentPrimaryRequest
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - aliasId
+  - paymentInstrumentId
+  relationships: []
+- name: PaymentInstrumentResponse
+  apis:
+  - alias-directory
+  field_count: 9
+  fields:
+  - bankAccountNumber
+  - brandType
+  - cardToken
+  - description
+  - issuerName
+  - maskedNumber
+  - paymentInstrumentId
+  - primary
+  - status
+  relationships: []
+- name: PullFundsRequest
+  apis:
+  - real-time-payments
+  field_count: 8
+  fields:
+  - domesticTransaction
+  - recipient
+  - retrievalReferenceNumber
+  - sender
+  - systemsTraceAuditNumber
+  - transactionAmount
+  - transactionCode
+  - transactionReference
+  relationships:
+  - type: has_one
+    to: Recipient
+    via: recipient
+  - type: has_one
+    to: Sender
+    via: sender
+  - type: has_one
+    to: TransactionAmount
+    via: transactionAmount
+- name: PullFundsResponse
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: PushTransferRequest
+  apis:
+  - real-time-payments
+  field_count: 9
+  fields:
+  - domesticTransaction
+  - recipient
+  - retrievalReferenceNumber
+  - sender
+  - systemsTraceAuditNumber
+  - transactionAmount
+  - transactionCode
+  - transactionIdentifier
+  - transactionReference
+  relationships:
+  - type: has_one
+    to: Recipient
+    via: recipient
+  - type: has_one
+    to: TransactionAmount
+    via: transactionAmount
+- name: PushTransferResponse
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: QueryTransactionResponse
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RQAcceptTermsAndConditions
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - legalAge
+  - marketingCampaigns
+  - terms
+  relationships: []
+- name: RQAccountCreation
+  apis:
+  - accounts
+  field_count: 2
+  fields:
+  - account
+  - card
+  relationships: []
+- name: RQAccountToAccountTransaction
+  apis:
+  - accounts
+  field_count: 5
+  fields:
+  - amount
+  - destinationAccountId
+  - fee
+  - tax
+  - transactionPurposeId
+  relationships: []
+- name: RQAddPayments
+  apis:
+  - push-provisioning
+  field_count: 3
+  fields:
+  - consumerInformation
+  - intent
+  - paymentInstruments
+  relationships: []
+- name: RQAdjustments
+  apis:
+  - accounts
+  field_count: 8
+  fields:
+  - accountId
+  - accountNumber
+  - amount
+  - description
+  - fee
+  - reasonId
+  - sign
+  - tax
+  relationships: []
+- name: RQAnonymousCardBatchStatusUpdate
+  apis:
+  - accounts
+  field_count: 2
+  fields:
+  - statusId
+  - updatedBy
+  relationships: []
+- name: RQApplePay
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - deviceCert
+  - nonce
+  - nonceSignature
+  - vCardId
+  relationships: []
+- name: RQApproveAccount
+  apis:
+  - onboarding
+  field_count: 5
+  fields:
+  - accountProduct
+  - action
+  - adminUser
+  - cardProduct
+  - diligence
+  relationships: []
+- name: RQApproveIncomingInternationalTransfer
+  apis:
+  - operations
+  field_count: 2
+  fields:
+  - comments
+  - reviewedBy
+  relationships: []
+- name: RQApproveInternalTransfer
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - comments
+  - fraudHoldResolutionDate
+  - reviewedBy
+  relationships: []
+- name: RQApproveOrDeclineARecipient
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - actionId
+  - comments
+  - updatedBy
+  relationships: []
+- name: RQApproveOutgoingInternationalTransaction
+  apis:
+  - operations
+  field_count: 2
+  fields:
+  - comments
+  - reviewedBy
+  relationships: []
+- name: RQApproveProvision
+  apis:
+  - issuer-tokenization
+  field_count: 13
+  fields:
+  - ConsumerEntryMode
+  - addressVerificationResultCode
+  - clientWalletAccountID
+  - cvv2ResultsCode
+  - deviceInfo
+  - encryptedData
+  - locale
+  - panReferenceID
+  - panSource
+  - tokenInfo
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships:
+  - type: has_one
+    to: ObjDeviceInformation
+    via: deviceInfo
+  - type: has_one
+    to: ObjTokenInfo
+    via: tokenInfo
+- name: RQBlockAccount
+  apis:
+  - accounts
+  field_count: 2
+  fields:
+  - observations
+  - reasonId
+  relationships: []
+- name: RQBlockCard
+  apis:
+  - accounts
+  - cards
+  field_count: 3
+  fields:
+  - blockType
+  - observations
+  - reasonId
+  relationships: []
+- name: RQCardActivation
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - activationCode
+  - cvv2
+  - expirationDate
+  relationships: []
+- name: RQCardAndAccountBundled
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - cardHolder
+  - programId
+  - termsAcceptanceDate
+  - type
+  relationships: []
+- name: RQCardCardholders
+  apis:
+  - cards
+  field_count: 22
+  fields:
+  - accountNumber
+  - address
+  - birthDate
+  - birthPlace
+  - branchId
+  - cardId
+  - city
+  - codeAddress
+  - country
+  - documentNumber
+  - documentType
+  - email
+  relationships: []
+- name: RQCardCreation
+  apis:
+  - accounts
+  field_count: 2
+  fields:
+  - account
+  - card
+  relationships: []
+- name: RQCardEmbossing
+  apis:
+  - accounts
+  field_count: 7
+  fields:
+  - address
+  - cardDesignId
+  - line1
+  - line2
+  - observations
+  - reference
+  - requestNumber
+  relationships: []
+- name: RQCardLookup
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - activationCode
+  - cardNumber
+  - lastFourDigits
+  relationships: []
+- name: RQCardPINUpdate
+  apis:
+  - accounts
+  field_count: 2
+  fields:
+  - newPin
+  - pin
+  relationships: []
+- name: RQCardPinUpdate
+  apis:
+  - cards
+  field_count: 2
+  fields:
+  - newPin
+  - pin
+  relationships: []
+- name: RQCardReplacement
+  apis:
+  - accounts
+  - cards
+  field_count: 6
+  fields:
+  - blockReasonId
+  - blockTypeId
+  - observations
+  - programId
+  - type
+  - userId
+  relationships: []
+- name: RQCardToAccountDisassociation
+  apis:
+  - accounts
+  field_count: 2
+  fields:
+  - comments
+  - updatedBy
+  relationships: []
+- name: RQCardholderVerificationMethods
+  apis:
+  - issuer-tokenization
+  field_count: 11
+  fields:
+  - cardToken
+  - clientWalletAccountID
+  - deviceInfo
+  - encryptedData
+  - otpMaxReached
+  - otpReason
+  - panReferenceID
+  - panSource
+  - tokenInfo
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships:
+  - type: has_one
+    to: ObjDeviceInformation
+    via: deviceInfo
+  - type: has_one
+    to: ObjTokenInfo
+    via: tokenInfo
+- name: RQCashIn
+  apis:
+  - cards
+  field_count: 5
+  fields:
+  - amount
+  - description
+  - externalId
+  - fee
+  - source
+  relationships: []
+- name: RQCashInReverse
+  apis:
+  - cards
+  field_count: 6
+  fields:
+  - amount
+  - description
+  - externalId
+  - fee
+  - source
+  - transactionIdentifier
+  relationships: []
+- name: RQCashOut
+  apis:
+  - cards
+  field_count: 6
+  fields:
+  - amount
+  - description
+  - externalId
+  - fee
+  - source
+  - tax
+  relationships: []
+- name: RQCashOutReverse
+  apis:
+  - cards
+  field_count: 7
+  fields:
+  - amount
+  - description
+  - externalId
+  - fee
+  - source
+  - tax
+  - transactionIdentifier
+  relationships: []
+- name: RQCellPhoneOTPVerification
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - number
+  - phoneCodeId
+  relationships: []
+- name: RQCheckEligibility
+  apis:
+  - issuer-tokenization
+  field_count: 6
+  fields:
+  - deviceInfo
+  - encryptedData
+  - panReferenceID
+  - panSource
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships:
+  - type: has_one
+    to: ObjDeviceInformationEligibility
+    via: deviceInfo
+- name: RQCloseAccount
+  apis:
+  - accounts
+  field_count: 2
+  fields:
+  - observations
+  - reasonId
+  relationships: []
+- name: RQConsumerVulnerable
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - actionType
+  - consumerInformation
+  - intent
+  - reason
+  relationships:
+  - type: has_one
+    to: ObjIntent
+    via: intent
+- name: RQCreateCommercialCustomers
+  apis:
+  - customers
+  field_count: 11
+  fields:
+  - addresses
+  - contacts
+  - entityPurpose
+  - entityType
+  - identifications
+  - incorporationDate
+  - industryType
+  - legalName
+  - registrationNumber
+  - tradingName
+  - webSite
+  relationships: []
+- name: RQCreateIndividualCustomer
+  apis:
+  - customers
+  field_count: 7
+  fields:
+  - contactInformation
+  - generalInformation
+  - identityDocuments
+  - occupation
+  - personalAddress
+  - termsAcceptanceDate
+  - userCredentials
+  relationships: []
+- name: RQCreateMerchant
+  apis:
+  - merchant-presented-qr
+  field_count: 19
+  fields:
+  - acquirerIdentifiers
+  - companyAddress1
+  - companyAddress2
+  - companyCity
+  - companyCountryCode
+  - companyPhone
+  - companyPostalCode
+  - companyPrimaryLegalName
+  - companyPrimaryTradeName
+  - companyStateProvinceCode
+  - dunsNumber
+  - primaryContactEmail
+  relationships: []
+- name: RQCreateMerchantCustomer
+  apis:
+  - customers
+  field_count: 16
+  fields:
+  - addresses
+  - annualCardVolum
+  - contacts
+  - defaultStatementDescriptor
+  - entityPurpose
+  - entityType
+  - hasAcceptedCreditCardsPreviously
+  - identifications
+  - incorporationDate
+  - industryType
+  - legalName
+  - maxTransactionAmount
+  relationships: []
+- name: RQCreationOfCardBatches
+  apis:
+  - accounts
+  field_count: 6
+  fields:
+  - branchName
+  - cardDesignId
+  - cardEmbosserId
+  - cardProgramId
+  - createdBy
+  - quantity
+  relationships: []
+- name: RQCustomerDocumentUpload
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - documentId
+  - documentUploadId
+  - fileInfo
+  relationships: []
+- name: RQCustomerEmploymentInformationUpdate
+  apis:
+  - customers
+  field_count: 6
+  fields:
+  - adminUser
+  - customerId
+  - employeeNumber
+  - employeeStatus
+  - position
+  - tenantDepartamentId
+  relationships: []
+- name: RQCustomizeCardOperationsLimits
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - atmWhitdrawals
+  - ecommerce
+  - posPurchases
+  relationships: []
+- name: RQDeclineIncomingInternationalTransfer
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - comments
+  - decisionType
+  - reviewedBy
+  relationships: []
+- name: RQDeclineInternalTransfer
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - comments
+  - fraudHoldResolutionDate
+  - reviewedBy
+  relationships: []
+- name: RQDeclineOutgoingInternationalTransaction
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - comments
+  - decisionType
+  - reviewedBy
+  relationships: []
+- name: RQDeleteConsumerInfo
+  apis:
+  - push-provisioning
+  field_count: 2
+  fields:
+  - consumerInformation
+  - intent
+  relationships:
+  - type: has_one
+    to: ObjIntent
+    via: intent
+- name: RQDeletePaymentInstrument
+  apis:
+  - push-provisioning
+  field_count: 3
+  fields:
+  - consumerInformation
+  - intent
+  - paymentInstruments
+  relationships:
+  - type: has_one
+    to: ObjIntent
+    via: intent
+- name: RQDeviceRegistration
+  apis:
+  - onboarding
+  field_count: 16
+  fields:
+  - alias
+  - androidId
+  - brand
+  - channelId
+  - deviceId
+  - gpsCountryId
+  - model
+  - networkOperator
+  - osVersion
+  - platform
+  - pushToken
+  - screenResolution
+  relationships: []
+- name: RQDeviceTokenBinding
+  apis:
+  - issuer-tokenization
+  field_count: 8
+  fields:
+  - clientWalletAccountID
+  - deviceInfo
+  - merchantInfo
+  - panReferenceID
+  - tokenReferenceID
+  - tokenRequestorID
+  - tokenUserInfo
+  - walletAccountEmailAddressHash
+  relationships:
+  - type: has_one
+    to: ObjDeviceInformation_ForBinding
+    via: deviceInfo
+  - type: has_one
+    to: ObjMerchantInfo
+    via: merchantInfo
+  - type: has_one
+    to: ObjTokenUserInfo
+    via: tokenUserInfo
+- name: RQEnrollCard
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - card
+  - clientCustomerId
+  - clientIdForPartner
+  - customerIdForPartner
+  relationships:
+  - type: has_one
+    to: ObjEnrollCardCard
+    via: card
+- name: RQEnrollData
+  apis:
+  - push-provisioning
+  field_count: 3
+  fields:
+  - consumerInformation
+  - intent
+  - paymentInstruments
+  relationships: []
+- name: RQGenerateQrCode
+  apis:
+  - merchant-presented-qr
+  field_count: 14
+  fields:
+  - acquirerId
+  - additionalDataField
+  - countryCode
+  - merchantAccountInformation
+  - merchantCategoryCode
+  - merchantCity
+  - merchantId
+  - merchantName
+  - payloadFormatIndicator
+  - pointOfInitiationMethod
+  - sizeQR
+  - tipOrConvenienceIndicator
+  relationships: []
+- name: RQGetBiometricApplicantId
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - email
+  - mobileNumber
+  - type
+  relationships: []
+- name: RQGetData
+  apis:
+  - push-provisioning
+  field_count: 2
+  fields:
+  - consumerInformation
+  - intent
+  relationships:
+  - type: has_one
+    to: ObjIntent
+    via: intent
+- name: RQGooglePay
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - clientCustomerID
+  - deviceID
+  - tokenServiceProvider
+  - vCardId
+  relationships: []
+- name: RQIncomeSource
+  apis:
+  - onboarding
+  field_count: 4
+  fields:
+  - annualBonus
+  - fundsTypeId
+  - incomeId
+  - otherFundsTypeId
+  relationships: []
+- name: RQKYCInfo
+  apis:
+  - compliance
+  field_count: 2
+  fields:
+  - biometricValidation
+  - complianceLists
+  relationships: []
+- name: RQMakePayment
+  apis:
+  - merchant-presented-qr
+  field_count: 6
+  fields:
+  - dpaData
+  - dpaTransactionOptions
+  - encryptedPayload
+  - srcCorrelationId
+  - srcDpaId
+  - srciTransactionId
+  relationships:
+  - type: has_one
+    to: ObjDpaData
+    via: dpaData
+  - type: has_one
+    to: ObjDpaTransactionOptions
+    via: dpaTransactionOptions
+- name: RQMembershipPayment
+  apis:
+  - onboarding
+  field_count: 5
+  fields:
+  - card
+  - cardHolderName
+  - emailAddress
+  - expirationDate
+  - securityCode
+  relationships: []
+- name: RQNotServiceActivated
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - dateTime
+  - notificationBody
+  - reasonCode
+  - requestId
+  relationships:
+  - type: has_one
+    to: ObjBodyServiceActivated
+    via: notificationBody
+  - type: has_one
+    to: prm_requestId
+    via: requestId
+- name: RQNotSuspiciousEvents
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - dateTime
+  - notificationBody
+  - reasonCode
+  - requestId
+  relationships:
+  - type: has_one
+    to: ObjBodyNotSuspiciousEv
+    via: notificationBody
+  - type: has_one
+    to: prm_requestId
+    via: requestId
+- name: RQNotTokenUpdated
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - dateTime
+  - notificationBody
+  - reasonCode
+  - requestId
+  relationships:
+  - type: has_one
+    to: ObjBodyTokenUpdated
+    via: notificationBody
+  - type: has_one
+    to: prm_requestId
+    via: requestId
+- name: RQNotification
+  apis:
+  - issuer-tokenization
+  field_count: 32
+  fields:
+  - accountLevelInfoResp
+  - actionCode
+  - activationVerificationResult
+  - cardHolderStepupResult
+  - cardToken
+  - clientWalletAccountID
+  - consumerEntryMode
+  - cvv2ResultsCode
+  - dateTimeOfEvent
+  - deviceBindingResult
+  - deviceId
+  - deviceInfo
+  relationships:
+  - type: has_one
+    to: ObjAccountLevelInfoResp
+    via: accountLevelInfoResp
+  - type: has_one
+    to: ObjDeviceInformation
+    via: deviceInfo
+  - type: has_one
+    to: ObjMerchantInfo
+    via: merchantInfo
+  - type: has_one
+    to: ObjNotificationEncryptedData
+    via: encryptedData
+  - type: has_one
+    to: ObjTermsAndConditions
+    via: termsAndConditions
+  - type: has_one
+    to: ObjTokenInfo
+    via: tokenInfo
+  - type: has_one
+    to: ObjTokenUserInfo
+    via: tokenUserInfo
+- name: RQNotificationPayment
+  apis:
+  - merchant-presented-qr
+  field_count: 10
+  fields:
+  - assuranceData
+  - authAmount
+  - confirmationStatus
+  - customData
+  - eventTimestamp
+  - serviceId
+  - srcClientId
+  - srcCorrelationId
+  - srcDigitalCardId
+  - srciTransactionId
+  relationships:
+  - type: has_one
+    to: ObjAssuranceData
+    via: assuranceData
+  - type: has_one
+    to: ObjtransactionAmount
+    via: authAmount
+- name: RQOAuth2
+  apis:
+  - oauth2-data-encryption
+  field_count: 3
+  fields:
+  - client_id
+  - client_secret
+  - grant_type
+  relationships: []
+- name: RQOTPEmailVerification
+  apis:
+  - profile
+  field_count: 2
+  fields:
+  - code
+  - email
+  relationships: []
+- name: RQOTPRequestViaSMSOrEmail
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - email
+  - number
+  - phoneCodeId
+  relationships: []
+- name: RQOTPVerification
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - number
+  - phoneCodeId
+  relationships: []
+- name: RQOccupation
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - employer
+  - occupationTypeId
+  - startingDate
+  relationships: []
+- name: RQOnboardingRequest
+  apis:
+  - merchant-presented-qr
+  field_count: 18
+  fields:
+  - acquirerIdentifiers
+  - companyAddress1
+  - companyAddress2
+  - companyCity
+  - companyCountryCode
+  - companyPhone
+  - companyPostalCode
+  - companyPrimaryLegalName
+  - companyPrimaryTradeName
+  - companyStateProvinceCode
+  - dunsNumber
+  - primaryContactEmail
+  relationships:
+  - type: has_one
+    to: ObTokenizationConfiguration
+    via: tokenizationConfiguration
+  - type: has_one
+    to: ObjAcquirerIdentifiers
+    via: acquirerIdentifiers
+  - type: has_one
+    to: ObjRelationships
+    via: relationships
+- name: RQPanLifecycle
+  apis:
+  - issuer-tokenization
+  field_count: 8
+  fields:
+  - cardId
+  - cardIdReplace
+  - encryptedData
+  - newExpirationDate
+  - operationReason
+  - operationReasonCode
+  - operationType
+  - operatorID
+  relationships:
+  - type: has_one
+    to: ObjPanLifecycleEncryptedData
+    via: encryptedData
+- name: RQPaymentAuthorizer
+  apis:
+  - payment-authorizer
+  field_count: 3
+  fields:
+  - cardToken
+  - merchant
+  - transaction
+  relationships: []
+- name: RQPaymentReverse
+  apis:
+  - payment-authorizer
+  field_count: 5
+  fields:
+  - amount
+  - card
+  - cardToken
+  - localDatetime
+  - referenceCode
+  relationships: []
+- name: RQPersonalInformation
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - civilStatusId
+  - educationLevelId
+  - genderId
+  relationships: []
+- name: RQResidenceAddress
+  apis:
+  - onboarding
+  field_count: 7
+  fields:
+  - addressTypeId
+  - buildingNumber
+  - city
+  - complementaryInfo
+  - homeNumber
+  - mainStreet
+  - zipCode
+  relationships: []
+- name: RQSendMoney
+  apis:
+  - cards
+  field_count: 8
+  fields:
+  - amount
+  - description
+  - externalId
+  - fee
+  - receiver
+  - sender
+  - source
+  - tax
+  relationships:
+  - type: has_one
+    to: ObjCardId
+    via: receiver
+  - type: has_one
+    to: ObjCardId
+    via: sender
+- name: RQSendPasscode
+  apis:
+  - issuer-tokenization
+  field_count: 12
+  fields:
+  - OtpReason
+  - clientWalletAccountID
+  - deviceInfo
+  - encryptedData
+  - otpExpirationDate
+  - otpMaxReached
+  - otpMethodIdentifier
+  - otpValue
+  - panReferenceID
+  - tokenInfo
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships:
+  - type: has_one
+    to: ObjDeviceInformation
+    via: deviceInfo
+  - type: has_one
+    to: ObjTokenInfo
+    via: tokenInfo
+- name: RQSendPayment
+  apis:
+  - merchant-presented-qr
+  field_count: 10
+  fields:
+  - clientAppID
+  - dpaData
+  - dpaTransactionOptions
+  - serviceId
+  - srcClientId
+  - srcCorrelationId
+  - srcDigitalCardId
+  - srcDpaId
+  - srcInitiatorId
+  - srciTransactionId
+  relationships:
+  - type: has_one
+    to: ObjDpaData
+    via: dpaData
+  - type: has_one
+    to: ObjDpaTransactionOptions
+    via: dpaTransactionOptions
+- name: RQSendVerifyCode
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 13
+  fields:
+  - activationCode
+  - activationMethod
+  - cardId
+  - clientWalletAccountID
+  - codeExpiration
+  - correlationId
+  - otpMaxReached
+  - panUniqueID
+  - reasonCodes
+  - requestId
+  - tokenRequestorID
+  - tokenRequestorName
+  relationships:
+  - type: has_one
+    to: ObjActivationMethod
+    via: activationMethod
+  - type: has_one
+    to: prm_requestId
+    via: requestId
+- name: RQSessionSummary
+  apis:
+  - onboarding
+  field_count: 2
+  fields:
+  - applicationOnboarding
+  - digits
+  relationships: []
+- name: RQTokenInquiry
+  apis:
+  - issuer-tokenization
+  field_count: 4
+  fields:
+  - ObjDeviceBindingInfo
+  - cardHolderVerificationRetrieve
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships: []
+- name: RQTokenInquiryPan
+  apis:
+  - issuer-tokenization
+  field_count: 3
+  fields:
+  - cardId
+  - encryptedData
+  - panReferenceID
+  relationships:
+  - type: has_one
+    to: ObjTokenInquiryPanEncryptedData
+    via: encryptedData
+- name: RQTokenLifecycle
+  apis:
+  - issuer-tokenization
+  field_count: 8
+  fields:
+  - activationCode
+  - deviceInfo
+  - merchantInfo
+  - operationReason
+  - operationType
+  - operatorID
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships:
+  - type: has_one
+    to: ObjDeviceInformation
+    via: deviceInfo
+  - type: has_one
+    to: ObjMerchantInfo
+    via: merchantInfo
+- name: RQUnsubscribeCustomer
+  apis:
+  - customers
+  field_count: 2
+  fields:
+  - observations
+  - reasonId
+  relationships: []
+- name: RQUpdateAlias
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - alias
+  - aliasType
+  - cardHolder
+  - directoryCountry
+  relationships:
+  - type: has_one
+    to: CardHolder
+    via: cardHolder
+- name: RQUpdateCardMetadata
+  apis:
+  - issuer-tokenization
+  field_count: 8
+  fields:
+  - cardId
+  - cardMetadataInfo
+  - encryptedData
+  - operationReason
+  - operatorID
+  - panReferenceID
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships:
+  - type: has_one
+    to: ObjTokenInquiryPanEncryptedData
+    via: encryptedData
+  - type: has_one
+    to: ObjUpdateCardMetadataInfo
+    via: cardMetadataInfo
+- name: RQUpdateConsumerInfo
+  apis:
+  - push-provisioning
+  field_count: 2
+  fields:
+  - consumerInformation
+  - intent
+  relationships:
+  - type: has_one
+    to: ObjConsumerInformation
+    via: consumerInformation
+  - type: has_one
+    to: ObjIntent
+    via: intent
+- name: RQUpdateCustomer
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - contactInformation
+  - generalInformation
+  - personalAddress
+  - userCredentials
+  relationships: []
+- name: RQUpdateCustomerIdentityDocuments
+  apis:
+  - customers
+  field_count: 9
+  fields:
+  - birthDate
+  - country
+  - documentNumber
+  - documentTypeId
+  - expirationDate
+  - firstNames
+  - isPrimary
+  - issueDate
+  - lastNames
+  relationships: []
+- name: RQUpdatePayment
+  apis:
+  - push-provisioning
+  field_count: 3
+  fields:
+  - consumerInformation
+  - intent
+  - paymentInstruments
+  relationships:
+  - type: has_one
+    to: ObjIntent
+    via: intent
+- name: RQUploadSupportDocument
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - documentId
+  - documentUploadId
+  - fileInfo
+  relationships: []
+- name: RQUserCreation
+  apis:
+  - onboarding
+  field_count: 2
+  fields:
+  - userName
+  - userPassword
+  relationships: []
+- name: RS200
+  apis:
+  - cards
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RS400
+  apis:
+  - cards
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RS400Tk
+  apis:
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RS401
+  apis:
+  - accounts
+  - alias-directory
+  - cards
+  - compliance
+  - customers
+  - mastercard-issuer-tokenization
+  - merchant-presented-qr
+  - oauth2-data-encryption
+  - onboarding
+  - operations
+  - payment-authorizer
+  - profile
+  - push-provisioning
+  - real-time-payments
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RS401Tk
+  apis:
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RS404
+  apis:
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RS500
+  apis:
+  - accounts
+  - alias-directory
+  - cards
+  - compliance
+  - customers
+  - merchant-presented-qr
+  - oauth2-data-encryption
+  - onboarding
+  - operations
+  - payment-authorizer
+  - profile
+  - push-provisioning
+  - real-time-payments
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RS500Tk
+  apis:
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  - push-provisioning
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAcceptTermsAndConditions200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAcceptTermsAndConditions400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountBalance200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountBalance400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountBalanceByCardId200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountBalanceByCardId400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountCreation200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountCreation400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountInformation200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountInformation400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountInformation404
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountList200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountList400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountToAccountTransaction200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountToAccountTransaction400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountTransactions200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAccountTransactions400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAddPaymentInstrument200
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: CreatePaymentInstrumentResponse
+    via: data
+- name: RSAddPayments202
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAdjustments200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAdjustments400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSAnonymousCardBatchStatusUpdate200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSAnonymousCardBatchStatusUpdate400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApplePay200
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjCardDataApplePay
+    via: data
+- name: RSApproveAccount200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveAccount400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveIncomingInternationalTransfer
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveIncomingInternationalTransfer400
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveInternalTransfer
+  apis:
+  - operations
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveInternalTransfer400
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveOrDeclineARecipient200
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveOrDeclineARecipient400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveOutgoingInternationalTransaction
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveOutgoingInternationalTransaction400
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSApproveProvision200
+  apis:
+  - issuer-tokenization
+  field_count: 5
+  fields:
+  - actionCode
+  - addressVerificationResultCode
+  - cvv2ResultsCode
+  - issuerDiscretionaryData
+  - issuerSpecialConditionCodes
+  relationships:
+  - type: has_one
+    to: ObjApproveProvisionIssuerDiscretionaryData
+    via: issuerDiscretionaryData
+- name: RSBlockAccount200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSBlockAccount400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSBlockCard200
+  apis:
+  - accounts
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSBlockCard400
+  apis:
+  - accounts
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardActivation200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardActivation400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardActiveStatus200
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardActiveStatus400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardAndAccountBundled200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardAndAccountBundled400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardBatchInfo200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardBatchInfo400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardBatchList200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardBatchList400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardCreation200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardCreation400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardDetail200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardDetail400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardEmbossing200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardEmbossing400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardHolderCreate400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardIdUserId200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjCardIdUserIdData
+    via: data
+- name: RSCardInfo200
+  apis:
+  - issuer-tokenization
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjCardInfoRSData
+    via: data
+- name: RSCardInformation200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardInformation400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardLookup200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardLookup400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardMovementsQuery200
+  apis:
+  - cards
+  field_count: 5
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  - metadata
+  relationships: []
+- name: RSCardMovementsQuery400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPINAssignment200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPINAssignment400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPINUpdate200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPINUpdate400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPinAssignment200
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPinAssignment400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPinUpdate200
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardPinUpdate400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardQRImage200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjCardQRCodeData
+    via: data
+- name: RSCardReplacement200
+  apis:
+  - accounts
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardReplacement400
+  apis:
+  - accounts
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardSecurityCodeCVV2200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardSecurityCodeCVV2400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardToAccountAssociation200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardToAccountAssociation400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardToAccountDisassociation200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardToAccountDisassociation400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardTransactions200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCardTransactions400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCardholderVerificationMethods200
+  apis:
+  - issuer-tokenization
+  field_count: 2
+  fields:
+  - responseCode
+  - stepUpMethods
+  relationships:
+  - type: has_many
+    to: ObjStepUpMethods
+    via: stepUpMethods
+- name: RSCashIn200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCashIn400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCashInReverse200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCashInReverse400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCashOut200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCashOut400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCashOutReverse200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCashOutReverse400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCellPhoneOTPVerification200
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCellPhoneOTPVerification400
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCloseAccount200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCloseAccount400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateCommercialCustomers200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateCommercialCustomers400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateIndividualCustomer200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateIndividualCustomer400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateMerchant
+  apis:
+  - merchant-presented-qr
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateMerchant400
+  apis:
+  - merchant-presented-qr
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateMerchantCustomer200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCreateMerchantCustomer400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCreationOfCardBatches200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCreationOfCardBatches400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerConfigurationUpdate200
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerConfigurationUpdate400
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerDocumentUpload200
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerDocumentUpload400
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerEmploymentInformationUpdate200
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerEmploymentInformationUpdate400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerGeneralInformation200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerGeneralInformation400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerList200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomerList400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomizeCardOperationsLimits200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSCustomizeCardOperationsLimits400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDeclineIncomingInternationalTransfer
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDeclineIncomingInternationalTransfer400
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDeclineInternalTransfer
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDeclineInternalTransfer400
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDeclineOutgoingInternationalTransaction
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDeclineOutgoingInternationalTransaction400
+  apis:
+  - operations
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDecoderQR
+  apis:
+  - merchant-presented-qr
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSDeleteAliasByAliasId200
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSDeviceRegistration200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSDeviceRegistration400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSEncryptCard200
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjSignedPayload
+    via: data
+- name: RSEnrollCard200
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjEnrollCardBasicCardInfo
+    via: data
+- name: RSEnrollData202
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSExpectedAccountActivity200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSExpectedAccountActivity400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSFromIssuer_BadRequest
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSFromIssuer_ParamsRequired
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGenerateQrCode
+  apis:
+  - merchant-presented-qr
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGenerateQrCode400
+  apis:
+  - merchant-presented-qr
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGeneric400
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGenericResponse
+  apis:
+  - alias-directory
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetACustomerDocument200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetACustomerDocument400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetAliasByAliasId200
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetBiometricApplicantId200
+  apis:
+  - onboarding
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetBiometricApplicantId400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomerActionLogs200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomerActionLogs400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomerConfigurationParameters200
+  apis:
+  - profile
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomerConfigurationParameters400
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomerRiskIndicators200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomerRiskIndicators400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomersSupportDocuments200
+  apis:
+  - onboarding
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetCustomersSupportDocuments400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetPaymentDetail200
+  apis:
+  - payment-authorizer
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetPaymentDetail400
+  apis:
+  - payment-authorizer
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetSupportingDocuments200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetSupportingDocuments400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGetTermsAndConditions200
+  apis:
+  - onboarding
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSGetTermsAndConditions400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSGooglePay200
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjGooglePayCardData
+    via: data
+- name: RSIncomeSource200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSIncomeSource400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSInternalServerError
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSIssuer_InvalidSignature
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSKYCInfo200
+  apis:
+  - compliance
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSKYCInfo400
+  apis:
+  - compliance
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSListTransactionRules200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_many
+    to: ObjListTransactionRules
+    via: data
+- name: RSListTransactionRules400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSMakePayment
+  apis:
+  - merchant-presented-qr
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSMembershipPayment200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSMembershipPayment400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSNotificationPayment
+  apis:
+  - merchant-presented-qr
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOAuth2200
+  apis:
+  - oauth2-data-encryption
+  field_count: 7
+  fields:
+  - access_token
+  - application_name
+  - client_id
+  - expires_in
+  - issued_at
+  - status
+  - token_type
+  relationships: []
+- name: RSOAuth2400
+  apis:
+  - oauth2-data-encryption
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOTPEmailVerification200
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOTPEmailVerification400
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOTPRequestViaSMSOrEmail200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOTPRequestViaSMSOrEmail400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOTPVerification200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOTPVerification400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOccupation200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOccupation400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOnboardingSession200
+  apis:
+  - onboarding
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSOnboardingSession400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOtherTypeOfOccupation200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSOtherTypeOfOccupation400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSPasswordRecovery200
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSPasswordRecovery400
+  apis:
+  - profile
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSPaymentAuthorizer200
+  apis:
+  - payment-authorizer
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSPaymentAuthorizer400
+  apis:
+  - payment-authorizer
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSPaymentRefund200
+  apis:
+  - payment-authorizer
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSPaymentRefund400
+  apis:
+  - payment-authorizer
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSPaymentReverse200
+  apis:
+  - payment-authorizer
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSPaymentReverse400
+  apis:
+  - payment-authorizer
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSPersonalInformation200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSPersonalInformation400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSQueryData200
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSRegulatoryQuestions200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSRegulatoryQuestions400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSRequestStatus200
+  apis:
+  - push-provisioning
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSResidenceAddress200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSResidenceAddress400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSReverseAdjustment400
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSSendMoney400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSSendPayment
+  apis:
+  - merchant-presented-qr
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSSessionSummary200
+  apis:
+  - onboarding
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSSessionSummary400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSSetPrimaryPaymentInstrument200
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSTenantTransactions200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSTenantTransactions400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSTokenInquiry200
+  apis:
+  - issuer-tokenization
+  field_count: 15
+  fields:
+  - cardMetadataProfileID
+  - cardholderVerificationList
+  - clientWalletAccountID
+  - consumerEntryMode
+  - deviceBindingInfoList
+  - encryptedData
+  - entityOfLastAction
+  - issuerDiscretionaryData
+  - lastFourOfPAN
+  - lastFourOfPreviousPAN
+  - operatorID
+  - otpInfo
+  relationships:
+  - type: has_many
+    to: ObjCardholderVerification
+    via: cardholderVerificationList
+  - type: has_many
+    to: ObjDeviceBindingInfo
+    via: deviceBindingInfoList
+  - type: has_one
+    to: ObjTokenInquiryEncryptedData
+    via: encryptedData
+  - type: has_one
+    to: ObjTokenInquiryIssuerDiscretionaryData
+    via: issuerDiscretionaryData
+  - type: has_one
+    to: ObjTokenInquiryOptInfo
+    via: otpInfo
+- name: RSTokenUpdate200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSTokenUpdate400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSTransaction200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: ObjTransactionData
+    via: data
+- name: RSTransactionDetail200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSTransactionDetail400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSTransactionRules400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSTransactionSummary200
+  apis:
+  - cards
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSTransactionSummary400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSTransferDetails200
+  apis:
+  - accounts
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSTransferDetails400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUnblockAccount200
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUnblockAccount400
+  apis:
+  - accounts
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUnblockCard200
+  apis:
+  - accounts
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUnblockCard400
+  apis:
+  - accounts
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUnsubscribeCustomer200
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUnsubscribeCustomer400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUpdateAlias200
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSUpdateCustomer200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSUpdateCustomer400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUpdateCustomerIdentityDocuments200
+  apis:
+  - customers
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: RSUpdateCustomerIdentityDocuments400
+  apis:
+  - customers
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUpdatePaymentInstrumentStatus200
+  apis:
+  - alias-directory
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: UpdateStatusPaymentInstrumentCoreResponse
+    via: data
+- name: RSUploadSupportDocument200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUploadSupportDocument400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUserCreation200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSUserCreation400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSValidarDocId200
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSValidarDocId400
+  apis:
+  - onboarding
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSVirtualToPhysicalCard200
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: RSVirtualToPhysicalCard400
+  apis:
+  - cards
+  field_count: 3
+  fields:
+  - code
+  - datetime
+  - message
+  relationships: []
+- name: Recipient
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - alias
+  - aliasDirectory
+  - aliasType
+  - paymentInformation
+  relationships: []
+- name: ReverseAutomaticTransferResponse
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: ReverseTransactionsRequest
+  apis:
+  - real-time-payments
+  field_count: 5
+  fields:
+  - adjustmentTransactionCode
+  - amount
+  - currencyCode
+  - surcharge
+  - transactionCode
+  relationships: []
+- name: ReverseTransactionsResponse
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships: []
+- name: Sender
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - aliasDirectory
+  - aliasId
+  - paymentInformation
+  - paymentInstrumentId
+  relationships: []
+- name: SuspiciousEvent
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 3
+  fields:
+  - eventName
+  - systemAtcStatus
+  - walletAtcStatus
+  relationships:
+  - type: has_one
+    to: SystemAtcStatus
+    via: systemAtcStatus
+  - type: has_one
+    to: WalletAtcStatus
+    via: walletAtcStatus
+- name: SystemAtcStatus
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - atcAlreadyProcessed
+  - atcNotFound
+  - atcReportedUsedByWallet
+  - unusedActive
+  relationships: []
+- name: TokenDetails
+  apis:
+  - push-provisioning
+  field_count: 2
+  fields:
+  - tokenReferenceID
+  - tokenRequestorID
+  relationships: []
+- name: TransactionAmount
+  apis:
+  - real-time-payments
+  field_count: 5
+  fields:
+  - destinationCurrencyCode
+  - purpose
+  - senderAmount
+  - sourceCurrencyCode
+  - surcharge
+  relationships: []
+- name: TransactionDetail
+  apis:
+  - real-time-payments
+  field_count: 7
+  fields:
+  - actionCode
+  - approvalCode
+  - responseCode
+  - retrievalReferenceNumber
+  - systemsTraceAuditNumber
+  - transactionIdentifier
+  - transmissionDateTime
+  relationships: []
+- name: TransactionQuery
+  apis:
+  - real-time-payments
+  field_count: 11
+  fields:
+  - actionCode
+  - approvalCode
+  - responseCode
+  - retrievalReferenceNumber
+  - statusCode
+  - systemsTraceAuditNumber
+  - transactionDate
+  - transactionId
+  - transactionIdentifier
+  - transactionReference
+  - transactionType
+  relationships: []
+- name: TransactionSummary
+  apis:
+  - real-time-payments
+  field_count: 7
+  fields:
+  - conversionRate
+  - destinationAmount
+  - destionationCurrencyCode
+  - markupRateApplied
+  - sourceAmountWithoutMarkup
+  - surcharge
+  - totalWithFee
+  relationships: []
+- name: TransactionSummaryRequest
+  apis:
+  - real-time-payments
+  field_count: 5
+  fields:
+  - amount
+  - destinationCurrency
+  - sourceCurrency
+  - surchargeInfo
+  - transaction
+  relationships: []
+- name: TransactionSummaryResponse
+  apis:
+  - real-time-payments
+  field_count: 4
+  fields:
+  - code
+  - data
+  - datetime
+  - message
+  relationships:
+  - type: has_one
+    to: TransactionSummary
+    via: data
+- name: UpdateStatusPaymentInstrumentCoreRequest
+  apis:
+  - alias-directory
+  field_count: 5
+  fields:
+  - alias
+  - aliasType
+  - detail
+  - paymentInstrumentId
+  - paymentInstrumentStatus
+  relationships: []
+- name: UpdateStatusPaymentInstrumentCoreResponse
+  apis:
+  - alias-directory
+  field_count: 2
+  fields:
+  - paymentInstrumentId
+  - paymentInstrumentStatus
+  relationships: []
+- name: WalletAtcStatus
+  apis:
+  - mastercard-issuer-tokenization
+  field_count: 4
+  fields:
+  - unusedActive
+  - unusedDiscarded
+  - usedForContactless
+  - usedForDsrp
+  relationships: []
+relationships:
+- from: RQBlockAccount
+  to: Reason
+  type: belongs_to
+  via: reasonId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQCloseAccount
+  to: Reason
+  type: belongs_to
+  via: reasonId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQCardToAccountAssociation
+  to: Account
+  type: belongs_to
+  via: accountId
+  api: accounts
+  confidence: medium
+  target_exists: true
+- from: RQCardEmbossing
+  to: CardDesign
+  type: belongs_to
+  via: cardDesignId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQAdjustments
+  to: Account
+  type: belongs_to
+  via: accountId
+  api: accounts
+  confidence: medium
+  target_exists: true
+- from: RQAdjustments
+  to: Reason
+  type: belongs_to
+  via: reasonId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQAccountToAccountTransaction
+  to: DestinationAccount
+  type: belongs_to
+  via: destinationAccountId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQAccountToAccountTransaction
+  to: TransactionPurpose
+  type: belongs_to
+  via: transactionPurposeId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQBlockCard
+  to: Reason
+  type: belongs_to
+  via: reasonId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQCardReplacement
+  to: BlockReason
+  type: belongs_to
+  via: blockReasonId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQCardReplacement
+  to: BlockType
+  type: belongs_to
+  via: blockTypeId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQCreationOfCardBatches
+  to: CardProgram
+  type: belongs_to
+  via: cardProgramId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQCreationOfCardBatches
+  to: CardDesign
+  type: belongs_to
+  via: cardDesignId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQCreationOfCardBatches
+  to: CardEmbosser
+  type: belongs_to
+  via: cardEmbosserId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: RQAnonymousCardBatchStatusUpdate
+  to: Status
+  type: belongs_to
+  via: statusId
+  api: accounts
+  confidence: medium
+  target_exists: false
+- from: Account
+  to: Account
+  type: belongs_to
+  via: accountId
+  api: alias-directory
+  confidence: medium
+  target_exists: true
+- from: Account
+  to: AccountInternal
+  type: belongs_to
+  via: accountInternalId
+  api: alias-directory
+  confidence: medium
+  target_exists: false
+- from: CreatePaymentInstrumentRequest
+  to: Alias
+  type: belongs_to
+  via: aliasId
+  api: alias-directory
+  confidence: medium
+  target_exists: false
+- from: PaymentInstrumentPrimaryRequest
+  to: Alias
+  type: belongs_to
+  via: aliasId
+  api: alias-directory
+  confidence: medium
+  target_exists: false
+- from: PaymentInstrumentPrimaryRequest
+  to: PaymentInstrument
+  type: belongs_to
+  via: paymentInstrumentId
+  api: alias-directory
+  confidence: medium
+  target_exists: true
+- from: UpdateStatusPaymentInstrumentCoreRequest
+  to: PaymentInstrument
+  type: belongs_to
+  via: paymentInstrumentId
+  api: alias-directory
+  confidence: medium
+  target_exists: true
+- from: FindAlias
+  to: Directory
+  type: belongs_to
+  via: directoryId
+  api: alias-directory
+  confidence: medium
+  target_exists: false
+- from: UpdateStatusPaymentInstrumentCoreResponse
+  to: PaymentInstrument
+  type: belongs_to
+  via: paymentInstrumentId
+  api: alias-directory
+  confidence: medium
+  target_exists: true
+- from: AliasFavorite
+  to: Favorite
+  type: belongs_to
+  via: favoriteId
+  api: alias-directory
+  confidence: medium
+  target_exists: false
+- from: PaymentInstrumentResponse
+  to: PaymentInstrument
+  type: belongs_to
+  via: paymentInstrumentId
+  api: alias-directory
+  confidence: medium
+  target_exists: true
+- from: CreateAccountRequest
+  to: Alias
+  type: belongs_to
+  via: aliasId
+  api: alias-directory
+  confidence: medium
+  target_exists: false
+- from: CreatePaymentInstrumentResponse
+  to: Alias
+  type: belongs_to
+  via: aliasId
+  api: alias-directory
+  confidence: medium
+  target_exists: false
+- from: CreatePaymentInstrumentResponse
+  to: PaymentInstrument
+  type: belongs_to
+  via: paymentInstrumentId
+  api: alias-directory
+  confidence: medium
+  target_exists: true
+- from: ObjCardHolder
+  to: Branch
+  type: belongs_to
+  via: branchId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCardAndAccountBundled
+  to: Program
+  type: belongs_to
+  via: programId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCardReplacement
+  to: Program
+  type: belongs_to
+  via: programId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCardReplacement
+  to: User
+  type: belongs_to
+  via: userId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCashIn
+  to: External
+  type: belongs_to
+  via: externalId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCashInReverse
+  to: External
+  type: belongs_to
+  via: externalId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCashOut
+  to: External
+  type: belongs_to
+  via: externalId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCashOutReverse
+  to: External
+  type: belongs_to
+  via: externalId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCardCardholders
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQCardCardholders
+  to: Branch
+  type: belongs_to
+  via: branchId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQSendMoney
+  to: External
+  type: belongs_to
+  via: externalId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: ObjCardId
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: ObjCardIdUserIdData
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: ObjCardIdUserIdData
+  to: User
+  type: belongs_to
+  via: userId
+  api: cards
+  confidence: medium
+  target_exists: false
+- from: RQApproveOrDeclineARecipient
+  to: Action
+  type: belongs_to
+  via: actionId
+  api: customers
+  confidence: medium
+  target_exists: false
+- from: RQCustomerEmploymentInformationUpdate
+  to: Customer
+  type: belongs_to
+  via: customerId
+  api: customers
+  confidence: medium
+  target_exists: false
+- from: RQCustomerEmploymentInformationUpdate
+  to: TenantDepartament
+  type: belongs_to
+  via: tenantDepartamentId
+  api: customers
+  confidence: medium
+  target_exists: false
+- from: RQUnsubscribeCustomer
+  to: Reason
+  type: belongs_to
+  via: reasonId
+  api: customers
+  confidence: medium
+  target_exists: false
+- from: RQUpdateCustomerIdentityDocuments
+  to: DocumentType
+  type: belongs_to
+  via: documentTypeId
+  api: customers
+  confidence: medium
+  target_exists: false
+- from: RQApproveProvision
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQApproveProvision
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQApproveProvision
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQApproveProvision
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQCheckEligibility
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQCheckEligibility
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQCheckEligibility
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInfo
+  to: OriginalTokenRequestor
+  type: belongs_to
+  via: originalTokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInfo
+  to: OriginalTokenReference
+  type: belongs_to
+  via: originalTokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCardholderVerification
+  to: LifeCycleTrace
+  type: belongs_to
+  via: lifeCycleTraceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceInformationEligibility
+  to: Device
+  type: belongs_to
+  via: deviceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceInformationEligibility
+  to: OsBuild
+  type: belongs_to
+  via: osBuildID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceInformation
+  to: Device
+  type: belongs_to
+  via: deviceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceInformation
+  to: OsBuild
+  type: belongs_to
+  via: osBuildID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceInformation
+  to: OriginalDevice
+  type: belongs_to
+  via: originalDeviceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceInformation_ForBinding
+  to: Device
+  type: belongs_to
+  via: deviceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceInformation_ForBinding
+  to: OsBuild
+  type: belongs_to
+  via: osBuildID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjMerchantInfo
+  to: Merchant
+  type: belongs_to
+  via: merchantID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenUserInfo
+  to: TokenUser
+  type: belongs_to
+  via: tokenUserID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQDeviceTokenBinding
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQDeviceTokenBinding
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQDeviceTokenBinding
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQDeviceTokenBinding
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQCardholderVerificationMethods
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQCardholderVerificationMethods
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQCardholderVerificationMethods
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQCardholderVerificationMethods
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: LifeCycleTrace
+  type: belongs_to
+  via: lifeCycleTraceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: TokenRequestorTsp
+  type: belongs_to
+  via: tokenRequestorTspID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: Device
+  type: belongs_to
+  via: deviceId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotification
+  to: Task
+  type: belongs_to
+  via: taskID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjGroupResp
+  to: Group
+  type: belongs_to
+  via: groupID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQPanLifecycle
+  to: Operator
+  type: belongs_to
+  via: operatorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQPanLifecycle
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendPasscode
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendPasscode
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendPasscode
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendPasscode
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQTokenInquiry
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQTokenInquiry
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQTokenInquiryPan
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQTokenInquiryPan
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQTokenLifecycle
+  to: Operator
+  type: belongs_to
+  via: operatorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQTokenLifecycle
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQTokenLifecycle
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQUpdateCardMetadata
+  to: Operator
+  type: belongs_to
+  via: operatorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQUpdateCardMetadata
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQUpdateCardMetadata
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQUpdateCardMetadata
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQUpdateCardMetadata
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjUpdateCardMetadataInfo
+  to: Profile
+  type: belongs_to
+  via: profileID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjUpdateCardMetadataInfo
+  to: TermsAndConditions
+  type: belongs_to
+  via: termsAndConditionsID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCheckEligibilityCardMetadataInfo
+  to: Profile
+  type: belongs_to
+  via: profileID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCheckEligibilityCardMetadataInfo
+  to: TermsAndConditions
+  type: belongs_to
+  via: termsAndConditionsID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCheckEligibilityCardArtRefID
+  to: CardArtRef
+  type: belongs_to
+  via: cardArtRefID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCardInfoList
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCardInfoList
+  to: CardProduct
+  type: belongs_to
+  via: cardProductId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCardInfoList
+  to: CardStatus
+  type: belongs_to
+  via: cardStatusId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjCardInfoList
+  to: CardType
+  type: belongs_to
+  via: cardTypeId
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RSTokenInquiry200
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RSTokenInquiry200
+  to: Operator
+  type: belongs_to
+  via: operatorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RSTokenInquiry200
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RSTokenInquiry200
+  to: CardMetadataProfile
+  type: belongs_to
+  via: cardMetadataProfileID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjDeviceBindingInfo
+  to: Device
+  type: belongs_to
+  via: deviceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInquiryPanTokenDetails
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInquiryPanTokenDetails
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInquiryPanTokenDetails
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInquiryPanTokenDetails
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInquiryPanTokenDetails
+  to: Operator
+  type: belongs_to
+  via: operatorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjUpdateCardMetadataResponseDetails
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjUpdateCardMetadataResponseDetails
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjUpdateCardMetadataResponseDetails
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendVerifyCode
+  to: Correlation
+  type: belongs_to
+  via: correlationId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendVerifyCode
+  to: Request
+  type: belongs_to
+  via: requestId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendVerifyCode
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendVerifyCode
+  to: PanUnique
+  type: belongs_to
+  via: panUniqueID
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendVerifyCode
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQSendVerifyCode
+  to: ClientWalletAccount
+  type: belongs_to
+  via: clientWalletAccountID
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotServiceActivated
+  to: Request
+  type: belongs_to
+  via: requestId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotTokenUpdated
+  to: Request
+  type: belongs_to
+  via: requestId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQNotSuspiciousEvents
+  to: Request
+  type: belongs_to
+  via: requestId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjBodyNotSuspiciousEv
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjBodyNotSuspiciousEv
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjBodyNotSuspiciousEv
+  to: PaymentAppInstance
+  type: belongs_to
+  via: paymentAppInstanceId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjBodyServiceActivated
+  to: Correlation
+  type: belongs_to
+  via: correlationId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInformation_ActSer
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInformation_ActSer
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInformation_ActSer
+  to: Wallet
+  type: belongs_to
+  via: walletId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInformation_ActSer
+  to: PaymentAppInstance
+  type: belongs_to
+  via: paymentAppInstanceId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInformation_ActSer
+  to: SecureElement
+  type: belongs_to
+  via: secureElementId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInformation_ActSer
+  to: TermsAndConditionsAsset
+  type: belongs_to
+  via: termsAndConditionsAssetId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjTokenInformation_ActSer
+  to: ProductConfiguration
+  type: belongs_to
+  via: productConfigurationId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjFinancialAccountData
+  to: FinancialAccount
+  type: belongs_to
+  via: financialAccountId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjFinancialAccountData
+  to: InterbankCardAssociation
+  type: belongs_to
+  via: interbankCardAssociationId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjToken_StatusUpdate
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: ObjToken_StatusUpdate
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: mastercard-issuer-tokenization
+  confidence: medium
+  target_exists: false
+- from: RQGenerateQrCode
+  to: Merchant
+  type: belongs_to
+  via: merchantId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQGenerateQrCode
+  to: Acquirer
+  type: belongs_to
+  via: acquirerId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: SrcCorrelation
+  type: belongs_to
+  via: srcCorrelationId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: SrciTransaction
+  type: belongs_to
+  via: srciTransactionId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: SrcDigitalCard
+  type: belongs_to
+  via: srcDigitalCardId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: Service
+  type: belongs_to
+  via: serviceId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: SrcDpa
+  type: belongs_to
+  via: srcDpaId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: SrcClient
+  type: belongs_to
+  via: srcClientId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: SrcInitiator
+  type: belongs_to
+  via: srcInitiatorId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQSendPayment
+  to: ClientApp
+  type: belongs_to
+  via: clientAppID
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: ObjDpaAddress
+  to: Address
+  type: belongs_to
+  via: addressId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: true
+- from: ObjDpaTransactionOptions
+  to: MerchantOrder
+  type: belongs_to
+  via: merchantOrderId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: ObjDpaTransactionOptions
+  to: Acquirer
+  type: belongs_to
+  via: acquirerId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQMakePayment
+  to: SrcCorrelation
+  type: belongs_to
+  via: srcCorrelationId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQMakePayment
+  to: SrcDpa
+  type: belongs_to
+  via: srcDpaId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQMakePayment
+  to: SrciTransaction
+  type: belongs_to
+  via: srciTransactionId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQNotificationPayment
+  to: SrcClient
+  type: belongs_to
+  via: srcClientId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQNotificationPayment
+  to: SrcCorrelation
+  type: belongs_to
+  via: srcCorrelationId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQNotificationPayment
+  to: SrciTransaction
+  type: belongs_to
+  via: srciTransactionId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQNotificationPayment
+  to: Service
+  type: belongs_to
+  via: serviceId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQNotificationPayment
+  to: SrcDigitalCard
+  type: belongs_to
+  via: srcDigitalCardId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: ObjRelationships
+  to: ExternalClient
+  type: belongs_to
+  via: externalClientId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: ObjAcquirerIdentifiers
+  to: Acquirer
+  type: belongs_to
+  via: acquirerId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: ObjAcquirerIdentifiers
+  to: AcquirerMerchant
+  type: belongs_to
+  via: acquirerMerchantId
+  api: merchant-presented-qr
+  confidence: medium
+  target_exists: false
+- from: RQDeviceRegistration
+  to: Android
+  type: belongs_to
+  via: androidId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQDeviceRegistration
+  to: Channel
+  type: belongs_to
+  via: channelId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQDeviceRegistration
+  to: SimCountry
+  type: belongs_to
+  via: simCountryId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQDeviceRegistration
+  to: GpsCountry
+  type: belongs_to
+  via: gpsCountryId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQDeviceRegistration
+  to: Device
+  type: belongs_to
+  via: deviceId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQResidenceAddress
+  to: AddressType
+  type: belongs_to
+  via: addressTypeId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQPersonalInformation
+  to: Gender
+  type: belongs_to
+  via: genderId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQPersonalInformation
+  to: CivilStatus
+  type: belongs_to
+  via: civilStatusId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQPersonalInformation
+  to: EducationLevel
+  type: belongs_to
+  via: educationLevelId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQOTPRequestViaSMSOrEmail
+  to: PhoneCode
+  type: belongs_to
+  via: phoneCodeId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQOTPVerification
+  to: PhoneCode
+  type: belongs_to
+  via: phoneCodeId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQOccupation
+  to: OccupationType
+  type: belongs_to
+  via: occupationTypeId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQIncomeSource
+  to: FundsType
+  type: belongs_to
+  via: fundsTypeId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQIncomeSource
+  to: Income
+  type: belongs_to
+  via: incomeId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQIncomeSource
+  to: OtherFundsType
+  type: belongs_to
+  via: otherFundsTypeId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQUploadSupportDocument
+  to: Document
+  type: belongs_to
+  via: documentId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQUploadSupportDocument
+  to: DocumentUpload
+  type: belongs_to
+  via: documentUploadId
+  api: onboarding
+  confidence: medium
+  target_exists: false
+- from: RQCellPhoneOTPVerification
+  to: PhoneCode
+  type: belongs_to
+  via: phoneCodeId
+  api: profile
+  confidence: medium
+  target_exists: false
+- from: RQCustomerDocumentUpload
+  to: Document
+  type: belongs_to
+  via: documentId
+  api: profile
+  confidence: medium
+  target_exists: false
+- from: RQCustomerDocumentUpload
+  to: DocumentUpload
+  type: belongs_to
+  via: documentUploadId
+  api: profile
+  confidence: medium
+  target_exists: false
+- from: RQApplePay
+  to: VCard
+  type: belongs_to
+  via: vCardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: RQEnrollCard
+  to: ClientCustomer
+  type: belongs_to
+  via: clientCustomerId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: GetCardPaymentInstrument
+  to: PanReference
+  type: belongs_to
+  via: panReferenceID
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: ObjConsumerInformation
+  to: ExternalConsumer
+  type: belongs_to
+  via: externalConsumerID
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: ObjConsumerInformation
+  to: ExternalConsumerIDOwnerB
+  type: belongs_to
+  via: externalConsumerIDOwnerBID
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: RQGooglePay
+  to: VCard
+  type: belongs_to
+  via: vCardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: RQGooglePay
+  to: Device
+  type: belongs_to
+  via: deviceID
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: RQGooglePay
+  to: ClientCustomer
+  type: belongs_to
+  via: clientCustomerID
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: CardPaymentInstrument
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: DeleteCardPaymentInstrument
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: BankAccountPaymentInstrument
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: DeleteBankAccountPaymentInstrument
+  to: Card
+  type: belongs_to
+  via: cardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: TokenDetails
+  to: TokenReference
+  type: belongs_to
+  via: tokenReferenceID
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: TokenDetails
+  to: TokenRequestor
+  type: belongs_to
+  via: tokenRequestorID
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: ObjCardDataApplePay
+  to: VCard
+  type: belongs_to
+  via: vCardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: ObjEnrollCardBasicCardInfo
+  to: VCard
+  type: belongs_to
+  via: vCardId
+  api: push-provisioning
+  confidence: medium
+  target_exists: false
+- from: Sender
+  to: Alias
+  type: belongs_to
+  via: aliasId
+  api: real-time-payments
+  confidence: medium
+  target_exists: false
+- from: Sender
+  to: PaymentInstrument
+  type: belongs_to
+  via: paymentInstrumentId
+  api: real-time-payments
+  confidence: medium
+  target_exists: true
+- from: TransactionQuery
+  to: Transaction
+  type: belongs_to
+  via: transactionId
+  api: real-time-payments
+  confidence: medium
+  target_exists: false
+notes:
+- NovoPayment publishes no id-prefix convention; identifiers are opaque strings or UUIDs per operation.
+- X-Tenant-Id scopes every entity to the calling tenant — the graph is tenant-partitioned at the header level, not
+  by a field on the entity.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

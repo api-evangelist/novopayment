@@ -1,0 +1,73 @@
+generated: '2026-09-17'
+method: searched
+source: openapi/novopayment-accounts-openapi.yml, openapi/novopayment-alias-directory-openapi.yml, openapi/novopayment-cards-openapi.yml,
+  openapi/novopayment-compliance-openapi.yml, openapi/novopayment-customers-openapi.yml, openapi/novopayment-mastercard-issuer-tokenization-openapi.yml,
+  openapi/novopayment-merchant-presented-qr-openapi.yml, openapi/novopayment-onboarding-openapi.yml, openapi/novopayment-operations-openapi.yml,
+  openapi/novopayment-profile-openapi.yml, openapi/novopayment-push-provisioning-openapi.yml, openapi/novopayment-real-time-payments-openapi.yml
+  ; plus the developer hub access-token guide and the Security OAuth2 API reference read 2026-09-17
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - clientCredentials
+schemes:
+- name: oAuth2ClientCredentials
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+    scopes: 0
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+  sources:
+  - openapi/novopayment-accounts-openapi.yml
+  - openapi/novopayment-alias-directory-openapi.yml
+  - openapi/novopayment-cards-openapi.yml
+  - openapi/novopayment-compliance-openapi.yml
+  - openapi/novopayment-customers-openapi.yml
+  - openapi/novopayment-mastercard-issuer-tokenization-openapi.yml
+  - openapi/novopayment-merchant-presented-qr-openapi.yml
+  - openapi/novopayment-onboarding-openapi.yml
+  - openapi/novopayment-operations-openapi.yml
+  - openapi/novopayment-profile-openapi.yml
+  - openapi/novopayment-push-provisioning-openapi.yml
+  - openapi/novopayment-real-time-payments-openapi.yml
+docs:
+- https://developer.novopayment.com/guides/how-it-works/get-access-token
+- https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+- https://developer.novopayment.com/guides/data-encryption
+token:
+  endpoint: https://sandbox-api.novopayment.com/oauth2/token
+  grant_type: client_credentials
+  request_encoding: application/x-www-form-urlencoded
+  token_type: BearerToken
+  expires_in_seconds: 1799
+  credentials: client_id + client_secret issued per project per environment from the developer hub dashboard
+  evidence: POST /token request/response examples in openapi/novopayment-oauth2-data-encryption-openapi.yml
+undeclared_schemes:
+- name: apikey
+  location: query
+  apis:
+  - merchant-presented-qr
+  description: Public API key, distinct from the shared secret. Declared as a required query parameter, not as a
+    securityScheme.
+- name: X-Pay-Token
+  location: header
+  apis:
+  - merchant-presented-qr
+  lifetime_seconds: 480
+  description: Token identifying the transaction and its contents; expires in 480 seconds for all clients.
+- name: X-Tenant-Id
+  location: header
+  apis:
+  - all
+  description: Required tenant identifier on every operation; partitions all data by calling tenant.
+two_factor:
+  required_for_portal: true
+  evidence: The developer hub states two-factor authentication is mandatory for portal accounts.
+scopes:
+  published: false
+  artifact: scopes/novopayment-scopes.yml
+note: NovoPayment secures the API surface with a single OAuth2 client-credentials scheme and no scopes, so every
+  token a project holds carries the full permission set of the APIs selected for that project. The Merchant Presented
+  QR contract layers an additional apikey query parameter and a short-lived X-Pay-Token header on top, declared
+  as plain parameters rather than securitySchemes.

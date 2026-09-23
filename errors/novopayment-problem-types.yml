@@ -1,0 +1,101 @@
+specification: API Commons ErrorCatalog
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: derived
+source: openapi/novopayment-*-openapi.yml (4xx/5xx responses across 15 provider-published specs)
+format: custom
+rfc9457: false
+description: HTTP problem shapes declared across NovoPayment's published OpenAPI documents. The provider does not
+  serve application/problem+json; every failure returns application/json carrying a first-party {code, message,
+  datetime} envelope, so the machine-actionable detail lives in errors/novopayment-error-codes.yml rather than in
+  the HTTP status.
+envelope:
+  media_type: application/json
+  fields:
+  - code
+  - message
+  - datetime
+  - info
+  - errors
+problem_types:
+- status: 400
+  title: Bad Request
+  occurrences: 163
+  apis:
+  - accounts
+  - alias-directory
+  - cards
+  - compliance
+  - customers
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  - merchant-presented-qr
+  - oauth2-data-encryption
+  - onboarding
+  - operations
+  - payment-authorizer
+  - profile
+  - push-provisioning
+  - real-time-payments
+  type: https://developer.novopayment.com/api/error-codes
+  detail_source: errors/novopayment-error-codes.yml — the code field carries the specific condition
+- status: 401
+  title: Unauthorized
+  occurrences: 151
+  apis:
+  - accounts
+  - alias-directory
+  - cards
+  - compliance
+  - customers
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  - merchant-presented-qr
+  - oauth2-data-encryption
+  - onboarding
+  - operations
+  - payment-authorizer
+  - profile
+  - push-provisioning
+  - real-time-payments
+  type: https://developer.novopayment.com/api/error-codes
+  detail_source: errors/novopayment-error-codes.yml — the code field carries the specific condition
+- status: 404
+  title: Request not found
+  occurrences: 3
+  apis:
+  - accounts
+  - push-provisioning
+  type: https://developer.novopayment.com/api/error-codes
+  detail_source: errors/novopayment-error-codes.yml — the code field carries the specific condition
+- status: 500
+  title: Internal Server Error
+  occurrences: 163
+  apis:
+  - accounts
+  - alias-directory
+  - cards
+  - compliance
+  - customers
+  - issuer-tokenization
+  - mastercard-issuer-tokenization
+  - merchant-presented-qr
+  - oauth2-data-encryption
+  - onboarding
+  - operations
+  - payment-authorizer
+  - profile
+  - push-provisioning
+  - real-time-payments
+  type: https://developer.novopayment.com/api/error-codes
+  detail_source: errors/novopayment-error-codes.yml — the code field carries the specific condition
+remediation_docs:
+  url: https://developer.novopayment.com/api/error-codes
+  http_status: 403
+  note: The portal's consolidated Error Codes page returns 403 to an anonymous client on 2026-09-17; the per-operation
+    response examples inside the specs are the readable source.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,2861 @@
+---
+openapi: 3.0.0
+info:
+  title: Push Provisioning API
+  description: >
+    ## Use Cases ##
+
+    If you are a Bank that wants to give your customers the possibility to
+
+    seamless register their debit and credit cards in payment platforms such as
+
+    Apple Pay, Samsung Pay and Google Pay, as easily as including only one button
+
+    on your website or app, this API is the solution. NovoPayment does the heavy
+
+    lifting for you, we take care of providing the service for you, so you can
+
+    focus on the core of your business and the UX/UI.
+
+
+    ## Benefits for you ##
+
+    NovoPayment Push Provisioning manages the interaction with the card schemes
+
+    for you and allows you to focus on the core of your business, freeing you
+
+    from the effort of interconnection with each third-party wallet and allowing
+
+    your customers to quickly access the benefits of using gadgets with NFC
+
+    technology.
+
+
+    ## What do you need to start the project? ##
+
+
+    1. Register and create a project in NovoPayment’s Developer Hub. Select
+      "Novo Push Provisioning", if the option is not available, please contact us.
+    2. Perform tests in the sandbox environment for the following operations:
+      - Manage the associated cards of a customer.
+        1. Register a new card
+        2. Delete a registered card
+      - Link a card in Apple Pay
+      - Link a card in Google Pay
+      - Link a card in Samsung Pay
+    3. At the time included in your app the services with which you want to
+
+    integrate, by negotiating with the chosen wallet, for example, Apple Pay.
+
+    4. After testing, contact us to deploy to the UAT environment and start the
+
+    certification process with the third party wallet.
+
+
+    ## System Overview ##
+
+
+    Push Provisioning (also call in-app provisioning) allows consumers to easily
+
+    add/push their cards to any supported wallets including Apple Pay, Google
+
+    Pay and Samsung Pay - in-app with the click of a button.
+
+
+    Implementing this API in your wallet allows your clients to enroll their
+
+    cards in Google Pay, Samsung Pay and Apple Pay.
+
+
+    ## Headers Params ##
+
+    **Header fields**
+
+    | Name             | Description                                                  | Value                                | Required/Optional/Conditional |
+
+    |------------------|--------------------------------------------------------------|--------------------------------------|-------------------------------|
+
+    | Accept-Language | Language used.                                              | en                                   | Required                      |
+
+    | Content-Type    | Response body type. Operation related information.          | application/json                    | Required                      |
+
+    | Accept          | Content types that are acceptable related to this operation.| application/json                    | Conditional                   |
+
+    | Authorization   | Application authentication information based on the RFC6750 OAUTH 2 specification, under the client’s credentials. | 'Bearer ' + accesToken        | Required                      |
+
+    | X-Token         | Application authentication information based on the RFC7515 JWS under petition signature. | 'JWS ' + token               | Required                      |
+
+    | X-Tenant-Id     | Identifies the tenant that is calling the operation.        | < tenantId >                          | Required                      |
+
+    | X-Time-Zone     | Time Zone of the request.                                    | < timeZone >                          | Optional                      |
+
+    | X-Request-Id   | Unique ID for the API request. This ID is the reference in all the API’s processes. | String (1-36)                 | Optional                      |
+
+  version: v1.0
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/pushprovisioning/v1
+paths:
+  #/universal/core/cards:
+  #  post:
+  #    summary: Enroll Card
+  #    description: |
+  #      This endpoint allows the enrollment of the card on the VISA system for
+  #      later tokenization in a third wallet with In-App Provisioning.
+
+  #    operationId: EnrollCard
+  #    requestBody:
+  #      $ref: "#/components/requestBodies/RQEnrollCard"
+  #    responses:
+  #      "200":
+  #        $ref: "#/components/responses/RSEnrollCard200"
+  #      "400":
+  #        $ref: "#/components/responses/RS400"
+  #      "401":
+  #        $ref: "#/components/responses/RS401"
+  #      "404":
+  #        $ref: "#/components/responses/RS404"
+  #      "500":
+  #        $ref: "#/components/responses/RS500"
+
+  # /inapp/provisioning/cardData/applePay:
+  #   post:
+  #     summary: Apple Pay
+  #     description: |
+  #       This endpoint allows to enroll the card in the Apple Pay wallet. This
+  #       endpoint is used after the enrollment of the card.
+  #     requestBody:
+  #       $ref: "#/components/requestBodies/RQApplePay"
+  #     operationId: ApplePay
+  #     responses:
+  #       "200":
+  #         $ref: "#/components/responses/RSApplePay200"
+  #       "400":
+  #         $ref: "#/components/responses/RS400"
+  #       "401":
+  #         $ref: "#/components/responses/RS401"
+  #       "404":
+  #         $ref: "#/components/responses/RS404"
+  #       "500":
+  #         $ref: "#/components/responses/RS500"
+
+  # /inapp/provisioning/cardData/googlePay:
+  #   post:
+  #     summary: Google Pay
+  #     description: |
+  #       This endpoint allows to enroll the card in the Google Pay wallet.
+  #       This endpoint is post enrollment of the card.
+  #     operationId: GooglePay
+  #     requestBody:
+  #       $ref: "#/components/requestBodies/RQGooglePay"
+  #     responses:
+  #       "200":
+  #         $ref: "#/components/responses/RSGooglePay200"
+  #       "400":
+  #         $ref: "#/components/responses/RS400"
+  #       "401":
+  #         $ref: "#/components/responses/RS401"
+  #       "404":
+  #         $ref: "#/components/responses/RS404"
+  #       "500":
+  #         $ref: "#/components/responses/RS500"
+
+  # /universal/core/cards/{vCardId}:
+  #   delete:
+  #     summary: Delete Card
+  #     description: |
+  #       Allows the deletion of a previously registered card.
+  #     operationId: DeleteCard
+  #     parameters:
+  #       - $ref: "#/components/parameters/vCardId"
+  #     responses:
+  #       "200":
+  #         $ref: "#/components/responses/RS200"
+  #       "400":
+  #         $ref: "#/components/responses/RSDeleteCard400"
+  #       "401":
+  #         $ref: "#/components/responses/RS401"
+  #       "404":
+  #         $ref: "#/components/responses/RS404"
+  #       "500":
+  #         $ref: "#/components/responses/RS500"
+
+  /universal/core/cards/encryption:
+    post:
+      summary: Encrypt card
+      description: |
+        This endpoint returns the card information in an encrypted form.
+      operationId: EncryptCard
+      requestBody:
+        $ref: "#/components/requestBodies/RQEncryptCard"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSEncryptCard200"
+        "400":
+          $ref: "#/components/responses/RSEncryptCard400"
+        "401":
+          $ref: "#/components/responses/RSEncryptCard401"
+        "500":
+          $ref: "#/components/responses/RSEncryptCard500"
+
+  /credentials/enrolldata:
+    post:
+      summary: Enroll Data
+      description: |
+        This endpoint is used to send customer and associated card data to the provisioning service.
+        It is consumed by both internal and external issuers.
+      operationId: EnrollData
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request - an optional header. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+      requestBody:
+        $ref: "#/components/requestBodies/RQEnrollData"
+      responses:
+        "202":
+          $ref: "#/components/responses/RSEnrollData202"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /credentials/addpayments:
+    post:
+      summary: Add Payment Credentials
+      description: |
+        This API is consumed by any issuer, both internal and external, and is used to send customer data 
+         and all associated card information to VISA.
+      operationId: addPaymentCredentials
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request - an optional header. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+      requestBody:
+        $ref: "#/components/requestBodies/RQAddPayments"
+      responses:
+        "202":
+          $ref: "#/components/responses/RSAddPayments202"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+  /credentials/removeconsumerinformation:
+    post:
+      summary: Remove Consumer Information
+      description: |
+        This API is consumed by any issuer, both internal and external, and is used to delete customer data 
+         and all associated card information to VISA.
+      operationId: removeConsumerInformation
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+        - name: X-Tenant-Id
+          in: header
+          description: |
+            Tenant identificator
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "co-dale"
+      requestBody:
+        $ref: "#/components/requestBodies/RQDeleteConsumerInfo"
+      responses:
+        "202":
+          $ref: "#/components/responses/RSAddPayments202"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+  /credentials/updateconsumerinformation:
+    put:
+      summary: Update Consumer Information
+      description: |
+        This API is consumed by any issuer, both internal and external, and is used to update customer data to VISA.
+      operationId: updateConsumerInformation
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+        - name: X-Tenant-Id
+          in: header
+          description: |
+            Tenant identificator
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "co-dale"
+      requestBody:
+        $ref: "#/components/requestBodies/RQUpdateConsumerInfo"
+      responses:
+        "202":
+          $ref: "#/components/responses/RSAddPayments202"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /credentials/removepayments:
+    post:
+      summary: Remove payment instruments
+      description: |
+        This API is consumed by any issuer, both internal and external, and is used to delete paymente instrument data to VISA.
+      operationId: removePaymentInstruments
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+        - name: X-Tenant-Id
+          in: header
+          description: |
+            Tenant identificator
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "co-dale"
+      requestBody:
+        $ref: "#/components/requestBodies/RQDeletePaymentInstrument"
+      responses:
+        "202":
+          $ref: "#/components/responses/RSAddPayments202"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /credentials/updatepayments:
+    put:
+      summary: Update Payment Instruments
+      description: |
+        This API is consumed by any issuer, both internal and external, and is used to update payment instrument data to VISA.
+      operationId: updatePaymentInstruments
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+        - name: X-Tenant-Id
+          in: header
+          description: |
+            Tenant identificator
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "co-dale"
+      requestBody:
+        $ref: "#/components/requestBodies/RQUpdatePayment"
+      responses:
+        "202":
+          $ref: "#/components/responses/RSAddPayments202"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /credentials/querydata:
+    get:
+      summary: Query Data
+      description: |
+        This API is consumed by any issuer, both internal and external, and is used to get paymentcredential and consumer info for a given product to VISA.
+      operationId: queryData
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+        - name: X-Tenant-Id
+          in: header
+          description: |
+            Tenant identificator
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "co-dale"
+        - name: type
+          in: query
+          required: true
+          description: Type of the intent
+          schema:
+            type: string
+            example: "PRODUCT_CODE"
+        - name: value
+          in: query
+          required: true
+          description: Value associated with the intent
+          schema:
+            type: string
+            example: "CLICK_TO_PAY"
+        - name: externalConsumerIDOwnerBID
+          in: query
+          required: false
+          description: Business ID of the external consumer's owner
+          schema:
+            type: string
+            example: "10098765"
+        - name: externalConsumerID
+          in: query
+          required: true
+          description: External consumer ID
+          schema:
+            type: string
+            example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSQueryData200"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "404":
+          description: Request not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RS404"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /credentials/requeststatus/{requestTraceId}:
+    get:
+      summary: Check Request Status
+      description: |
+        This endpoint allows internal and external issuers to check the current status of a previously submitted request 
+        using the request trace identifier.
+      operationId: GetRequestStatus
+      parameters:
+        - name: requestTraceId
+          in: path
+          required: true
+          description: |
+            Unique identifier of the request to retrieve its current processing status.
+          schema:
+            type: string
+            format: uuid
+            minLength: 36
+            maxLength: 36
+            example: "351562ba-83cf-11ee-b962-0242ac120002"
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request - an optional header. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSRequestStatus200"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "404":
+          description: Request not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RS404"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /credentials/consumervulnerable:
+    post:
+      summary: Consumer Vulnerable
+      description: |
+        This API is consumed by any issuer, both internal and external, and is used to update payment instrument data to VISA.
+      operationId: consumerVulnerable
+      parameters:
+        - name: X-Transaction-Id
+          in: header
+          description: |
+            Unique ID for every API request. Generated by the API client. 
+            Used for end-to-end tracing/debugging.
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "123e4567-e89b-12d3-a456-426614174000"
+        - name: X-Tenant-Id
+          in: header
+          description: |
+            Tenant identificator
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            example: "co-dale"
+      requestBody:
+        $ref: "#/components/requestBodies/RQConsumerVulnerable"
+      responses:
+        "202":
+          $ref: "#/components/responses/RSAddPayments202"
+        "400":
+          $ref: "#/components/responses/RS400"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+  examples:
+    HeaderParamsRequired:
+      value:
+        code: 400.00.001
+        message: Header Params Required
+        datetime: "2022-04-25T23:19:12.000Z"
+    JWEInvalidFormat:
+      value:
+        code: 400.00.002
+        message: JWE Invalid format
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidTenantID:
+      value:
+        code: 400.00.004
+        message: Invalid Tenant ID
+        datetime: "2022-04-25T23:19:12.000Z"
+    UnableProcessRequest:
+      value:
+        code: 400.00.324
+        message: We were unable to process your request
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidParameters:
+      value:
+        code: 400.00.396
+        message: Invalid parameters.
+        datetime: "2022-04-25T23:19:12.000Z"
+        data:
+          errors:
+            - message: "Field fielName: must not be blank"
+    NotFound:
+      value:
+        code: 404.00.900
+        message: Not Found
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidCardId:
+      value:
+        code: 404.00.009
+        message: Invalid Card ID
+        datetime: "2022-04-25T23:19:12.000Z"
+    IntegrationError:
+      value:
+        code: 400.00.376
+        message: Integration Error
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidAccessToken:
+      value:
+        code: 401.00.990
+        message: Invalid Access Token
+        datetime: "2022-04-25T23:19:12.000Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.00.991
+        message: Access Token not approved
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidSignature:
+      value:
+        code: 401.00.992
+        message: Invalid signature
+        datetime: "2022-04-25T23:19:12.000Z"
+    AccessTokenExpired:
+      value:
+        code: 401.00.993
+        message: Access token expired
+        datetime: "2022-04-25T23:19:12.000Z"
+    InternalServerError:
+      value:
+        code: 500.00.999
+        message: Internal Server Error
+        datetime: "2022-04-25T23:19:12.000Z"
+    HeaderParamsRequiredTk:
+      value:
+        code: 400.00.001
+        message: Header Params Required
+        datetime: "2022-04-25T23:19:12.000Z"
+    ErrorGeneralService:
+      value:
+        code: 400.00.350
+        message: Error General Service.
+        datetime: "2022-04-25T23:19:12.000Z"
+    InvalidParams:
+      value:
+        code: 400.00.396
+        message: Invalid parameters.
+        datetime: "2024-07-17T00:57:36.360Z"
+    ConfigurationNotFound:
+      value:
+        code: 400.00.356
+        message: Component configuration not found.
+        datetime: "2024-07-17T00:57:36.360Z"
+    EncryptionError:
+      value:
+        code: 400.00.994
+        message: Encryption error
+        datetime: "2024-07-17T00:57:36.360Z"
+    InvalidSignatureTk:
+      value:
+        code: 401.00.992
+        message: Invalid signature
+        datetime: "2024-07-17T00:57:36.360Z"
+    DecryptionError:
+      value:
+        code: 401.00.997
+        message: Decryption Error
+        datetime: "2024-07-17T00:57:36.360Z"
+    InternalServerErrorTk:
+      value:
+        code: 500.00.999
+        message: Internal Server Error
+        datetime: "2022-04-25T23:19:12.000Z"
+  parameters:
+    vCardId:
+      name: vCardId
+      in: path
+      description: |
+        This value is generated on Universal Card Enrollment.
+      required: true
+      example: 502c2656-7110-4994-a820-f593e468c6b4
+      schema:
+        type: string
+        maxLength: 42
+  schemas:
+    RQApplePay:
+      type: object
+      required:
+        - vCardId
+        - deviceCert
+        - nonceSignature
+        - nonce
+      properties:
+        vCardId:
+          type: string
+          description: |
+            Unique Visa identifier for the card. 
+            This field was generated on Universal Card Enrollment Process.
+          example: v-123-b25dd0af-2960-420b-8aaa-49b3e466c00f
+          maxLength: 42
+        deviceCert:
+          type: string
+          description: Certify the Apple Device. Consult Apple Pre-requisites.
+          example: adevicecert
+          maxLength: 8192
+        nonceSignature:
+          type: string
+          description: |
+            Signature signed on nonce in SE.
+            See pre-requisites above on how to obtain this.
+            Consult Apple Pre-requisites.
+          example: jD4Aphu+93N2wbBn
+          maxLength: 512
+        nonce:
+          type: string
+          description: |
+            A one-time use nonce generated by Apple Servers.
+            To be included in the encrypted card data under the key: “nonce”.
+            Consult Apple Pre-requisites.
+          example: vXWJaBidcTLaJJCF
+          maxLength: 32
+    RQEnrollCard:
+      type: object
+      required:
+        - card
+      properties:
+        card:
+          $ref: "#/components/schemas/ObjEnrollCardCard"
+        customerIdForPartner:
+          type: string
+          description: |
+            This is the Visa generated unique identifier of the customer of the
+            Digital Wallet Provider ClientFor a bank wallet;
+            For bank wallets this parameter is not Required.
+          example: jD4Aphu+93N2wbBn
+          maxLength: 36
+        clientCustomerId:
+          type: string
+          description: |
+            Unique identificator of the customer in the client system.
+          example: ae25OGhjZTk2dsr452dgsr51
+          maxLength: 36
+        clientIdForPartner:
+          type: string
+          description: |
+            Identity of the client. This field is Required only when the Enroll
+            card API is being made on behalf of another partner.
+            For bank wallets, this parameter is not Required.
+          example: vXWJaBidcTLaJJCF
+          maxLength: 36
+
+    ObjEnrollCardCard:
+      type: object
+      required:
+        - accountNumber
+        - expirationDate
+      properties:
+        accountNumber:
+          type: string
+          minLength: 15
+          maxLength: 19
+          description: |
+            PAN (Primary Account Number) is the number of the card.
+          example: Phasellus pharetra vulputate metus
+        expirationDate:
+          $ref: "#/components/schemas/ObjExpirationDate"
+        paymentAccountReference:
+          type: string
+          maxLength: 29
+          description: |
+            PAR. Unique reference number for the card. Verify the EMVCo in the
+            VISA documentation.
+          example: v-123-b25dd0af-2960-420b-8aaa-49b3e466c00f
+        cvv2:
+          type: string
+          maxLength: 3
+          description: |
+            CVV2 of the card. 
+            For bank wallet, this parameter is not Required.
+          example: 808
+        nameOnCard:
+          type: string
+          maxLength: 256
+          description: |
+            Name printed on the card.This parameter is Required for ApplePay.
+          example: John Smith
+        BillingAddress:
+          $ref: "#/components/schemas/ObjBillingAddress"
+    GetCardPaymentInstrument:
+      type: object
+      required:
+        - accountNumber
+        - billingAddress
+        - expirationDate
+        - nameOnCard
+        - type
+      properties:
+        accountNumber:
+          type: string
+          minLength: 16
+          maxLength: 19
+          example: "4111111145551140"
+        billingAddress:
+          $ref: "#/components/schemas/BillingAddress"
+        expirationDate:
+          type: string
+          example: "2030-01"
+        nameOnCard:
+          type: string
+          maxLength: 120
+          example: "John Doe"
+        type:
+          type: string
+          example: "CARD"
+        cardType:
+          type: string
+          maxLength: 70
+          example: "Visa Platinum"
+        issuerName:
+          type: string
+          maxLength: 150
+          example: "Bank A"
+        status:
+          type: string
+          enum: [ACTIVE, DISABLED]
+          example: "ACTIVE"
+        tokenDetails:
+          $ref: "#/components/schemas/TokenDetails"
+        panReferenceID:
+          type: string
+          maxLength: 32
+          example: "3123123123122"
+        paymentAccountReference:
+          type: string
+          maxLength: 50
+          minLength: 29
+          example: "3123123123123123123123123123123123"
+    GetBankAccountPaymentInstrument:
+      type: object
+      required:
+        - accountName
+        - currencyCode
+        - accountNumber
+        - accountNumberType
+        - type
+      properties:
+        type:
+          type: string
+          example: "BANK_ACCOUNT"
+        status:
+          type: string
+          enum: [ACTIVE, DISABLED]
+          example: "ACTIVE"
+        address:
+          $ref: "#/components/schemas/BillingAddress"
+        bankCode:
+          type: string
+          maxLength: 12
+          minLength: 1
+          example: "123"
+        bankName:
+          type: string
+          maxLength: 50
+          minLength: 1
+          example: "Bank A"
+        branchCode:
+          type: string
+          maxLength: 12
+          minLength: 1
+          example: "123456"
+        accountName:
+          type: string
+          maxLength: 70
+          minLength: 1
+          example: "Alex Miller"
+        countryCode:
+          type: string
+          maxLength: 3
+          minLength: 3
+          example: "USA"
+        bankCodeType:
+          type: string
+          enum: [ ABA, SORT_CODE, DEFAULT ]
+          example: "ABA"
+        currencyCode:
+          type: string
+          maxLength: 3
+          minLength: 3
+          example: "USD"
+        accountNumber:
+          type: string
+          minLength: 34
+          maxLength: 1
+          example: "1001001234"
+        accountNumberType:
+          type: string
+          enum: [ IBAN, DEFAULT ]
+          example: "IBAN"
+        bankIdentifierCode:
+          type: string
+          minLength: 11
+          maxLength: 1
+          example: "AAAABBCC123"
+    ObjGetDataPaymentInstrumentList:
+      maxItems: 5
+      minItems: 1
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/GetCardPaymentInstrument'
+          - $ref: '#/components/schemas/GetBankAccountPaymentInstrument'
+    ObjExpirationDate:
+      type: object
+      required:
+        - month
+        - year
+      properties:
+        month:
+          type: string
+          description: Month of expiration date
+          maxLength: 2
+          example: 7
+        year:
+          type: string
+          description: Year  of expiration date
+          maxLength: 4
+          example: 2016
+    ObjBillingAddress:
+      type: object
+      required:
+      properties:
+        name:
+          type: string
+          description: Physical address or shipping address.
+          maxLength: 100
+          example: Digital Issuance
+        line1:
+          type: string
+          description: |
+            First line of the address. Usually for the complete address,
+            this is Required for the US and Canada.
+          maxLength: 256
+          example: 10808 Research Boulevard
+        line2:
+          type: string
+          description: |
+            Second line, usually corresponds to house, apartment,
+            suite, etc.
+          maxLength: 256
+          example: Provisioning Boulevard
+        city:
+          type: string
+          description: Name of the city.
+          maxLength: 100
+          example: Austin
+        state:
+          type: string
+          description: |
+            State or province in the country.This field must be valid
+            for the respective country.The country will be related to the
+            country of the bank.
+          example: TX
+        postalCode:
+          type: string
+          description: |
+            Postal Code.
+
+            Condition: If address is provided this field has the following
+            characteristics.
+          maxLength: 40
+          example: 78759
+        countryCode:
+          type: string
+          description: |
+            Code of the Issuer’s country.
+            Format: String; ISO country code ISO 3166-1 alpha-2.
+          maxLength: 2
+          example: US
+    ObjIntent:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          enum: [PRODUCT_CODE]
+          example: "PRODUCT_CODE"
+          description: Indicates the type of the intent
+        value:
+          type: string
+          enum: [CLICK_TO_PAY]
+          example: "CLICK_TO_PAY"
+          description: Product name for which the request is intended
+    ObjCardEncryptionEncryptedData:
+      type: object
+      description: |
+        Encrypted and signed request data
+      required:
+        - signedNonce
+        - accountNumber
+        - expirationMonth
+        - expirationYear
+        - nameOnAccount
+        - cardType
+        - cardBrand
+        - billingAddress
+      properties:
+        signedNonce:
+          type: string
+          maxLength: 256
+          description: |
+            Nonce signed with signature shared secret
+          example: eyJle...XcClc
+        accountNumber:
+          type: string
+          maxLength: 19
+          description: |
+            Full Card Number, numeric value
+          example: "4012888888881881"
+        expirationMonth:
+          type: string
+          maxLength: 2
+          description: |
+            Month when the card is set to expire
+          example: "02"
+        expirationYear:
+          type: string
+          maxLength: 4
+          description: |
+            Year when the card is set to expire
+          example: "2025"
+        nameOnAccount:
+          type: string
+          maxLength: 256
+          description: |
+            Full name on the card, alphanumeric value with no 
+            special characters
+          example: "John Doe"
+        cardType:
+          type: string
+          maxLength: 20
+          enum:
+            - DEBIT
+            - CREDIT
+            - PREPAID
+        cardBrand:
+          type: string
+          maxLength: 20
+          enum:
+            - VISA
+            - MC
+        billingAddress:
+          $ref: "#/components/schemas/ObjBillingAddressEnablement"
+        user:
+          $ref: "#/components/schemas/ObjUserEnablement"
+    ObjConsumerInformation:
+      type: object
+      required:
+        - externalConsumerID
+        - firstName
+        - lastName
+      properties:
+        countryCode:
+          type: string
+          description: Country code using 3-character ISO 3166 (Alpha 3) format
+          example: "USA"
+        externalConsumerID:
+          type: string
+          format: uuid
+          minLength: 1
+          maxLength: 100
+          example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 35
+          example: "Alex"
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 35
+          example: "Miller"
+        middleName:
+          type: string
+          maxLength: 35
+          example: "Robert"
+        emails:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          example: ["alex123@hotmail.com"]
+        phones:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          example: ["16504005555"]
+        externalConsumerIDOwnerBID:
+          type: string
+          pattern: '^\d*$'
+          maxLength: 8
+          example: "10098765"
+        locale:
+          type: string
+          minLength: 2
+          maxLength: 5
+          example: "en_US"
+        status:
+          type: string
+          enum: ["ACTIVE","DISABLED"]
+          example: "ACTIVE"
+        consent:
+          type: object
+          required:
+            - timeOfConsent
+          properties:
+            timeOfConsent:
+              type: string
+              format: date-time
+              example: "2020-05-05T12:12:12.000Z"
+            presenter:
+              type: string
+              maxLength: 30
+              example: "Bank A"
+            version:
+              type: string
+              maxLength: 9
+              example: "1.0"
+        nationalIdentifiers:
+          type: array
+          maxItems: 5
+          items:
+            type: object
+            required:
+              - type
+              - value
+            properties:
+              type:
+                type: string
+                enum: ["PASSPORT", "DRIVING_LICENSE", "NATIONAL_IDENTITY"]
+                example: "PASSPORT"
+              value:
+                type: string
+                minLength: 1
+                maxLength: 24
+                example: "A123456"
+
+    ObjBillingAddressEnablement:
+      type: object
+      required:
+        - addressLine1
+        - stateProvinceCode
+        - postalCode
+        - city
+        - phoneNumber
+      properties:
+        addressLine1:
+          type: string
+          maxLength: 140
+          description: |
+            Line 1 of the billing address (Must use UTF-8 characters)
+          example: 5 Central Drive
+        stateProvinceCode:
+          type: string
+          maxLength: 3
+          description: |
+            Must be in ISO 3166-2 format, alphabetic value with max length of 3 characters, 
+            with no dashes or spaces
+          example: NC
+        postalCode:
+          type: string
+          maxLength: 16
+          description: |
+            U.S.: 5-digit numeric value (e.g. 94100), spaces not allowed.
+            Canada: 6-digit alphanumeric value (e.g. M4B1B3), spaces allowed.
+            Other countries: 5-16 digit alphanumeric value without special characters, spaces allowed.
+          example: "27265"
+        countryCode:
+          type: string
+          maxLength: 3
+          description: |
+            Must be in ISO 3166-1 alpha-2 or ISO 3166-1 alpha-3 or ISO 3-digit numeric format
+          example: "840"
+        city:
+          type: string
+          maxLength: 100
+          description: |
+            City of the billing address, no special characters
+          example: High Point
+        phoneNumber:
+          type: string
+          maxLength: 32
+          description: |
+            Cardholder phone number including country code
+          example: "336-222-6060"
+    ObjUserEnablement:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - phoneNumber
+      properties:
+        firstName:
+          type: string
+          maxLength: 20
+          description: |
+            Required for VCEH
+          example: "Lewis"
+        lastName:
+          type: string
+          maxLength: 20
+          description: |
+            Required for VCEH
+          example: "Schultz"
+        email:
+          type: string
+          maxLength: 256
+          description: |
+            Required for VCEH
+          example: "lschultz@gmail.com"
+        phoneNumber:
+          type: string
+          maxLength: 32
+          description: |
+            Required for VCEH
+          example: "336-222-6060"
+    RQGooglePay:
+      type: object
+      required:
+        - vCardId
+        - deviceID
+        - clientCustomerID
+      properties:
+        vCardId:
+          type: string
+          maxLength: 42
+          description: |
+            This value was generated on Universal Card Enrollment.
+          example: v-123-b25dd0af-2960-420b-8aaa-49b3e466c00f
+        deviceID:
+          type: string
+          description: |
+            User’s Android Device ID, the device’s unique identifier.
+            See Pre-requisite above
+          example: W85OGhjZTk2dsr452dgsr51j
+          maxLength: 24
+        clientCustomerID:
+          type: string
+          description: |
+            User’s Wallet account ID from Google Pay SDK.
+          example: vXWJaBidcTLaJJCFae25OGhjZTk2dsr452dgsr51
+          maxLength: 36
+        tokenServiceProvider:
+          type: string
+          description: |
+            Indicates which token service provider will process the card data
+            generated for provisioning, it depends on the card schema.
+
+            Available values:
+            - V : Visa is the default value.
+            - M : Mastercard
+          enum:
+            - V
+            - M
+          example: V
+          maxLength: 1
+    RQEncryptCard:
+      type: object
+      required:
+        - encryptedData
+      properties:
+        encryptedData:
+          $ref: "#/components/schemas/ObjCardEncryptionEncryptedData"
+    RQEnrollData:
+      type: object
+      required:
+        - intent
+        - consumerInformation
+        - paymentInstruments
+      properties:
+        intent:
+          type: object
+          required:
+            - type
+            - value
+          properties:
+            type:
+              type: string
+              example: "PRODUCT_CODE"
+              description: Indicates the type of the intent
+            value:
+              type: string
+              example: "CLICK_TO_PAY"
+              description: Product name for which the request is intended
+
+        consumerInformation:
+          type: object
+          required:
+            - externalConsumerID
+            - firstName
+            - lastName
+          properties:
+            countryCode:
+              type: string
+              description: Country code using 3-character ISO 3166 (Alpha 3) format
+              example: "USA"
+            externalConsumerID:
+              type: string
+              format: uuid
+              minLength: 1
+              maxLength: 100
+              example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+            firstName:
+              type: string
+              minLength: 1
+              maxLength: 35
+              example: "Alex"
+            lastName:
+              type: string
+              minLength: 1
+              maxLength: 35
+              example: "Miller"
+            middleName:
+              type: string
+              maxLength: 35
+              example: "Robert"
+            emails:
+              type: array
+              maxItems: 5
+              items:
+                type: string
+              example: ["alex123@hotmail.com"]
+            phones:
+              type: array
+              maxItems: 5
+              items:
+                type: string
+              example: ["16504005555"]
+            externalConsumerIDOwnerBID:
+              type: string
+              pattern: '^\d*$'
+              maxLength: 8
+              example: "10098765"
+            locale:
+              type: string
+              minLength: 2
+              maxLength: 5
+              example: "en_US"
+            consent:
+              type: object
+              required:
+                - timeOfConsent
+              properties:
+                timeOfConsent:
+                  type: string
+                  format: date-time
+                  example: "2020-05-05T12:12:12.000Z"
+                presenter:
+                  type: string
+                  maxLength: 30
+                  example: "Bank A"
+                version:
+                  type: string
+                  maxLength: 9
+                  example: "1.0"
+            nationalIdentifiers:
+              type: array
+              maxItems: 5
+              items:
+                type: object
+                required:
+                  - type
+                  - value
+                properties:
+                  type:
+                    type: string
+                    enum: ["PASSPORT", "DRIVING_LICENSE", "NATIONAL_IDENTITY"]
+                    example: "PASSPORT"
+                  value:
+                    type: string
+                    minLength: 1
+                    maxLength: 24
+                    example: "A123456"
+
+        paymentInstruments:
+          type: array
+          minItems: 1
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/CardPaymentInstrument"
+              - $ref: "#/components/schemas/BankAccountPaymentInstrument"
+    CardPaymentInstrument:
+      type: object
+      required:
+        - billingAddress
+        - expirationDate
+        - nameOnCard
+        - type
+      properties:
+        accountNumber:
+          type: string
+          minLength: 16
+          maxLength: 19
+          example: "4111111145551140"
+          description: "Primary account number of the card"
+        cardId:
+          type: string
+          minLength: 16
+          maxLength: 50
+          example: "01995412-d75f-26e8-a452-656e23f287e1"
+          description: "Card Id By submitting this value no accountNumber is required."
+        billingAddress:
+          $ref: "#/components/schemas/BillingAddress"
+        expirationDate:
+          type: string
+          example: "2030-01"
+          description: "Expiration date of the card"
+        nameOnCard:
+          type: string
+          maxLength: 120
+          example: "John Doe"
+          description: "Name that appears on the card"
+        type:
+          type: string
+          example: "CARD"
+          description: "Type of payment instrument"
+        cardType:
+          type: string
+          maxLength: 70
+          example: "Visa Platinum"
+        issuerName:
+          type: string
+          maxLength: 150
+          example: "Bank A"
+          description: "Name of the issuer of the card"
+    DeleteCardPaymentInstrument:
+      type: object
+      required:
+        - type
+      properties:
+        accountNumber:
+          type: string
+          minLength: 16
+          maxLength: 19
+          example: "4111111145551140"          
+          description: "Primary account number of the card"
+
+        cardId:
+          type: string
+          minLength: 16
+          maxLength: 50
+          example: "01995412-d75f-26e8-a452-656e23f287e1"
+          description: "Card Id By submitting this value no accountNumber is required."
+        type:
+          type: string
+          example: "CARD"
+          
+    BankAccountPaymentInstrument:
+      type: object
+      required:
+        - accountName
+        - accountNumberType
+        - currencyCode
+        - type
+        - address
+      properties:
+        accountName:
+          type: string
+          maxLength: 70
+          example: "Alex Miller"
+          description: "Bank account name, i.e., account holder name as recorded on the bank account"
+        accountNumber:
+          type: string
+          maxLength: 34
+          example: "1001001234"
+          description: "Bank account number"
+        cardId:
+          type: string
+          minLength: 16
+          maxLength: 50
+          example: "01995412-d75f-26e8-a452-656e23f287e1"
+          description: "Card Id By submitting this value no accountNumber is required."
+        accountNumberType:
+          type: string
+          enum: ["IBAN", "DEFAULT"]
+          example: "DEFAULT"
+          description: "Bank account number type. Valid values 'IBAN', 'DEFAULT'. If the IBAN format is not supported in a country, use DEFAULT."
+        countryCode:
+          type: string
+          example: "USA"
+          description: "Country code using 3-character ISO 3166 (Alpha 3) format"
+        currencyCode:
+          type: string
+          example: "USD"
+          description: "Bank account currency code. Format: 3-character ISO-4217 (Alpha-3) currency code"
+        type:
+          type: string
+          example: "BANK_ACCOUNT"
+          description: "Type of payment instrument"
+        accountType:
+          type: string
+          enum: ["CHECKING", "SAVING", "MAESTRA", "VISTA", "LOAN"]
+          example: "CHECKING"
+          description: "Bank account type"
+        address:
+          $ref: "#/components/schemas/BillingAddress"
+        bankCode:
+          type: string
+          maxLength: 12
+          example: "173"
+        bankCodeType:
+          type: string
+          enum: ["ABA", "SORT_CODE", "DEFAULT"]
+          example: "DEFAULT"
+        bankIdentifierCode:
+          type: string
+          maxLength: 11
+          example: "AAAABBCC123"
+        bankName:
+          type: string
+          maxLength: 50
+          example: "Bank A"
+        branchCode:
+          type: string
+          maxLength: 12
+          example: "123456"
+    DeleteBankAccountPaymentInstrument:
+      type: object
+      required:
+        - accountName
+        - accountNumberType
+        - type
+      properties:
+        accountName:
+          type: string
+          maxLength: 70
+          example: "Alex Miller"
+        accountNumber:
+          type: string
+          maxLength: 34
+          example: "1001001234"
+          description: "Bank account number"
+
+        cardId:
+          type: string
+          minLength: 16
+          maxLength: 50
+          example: "01995412-d75f-26e8-a452-656e23f287e1"
+          description: "Card Id By submitting this value no accountNumber is required."
+        accountNumberType:
+          type: string
+          enum: ["IBAN", "DEFAULT"]
+          example: "DEFAULT"
+        type:
+          type: string
+          example: "BANK_ACCOUNT"
+    TokenDetails:
+      type: object
+      required:
+        - tokenReferenceID
+        - tokenRequestorID
+      properties:
+        tokenReferenceID:
+          type: string
+          maxLength: 50
+          minLength: 1
+          example: "hflasdhflsdkfhoin3y038yfwn"
+        tokenRequestorID:
+          type: string
+          maxLength: 11
+          minLength: 1
+          example: "1234567890"
+    BillingAddress:
+      type: object
+      properties:
+        country:
+          type: string
+          example: "USA"
+          description:  "Country code using 3-character ISO 3166 (Alpha 3) format"
+        addressLine1:
+          type: string
+          maxLength: 64
+          example: "1000 Market Street"
+          description: "Address Line 1"
+        addressLine2:
+          type: string
+          maxLength: 64
+          example: "Building 56"
+        addressLine3:
+          type: string
+          maxLength: 64
+          example: "Suite 101"
+        city:
+          type: string
+          maxLength: 32
+          example: "San Francisco"
+        postalCode:
+          type: string
+          maxLength: 9
+          example: "94105"
+          description: "Postal code of the address"
+        state:
+          type: string
+          maxLength: 3
+          example: "CA"
+    RQAddPayments:
+      type: object
+      required:
+        - consumerInformation
+        - paymentInstruments
+        - intent
+      properties:
+        consumerInformation:
+          type: object
+          required:
+            - externalConsumerID
+          properties:
+            externalConsumerID:
+              type: string
+              format: uuid
+              description: |
+                Client-provided unique identifier of a consumer.
+              example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+              minLength: 1
+              maxLength: 100
+            externalConsumerIDOwnerBID:
+              type: string
+              description: |
+                Visa Business Identifier (BID) of the entity to which an External Consumer ID belongs.
+
+                This field is optional for clients integrated prior to its introduction. 
+                Required otherwise. Questions should be directed to your Visa Integration Specialist.
+              example: "10098765"
+              minLength: 1
+              maxLength: 8
+              pattern: '^\d*$'
+        paymentInstruments:
+          type: array
+          minItems: 1
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/CardPaymentInstrument"
+              - $ref: "#/components/schemas/BankAccountPaymentInstrument"
+        intent:
+          type: object
+          required:
+            - type
+            - value
+          properties:
+            type:
+              type: string
+              example: "PRODUCT_CODE"
+              description: Indicates the type of the intent
+            value:
+              type: string
+              example: "CLICK_TO_PAY"
+              description: Product name for which the request is intended
+    RQDeleteConsumerInfo:
+      type: object
+      required:
+        - consumerInformation
+      properties:
+        consumerInformation:
+          type: object
+          properties:
+            externalConsumerID:
+              type: string
+              format: uuid
+              description: |
+                Client-provided unique identifier of a consumer.
+              example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+              minLength: 1
+              maxLength: 100
+            nationalIdNumber:
+              type: string
+              description: |
+                Only available to Issuers who are customers of NovoPayment issuing services, it corresponds to the Identification Number used at the time of Account/Card creation.
+                
+                By submitting this value no externalConsumerID is required.
+              example: "1090516789"
+              minLength: 1
+              maxLength: 32
+            externalConsumerIDOwnerBID:
+              type: string
+              description: |
+                Visa Business Identifier (BID) of the entity to which an External Consumer ID belongs.
+
+                This field is optional for clients integrated prior to its introduction. 
+                Required otherwise. Questions should be directed to your Visa Integration Specialist.
+              example: "10098765"
+              minLength: 1
+              maxLength: 8
+              pattern: '^\d*$'
+        intent:
+          $ref: "#/components/schemas/ObjIntent"
+
+    RQUpdateConsumerInfo:
+      type: object
+      required:
+        - consumerInformation
+      properties:
+        consumerInformation:
+          $ref: "#/components/schemas/ObjConsumerInformation"
+        intent:
+          $ref: "#/components/schemas/ObjIntent"
+    RQUpdatePayment:
+      type: object
+      required:
+        - consumerInformation
+        - paymentInstruments
+      properties:
+        consumerInformation:
+          type: object
+          properties:
+            externalConsumerID:
+              type: string
+              format: uuid
+              description: |
+                Client-provided unique identifier of a consumer.
+              example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+              minLength: 1
+              maxLength: 100
+            externalConsumerIDOwnerBID:
+              type: string
+              description: |
+                Visa Business Identifier (BID) of the entity to which an External Consumer ID belongs.
+
+                This field is optional for clients integrated prior to its introduction. 
+                Required otherwise. Questions should be directed to your Visa Integration Specialist.
+              example: "10098765"
+              minLength: 1
+              maxLength: 8
+              pattern: '^\d*$'
+        paymentInstruments:
+          type: array
+          minItems: 1
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/CardPaymentInstrument"
+              - $ref: "#/components/schemas/BankAccountPaymentInstrument"
+        intent:
+          $ref: "#/components/schemas/ObjIntent"
+    RQDeletePaymentInstrument:
+      type: object
+      required:
+        - consumerInformation
+        - paymentInstruments
+      properties:
+        consumerInformation:
+          type: object
+          required:
+            - externalConsumerID
+          properties:
+            externalConsumerID:
+              type: string
+              format: uuid
+              description: |
+                Client-provided unique identifier of a consumer.
+              example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+              minLength: 1
+              maxLength: 100
+            externalConsumerIDOwnerBID:
+              type: string
+              description: |
+                Visa Business Identifier (BID) of the entity to which an External Consumer ID belongs.
+
+                This field is optional for clients integrated prior to its introduction. 
+                Required otherwise. Questions should be directed to your Visa Integration Specialist.
+              example: "10098765"
+              minLength: 1
+              maxLength: 8
+              pattern: '^\d*$'
+        paymentInstruments:
+          type: object
+          oneOf:
+              - $ref: "#/components/schemas/DeleteCardPaymentInstrument"
+              - $ref: "#/components/schemas/DeleteBankAccountPaymentInstrument"
+        intent:
+          $ref: "#/components/schemas/ObjIntent"
+    RQGetData:
+      type: object
+      required:
+        - consumerInformation
+        - intent
+      properties:
+        consumerInformation:
+          type: object
+          required:
+            - externalConsumerID
+          properties:
+            externalConsumerID:
+              type: string
+              format: uuid
+              description: |
+                Client-provided unique identifier of a consumer.
+              example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+              minLength: 1
+              maxLength: 100
+            externalConsumerIDOwnerBID:
+              type: string
+              description: |
+                Visa Business Identifier (BID) of the entity to which an External Consumer ID belongs.
+
+                This field is optional for clients integrated prior to its introduction. 
+                Required otherwise. Questions should be directed to your Visa Integration Specialist.
+              example: "10098765"
+              minLength: 1
+              maxLength: 8
+              pattern: '^\d*$'
+        intent:
+          $ref: "#/components/schemas/ObjIntent"
+    RQConsumerVulnerable:
+      type: object
+      required:
+          - consumerInformation
+          - actionType
+      properties:
+        consumerInformation:
+          type: object  
+          properties:
+            externalConsumerID:
+              type: string
+              format: uuid
+              description: |
+                Client-provided unique identifier of a consumer.
+              example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+              minLength: 1
+              maxLength: 100
+            nationalIdNumber:
+              type: string
+              description: |
+                Only available to Issuers who are customers of NovoPayment issuing services, it corresponds to the Identification Number used at the time of Account/Card creation.
+                
+                By submitting this value no externalConsumerID is required.
+              example: "1090516789"
+              minLength: 1
+              maxLength: 32
+            externalConsumerIDOwnerBID:
+              type: string
+              description: |
+                  Visa Business Identifier (BID) of the entity to which an External Consumer ID belongs.
+
+                  This field is optional for clients integrated prior to its introduction. 
+                  Required otherwise. Questions should be directed to your Visa Integration Specialist.
+              example: "10098765"
+              minLength: 1
+              maxLength: 8
+              pattern: '^\d*$'
+        intent:
+          $ref: "#/components/schemas/ObjIntent"
+        actionType:
+          type: string
+          enum: [TAKE_IN,TAKE_OUT]
+          example: "TAKE_IN"
+        reason: 
+          type: string
+          description: vulnerability reason
+    RSApplePay200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2017-07-21T17:32:28Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          $ref: "#/components/schemas/ObjCardDataApplePay"
+
+    ObjCardDataApplePay:
+      type: object
+      anyOf:
+        - required:
+            - paymentAccountReference
+            - encryptedPassData
+            - activationData
+            - ephemeralPublicKey
+        - required:
+            - vCardId
+            - encryptedPassData
+            - activationData
+            - ephemeralPublicKey
+      properties:
+        vCardId:
+          type: string
+          maxLength: 42
+          description: |
+            This value was generated on Universal Card Enrollment.
+          example: v-123-b25dd0af-2960-420b-8aaa-49b3e466c00f
+        paymentAccountReference:
+          type: string
+          maxLength: 29
+          description: >
+            Account reference number, this field is Required if the vCardId is
+            null.
+          example: Phasellus pharetra vulputate metus
+        encryptedPassData:
+          type: string
+          maxLength: 8192
+          description: >
+            Authentication data consisting of encrypted PAN, expiry date, name
+            etc.
+            This value will be needed to submit it, to the ApplePay SDK.
+          example: V3bICnkm37BmBKEF9FAKK2zh2SvLhe6PqjvJaHS2t0eJaKVL
+        activationData:
+          type: string
+          maxLength: 8192
+          description: >
+            Activation data consisting of encrypted nonce, nonce signature, and
+            authCode.
+          example: TUJQQUMtMS1GSy00MDEyMDAuMS0tVERFQS1CMEQwQjcxNDNFN0M1QTc3M0I5MTc1OTA3RENCMUEzRUNCRENCQjJEMzI2MDBEOEY4RTU5OEI5QzE4OTlGNzA3RjFCMDQ2RDY3RDNDREUwMg
+        ephemeralPublicKey:
+          type: string
+          maxLength: 8192
+          description: |
+            VISA.ECC.ePK generated while creating MBPAD encryptedInformation.
+            EC point with P-256 curve and uncompressed format.
+          example: BBSV6JzHhqoS0pLO6xMV6Z5yRhoOnpxaLtdjHxb7pPXpmNGra65K3kvUnlwfRTkWjA7v2
+    RSEnrollCard200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2017-07-21T17:32:28Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          $ref: "#/components/schemas/ObjEnrollCardBasicCardInfo"
+    ObjEnrollCardBasicCardInfo:
+      type: object
+      anyOf:
+        - required:
+            - vCardId
+            - last4
+            - expirationDate
+        - required:
+            - paymentAccountReference
+            - last4
+            - expirationDate
+      properties:
+        vCardId:
+          type: string
+          maxLength: 42
+          description: |
+            This field is generated by Visa and is the principal identification .
+            We strongly recommend you save it.
+          example: Phasellus pharetra vulputate metus
+        paymentAccountReference:
+          type: string
+          maxLength: 29
+          description: |
+            Unique Visa identifier for the card. This field is generated for
+            Visa and is the principal identification in In-App Provisioning.
+          example: v-123-b25dd0af-2960-420b-8aaa-49b3e466c00f
+        last4:
+          type: string
+          maxLength: 4
+          description: |
+            Last 4 digits of the card.
+          example: 1234
+        expirationDate:
+          $ref: "#/components/schemas/ObjExpirationDate"
+
+    RSGooglePay200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2017-07-21T17:32:28Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          $ref: "#/components/schemas/ObjGooglePayCardData"
+    RSEncryptCard200:
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2017-07-21T17:32:28Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          $ref: "#/components/schemas/ObjSignedPayload"
+    RSEnrollData202:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 202.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Accepted for processing
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2022-04-25T23:19:12.000Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          type: object
+          properties:
+            successResponse:
+              type: object
+              properties:
+                requestTraceId:
+                  type: string
+                  format: uuid
+                  description: Unique identifier of the request
+                  example: "351562ba-83cf-11ee-b962-0242ac120002"
+                  minLength: 36
+                  maxLength: 36
+    RSAddPayments202:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 202.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Accepted for processing
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2022-04-25T23:19:12.000Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          type: object
+          properties:
+            successResponse:
+              type: object
+              properties:
+                requestTraceId:
+                  type: string
+                  format: uuid
+                  description: Unique identifier of the request
+                  example: "351562ba-83cf-11ee-b962-0242ac120002"
+                  minLength: 36
+                  maxLength: 36
+    RSRequestStatus200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Description of the response code
+          example: OK
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation timestamp in ISO 8601 format, compliant with
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          type: object
+          required:
+            - requestTraceId
+            - status
+            - consumerInformation
+            - details
+          properties:
+            requestTraceId:
+              type: string
+              format: uuid
+              description: Unique identifier of the request
+              example: "351562ba-83cf-11ee-b962-0242ac120002"
+              minLength: 36
+              maxLength: 36
+            status:
+              type: string
+              description: Current status of the request
+              enum: [IN_PROGRESS, COMPLETED]
+            consumerInformation:
+              type: object
+              required:
+                - externalConsumerID
+              properties:
+                externalConsumerID:
+                  type: string
+                  format: uuid
+                  minLength: 1
+                  maxLength: 100
+                  description: Client-provided unique identifier of a consumer
+                  example: "63421837-d597-4f0f-89e4-930c1a7b9e85"
+                externalConsumerIDOwnerBID:
+                  type: string
+                  pattern: '^\d*$'
+                  minLength: 1
+                  maxLength: 8
+                  description: >
+                    Visa Business Identifier (BID) of the entity to which an External Consumer ID belongs.
+                    This field is optional for clients integrated before its introduction.
+                  example: "10098765"
+            details:
+              type: array
+              items:
+                type: object
+                required:
+                  - intent
+                  - status
+                properties:
+                  intent:
+                    type: object
+                    required:
+                      - type
+                      - value
+                    properties:
+                      type:
+                        type: string
+                        enum: [PRODUCT_CODE]
+                        description: Type of the intent
+                        example: "PRODUCT_CODE"
+                      value:
+                        type: string
+                        description: Product name for which the request is intended
+                        example: "CLICK_TO_PAY"
+                  status:
+                    type: string
+                    enum: [SUCCESS, FAILED]
+                    description: Status of the individual detail
+                  errorDetails:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - reason
+                      properties:
+                        reason:
+                          type: string
+                          minLength: 1
+                          maxLength: 100
+                          description: Reason for the error
+                        field:
+                          type: string
+                          minLength: 1
+                          maxLength: 100
+                          description: Field in which the error occurred
+                        message:
+                          type: string
+                          minLength: 1
+                          maxLength: 256
+                          description: Error message to be sent to client
+    RSQueryData200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 202.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Accepted for processing
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2022-04-25T23:19:12.000Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+        data:
+          type: object
+          properties:
+            intent:
+              $ref: "#/components/schemas/ObjIntent"
+            paymentInstruments:
+              $ref: "#/components/schemas/ObjGetDataPaymentInstrumentList"
+            consumerInformation:
+              $ref: "#/components/schemas/ObjConsumerInformation"
+
+    ObjGooglePayCardData:
+      type: object
+      required:
+        - last4
+        - expirationDate
+        - opaquePaymentCard
+      properties:
+        last4:
+          type: string
+          maxLength: 4
+          description: |
+            Last 4 digits of the card.
+          example: 1234
+        expirationDate:
+          $ref: "#/components/schemas/ObjExpirationDate"
+        encAddress:
+          $ref: "#/components/schemas/ObjBillingAddress"
+        encMobileNumber:
+          $ref: "#/components/schemas/ObjPhoneNumber"
+        opaquePaymentCard:
+          type: string
+          description: >
+            This is the opaque card data that is needed by the client for
+            tokenization.
+
+            Format: Base64
+          example: V3bICnkm37BmBKEF9FAKK2zh2SvLhe6PqjvJaHS2t0eJaKVL
+    ObjSignedPayload:
+      type: object
+      required:
+        - signedPayload
+      properties:
+        signedPayload:
+          type: string
+          description: |
+            Encrypted and signed card information
+          example: eyJle...y3fmkg
+    ObjPhoneNumber:
+      type: object
+      required:
+        - last4
+        - expirationDate
+        - opaquePaymentCard
+      properties:
+        last4:
+          type: string
+          maxLength: 4
+          description: |
+            Last 4 digits of the card.
+          example: 1234
+        expirationDate:
+          $ref: "#/components/schemas/ObjExpirationDate"
+        opaquePaymentCard:
+          type: string
+          description: >
+            This is the opaque card data that is needed by the client for
+            tokenization.
+
+            Format: Base64
+          example: V3bICnkm37BmBKEF9FAKK2zh2SvLhe6PqjvJaHS2t0eJaKVL
+        encAddress:
+          $ref: "#/components/schemas/ObjBillingAddress"
+        encMobileNumber:
+          $ref: "#/components/schemas/ObjBillingAddress"
+    RS200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: >
+            Operation Time Stamp in ISO 8601 format
+
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2017-07-21T17:32:28Z
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.00.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Params required
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          description: >
+            Operation Time Stamp in ISO 8601 format<br>date-time - the
+            date-time notation as defined by [RFC 3339, section
+            5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example,
+            2017-07-21T17:32:28Z
+          minLength: 24
+          maxLength: 24
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.00.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS404:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 404.00.900
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Not Found
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.00.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS400Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.00.001
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Header Params Required
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          description: >
+            Operation Time Stamp in ISO 8601 format<br>date-time - the
+            date-time notation as defined by [RFC 3339, section
+            5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example,
+            2017-07-21T17:32:28Z
+          minLength: 24
+          maxLength: 24
+    RS401Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.00.992
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid signature
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+    RS500Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.00.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2022-04-25T23:19:12.000Z"
+          minLength: 24
+          maxLength: 24
+  requestBodies:
+    RQApplePay:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQApplePay"
+
+    RQEnrollCard:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQEnrollCard"
+
+    RQGooglePay:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQGooglePay"
+
+    RQEncryptCard:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQEncryptCard"
+
+    RQEnrollData:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQEnrollData"
+    RQAddPayments:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQAddPayments"
+    RQDeleteConsumerInfo:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQDeleteConsumerInfo"
+    RQUpdateConsumerInfo:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQUpdateConsumerInfo"
+    RQUpdatePayment:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQUpdatePayment"
+    RQDeletePaymentInstrument:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQDeletePaymentInstrument"
+    RQGetData:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQGetData"
+    RQConsumerVulnerable:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQConsumerVulnerable"
+  responses:
+    RSApplePay200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSApplePay200"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+                data:
+                  paymentAccountReference: "Phasellus pharetra vulputate metus"
+                  vCardId: "v-123-b25dd0af-2960-420b-8aaa-49b3e466c00f"
+                  encryptedPassData: "V3bICnkm37BmBKEF9FAKK2zh2SvLhe6PqjvJaHS2t0eJaKVL"
+                  activationData: "TUJQQUMtMS1GSy00MDEyMDAuMS0tVERFQS1CMEQwQjcxNDNFN0M1QTc3M0I5MTc1OTA3RENCMUEzRUNCRENCQjJEMzI2MDBEOEY4RTU5OEI5QzE4OTlGNzA3RjFCMDQ2RDY3RDNDREUwMg"
+                  ephemeralPublicKey: "BBSV6JzHhqoS0pLO6xMV6Z5yRhoOnpxaLtdjHxb7pPXpmNGra65K3kvUnlwfRTkWjA7v2"
+    RSEnrollCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSEnrollCard200"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+                data:
+                  vCardId: "v-123-b25dd0af-2960-420b-8aaa-49b3e466c00f"
+                  paymentAccountReference: "Phasellus pharetra vulputate metus"
+                  encryptedPassData: "V3bICnkm37BmBKEF9FAKK2zh2SvLhe6PqjvJaHS2t0eJaKVL"
+                  activationData: "TUJQQUMtMS1GSy00MDEyMDAuMS0tVERFQS1CMEQwQjcxNDNFN0M1QTc3M0I5MTc1OTA3RENCMUEzRUNCRENCQjJEMzI2MDBEOEY4RTU5OEI5QzE4OTlGNzA3RjFCMDQ2RDY3RDNDREUwMg"
+                  ephemeralPublicKey: "BBSV6JzHhqoS0pLO6xMV6Z5yRhoOnpxaLtdjHxb7pPXpmNGra65K3kvUnlwfRTkWjA7v2"
+    RSGooglePay200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGooglePay200"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+                data:
+                  last4: "1234"
+                  expirationDate:
+                    month: "7"
+                    year: "2016"
+                  encAddress:
+                    name: "Digital Issuance"
+                    line1: "10808 Research Boulevard"
+                    line2: "Provisioning Boulevard"
+                    city: "Austin"
+                    state: "TX"
+                    postalCode: "78759"
+                    countryCode: "US"
+                  encMobileNumber:
+                    last4: "1234"
+                    expirationDate:
+                      month: "7"
+                      year: "2016"
+                    encAddress:
+                      name: "Digital Issuance"
+                      line1: "10808 Research Boulevard"
+                      line2: "Provisioning Boulevard"
+                      city: "Austin"
+                      state: "TX"
+                      postalCode: "78759"
+                      countryCode: "US"
+                    encMobileNumber:
+                      name: "Digital Issuance"
+                      line1: "10808 Research Boulevard"
+                      line2: "Provisioning Boulevard"
+                      city: "Austin"
+                      state: "TX"
+                      postalCode: "78759"
+                      countryCode: "US"
+                    opaquePaymentCard: "V3bICnkm37BmBKEF9FAKK2zh2SvLhe6PqjvJaHS2t0eJaKVL"
+                  opaquePaymentCard: "V3bICnkm37BmBKEF9FAKK2zh2SvLhe6PqjvJaHS2t0eJaKVL"
+    RSEncryptCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSEncryptCard200"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+                data:
+                  signedPayload: eyJle...y3fmkg
+    RSEnrollData202:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSEnrollData202"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+                data:
+                  successResponse:
+                    requestTraceId: "351562ba-83cf-11ee-b962-0242ac120002"
+    RSAddPayments202:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSAddPayments202"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+                data:
+                  successResponse:
+                    requestTraceId: "351562ba-83cf-11ee-b962-0242ac120002"
+    RSRequestStatus200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSRequestStatus200"
+    RSQueryData200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSQueryData200"
+    RS200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS200"
+          examples:
+            Default:
+              value:
+                code: "200.00.000"
+                message: "Process Ok"
+                datetime: "2022-04-25T23:19:12.000Z"
+    RSDeleteCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            JWE Invalid format:
+              $ref: "#/components/examples/JWEInvalidFormat"
+            Invalid Tenant ID:
+              $ref: "#/components/examples/JWEInvalidFormat"
+            Unable process request:
+              $ref: "#/components/examples/UnableProcessRequest"
+            Integration Error:
+              $ref: "#/components/examples/IntegrationError"
+    RSEncryptCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS400Tk"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequiredTk"
+            Error General Service:
+              $ref: "#/components/examples/ErrorGeneralService"
+            Invalid parameters:
+              $ref: "#/components/examples/InvalidParams"
+            Component configuration not found:
+              $ref: "#/components/examples/ConfigurationNotFound"
+            Encryption error:
+              $ref: "#/components/examples/EncryptionError"
+    RSEncryptCard401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401Tk"
+          examples:
+            Invalid signature:
+              $ref: "#/components/examples/InvalidSignatureTk"
+            Decryption Error:
+              $ref: "#/components/examples/DecryptionError"
+    RSEncryptCard500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500Tk"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerErrorTk"
+    RS400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            JWE Invalid format:
+              $ref: "#/components/examples/JWEInvalidFormat"
+            Invalid Tenant ID:
+              $ref: "#/components/examples/JWEInvalidFormat"
+            Unable process request:
+              $ref: "#/components/examples/UnableProcessRequest"
+            Invalid parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Not Found:
+              $ref: "#/components/examples/NotFound"
+            Invalid Card Id:
+              $ref: "#/components/examples/InvalidCardId"
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS404"
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"

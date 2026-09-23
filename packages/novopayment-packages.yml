@@ -1,0 +1,70 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://developer.novopayment.com/SDK/tokenization plus unauthenticated registry searches of npm,
+  PyPI, RubyGems, Maven Central, NuGet and Packagist for "novopayment" on 2026-09-17
+description: >-
+  NovoPayment publishes no client library on any public package registry. The one first-party SDK it
+  documents — the mobile Tokenization SDK for issuers and wallet providers — is distributed to
+  approved projects only: its 25 documentation chapters on the developer hub return 403 to an
+  anonymous client, and the Quick Start states that tokenization access is granted after you tell
+  NovoPayment you have created a project.
+registries_searched:
+  - registry: npm
+    query: novopayment
+    url: https://registry.npmjs.org/-/v1/search?text=novopayment
+    results: 0
+  - registry: pypi
+    query: novopayment
+    url: https://pypi.org/pypi/novopayment/json
+    status: 404
+    results: 0
+  - registry: rubygems
+    query: novopayment
+    url: https://rubygems.org/api/v1/search.json?query=novopayment
+    results: 0
+  - registry: maven-central
+    query: novopayment
+    url: https://search.maven.org/solrsearch/select?q=novopayment
+    results: 0
+  - registry: nuget
+    query: novopayment
+    url: https://azuresearch-usnc.nuget.org/query?q=novopayment
+    results: 0
+  - registry: packagist
+    query: novopayment
+    url: https://packagist.org/search.json?q=novopayment
+    results: 0
+    note: Matches returned were unrelated third-party packages (spryker/nopayment, laravel-nowpayments).
+  - registry: github
+    query: https://github.com/novopayment
+    url: https://api.github.com/orgs/novopayment/repos
+    results: 0
+    note: The organisation exists and is linked from the developer hub footer, but publishes no public repositories.
+packages:
+  - language: mobile
+    platforms:
+      - android
+      - ios
+    registry: null
+    name: NovoPayment Tokenization SDK
+    official: true
+    url: https://developer.novopayment.com/SDK/tokenization
+    install: null
+    version: null
+    published: null
+    distribution: gated
+    note: >-
+      Checked 2026-09-17, nothing to record. NovoPayment documents this SDK publicly — overview,
+      chapter list (Initialization, Device enrollment, Card enrollment, Start payment, Offline
+      payments, Token lifecycle, UI, Notifications, Response codes, Changelog and more) — but each
+      chapter page returns HTTP 403 to an anonymous client, and no artifact, version or download URL
+      is published. Version and release date therefore cannot be established without an approved
+      project; recorded as null rather than guessed.
+counts:
+  total: 1
+  official: 1
+  registry_published: 0
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

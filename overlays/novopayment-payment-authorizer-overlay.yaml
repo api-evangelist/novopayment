@@ -1,0 +1,35 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for NovoPayment Payment Authorizer API
+  version: 0.1.0
+extends: novopayment-payment-authorizer-openapi.yml
+x-generated: '2026-09-17'
+x-method: generated
+x-source: openapi/novopayment-payment-authorizer-openapi.yml
+actions:
+- target: $.info
+  description: Add the support contact NovoPayment publishes in its own Real-Time Payments spec and developer hub.
+  update:
+    contact:
+      name: NovoPayment API Support
+      email: support@novopayment.com
+      url: https://developer.novopayment.com/
+- target: $.info
+  description: Add the developer hub terms of use published by NovoPayment.
+  update:
+    termsOfService: https://developer.novopayment.com/terms-and-conditions-use
+- target: $
+  description: Link the spec to the reference page it is published from.
+  update:
+    externalDocs:
+      description: NovoPayment developer hub reference for Payment Authorizer API
+      url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+- target: $.info
+  description: Record where this copy was harvested from and by whom.
+  update:
+    x-api-evangelist:
+      harvested: '2026-09-17'
+      harvested-from: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+      catalog: https://apis.io/apis/novopayment/
+      note: API Evangelist is not affiliated with NovoPayment; this overlay records catalog enhancements and never
+        modifies the provider's original document.

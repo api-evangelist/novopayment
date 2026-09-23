@@ -1,0 +1,327 @@
+openapi: 3.0.0
+info:
+  description: >
+    "The OAuth 2.0 authorization framework allows a third-party
+    application to gain limited access to an HTTP service, either on behalf of
+    the resource owner by orchestrating an approval interaction between the
+    resource owner and the HTTP service, or by allowing the third-party
+    application to access it on its own behalf"
+
+
+    This means that you can allow certain users/apps to access your resources on a limited basis. Four of the components that interact in this deployment are:
+
+
+    1. The Resource Owner: This is the owner of the resource keys, and this is where most clients come to get the credentials to access the resource.
+
+
+    2. The Authorizer: After obtaining the resource owner's credentials, the client must obtain a bearer token that allows limited access to the resource.
+
+
+    3. The Resource: This is what the client needs to encrypt and decrypt messages.
+
+
+    4. The Client: A client does not always refer to a person in this context. Most of the time it refers to an application that tries to access resources and is also not specific to an application of type. It could range from a shell script to a web application. Here anyone can access the resource with the appropriate credentials.
+
+
+    - 1. The customer requests authorization from the resource owner, if the acceptance criteria are met, the resource owner grants the authorization.
+
+
+    - 2. The client then needs to request the bear token needed to access the resource using the authorization grant obtained in the previous step.
+
+
+    - 3. The client can now access the protected resource using this bearer token for a limited time
+
+
+    __Access request__
+
+
+    All clients (applications) must register with the OAuth 2.0 authorization server from which they intend to request access tokens. When you register an application, you receive a key set. One is a public key called a client ID, and the other is a secret key called a client secret. Without these keys, an application cannot issue authorization code requests or access tokens to the authorization server.
+  version: v1
+  title: Security OAuth2 API
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/oauth2/v1
+paths:
+  /token:
+    post:
+      summary: OAuth2 API
+      description: The Oauth2 API allows you to obtain access tokens to the
+        authorization server
+      parameters:
+        - $ref: "#/components/parameters/Accept"
+        - $ref: "#/components/parameters/Content-Type"
+      requestBody:
+        $ref: "#/components/requestBodies/RQOAuth2"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSOAuth2200"
+        "400":
+          $ref: "#/components/responses/RSOAuth2400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+components:
+  examples:
+    RQEndpointOAuth2:
+      value:
+        grant_type: client_credentials
+        client_id: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
+        client_secret: OpKzMzh0NQWZVdnQ
+    RSOAuth2:
+      value:
+        token_type: BearerToken
+        issued_at: 1599515333795
+        client_id: bqSzPosD6pAsAkVn7JXzwdI1AgnxIrw0
+        access_token: pQUJGdleh21Tk5XrardxfHt2fo3g
+        application_name: 9366151b-1bfe-4de7-b70a-e7ebb1a70ac3
+        expires_in: 1799
+        status: approved
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestParamsRequired:
+      value:
+        code: 400.08.001
+        message: Params Required
+        datetime: "2020-01-03T16:05:56.517Z"
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+          - message: "attributeOneCamelCase: Can not be null"
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: "2020-01-03T16:05:56.517Z"
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: "2020-01-03T16:05:56.517Z"
+  parameters:
+    Accept:
+      name: Accept
+      in: header
+      description: |
+        Content types that are acceptable for the response
+        application/json
+      required: true
+      schema:
+        type: string
+        default: application/json
+    Content-Type:
+      name: Content-Type
+      in: header
+      description: |
+        The type of the body of the request
+        application/x-www-form-urlencoded
+      required: false
+      schema:
+        type: string
+        default: application/x-www-form-urlencoded
+  schemas:
+    RQOAuth2:
+      type: object
+      required:
+        - grant_type
+        - client_id
+        - client_secret
+      properties:
+        grant_type:
+          type: string
+          description: |
+            Identifier of the type of authorization required.
+          example: client_credentials
+          maxLength: 18
+        client_id:
+          type: string
+          description: |
+            The client ID issued to the client during the registration process.
+          example: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
+          maxLength: 32
+        client_secret:
+          type: string
+          description: |
+            The client's secret
+          example: OpKzMzh0NQWZVdnQ
+          maxLength: 16
+    RSOAuth2200:
+      type: object
+      required:
+        - token_type
+        - issued_at
+        - client_id
+        - access_token
+        - application_name
+        - expires_in
+        - status
+      properties:
+        token_type:
+          type: string
+          example: BearerToken
+          description: Identifier of the type of authorization required.
+          maxLength: 11
+        issued_at:
+          type: string
+          example: 1599515333795
+          description: The client ID issued to the client during the registration process.
+          maxLength: 13
+        client_id:
+          type: string
+          example: bqSzPosD6pAsAkVn7JXzwdI1AgnxIrw0
+          description: The client's secret
+          maxLength: 32
+        access_token:
+          type: string
+          example: pQUJGdleh21Tk5XrardxfHt2fo3g
+          description: Represents the authorization of a specific application to access
+            specific parts of a user's data.
+          maxLength: 28
+        application_name:
+          type: string
+          example: 9366151b-1bfe-4de7-b70a-e7ebb1a70ac3
+          description: Application related to login credentials
+          maxLength: 36
+        expires_in:
+          type: string
+          example: 1799
+          description: Token expiration time
+          maxLength: 4
+        status:
+          type: string
+          example: approved
+          description: Status of credentials
+          maxLength: 8
+    RSOAuth2400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+  requestBodies:
+    RQOAuth2:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "#/components/schemas/RQOAuth2"
+          examples:
+            Customer Monitoring:
+              $ref: "#/components/examples/RQEndpointOAuth2"
+      required: true
+  responses:
+    RSOAuth2200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSOAuth2200"
+          examples:
+            OAuth2:
+              value:
+                token_type: BearerToken
+                issued_at: 1599515333795
+                client_id: bqSzPosD6pAsAkVn7JXzwdI1AgnxIrw0
+                access_token: pQUJGdleh21Tk5XrardxfHt2fo3g
+                application_name: 9366151b-1bfe-4de7-b70a-e7ebb1a70ac3
+                expires_in: 1799
+                status: approved
+    RSOAuth2400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSOAuth2400"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Request Params Required:
+              $ref: "#/components/examples/RequestParamsRequired"
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"

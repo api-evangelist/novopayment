@@ -1,0 +1,277 @@
+generated: '2026-09-17'
+method: probed
+source: direct HTTP probe of the named /.well-known/ path list against every host in the record
+description: >-
+  Discovery-surface probe of every host NovoPayment's record names — the registrable domain and www
+  (WordPress marketing site), the Drupal developer hub, and the three API hosts that appear in
+  servers[] across the 15 published OpenAPI documents. NovoPayment serves no /.well-known/ discovery
+  document on any of them. The marketing site answers 200 with its HTML shell for every path probed,
+  including paths no site serves, so those 200s are soft-404s and are recorded as misses.
+hosts:
+  - host: https://novopayment.com
+    note: >-
+      WordPress catch-all: every probed path returned 200 with the same text/html marketing shell.
+      Verified as a soft-404 by reading the body, not the status code.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/openid-configuration
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/ucp.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/acp.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/aauth-resource.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/apis.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /apis.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /apis.yml
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/agent-card.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/agent.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /llms.txt
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+  - host: https://www.novopayment.com
+    note: Same WordPress origin as the apex; identical soft-404 behaviour on every path.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/openid-configuration
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/apis.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /apis.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/agent-card.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+      - path: /.well-known/agent.json
+        status: 200
+        content_type: text/html
+        file: null
+        result: soft-404 HTML shell, not a document
+  - host: https://developer.novopayment.com
+    note: >-
+      Drupal developer hub. Returns a real 404 for every discovery path; /robots.txt is the only
+      machine-readable file served at the root and it carries no Sitemap directive.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/ucp.json
+        status: 404
+        file: null
+      - path: /.well-known/acp.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+      - path: /.well-known/apis.json
+        status: 404
+        file: null
+      - path: /apis.json
+        status: 404
+        file: null
+      - path: /apis.yml
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /llms.txt
+        status: 404
+        file: null
+  - host: https://sandbox-api.novopayment.com
+    note: >-
+      Sandbox API host named in servers[] of 13 of the 15 published specs. The gateway answers 502
+      to an unauthenticated request on every path, so nothing can be read anonymously — a gate, not a
+      published absence.
+    documents:
+      - path: /.well-known/security.txt
+        status: 502
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 502
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 502
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 502
+        file: null
+      - path: /.well-known/api-catalog
+        status: 502
+        file: null
+      - path: /.well-known/apis.json
+        status: 502
+        file: null
+      - path: /apis.json
+        status: 502
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 502
+        file: null
+      - path: /.well-known/agent.json
+        status: 502
+        file: null
+  - host: https://cert-api.novopayment.com
+    note: >-
+      Certification host named in servers[] of the Issuer Tokenization API. Resets the TLS connection
+      for an unauthenticated client, so no status code is available.
+    documents:
+      - path: /.well-known/security.txt
+        status: 0
+        file: null
+        result: connection reset by peer
+      - path: /.well-known/openid-configuration
+        status: 0
+        file: null
+        result: connection reset by peer
+      - path: /.well-known/oauth-authorization-server
+        status: 0
+        file: null
+        result: connection reset by peer
+      - path: /.well-known/agent-card.json
+        status: 0
+        file: null
+        result: connection reset by peer
+      - path: /.well-known/agent.json
+        status: 0
+        file: null
+        result: connection reset by peer
+  - host: https://api.novopayment.com
+    note: >-
+      Production API hostname resolves and terminates TLS but returns 503 on every path, including
+      the root. It is not named in any published spec; the specs point at sandbox-api and cert-api.
+    documents:
+      - path: /.well-known/security.txt
+        status: 503
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 503
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 503
+        file: null
+      - path: /.well-known/api-catalog
+        status: 503
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 503
+        file: null
+      - path: /.well-known/agent.json
+        status: 503
+        file: null
+summary:
+  documents_served: 0
+  hosts_probed: 6
+  agent_card: none
+  security_txt: none
+  api_catalog: none
+  apis_json: none
+  note: >-
+    No WellKnown or SecurityTxt pointer is wired into apis.yml, because no probe returned a real
+    document. This file records the absence, which is valid data, not a served surface.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

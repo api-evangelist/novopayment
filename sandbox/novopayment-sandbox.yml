@@ -1,0 +1,56 @@
+specification: API Commons Sandbox
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://developer.novopayment.com/guides/quick-start,
+  https://developer.novopayment.com/guides/how-it-works/register-and-create-projects,
+  https://developer.novopayment.com/guides/how-it-works/get-access-token and the published OpenAPI documents
+description: >-
+  NovoPayment runs a three-environment model — sandbox, UAT, production — with self-service access to
+  the sandbox. The sandbox is both a callable host (sandbox-api.novopayment.com, named in servers[]
+  of 13 of the 15 published specs) and an in-page "Try it out" console on each API reference page.
+modes:
+  - name: sandbox
+    self_service: true
+    host: https://sandbox-api.novopayment.com
+    how_to_get_access: >-
+      Register on the developer hub, verify the account by email, enable the mandatory two-factor
+      authentication, create a team, create a project, select the APIs the project needs, then read
+      the project's client_id and client_secret from the dashboard.
+    console: >-
+      Each API reference page carries a request/response console the docs call the sandbox — you can
+      edit the request body and send the call once you hold a sandbox access token.
+  - name: uat
+    self_service: false
+    how_to_get_access: Submit the promotion form describing the project; NovoPayment confirms by email.
+  - name: production
+    self_service: false
+    how_to_get_access: Same approval path as UAT.
+credentials:
+  per_environment: true
+  note: >-
+    "The credentials will be different for each of the three environments." Client id and secret are
+    exchanged at POST /oauth2/token for a BearerToken valid 1799 seconds.
+  key_prefixes: none published
+test_data:
+  test_cards: not published
+  test_accounts: not published
+  test_identities: not published
+  time_simulation: not published
+  triggers_or_fixtures: not published
+  note: >-
+    No test card numbers, test document numbers, magic values or fixture triggers are published on
+    the public hub. The specs' request examples use placeholder values rather than a documented test
+    data set, so an integrator cannot rehearse a decline path (for example 400.01.044 insufficient
+    funds) from published material alone.
+gating:
+  tokenization: >-
+    "For tokenization products, please let us know you have created the project to give you access to
+    the documentation." — Quick Start. The mobile SDK chapters and four API reference pages return
+    403 to an anonymous client.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

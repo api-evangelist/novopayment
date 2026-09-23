@@ -1,0 +1,119 @@
+specification: API Commons MCPServer
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: derived
+status: candidate
+source: openapi/novopayment-*-openapi.yml (15 provider-published specs, 163 operations)
+description: >-
+  NovoPayment ships no Model Context Protocol server. This is a DERIVED CANDIDATE tool surface,
+  computed from the operations NovoPayment publishes, to show what an MCP server over this API would
+  expose. Nothing here is served by NovoPayment and no endpoint is implied.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  verified: searched
+  note: >-
+    Searched the developer hub, the GitHub organisation (no public repositories) and the web on
+    2026-09-17; no hosted MCP endpoint and no stdio package exists. Auth is recorded as oauth
+    because any such server would have to carry NovoPayment's OAuth2 client-credentials token.
+search_evidence:
+  - url: https://developer.novopayment.com/api
+    status: 200
+    result: no MCP, agent or AI integration surface named anywhere in the API catalogue
+  - url: https://api.github.com/orgs/novopayment/repos
+    status: 200
+    result: empty — the organisation publishes no repositories
+candidate_tools:
+  - name: create_customer
+    description: Create an individual, commercial or merchant customer record.
+    api: customers
+    rest: POST /customers
+    consequence: write
+  - name: get_customer
+    description: Retrieve a customer by id.
+    api: customers
+    rest: GET /customers/{customerId}
+    consequence: read
+  - name: start_onboarding_session
+    description: Originate a registration session for a new digital bank account.
+    api: onboarding
+    rest: POST /onboarding session operations
+    consequence: write
+  - name: validate_identity_document
+    description: Check that an identity document is not already registered with active status.
+    api: onboarding
+    rest: identity document validation operation
+    consequence: read
+  - name: list_account_balances
+    description: Read balances for an account.
+    api: accounts
+    rest: GET balance operations
+    consequence: read
+  - name: list_card_movements
+    description: Read the movement history of a card.
+    api: cards
+    rest: GET movement operations
+    consequence: read
+  - name: issue_card
+    description: Issue a physical or virtual card against a card program.
+    api: cards
+    rest: POST issuance operations
+    consequence: write
+  - name: reverse_cash_in
+    description: Reverse a cash-in previously applied to a card.
+    api: cards
+    rest: POST /cards/{cardId}/reversecashin
+    operation_id: CashInReverse
+    consequence: write-reversal
+  - name: authorize_payment
+    description: Authorize a transaction arriving from a payment gateway.
+    api: payment-authorizer
+    rest: POST payment authorization operation
+    consequence: write
+  - name: reverse_payment
+    description: Reverse an authorization.
+    api: payment-authorizer
+    rest: POST /paymentreverse
+    consequence: write-reversal
+  - name: send_real_time_payment
+    description: Push or pull funds between Visa/Mastercard branded products.
+    api: real-time-payments
+    rest: POST /moneytransfer send operations
+    consequence: write
+  - name: reverse_funds
+    description: Reverse a funds transfer by transaction id.
+    api: real-time-payments
+    rest: POST /moneytransfer/transactions/funds/reverse/{transactionId}
+    operation_id: reverse
+    consequence: write-reversal
+  - name: resolve_alias
+    description: Resolve an alias to its registered payment instruments.
+    api: alias-directory
+    rest: GET /alias/{aliasId}
+    consequence: read
+  - name: generate_merchant_qr
+    description: Generate a merchant-presented QR code for acceptance.
+    api: merchant-presented-qr
+    rest: POST QR generation operation
+    consequence: write
+  - name: provision_token
+    description: Provision a payment token for a card in a wallet.
+    api: issuer-tokenization
+    rest: POST tokenization process operations
+    consequence: write
+agent_readiness_notes:
+  - >-
+    Any agent surface over this API inherits two published gaps: no idempotency key on 163 mutating
+    and non-mutating operations, and no rate-limit signalling. Both matter more for an agent than for
+    a human integrator.
+  - >-
+    Reversal paths exist for payments, transfers and card cash movements, but no reversal window is
+    documented (conventions/novopayment-conventions.yml).
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,87 +1,38 @@
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: NovoPayment
 providerId: novopayment
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the NovoPayment API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - NovoPayment
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - NovoPayment
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - NovoPayment
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - NovoPayment
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - NovoPayment
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+generated: '2026-09-17'
+method: searched
+source: >-
+  the 15 provider-published OpenAPI documents plus https://developer.novopayment.com/guides/quick-start,
+  https://developer.novopayment.com/guides/how-it-works and https://developer.novopayment.com/api
+description: >-
+  NovoPayment publishes no rate limits and no throttling signal. This file replaces a 2026-05-04
+  scaffold that carried invented free/professional/enterprise tiers; none of those numbers came from
+  NovoPayment and none are retained.
+limit_count: 0
+limits: []
+headers: {}
+responseCodes: {}
+findings:
+  - finding: No 429 response is declared on any of the 163 published operations.
+    evidence: >-
+      Response codes across all 15 specs are 200, 201, 202, 400, 401, 404, 500 and default — 429 is
+      absent everywhere.
+  - finding: No rate-limit response header is documented.
+    evidence: >-
+      Neither RateLimit-*, X-RateLimit-* nor Retry-After appears in any spec or on any public page of
+      the developer hub.
+  - finding: No written quota or fair-use policy.
+    evidence: >-
+      The Quick Start and How It Works guides describe registration, project creation, token issuance
+      and environment promotion, and say nothing about call volume.
+consequence: >-
+  A client — human or agent — has no published way to know its budget, no runtime signal as it
+  approaches one, and no documented back-off contract. Combined with the absence of idempotency
+  (conventions/novopayment-conventions.yml), a throttled retry storm has no safe published recovery
+  path.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

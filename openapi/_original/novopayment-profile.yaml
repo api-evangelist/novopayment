@@ -1,0 +1,1022 @@
+---
+openapi: 3.0.0
+info:
+  description: >
+    Below operations are available for Profile API
+
+
+    **Get Customer Configuration Parameters**
+
+
+    This operation allows to consult the different configurations of a customer.
+
+
+    **Customer Configuration Update**
+
+
+    This operation allows to update a customer-specific configuration.
+
+
+    **Customer Document Upload**
+
+
+    This operation allows to uppload of the requested documents for the
+    validation of all the account information. Later, the tenant may request
+    additional documents.
+
+
+    **Password Recovery**
+
+
+    This operation allows to recover the lost or forgotten password for
+    registered users.
+
+
+    **OTP E-mail Verification**
+
+
+    This operation allows to verify the code sent to the email to validate its
+    update.
+
+
+    **Cell Phone OTP Verification**
+
+
+    This operation sends a code for the validation of the new cell phone number
+    that is getting registered.
+  version: v1
+  title: Profile API
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/profiles/v1
+paths:
+  /personal/otp/type/sms/verification:
+    post:
+      summary: Cell Phone OTP Verification
+      description: >
+        This operation sends a code for the validation of the new cell
+        phone number that is getting registered.
+      requestBody:
+        $ref: "#/components/requestBodies/RQCellPhoneOTPVerification"
+      operationId: CellPhoneOTPVerification
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCellPhoneOTPVerification200"
+        "400":
+          $ref: "#/components/responses/RSCellPhoneOTPVerification400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/{customerId}/settings/{settingId}":
+    put:
+      summary: Customer Configuration Update
+      description: |
+        This operation allows to update a customer-specific configuration.
+      requestBody:
+        $ref: "#/components/requestBodies/RQCustomerConfigurationUpdate"
+      operationId: CustomerConfigurationUpdate
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+        - $ref: "#/components/parameters/settingId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCustomerConfigurationUpdate200"
+        "400":
+          $ref: "#/components/responses/RSCustomerConfigurationUpdate400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/{customerId}/documents":
+    post:
+      summary: Customer Document Upload
+      description: >
+        This operation allows to upload of the requested documents for the
+        validation of all the account information. Later, the tenant may request
+        additional documents.
+      requestBody:
+        $ref: "#/components/requestBodies/RQCustomerDocumentUpload"
+      operationId: CustomerDocumentUpload
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCustomerDocumentUpload200"
+        "400":
+          $ref: "#/components/responses/RSCustomerDocumentUpload400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/{customerId}/settings":
+    get:
+      summary: Get Customer Configuration Parameters
+      description: >
+        This operation allows to consult the different configurations of a
+        customer.
+      operationId: GetCustomerConfigurationParameters
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSGetCustomerConfigurationParameters200"
+        "400":
+          $ref: "#/components/responses/RSGetCustomerConfigurationParameters400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  /personal/otp/type/email/verification:
+    post:
+      summary: OTP E-mail Verification
+      description: >
+        This operation allows to verify the code sent to the email to
+        validate its update.
+      requestBody:
+        $ref: "#/components/requestBodies/RQOTPEmailVerification"
+      operationId: OTPEmailVerification
+      responses:
+        "200":
+          $ref: "#/components/responses/RSOTPEmailVerification200"
+        "400":
+          $ref: "#/components/responses/RSOTPEmailVerification400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+  "/{customerId}/user/password/recovery":
+    post:
+      summary: Password Recovery
+      description: >
+        This operation allows to recover the lost or forgotten password for
+        registered users.
+      requestBody:
+        $ref: "#/components/requestBodies/RQPasswordRecovery"
+      operationId: PasswordRecovery
+      parameters:
+        - $ref: "#/components/parameters/customerId"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSPasswordRecovery200"
+        "400":
+          $ref: "#/components/responses/RSPasswordRecovery400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+  examples:
+    HeaderParamsRequired:
+      value:
+        code: 400.25.001
+        message: Header Params Required
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestParamsRequired:
+      value:
+        code: 400.25.003
+        message: Params required
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidSignature:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidTenantId:
+      value:
+        code: 400.25.004
+        message: Invalid tenant ID
+        datetime: "2020-01-03T16:05:56.517Z"
+    InternalServerError:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: "2020-01-03T16:05:56.517Z"
+    CustomerNotFound:
+      value:
+        code: 400.25.382
+        message: Customer not found
+        datetime: "2020-01-03T16:05:56.517Z"
+    ParameterFormatError:
+      value:
+        code: 400.25.081
+        message: Parameter format error
+        datetime: "2020-01-03T16:05:56.517Z"
+    OFACRecordFound:
+      value:
+        code: 400.25.108
+        message: OFAC record found
+        datetime: "2020-01-03T16:05:56.517Z"
+    CodeExpired:
+      value:
+        code: 400.25.392
+        message: Code expired, request a new code.
+        datetime: "2020-01-03T16:05:56.517Z"
+    NumberAttemptsExceeded:
+      value:
+        code: 400.25.389
+        message: You have exceeded number of attempts, please request a new code.
+        datetime: "2020-01-03T16:05:56.517Z"
+    WrongCode:
+      value:
+        code: 400.25.384
+        message: Wrong code, verify the data and try again.
+        datetime: "2020-01-03T16:05:56.517Z"
+    ProcessNotCompleted:
+      value:
+        code: 400.25.019
+        message: The process could not be completed.
+        datetime: "2020-01-03T16:05:56.517Z"
+    RegisteredUserWithThatEmail:
+      value:
+        code: 400.25.065
+        message: There is already a registered user with that email.
+        datetime: "2020-01-03T16:05:56.517Z"
+    NumberAttemptsExceededWait:
+      value:
+        code: 400.25.388
+        message: You have exceeded the number of attempts, wait 10 minutes and request a
+          new one.
+        datetime: "2020-01-03T16:05:56.517Z"
+    RequestAcknowledgeFailure:
+      value:
+        code: 400.02.023
+        message: It was not possible to acknowledge the request, please try again.
+        datetime: "2020-01-03T16:05:56.517Z"
+  parameters:
+    customerId:
+      name: customerId
+      in: path
+      description: Unique customer identifier.
+      required: true
+      schema:
+        type: string
+        example: 43DED66474E259FD
+        maxLength: 40
+    settingId:
+      name: settingId
+      in: path
+      description: Configuration identifier.
+      required: true
+      schema:
+        type: integer
+        example: 1
+  schemas:
+    RQCellPhoneOTPVerification:
+      type: object
+      required:
+        - number
+        - code
+        - phoneCodeId
+      properties:
+        number:
+          type: integer
+          description: Phone number.
+          example: 6460000000
+          maxLength: 30
+        code:
+          type: integer
+          description: Verification code.
+          example: 686589
+          maxLength: 6
+        phoneCodeId:
+          type: object
+          description: Country identifier.
+          required:
+            - id
+            - phoneCode
+          properties:
+            id:
+              type: integer
+              description: Country id corresponding to the cell phone number.
+              example: 233
+              maxLength: 38
+            phoneCode:
+              type: integer
+              description: Country telephone area code.
+              example: 1
+              maxLength: 38
+    RQCustomerConfigurationUpdate:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          description: Value to update.
+          example: true
+          maxLength: 50
+    RQCustomerDocumentUpload:
+      type: object
+      required:
+        - documentId
+        - documentUploadId
+        - fileInfo
+      properties:
+        documentId:
+          type: integer
+          description: Document identifier.
+          example: 1
+          maxLength: 38
+        documentUploadId:
+          type: integer
+          description: Document upload identifier.
+          example: 1755
+          maxLength: 38
+        fileInfo:
+          type: object
+          description: Object that contains the file information when it is uploaded.
+          required:
+            - fileName
+            - fileSize
+            - extensión
+            - bytes
+          properties:
+            fileName:
+              type: string
+              description: Uploaded file name.
+              example: proofofemploye.pdf
+              maxLength: 100
+            fileSize:
+              type: number
+              description: Uploaded File Size in kbs.
+              example: 37000
+              maxLength: 38
+            extensión:
+              type: string
+              description: File extension uploaded.
+              example: pdf
+              maxLength: 10
+            bytes:
+              type: string
+              description: Base64 of the file to upload.
+              example: JVBERi0xLjcNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFIvTGFuZyhlcy1DTykgL1N0cnVjdFRyZWVSb290IDEwIDAgUi9NYXJrSW5mbzw8L01hcmtlZCB0cnVlPj4vTWV0YWRhdGEgMjAgMCBSL1ZpZXdlclByZWZlcmVuY2VzIDIxIDAgUj4+DQplbmRvYmoNCjIgMCBvYmoNCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWyAzIDAgUl0gPj4NCmVuZG9iag0KMyAwIG9iag0KPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9SZXNvdXJjZXM8PC9Gb250PDwvRjEgNSAwIFI+Pi9FeHRHU3RhdGU8PC9HUzcgNyAwIFIvR1M4IDggMCBSPj4vUHJvY1NldFsvUERGL1RleHQvSW1hZ2VCL0ltYWdlQy9JbWFnZUldID4+L01lZGlhQm94WyAwIDAgNjEyIDc5Ml0gL0NvbnRlbnRzIDQgMCBSL0dyb3VwPDwvVHlwZS9Hcm91cC9TL1RyYW5zcGFyZW5jeS9DUy9EZXZpY2VSR0I+Pi9UYWJzL1MvU3RydWN0UGFyZW50cyAwPj4NCmVuZG9iag0KNCAwIG9iag0KPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAyMDA+Pg0Kc3RyZWFtDQp4nKWOOwvCQBCE+4P7D1PuCrncxpgYEAuTUxRjlEQsxMJCUxl8/H/wfDTWbrHs7Ay7H8L6euwwGoVlPi9gw+Wxa0GnR+BqHo8xKXLctLLGviqTCBaJ72kW4X7SatdDp9Wk0SqcCkSMjdGctRKfsxAMB0b8KhVrUu9cfG5Wp2gf/ibatxp+1UyrPRUcxFTlWxahkoM+uRXH1HBGFTiIyC0cS/Sx1pzQ8jVUfECz0Mp5jI1W//BKZk3/h/eN+aXD7yO4MscTHM0=
+    RQOTPEmailVerification:
+      type: object
+      required:
+        - email
+        - code
+      properties:
+        email:
+          type: string
+          description: Email to register by the customer.
+          example: johnDoe@gmail.com
+          maxLength: 100
+        code:
+          type: integer
+          description: Code to verify.
+          example: 695847
+          maxLength: 6
+    RQPasswordRecovery:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: Email of the account to which you want to recover the password.
+          example: johnDoe@example.com
+          maxLength: 100
+    RSCellPhoneOTPVerification200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCellPhoneOTPVerification400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerConfigurationUpdate200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerConfigurationUpdate400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerDocumentUpload200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSCustomerDocumentUpload400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSGetCustomerConfigurationParameters200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+        data:
+          type: object
+          required:
+            - settingCategories
+          properties:
+            settingCategories:
+              type: array
+              description: Contains the array of customer configurations.
+              required:
+                - categoryId
+                - categoryName
+                - settings
+              items:
+                type: object
+                properties:
+                  categoryId:
+                    type: string
+                    description: Configuration category.
+                    example: 1
+                    maxLength: 25
+                  categoryName:
+                    type: string
+                    description: Configuration category name.
+                    example: account
+                    maxLength: 25
+                  settings:
+                    type: array
+                    description: Array object containing the category configuration options.
+                    required:
+                      - settingId
+                      - name
+                      - value
+                      - defaultValue
+                      - createdDate
+                      - settingType
+                    items:
+                      type: object
+                      properties:
+                        settingId:
+                          type: integer
+                          description: Configuration identifier.
+                          example: 1
+                          maxLength: 38
+                        name:
+                          type: string
+                          description: Configuration name.
+                          example: receive monthly account statements
+                          maxLength: 50
+                        value:
+                          type: string
+                          description: User-assigned value for the configuration.
+                          example: false
+                          maxLength: 50
+                        defaultValue:
+                          type: string
+                          description: Default value assigned to configuration.
+                          example: true
+                          maxLength: 50
+                        createdDate:
+                          type: string
+                          description: Creation date of the configuration of the user.
+                          example: "2020-10-10"
+                        updatedDate:
+                          type: string
+                          description: User update date.
+                          example: "2021-01-01"
+                        settingType:
+                          type: object
+                          description: Configuration type object.
+                          required:
+                            - id
+                            - name
+                          properties:
+                            id:
+                              type: integer
+                              description: Configuration type identifier.
+                              example: 1
+                              maxLength: 10
+                            name:
+                              type: string
+                              description: Configuration type name.
+                              example: boolean
+                              maxLength: 20
+    RSGetCustomerConfigurationParameters400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSOTPEmailVerification200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSOTPEmailVerification400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSPasswordRecovery200:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RSPasswordRecovery400:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS401:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS500:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Timestamp
+          format: date-time
+  requestBodies:
+    RQCellPhoneOTPVerification:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCellPhoneOTPVerification"
+      required: true
+    RQCustomerConfigurationUpdate:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCustomerConfigurationUpdate"
+      required: true
+    RQCustomerDocumentUpload:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCustomerDocumentUpload"
+      required: true
+    RQOTPEmailVerification:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQOTPEmailVerification"
+      required: true
+    RQPasswordRecovery:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQPasswordRecovery"
+      required: true
+  responses:
+    RSCellPhoneOTPVerification200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCellPhoneOTPVerification200"
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSCellPhoneOTPVerification400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCellPhoneOTPVerification400"
+          examples:
+            Wrong Code:
+              $ref: "#/components/examples/WrongCode"
+            Code Expired:
+              $ref: "#/components/examples/CodeExpired"
+            Number Attempts Exceeded:
+              $ref: "#/components/examples/NumberAttemptsExceeded"
+            Number Attempts Exceeded Wait:
+              $ref: "#/components/examples/NumberAttemptsExceededWait"
+            Process Not Completed:
+              $ref: "#/components/examples/ProcessNotCompleted"
+            Registered User With That Email:
+              $ref: "#/components/examples/RegisteredUserWithThatEmail"
+    RSCustomerConfigurationUpdate200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerConfigurationUpdate200"
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSCustomerConfigurationUpdate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerConfigurationUpdate400"
+          examples:
+            Process Not Completed:
+              $ref: "#/components/examples/ProcessNotCompleted"
+    RSCustomerDocumentUpload200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerDocumentUpload200"
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSCustomerDocumentUpload400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCustomerDocumentUpload400"
+          examples:
+            Request Acknowledge Failure:
+              $ref: "#/components/examples/RequestAcknowledgeFailure"
+    RSGetCustomerConfigurationParameters200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetCustomerConfigurationParameters200"
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  settingCategories:
+                    - categoryId: 1
+                      categoryName: account
+                      settings:
+                        - settingId: 1
+                          name: receive monthly account statements
+                          value: false
+                          defaultValue: true
+                          createdDate: "2020-10-10"
+                          updatedDate: "2021-01-01"
+                          settingType:
+                            id: 1
+                            name: boolean
+    RSGetCustomerConfigurationParameters400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGetCustomerConfigurationParameters400"
+          examples:
+            Customer Not Found:
+              $ref: "#/components/examples/CustomerNotFound"
+    RSOTPEmailVerification200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSOTPEmailVerification200"
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSOTPEmailVerification400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSOTPEmailVerification400"
+          examples:
+            Wrong Code:
+              $ref: "#/components/examples/WrongCode"
+            Code Expired:
+              $ref: "#/components/examples/CodeExpired"
+            Number Attempts Exceeded:
+              $ref: "#/components/examples/NumberAttemptsExceeded"
+            Number Attempts Exceeded Wait:
+              $ref: "#/components/examples/NumberAttemptsExceededWait"
+            Process Not Completed:
+              $ref: "#/components/examples/ProcessNotCompleted"
+            Registered User With That Email:
+              $ref: "#/components/examples/RegisteredUserWithThatEmail"
+    RSPasswordRecovery200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSPasswordRecovery200"
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: "2020-01-03T16:05:56.517Z"
+    RSPasswordRecovery400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSPasswordRecovery400"
+          examples:
+            Request Acknowledge Failure:
+              $ref: "#/components/examples/RequestAcknowledgeFailure"
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"

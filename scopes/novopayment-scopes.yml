@@ -1,0 +1,92 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/novopayment-accounts-openapi.yml, openapi/novopayment-alias-directory-openapi.yml, openapi/novopayment-cards-openapi.yml,
+  openapi/novopayment-compliance-openapi.yml, openapi/novopayment-customers-openapi.yml, openapi/novopayment-mastercard-issuer-tokenization-openapi.yml,
+  openapi/novopayment-merchant-presented-qr-openapi.yml, openapi/novopayment-onboarding-openapi.yml, openapi/novopayment-operations-openapi.yml,
+  openapi/novopayment-profile-openapi.yml, openapi/novopayment-push-provisioning-openapi.yml, openapi/novopayment-real-time-payments-openapi.yml
+schemes:
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-accounts-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-alias-directory-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-cards-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-compliance-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-customers-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-mastercard-issuer-tokenization-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-merchant-presented-qr-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-onboarding-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-operations-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-profile-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-push-provisioning-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+- name: oAuth2ClientCredentials
+  source: openapi/novopayment-real-time-payments-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+  description: See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+scopes: []
+docs: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+scope_count: 0
+note: NovoPayment declares an OAuth2 clientCredentials flow with an EMPTY scopes map in all 12 specs that carry
+  it, and publishes no scope or permission reference page. Access is partitioned by which APIs a project selects
+  in the developer hub dashboard, not by scope on the token — so a token cannot be least-privileged within a project.
+searched:
+- url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  status: 200
+  result: token issuance documented; no scopes
+- url: https://developer.novopayment.com/guides/how-it-works/get-access-token
+  status: 200
+  result: no scope or permission reference

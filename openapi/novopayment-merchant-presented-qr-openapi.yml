@@ -1,0 +1,2127 @@
+---
+openapi: 3.0.0
+info:
+  description: >
+    Merchant Presented QR is a Service that includes payment or
+    transactions process with tokens.
+
+
+    A Registered Merchant on the service can expose a QR in the store, and the
+    users of an Issuer´s Tokenized Wallet can read the QR Code and introduce the
+    payment information. This system includes the process of generating the QR
+    Token for merchants, Reading that QR and making payment with token.
+
+
+    **Interactions**
+
+
+    - Issuer’s Wallet
+
+      Interactions from Issuer’s Wallet is going to be with our SDK.
+
+      Please refer to SDK Documentation for details.
+
+
+    - Acquirer Platform
+
+
+    Interactions with Acquirer are along with APIs and include other mechanisms
+    to interact with ISO transactions.
+
+
+    **Benefits for Acquirers and Merchants**
+
+
+    NovoPayment MPQR manages the interaction with the card schemes for you and
+    allows you to focus on the core of your business, freeing you from the
+    effort of interconnection with each merchant and wallet and allowing your
+    customers to quickly access the benefits of using a QR how method to
+    initiate a payment transaction.
+  version: v1
+  title: Merchant Presented QR
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/api/v1/mpqr
+paths:
+  /onboarding:
+    post:
+      summary: Create Merchant
+      description: Acquirers use this endpoint to register a Merchant in the MPQR ecosystem
+      operationId: CreateMerchant
+      requestBody:
+        $ref: "#/components/requestBodies/RQCreateMerchant"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSCreateMerchant"
+        "400":
+          $ref: "#/components/responses/RSCreateMerchant400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+  /generateqr:
+    post:
+      summary: Generate QR Code
+      description: Acquirers use this endpoint to register a Merchant in the MPQR ecosystem
+      operationId: GenerateQRCode
+      parameters:
+        - $ref: "#/components/parameters/XRequestId"
+        - $ref: "#/components/parameters/XPayToken"
+        - $ref: "#/components/parameters/XTenantId"
+        - $ref: "#/components/parameters/Accept"
+        - $ref: "#/components/parameters/apikey"
+        - $ref: "#/components/parameters/createApiKey"
+      requestBody:
+        $ref: "#/components/requestBodies/RQGenerateQrCode"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSGenerateQrCode"
+        "400":
+          $ref: "#/components/responses/RSGenerateQrCode400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+  /decoderqr:
+    post:
+      summary: Decoder QR code
+      operationId: DecoderQRCode
+      parameters:
+        - $ref: "#/components/parameters/XRequestId"
+        - $ref: "#/components/parameters/XPayToken"
+        - $ref: "#/components/parameters/XTenantId"
+        - $ref: "#/components/parameters/Accept"
+        - $ref: "#/components/parameters/apikey"
+        - $ref: "#/components/parameters/createApiKey"
+      requestBody:
+        $ref: "#/components/requestBodies/RQDecoderQrCode"
+      responses:
+        "201":
+          $ref: "#/components/responses/RSDecoderQR"
+        "400":
+          $ref: "#/components/responses/RSGenerateQrCode400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+  /sendpayment:
+    post:
+      summary: Send data of payment.
+      operationId: sendPayment
+      parameters:
+        - $ref: "#/components/parameters/XRequestId"
+        - $ref: "#/components/parameters/XPayToken"
+        - $ref: "#/components/parameters/XTenantId"
+        - $ref: "#/components/parameters/Accept"
+        - $ref: "#/components/parameters/apikey"
+        - $ref: "#/components/parameters/createApiKey"
+      requestBody:
+        $ref: "#/components/requestBodies/RQSendPayment"
+      responses:
+        "201":
+          $ref: "#/components/responses/RSSendPayment"
+        "400":
+          $ref: "#/components/responses/RSGenerateQrCode400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+  /transaction/makepayment:
+    post:
+      summary: Make a payment.
+      operationId: makePayment
+      parameters:
+        - $ref: "#/components/parameters/XRequestId"
+        - $ref: "#/components/parameters/XPayToken"
+        - $ref: "#/components/parameters/XTenantId"
+        - $ref: "#/components/parameters/Accept"
+        - $ref: "#/components/parameters/apikey"
+        - $ref: "#/components/parameters/createApiKey"
+      requestBody:
+        $ref: "#/components/requestBodies/RQMakePayment"
+      responses:
+        "201":
+          $ref: "#/components/responses/RSMakePayment"
+        "400":
+          $ref: "#/components/responses/RSGenerateQrCode400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+
+  /notifications/payment:
+    post:
+      summary: Notify status for a payment.
+      operationId: notificationsPayment
+      parameters:
+        - $ref: "#/components/parameters/XRequestId"
+        - $ref: "#/components/parameters/XPayToken"
+        - $ref: "#/components/parameters/XTenantId"
+        - $ref: "#/components/parameters/Accept"
+        - $ref: "#/components/parameters/apikey"
+        - $ref: "#/components/parameters/createApiKey"
+      requestBody:
+        $ref: "#/components/requestBodies/RQNotificationPayment"
+      responses:
+        "201":
+          $ref: "#/components/responses/RSNotificationPayment"
+        "400":
+          $ref: "#/components/responses/RSGenerateQrCode400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+
+  parameters:
+    transactionId:
+      name: transactionId
+      in: path
+      description: Unique transaction ID
+      required: true
+      schema:
+        type: string
+        maxLength: 38
+    transferId:
+      name: transferId
+      in: path
+      description: Unique transfer Identifier
+      required: true
+      schema:
+        type: string
+        maxLength: 38
+    apikey:
+      name: apikey
+      in: query
+      description: Public API key, which is different from the shared secret.
+      required: true
+      schema:
+        type: string
+        maxLength: 49
+    createApiKey:
+      name: createApiKey
+      in: query
+      description: |
+        Whether to create a new API key for the client.
+
+        Note: do not set to true.
+      required: true
+      schema:
+        type: string
+        enum:
+          - false
+          - true
+    XRequestId:
+      name: x-request-id
+      in: header
+      description: |
+        Unique ID for the API request.
+
+        Format: Alphabetic, numeric, and hyphens ( - ), e.g. spaces are not allowed.
+      required: true
+      schema:
+        type: string
+        maxLength: 36
+    XPayToken:
+      name: x-pay-token
+      in: header
+      description: |
+        A token identifying the transaction and its contents.
+
+        The token expires in 480 seconds (8 minutes) for all clients.
+      required: true
+      schema:
+        type: string
+    Accept:
+      name: Accept
+      in: header
+      description: |
+        Acceptable response format.
+
+        Format: Must include application/json
+      required: true
+      schema:
+        type: string
+    XTenantId:
+      name: X-tenant-id
+      in: header
+      description: |
+        It is necessary send all petitions for identified the client.
+      required: true
+      schema:
+        type: string
+
+
+  examples:
+    NoResultsFound:
+      value:
+        code: 200.22.364
+        message: No results found
+        datetime: "2020-01-03T16:05:56.517Z"
+        data:
+          status: 401
+          code: 9159
+          severity: ERROR
+          message: TokenValidationFailed
+          info: ""
+    CreateMerchantOk:
+      value:
+        code: 200.22.000
+        message: Process Ok
+        datetime: "2020-01-03T16:05:56.517Z"
+        data:
+          id: 8e9ed12e-e4ba-4ad2-ac9d-2bcb1c8fc18a          
+          acquirerIdentifiers:
+            acquirerId: 66978068
+            acquirerMerchantId: 9655936598
+          tokenizationConfiguration:
+            channelSecurityContext: SHARED_SECRET
+            tokenizationProfiles:
+              profileName: Test1
+              applicationId: Test1
+            tokenRequestorId: 40000000057
+          qrData: iVB...YII=
+    ParamsRequired:
+      value:
+        code: 400.22.003
+        message: Params required
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidTenantId:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: "2020-01-03T16:05:56.517Z"
+    ErrorGeneralServices:
+      value:
+        code: 400.22.350
+        message: Error General Services
+        datetime: "2020-01-03T16:05:56.517Z"
+    InternalServerError:
+      value:
+        code: 500.22.999
+        message: Internal Server Error
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: "2020-01-03T16:05:56.517Z"
+  schemas:
+    RQCreateMerchant:
+      type: object
+      required:
+        - companyPrimaryLegalName
+        - primaryWebsiteURL
+        - companyCity
+        - companyCountryCode
+        - primaryContactEmail
+        - acquirerIdentifiers
+      properties:
+        serviceContext:
+          type: string
+          description: Service context
+          example: TOKENIZATION
+          maxLength: 13
+          enum:
+            - TOKENIZATION
+        dunsNumber:
+          type: number
+          description: A D&B DUNS number is a nine-digit number that is recognized as the
+            universal standard to track businesses worldwide. It is designed to
+            enhance the credibility of your business and enable potential
+            customers, lenders, and suppliers to learn about your company.
+          example: 75102765
+          maxLength: 9
+        companyPrimaryTradeName:
+          type: string
+          description: Trade name of token requestor, such as a doing-business-as(DBA)
+            name. If not specified, the legal name(companyPrimaryLegalName) is
+            used by default.<br><br>**Allowed characters**:<br>Alphanumeric,
+            excepting semi-colon, percent sign, and parentheses.
+          maxLength: 75
+        companyPrimaryLegalName:
+          type: string
+          description: Legal name of token requestor. Some processors may not support a
+            75-character legal name. You cannot exceed the limit imposed by your
+            processor.<br><br>**Allowed characters**:<br>Alphanumeric, excepting
+            semi-colon, percent sign, and parentheses
+          example: Pepito Pizza
+          maxLength: 75
+        status:
+          type: string
+        primaryWebsiteURL:
+          type: string
+          description: The URL for your token requestor’s site for handling VTS
+            transactions.<br><br>**Allowed characters**:<br>Alphanumeric, valid
+            URL
+          example: www.pepitospizza.com
+          maxLength: 100
+        companyAddress1:
+          type: string
+          description: >
+            First line of the token Requestor’s primary
+            address.<br><br>**Allowed characters**:<br>Alphabetic, numeric, or
+            the following characters: spaces, ‘ (single quote), # (pound-sign or
+            hash), , (comma), _ (underscore), :(colon), / (forward slash), and –
+            (hyphen)
+          maxLength: 140
+        companyAddress2:
+          type: string
+          description: >
+            First line of the token requestor’s primary
+            address.<br><br>**Allowed characters**: Alphabetic, numeric, or the
+            following characters: spaces, ‘ (single quote), # (pound-sign or
+            hash), , (comma), _ (underscore), :(colon), / (forward slash), and –
+            (hyphen)
+          maxLength: 140
+        companyCity:
+          type: string
+          description: >
+            City in the token requestor’s primary address.<br><br>**Allowed
+            characters**:<br>Alphabetic, numeric, or the following characters:
+            spaces, ‘ (single quote), . (period), and – (hyphen)
+          example: Mexico City
+          maxLength: 100
+        companyStateProvinceCode:
+          type: string
+          description: State or province code associated with the physical address in the
+            specified country. The companyStateProvinceCode for US must be a
+            standard 2-characters code.
+          maxLength: 2
+        companyPostalCode:
+          type: string
+          description: Postal code associated with the primary address of token requestor,
+            such as a ZIP code.
+          maxLength: 7
+        companyCountryCode:
+          type: string
+          description: ISO-3166-1 alpha-2 standard country associated with the token
+            requestor’s primary address.
+          example: MX
+          maxLength: 2
+        companyPhone:
+          type: string
+          description: Token requestor’s primary phone number.
+          maxLength: 16
+        primaryContactFirstName:
+          type: string
+          description: First name of token requestor’s primary contact person.
+          maxLength: 256
+        primaryContactLastName:
+          type: string
+          description: >
+            Surname of token requestor’s primary contact
+            person.<br><br>**Allowed characters**:<br>Alphabetic or the
+            following characters: spaces, ‘ (single quote), ` (back tick), ~
+            (tilde), “ (double quote), . (period), and – (hyphen)
+          maxLength: 256
+        primaryContactEmail:
+          type: string
+          description: Email address of token requestor’s primary contact.
+          example: ventas@pepitospizza.com
+          maxLength: 256
+        relationships:
+          type: object
+          description: >
+            Relationship to the token requestor being onboarded, which is by
+            externalClientId. If not specified, Visa creates the
+            externalClientId for you, which is available in the
+            response.<br><br>**Allowed characters**:<br>An array of
+            Relationships structures.
+          properties:
+            externalClientId:
+              type: string
+              description: >
+                The relationship ID for the entity being onboarded. This is the
+                relationship ID to use when calling TSP APIs.
+              maxLength: 100
+        acquirerIdentifiers:
+          type: object
+          description: Acquirer and merchant identifiers
+          required:
+            - acquirerId
+            - acquirerMerchantId
+          properties:
+            acquirerId:
+              type: string
+              description: >
+                Acquirer Id
+              example: 66978068
+              maxLength: 15
+            acquirerMerchantId:
+              type: string
+              description: >
+                Unique identifier relation Acquirer and Merchant Id.<br><br>This
+                value is mandatory in future request.
+              example: 9655936598
+              maxLength: 25
+        tokenizationConfiguration:
+              type: object
+              required:
+                - tokenizationProfiles
+                - tokenRequestorId
+              properties:
+                channelSecurityContext:
+                  type: string
+                  description: >
+                    Channel security context; default is shared secret.
+                  maxLength: 100
+                tokenizationProfiles:
+                  type: object
+                  description: >
+                    List of profiles
+                  required:
+                    - profileName
+                    - applicationId
+                  properties:
+                    profileName:
+                      type: string
+                      description: >
+                        Profile name in tokenization services
+                      maxLength: 50
+                    applicationId:
+                      type: string
+                      description: >
+                        Unique Identifier same as the wallet provider
+                      maxLength: 36
+                tokenRequestorId:
+                  type: string
+                  description: >
+                    Identification to use for payments
+                  maxLength: 20
+    RSCreateMerchant:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: >
+                VISA's identification response Id
+            acquirerIdentifiers:
+              type: object
+              required:
+                - acquirerId
+                - acquirerMerchantId
+              properties:
+                acquirerId:
+                  type: string
+                  description: >
+                    Acquirer ID
+                acquirerMerchantId:
+                  type: string
+                  description: >
+                    Unique identifier relation Acquirer and Merchant Id
+            tokenizationConfiguration:
+              type: object
+              required:
+                - tokenizationProfiles
+                - tokenRequestorId
+              properties:
+                channelSecurityContext:
+                  type: string
+                  description: >
+                    Channel security context; default is shared secret.
+                  maxLength: 100
+                tokenizationProfiles:
+                  type: object
+                  description: >
+                    List of profiles
+                  required:
+                    - profileName
+                    - applicationId
+                  properties:
+                    profileName:
+                      type: string
+                      description: >
+                        Profile name in tokenization services
+                      maxLength: 50
+                    applicationId:
+                      type: string
+                      description: >
+                        Unique Identifier same as the wallet provider
+                      maxLength: 36
+                tokenRequestorId:
+                  type: string
+                  description: >
+                    Identification to use for payments
+                  maxLength: 20
+            qrData:
+              type: string
+              description: >
+                Raw entire QR code data, from scanning QR. Base64 encoded
+    RSCreateMerchant400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RQGenerateQrCode:
+      type: object
+      required:
+        - merchantId
+        - acquirerId
+        - pointOfInitiationMethod
+        - merchantCategoryCode
+        - transactionCurrency
+        - transactionAmount
+        - tipOrConvenienceIndicator
+        - countryCode
+        - merchantName
+        - merchantCity
+      properties:
+        merchantId:
+          type: string
+          description: Identification of the merchant in Novo's system
+          example: 75102765
+          maxLength: 25
+        acquirerId:
+          type: string
+          description: Identification of the acquirer registered in Novo's system
+          maxLength: 15
+        merchantAccountInformation:
+          type: string
+          description: Account Information of Merchant
+          example: "4156821587554841"
+        payloadFormatIndicator:
+          type: string
+        pointOfInitiationMethod:
+          type: string
+          description: Identifies the communication technology (here QR Code) and whether
+            the data is static or dynamic
+          example: 12
+          maxLength: 2
+        merchantCategoryCode:
+          type: string
+          description: As defined by [ISO 18245] and assigned by the Acquirer
+          example: 4111
+          maxLength: 100
+        transactionCurrency:
+          type: string
+          description: Indicates the currency code of the transaction. A 3-digit numeric
+            value, as defined by [ISO 4217]. This value will be used by the
+            mobile application to display a recognizable currency to the
+            consumer whenever an amount is being displayed or whenever the
+            consumer is prompted to enter an amount.
+          example: 156
+          maxLength: 3
+        transactionAmount:
+          type: string
+          description: The transaction amount (excluding tips and convenience fees), if
+            known. For instance, "99.34". If present, this value is displayed to
+            the consumer by the mobile application when processing the
+            transaction. If this data object is not present, the consumer is
+            prompted to input the transaction amount to be paid to the merchant.
+          example: 237200
+          maxLength: 50
+        tipOrConvenienceIndicator:
+          type: string
+          description: Indicates whether the consumer will be prompted to enter a tip or
+            whether the merchant has determined that a flat, or percentage
+            convenience fee is charged.
+          example: 1
+          maxLength: 100
+        countryCode:
+          type: string
+          description: Indicates the country of the merchant acceptance device. A
+            2-character alpha value, as defined by [ISO 3166-1 alpha 2] and
+            assigned by the Acquirer. The country may be displayed to the
+            consumer by the mobile application when processing the transaction.
+          example: CO
+          maxLength: 10
+        merchantName:
+          type: string
+          description: The "doing business as" name for the merchant, recognizable to the
+            consumer. This name may be displayed to the consumer by the mobile
+            application when processing the transaction.
+          example: Pizzería Pepito
+          maxLength: 100
+        merchantCity:
+          type: string
+          description: City of operations for the merchant. This name may be displayed to
+            the consumer by the mobile application when processing the
+            transaction.
+          example: MANIZALES
+          maxLength: 100
+        additionalDataField:
+          type: object
+          description: Additional Information
+          properties:
+            billNumber:
+              type: string
+              description: >
+                The invoice number or bill number. This number can be provided by
+                the merchant or can be an indicator for the mobile application
+                to prompt the consumer to input a Bill Number. For example, the
+                Bill Number may be present when the QR Code is used for bill
+                payment.
+            mobileNumber:
+              type: string
+              description: >
+                The mobile number can be provided by the merchant or can be an
+                indicator for the mobile application to prompt the consumer to
+                input a Mobile Number. For example, the Mobile Number to be used
+                for multiple use cases, such as mobile top-up and bill payment.
+            storeLabel:
+              type: string
+              description: >
+                A distinctive value associated to a store. This value can be
+                provided by the merchant or can be an indication for the mobile
+                application to prompt the consumer to input a Store Label.
+              example: 1234
+            loyaltyNumber:
+              type: string
+              description: >
+                Typically, a loyalty card number. This number can be provided by
+                the merchant, if known, or can be an indication for the mobile
+                application to prompt the consumer to input their Loyalty
+                Number.
+            referenceLabel:
+              type: string
+              description: >
+                Any value as defined by the merchant or acquirer in order to
+                identify the transaction. This value can be provided by the
+                merchant or can be an indication for the mobile app to prompt
+                the consumer to input a transaction Reference Label. For
+                example, the Reference Label may be used by the consumer mobile
+                application for transaction logging or receipt display.
+            customerLabel:
+              type: string
+              description: >
+                Any value identifying a specific consumer. This value can be
+                provided by the merchant (if known), or can be an indication for
+                the mobile application to prompt the consumer to input their
+                Customer Label. For example, the Customer Label may be a
+                subscriber ID for subscription services, a student enrolment
+                number, etc.
+              example: "***"
+            terminalLabel:
+              type: string
+              description: >
+                A distinctive value associated to a terminal in the store. This
+                value can be provided by the merchant or can be an indication
+                for the mobile application to prompt the consumer to input a
+                Terminal Label. For example, the Terminal Label may be displayed
+                to the consumer on the mobile application identifying a specific
+                terminal.
+              example: A6008667
+            purposeTransaction:
+              type: string
+              description: >
+                Any value defining the purpose of the transaction. This value can
+                be provided by the merchant or can be an indication for the
+                mobile application to prompt the consumer to input a value
+                describing the purpose of the transaction. For example, the
+                Purpose of Transaction may have the value "International Data
+                Package" for display on the mobile application.
+            additionalConsumerDataRequest:
+              type: string
+              description: >
+                Contains indications that the mobile application is to provide the
+                requested information in order to complete the transaction. The
+                information requested should be provided by the mobile
+                application in the authorization without unnecessarily prompting
+                the consumer. For example, the Additional Consumer Data Request
+                may indicate that the consumer mobile number is required to
+                complete the transaction, in which case the mobile application
+                should be able to provide this number (that the mobile
+                application has previously stored) without unnecessarily
+                prompting the consumer.
+              example: ME
+        sizeQR:
+          type: string
+          description: |
+            Size in pixels for the QR Code Generate.
+
+            **Available Values:**
+            A – 200 x 200
+            B – 400 x 400
+            C – 600 x 600
+
+            **Default values is B**
+          maxLength: 1
+          enum:
+            - A
+            - B
+            - C
+
+    RQDecoderQrCode:
+      type: object
+      required:
+        - qrEncodeData
+      properties:
+        qrEncodeData:
+          type: string
+          description: QR code in string format.
+          example: 00020101021203114000000005752044111530315654062372005502015802CO5915Compania NOVO 36006BOGOTA62630102''0202''030412340402''0502''0603***0708A60086670802''0902ME6304EAAC
+
+    RQSendPayment:
+      type: object
+      required:
+        - srciTransactionId
+        - srcClientId
+        - serviceId
+      properties:
+        srcCorrelationId:
+          type: string
+          description: The unique identifier generated by Visa to track and link API
+            messages. This is used as a transaction identifier assigned by Visa
+            for this particular transaction. Universally Unique Identifier (UUID).
+          example: 5821c929-deee-49b7-a6ce-ba88dadbb734
+        srciTransactionId:
+          type: string
+          description: Transaction ID.
+          example: 2f679779-3f42-4b8e-5e81-1d259e56ber1
+        srcDigitalCardId:
+          type: string
+          description: Digital Card ID.
+          example: ffdbfe5575be88bc64ee175a907c3e02
+        serviceId:
+          type: string
+          description: Form of payment service. In case of Visa QR, value is SELLER_PRESENTED.
+          example: SELLER_PRESENTED
+          enum:
+            - SELLER_PRESENTED
+        srcDpaId:
+          type: string
+          description: DPA ID.
+          example: NA
+        srcClientId:
+          type: string
+          description: Identifies the connecting client, e.g. Mobile
+            Application Provider, Payment Enabler, etc.
+            This field should contain the API Key of the Wallet Provider.
+          example: "XGIS3U97PK6ZLPNEOTIX212erG6IZbDUcd2OfQIKK1-YPbbRM"
+        dpaData:
+          type: object
+          $ref: "#/components/schemas/ObjDpaData"
+        dpaTransactionOptions:
+          type: object
+          $ref: "#/components/schemas/ObjDpaTransactionOptions"
+        srcInitiatorId:
+          type: string
+          description: Client ID of the Token Requestor. Format UUID.
+          example: fa3cf6c8-2c4a-991f-03ef-193e03800601
+        clientAppID:
+          type: string
+          description: Client APP ID of the TR (wallet) profile. This is the information that TR-TSP submitted for the TR (wallet) 
+            during onboarding. Required in case of TR-TSP calling checkout on behalf of the TR (wallet).
+    
+    ObjAssuranceData:
+      type: object
+      properties:
+        cardVerificationEntity:
+          type: string
+        cardVerificationMethod:
+          type: string
+        cardVerificationResults:
+          type: string
+        cardVerificationTimestamp:
+          type: string
+        cardAssuranceData:
+          type: string
+        cardholderAuthenticationEntity:
+          type: string
+        cardholderAuthenticationMethod:
+          type: string
+        cardholderAuthenticationResults:
+          type: string
+        cardholderAuthenticationTimestamp:
+          type: string
+        cardholderAssuranceData:
+          type: string
+        consumerVerificationEntity:
+          type: string
+        consumerVerificationMethod:
+          type: string
+        consumerVerificationResults:
+          type: string
+        consumerVerificationTimestamp:
+          type: string
+        consumerAssuranceData:
+          type: string
+        deviceVerificationEntity:
+          type: string
+        deviceVerificationMethod:
+          type: string
+        deviceVerificationResults:
+          type: string
+        deviceVerificationTimestamp:
+          type: string
+        deviceAssuranceData:
+          type: string
+        relationshipVerificationEntity:
+          type: string
+        relationshipVerificationMethod:
+          type: string
+        relationshipVerificationResults:
+          type: string
+        relationshipVerificationTimestamp:
+          type: string
+        relationshipAssuranceData:
+          type: string
+          
+    ObjtransactionAmount:
+      type: object
+      required:
+         - transactionAmount
+         - transactionCurrencyCode
+      properties:
+        transactionAmount:
+          type: string
+          description: Amount associated with transaction. Amount as populated in ISO or API is cumulative of tip or convenience fee as 
+            encoded in the QR code or tip as entered by the consumer on the mobile app.
+          example: "99.34"
+          maxLength: 18
+        transactionCurrencyCode:
+          type: string
+          description:  Currency code used for the transaction amount. ISO 4217 three-digit currency code.
+          example: "USD"
+          maxLength: 3
+        additionalAmounts:
+          type: array
+          description: |
+            A list of additional amounts related to the transaction Each additional amount is a two-item key-value pair, where the key 
+            for the first item is “additionalAmountType” and the key for the second item is “additionalAmountValue.” AdditionalAmountType 
+            is one of following enums:
+              - TIP
+              - CONVENIENCE_FEE
+              - CONVENIENCE_FEE_PERCENTAGE
+              - SUB_TOTAL
+          example:
+                [ { “additionalAmountType”: “TIP”, “additionalAmountValue”: “3” } ]
+    
+    ObjDpaData:
+      type: object
+      properties:
+        dpaPresentationName:
+          type: string
+          description: DPA presentation Name.
+          example: DPA presentation
+        dpaAddress:
+          type: object
+          $ref: "#/components/schemas/ObjDpaAddress"
+        dpaName:
+          type: string
+          description: DPA Name.
+          example: DPA name
+        dpaEmailAddress:
+          type: string
+          description: DPA email.
+          example: email@dpa.com
+        dpaPhoneNumber:
+          type: object
+          $ref: "#/components/schemas/ObjDpaPhoneNumber"
+        dpaLogoUri:
+          type: string
+          description: DPA logo URI.
+          example: www.logos.com
+        dpaSupportEmailAddress:
+          type: string
+          description: DPA suppot Email.
+          example: logos@logos.com
+        dpaSupportPhoneNumber:
+          type: object
+          $ref: "#/components/schemas/ObjDpaPhoneNumber"
+        dpaSupportUri:
+          type: string
+          description: DPA support URL.
+          example: www.uri.com
+        dpaUri:
+          type: string
+          description: DPA  URI.
+          example: www.uri.com
+        applicationType:
+          type: string
+          description: Application type
+          example: application/json
+        terminalData:
+          type: object
+          $ref: "#/components/schemas/ObjTerminalData"
+        merchantAccountInformation:
+          type: string
+          description: Merchant Account Information
+          example: 400258936325
+    ObjDpaAddress:
+      type: object
+      properties:
+        addressId:
+          type: string
+          description: Address ID.
+          example: 2f679779-3f42-4b8e-5e81-1d259e56ber1
+        name:
+          type: string
+          description: Name
+          example: something
+        line1:
+          type: string
+          description: Line 1.
+          example: NA
+        line2:
+          type: string
+          description: Line 2.
+          example: NA
+        line3:
+          type: string
+          description: Line 3.
+          example: NA
+        city:
+          type: string
+          description: City.
+          example: Coral Gables
+        state:
+          type: string
+          description: State
+          example: FL
+        countryCode:
+          type: string
+          description: Country code
+          example: US
+        zip:
+          type: string
+          description: Zip
+          example: 33146
+        createTime:
+          type: string
+          description: create time
+          example: 12-12-2025
+        lastTimeUsed:
+          type: string
+          description: Last time used
+          example: 21-12-2022
+    ObjDpaPhoneNumber:
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: Country code.
+          example: 1
+        phoneNumber:
+          type: string
+          description: Phone number
+          example: 3025874589
+    ObjTerminalData:
+      type: object
+      properties:
+        initiationMethod:
+          type: string
+          description: Method of iniciation on terminal.
+          example: method1
+        posEntryMode:
+          type: string
+          description: Mode of entry on POS.
+          example: mode1
+    ObjDpaTransactionOptions:
+      type: object
+      required:
+        - dpaName
+        - merchantChannel
+        - transactionAmount
+      properties:
+        dpaName:
+          type: string
+          description: Name of the Mobile Application Provider
+          example: "dpa name"
+          maxLength: 60
+        dpaLocale:
+          type: string
+          description: Mobile Application Provider’s preferred locale. Based on ISO format for language (ISO 639-1) 
+            and alpha-2 country code (ISO 3166-1 alpha-2). The language and country should be separated using 
+            an underscore (_).
+          example: en_US
+        dpaAcceptedBillingCountries:
+          type: array
+          description:  Billing countries. Payments from the listed billing countries are accepted. 
+            If this list is empty, all countries are accepted Array of country codes in ISO 3166-1 alpha-2 forma
+          example: 
+            - "US"
+            - “CA”
+            - “AU”
+        dpaAcceptedShippingCountries:
+          type: array
+          description: Shipping countries; shipping region country codes that limit the selection of eligible 
+            shipping addresses. If this list is empty, all countries are accepted. 
+            Array of country codes in ISO 3166-1 alpha-2 format.
+          example:
+            - "us"
+            - "br"
+        transactionType:
+          type: string
+          description: This field is informational only. It is not used in the SRC platform 
+            for QR transaction processing. To differentiate CNP transaction
+            from a CP transaction, the merchant channel value in 
+            dpaTransactionOptions.merchantChannel should correctly 
+            indicate the nature of the transaction.
+          example: PURCHASE
+          enum:
+            - PURCHASE (default)
+            - BILL_PAYMENT
+            - MONEY_TRANSFER
+        orderType:
+          type: string
+          description: Type of orders.
+          example: REAUTHORIZATION
+          enum: 
+            - REAUTHORIZATION
+            - RECURRING
+            - INSTALLMENT
+        transactionAmount:
+          type: object
+          $ref: "#/components/schemas/ObjtransactionAmount"
+        merchantOrderId:
+          type: string
+          description:  The order identifier generated by the Mobile Application Provider. Typically used for reconciliation process.
+          example: "Order1"
+        merchantCategoryCode:
+          type: string
+          description: Code associated with Merchant Category.
+          example: "5251"
+        merchantCountryCode:
+          type: string
+          description: The country code associated with the merchant's billing or shipping address.
+            ISO-3166 - 1 alpha-2 standard code.
+          example: US - United States
+        merchantChannel:
+          type: string
+          description: | 
+            Merchant channel establishes the environment in which a QR Code is presented to the consumer. Covering use cases such 
+            as retail outlet, Ecommerce, bill payment with the purpose of improving transaction reporting. Refer to tables below 
+            for details on populating.
+
+              First Character - Media:
+              - 0: Print - Merchant Sticker
+              - 1: Print - Bill / Invoice
+              - 2: Print - Magazine / Poster
+              - 3: Print - Other
+              - 4: Screen / Electronic - Merchant POS / POI 
+              - 5: Screen / Electronic - Website 
+              - 6: Screen / Electronic - App 
+              - 7: Screen / Electronic - Other 
+
+              Second Character - Transaction Location:
+              - 0: At Merchant premises / registered address
+              - 1: Not at Merchant premises / registered address
+              - 2: Remote Commerce
+              - 3: Other
+
+              Third Character - Merchant Presence:
+              - 0: Attended POI
+              - 1: Unattended
+              - 2: Semi-attended (self-checkout)
+              - 3: Other  
+          example: "600"
+        acquirerId: 
+          type: string
+          description: Merchant's Acquirer ID. Not currently used in Visa Pull QR payments.
+          example: "498909"
+        acquirerMid: 
+          type: string
+          description: Acquirer's Merchant ID. Required in case of Visa QR, utilize Merchant ID provided from QR code.
+          example: "00000079"
+        sellerPresentedData:
+          type: object
+          required:
+            - qrData
+          properties:
+            customInputData:
+              type: array
+              description: Data from the Merchant Presented QR code.List of key and value pair.
+              example:
+                [{key: “id_55”, value: "02"},{key: “id_56”, value: "10"},{key: “id_58”,value: "MX"}]
+            qrData: 
+              type: string
+              description: Raw entire QR code data, from scanning QR. Base64 encoded.
+              example: Zmdk...GdkZg==
+        additionalSellerData:
+          type: object
+          properties:
+            customInputData:
+              type: array
+              description: Custom input data, as presented by seller; all additional custom data required for processing.
+                List of key and value pair.
+              example: 
+                [ { "key": "Sample Key1", "value": "204" }, { "key": "Sample Key2","value": "abc" } ]
+        consumerInputData:
+          type: object
+          properties:
+            billNumber:
+              type: string
+              description: The invoice number or bill number. This number could be provided by the merchant or could be an indication 
+                for the mobile application to prompt the consumer to input a Bill Number. For example, the Bill Number may be present 
+                when the QR Code is used for bill payment. Required when Present in QR code under the Additional Data Field Template.
+            mobileNumber:
+              type: string
+              description: The mobile number could be provided by the merchant or could be an indication for the mobile application to
+                prompt the consumer to input a Mobile Number. For example, the Mobile Number to be used for multiple use cases,
+                such as mobile top-up and bill payment. Required when Present in QR code under the Additional Data Field Template.
+            storeLabel:
+              type: string
+              description:  A distinctive value associated to a store. This value could be provided by the merchant or could be an 
+                indication for the mobile application to prompt the consumer to input a Store Label. For example, the Store Label may 
+                be displayed to the consumer on the mobile application identifying a specific store. Required when Present in QR 
+                code under the Additional Data Field Template.
+            loyaltyNumber:
+              type: string
+              description: Typically, a loyalty card number. This number could be provided by the merchant, if known, or could be an 
+                indication for the mobile application to prompt the consumer to input their Loyalty Number. Required when Present in 
+                QR code under the Additional Data Field Template.
+            referenceLabel:
+              type: string
+              description:  Any value as defined by the merchant or acquirer to identify the transaction. This value could be provided 
+                by the merchant or could be an indication for the mobile app to prompt the consumer to input a transaction Reference 
+                Label. For example, the Reference Label may be used by the consumer mobile application for transaction logging or 
+                receipt display. Required when Present in QR code under the Additional Data Field Template.
+            customerLabel:
+              type: string
+              description: Any value identifying a specific consumer. This value could be provided by the merchant (if known) or could 
+                be an indication for the mobile application to prompt the consumer to input their Customer Label. For example, the 
+                Customer Label may be a subscriber ID for subscription services, a student enrolment number, etc. Required when 
+                Present in QR code under the Additional Data Field Template.
+            terminalLabel:
+              type: string
+              description: A distinctive value associated to a unique sponsored merchant, store location, terminal, or device. See 
+                above Merchant ID generation section for details on populating. For example, the Terminal Label may be displayed 
+                to the consumer on the mobile application identifying a specific terminal. Required when Present in QR code under 
+                the Additional Data Field Template.
+            purposeOfTransaction:
+              type: string
+              description: Any value defining the purpose of the transaction. This value could be provided by the merchant or could 
+                be an indication for the mobile application to prompt the consumer to input a value describing the purpose of the 
+                transaction. For example, the Purpose of Transaction may have the value "International Data Package" for display on 
+                the mobile application. Required when Present in QR code under the Additional Data Field Template.
+            additionalConsumerDataRequest:
+              type: string
+              description: Contains indications that the mobile application is to provide the requested information in order to 
+                complete the transaction. The information requested should be provided by the mobile application in the 
+                authorization without unnecessarily prompting the consumer. For example, the Additional Consumer Data Request may 
+                indicate that the consumer mobile number is required to complete the transaction, in which case the mobile 
+                application should be able to provide this number (that the mobile application has previously stored) without 
+                unnecessarily prompting the consumer. 
+              example: ME        
+
+    RQMakePayment:
+      type: object
+      required:
+        - srcCorrelationId
+      properties:
+        srcCorrelationId:
+          type: string
+          description: The unique identifier generated by Visa to track and link API
+            messages. This is used as a transaction identifier assigned by Visa
+            for this particular transaction. Universally Unique Identifier (UUID).
+          example: 5821c929-deee-49b7-a6ce-ba88dadbb734
+        srcDpaId:
+          type: string
+          description: Mobile Application Provider identifier, which is generated by Visa during Mobile Apption Plicarovider registration.
+          example: DPAID
+        srciTransactionId:
+          type: string
+          description: A unique transaction ID created by the Mobile Application Provider, which may be created on the merchant page.
+            It must be passed through to Visa
+          example: 2f679779-3f42-4b8e-5e81-1d259e56ber1
+          maxLength: 100
+        encryptedPayload:
+          type: string
+          description: Payload including payment information for authorization purposes.
+          example: 4DuQx...b4964M
+        dpaData:
+          type: object
+          $ref: "#/components/schemas/ObjDpaData"
+        dpaTransactionOptions:
+          type: object
+          $ref: "#/components/schemas/ObjDpaTransactionOptions"
+
+    RQNotificationPayment:
+      type: object
+      required:
+        - srcClientId
+        - srcDigitalCardId
+        - eventTimestamp
+      properties:
+        srcClientId:
+          type: string
+          description: Identifies the connecting client, e.g. SRCI, DCF, SRCP.
+          example: JI1GA0M2FTMYR6CDP6OG21x-OD7_z0ZPBcF1-MB1aKlZTLBm4
+        srcCorrelationId:
+          type: string
+          description: Correlation ID generated by the SRC system and returned by previous Checkout call.
+          example: a
+        srciTransactionId:
+          type: string
+          description: A unique ID created by the Mobile Application Provider.
+          example: a
+          maxLength: 100
+        serviceId:
+          type: string
+          description: Form of payment service. In case of Visa QR, value is SELLER_PRESENTED.
+          example: SELLER_PRESENTED
+          enum:
+            - SELLER_PRESENTED
+        srcDigitalCardId:
+          type: string
+          description: In Visa QR use case, field utilized for vProvisionedTokenID (unique Token ID for the payment 
+            instrument selected).
+          example: a
+        eventTimestamp:
+          type: string
+          description: UTC 
+          example: a
+        confirmationStatus:
+          type: string
+          description: | 
+            Status of the event as provided by the SRC Initiator in the Confirmation message. Valid values are:
+              - 01: Success
+              - 02: Failure 
+              - 03: Other
+          example: 01
+          maxLength: 2
+          enum: 
+            - 01
+            - 02
+            - 03
+        authAmount:
+          type: object
+          $ref: "#/components/schemas/ObjtransactionAmount"
+        customData:
+          type: array
+          description: list of key-value pair.
+          example: [{"key": "samplekey","value": "31000"}]
+        assuranceData:
+          type: object
+          $ref: "#/components/schemas/ObjAssuranceData"
+
+        
+
+
+
+
+
+
+            
+        
+
+
+        
+        
+        
+
+    RQOnboardingRequest:
+      type: object
+      required:
+        - serviceContext
+        - companyPrimaryLegalName
+        - primaryWebsiteURL
+        - companyCity
+        - companyCountryCode
+        - primaryContactEmail
+        - acquirerIdentifiers
+      properties:
+        serviceContext:
+          type: string
+          description: |
+            Format: It is one of the following values:
+
+            - TOKENIZATION
+          example: TOKENIZATION
+          enum:
+            - TOKENIZATION
+          maxLength: 13
+        dunsNumber:
+          type: string
+          description: |
+            A D&B DUNS number is a nine-digit number that is recognized as the
+            universal standard to track businesses worldwide. It is designed to
+            enhance the credibility of your business and enable potential
+            customers, lenders and suppliers to learn about your company.
+
+            [(1)Get a D-U-N-S Number - Establish Your Business - D&B (dnb.com)](https://www.dnb.com/duns/get-a-duns.html)
+
+          maxLength: 9
+          example: 150483782
+        companyPrimaryTradeName:
+          type: string
+          description: |
+            Trade name of token requestor, such as a doing-business-as (DBA)
+            name. If not specified, the legal name (companyPrimaryLegalName) is
+            used by default.
+
+            Format: Alphanumeric, excepting semi-colon, percent sign, and
+            parentheses; maximum 75 characters.
+          example: MyMerchant.com”
+          maxLength: 75
+        companyPrimaryLegalName:
+          type: string
+          description: |
+            Legal name of token requestor. Some processors may not support a
+            75-character legal name. You cannot exceed the limit imposed by your
+            processor.
+
+            Format: Alphanumeric, excepting semi-colon, percent sign, and
+            parentheses; maximum 75 characters.
+          example: My Merchant”
+          maxLength: 75
+        primaryWebsiteURL:
+          type: string
+          description: |
+            The URL for your token requestor’s site for handling VTS transactions.
+
+            Format: Alphanumeric, excepting semi-colon, percent sign, and
+            parentheses; maximum 100 characters.
+          example: http://www.myMerchant.com
+          maxLength: 100
+        companyAddress1:
+          type: string
+          description: |
+            First line of the token requestor’s primary address.
+
+            Format: Alphabetic, numeric, or the following characters: spaces,
+            '(single quote), #(pound-sign or hash), ,(comma), _(underscore),
+            :(colon), /(forward slash), and -(hyphen); maximum 140 characters.
+          example: 1 Main Street
+          maxLength: 140
+        companyAddress2:
+          type: string
+          description: |
+            First line of the token requestor’s primary address.
+
+            Format: Alphabetic, numeric, or the following characters: spaces,
+            '(single quote), #(pound-sign or hash), ,(comma), _(underscore),
+            :(colon), /(forward slash), and -(hyphen);maximum 140 characters.
+          example: 1 Main Street
+          maxLength: 140
+        companyCity:
+          type: string
+          description: |
+            City in the token requestor’s primary address.
+            Format: Alphabetic, numeric, or the following characters: spaces,
+            '(single quote), .(period), and -(hyphen); maximum 100 characters.
+          example: San Francisco
+          maxLength: 100
+        companyStateProvinceCode:
+          type: string
+          description: |
+            State or province code associated with the physical address in the
+            specified country. The companyStateProvinceCode for US must be a
+            standard 2-characters code.
+
+            Format: The suffix of an ISO-3166-2 country code, corresponding to
+            the companyCountryCode, maximum 2 characters.
+          example: CA
+          maxLength: 2
+        companyPostalCode:
+          type: string
+          description: |
+            Postal code associated with the primary address of token requestor,
+            such as a ZIP code.
+
+            Format: Depends on companyStateProvinceCode, maximum 7 characters.
+          example: 94301
+          maxLength: 7
+        companyCountryCode:
+          type: string
+          description: |
+            ISO-3166-1 alpha-2 standard country associated with the token
+            requestor’s primary address.
+
+            Format: Alphabetic; maximum 2 characters
+          example: US
+          maxLength: 2
+        companyPhone:
+          type: string
+          description: |
+            Token requestor’s primary phone number.
+            Format: Numeric or hyphens, parentheses, period, or plus sign, valid.
+          example: 4155551212
+          maxLength: 16
+        primaryContactFirstName:
+          type: string
+          description: |
+            First name of token requestor’s primary contact person.
+            Format: Alphabetic or the following characters: spaces,
+            '(single quote), `(back tick), ~(tilde), "(double quote), .(period),
+            and -(hyphen); maximum 256 characters.
+          example: John
+          maxLength: 256
+        primaryContactLastName:
+          type: string
+          description: |
+            Surname of token requestor’s primary contact person.
+            Format: Alphabetic or the following characters: spaces,
+            '(single quote), `(back tick), ~(tilde), "(double quote), .(period),
+            and -(hyphen); maximum 256 characters.
+          example: Smith
+          maxLength: 256
+        primaryContactEmail:
+          type: string
+          description: |
+            Email address of token requestor’s primary contact.
+            
+            Format: Alphanumeric, valid email address; maximum 256 characters.
+          example: jsmith@mymerchant888.com
+          maxLength: 256
+        relationships:
+          type: object
+          description: |
+            Relationship to the token requestor being onboarded, which is by
+            externalClientId. If not specified, Visa creates the externalClientId
+            for you, which is available in the response.
+          $ref: "#/components/schemas/ObjRelationships"
+        acquirerIdentifiers:
+          type: object
+          $ref: "#/components/schemas/ObjAcquirerIdentifiers"
+        tokenizationConfiguration:
+          type: object
+          $ref: "#/components/schemas/ObTokenizationConfiguration"
+
+    ObjRelationships:
+      type: object
+      properties:
+        externalClientId:
+          type: string
+          description: |
+            The relationship ID for the entity being onboarded. This is the
+            relationship ID to use when calling VTS APIs.
+          maxLength: 100
+
+    ObjAcquirerIdentifiers:
+      type: object
+      description: |
+        Acquirer and merchant identifiers.
+      required:
+        - acquirerId
+        - acquirerMerchantId
+      properties:
+        acquirerId:
+          type: string
+          description: |
+            Acquirer ID.
+          maxLength: 15
+        acquirerMerchantId:
+          type: string
+          description: |
+            Acquirer Merchant ID.
+          maxLength: 25
+
+    ObTokenizationConfiguration:
+      type: object
+      description: |
+        Tokenization configuration.
+
+        Format: A Tokenization Configuration structure
+      required:
+        - tokenizationProfiles
+      properties:
+        channelSecurityContext:
+          type: string
+          description: |
+            Channel security context; default is shared secret.
+            
+            Format: A channelSecurityContext structure.
+        tokenizationProfiles:
+          type: string
+          description: |
+            List of profiles.
+
+            Format: A tokenizationProfiles structure
+
+    RSGenerateQrCode:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+        data:
+          type: object
+          required:
+            - qrCodeImage
+            - qrCodeHeight
+            - qrCodeWidth
+            - qrCodeString
+          properties:
+            qrCodeImage:
+              type: string
+              description: >
+                Image of the QR Code
+              example: "iVBOR...CYII="
+            qrCodeHeight:
+              type: integer
+              description: >
+                Height of the image
+              example: 200
+              maxLength: 3
+            qrCodeWidth:
+              type: integer
+              description: >
+                Width of the image
+              example: 200
+              maxLength: 3
+            qrCodeString:
+              type: string
+              description: >
+                String of the QR Code
+              example: 000201010211031140000000456520441115303170540105502015802CO5915Pizzeria
+                Pepito6009MANIZALES62680103***0203***030412340403***0503***0603***0708A60086670803***0902ME6304B111
+
+    RSDecoderQR:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+        data:
+          type: object
+          required:
+            - pointOfInitiationMethod
+            - merchantCategoryCode
+            - transactionCurrency
+            - transactionAmount
+            - tipOrConvenienceIndicator
+            - countryCode
+            - merchantName
+            - merchantCity
+          properties:
+            merchantAccountInformation:
+              type: string
+              description: Account Information of Merchant
+              example: "4156821587554841"
+            payloadFormatIndicator:
+              type: string
+            pointOfInitiationMethod:
+              type: string
+              description: Identifies the communication technology (here QR Code) and whether
+                the data is static or dynamic
+              example: 12
+              maxLength: 2
+            merchantCategoryCode:
+              type: string
+              description: As defined by [ISO 18245] and assigned by the Acquirer
+              example: 4111
+              maxLength: 100
+            transactionCurrency:
+              type: string
+              description: Indicates the currency code of the transaction. A 3-digit numeric
+                value, as defined by [ISO 4217]. This value will be used by the
+                mobile application to display a recognizable currency to the
+                consumer whenever an amount is being displayed or whenever the
+                consumer is prompted to enter an amount.
+              example: 156
+              maxLength: 3
+            transactionAmount:
+              type: string
+              description: The transaction amount (excluding tips and convenience fees), if
+                known. For instance, "99.34". If present, this value is displayed to
+                the consumer by the mobile application when processing the
+                transaction. If this data object is not present, the consumer is
+                prompted to input the transaction amount to be paid to the merchant.
+              example: 237200
+              maxLength: 50
+            tipOrConvenienceIndicator:
+              type: string
+              description: Indicates whether the consumer will be prompted to enter a tip or
+                whether the merchant has determined that a flat, or percentage
+                convenience fee is charged.
+              example: 1
+              maxLength: 100
+            countryCode:
+              type: string
+              description: Indicates the country of the merchant acceptance device. A
+                2-character alpha value, as defined by [ISO 3166-1 alpha 2] and
+                assigned by the Acquirer. The country may be displayed to the
+                consumer by the mobile application when processing the transaction.
+              example: CO
+              maxLength: 10
+            merchantName:
+              type: string
+              description: The "doing business as" name for the merchant, recognizable to the
+                consumer. This name may be displayed to the consumer by the mobile
+                application when processing the transaction.
+              example: Pizzería Pepito
+              maxLength: 100
+            merchantCity:
+              type: string
+              description: City of operations for the merchant. This name may be displayed to
+                the consumer by the mobile application when processing the
+                transaction.
+              example: MANIZALES
+              maxLength: 100
+            additionalDataField:
+              type: object
+              description: Additional Information
+              properties:
+                billNumber:
+                  type: string
+                  description: >
+                    The invoice number or bill number. This number can be provided by
+                    the merchant or can be an indicator for the mobile application
+                    to prompt the consumer to input a Bill Number. For example, the
+                    Bill Number may be present when the QR Code is used for bill
+                    payment.
+                mobileNumber:
+                  type: string
+                  description: >
+                    The mobile number can be provided by the merchant or can be an
+                    indicator for the mobile application to prompt the consumer to
+                    input a Mobile Number. For example, the Mobile Number to be used
+                    for multiple use cases, such as mobile top-up and bill payment.
+                storeLabel:
+                  type: string
+                  description: >
+                    A distinctive value associated to a store. This value can be
+                    provided by the merchant or can be an indication for the mobile
+                    application to prompt the consumer to input a Store Label.
+                  example: 1234
+                loyaltyNumber:
+                  type: string
+                  description: >
+                    Typically, a loyalty card number. This number can be provided by
+                    the merchant, if known, or can be an indication for the mobile
+                    application to prompt the consumer to input their Loyalty
+                    Number.
+                referenceLabel:
+                  type: string
+                  description: >
+                    Any value as defined by the merchant or acquirer in order to
+                    identify the transaction. This value can be provided by the
+                    merchant or can be an indication for the mobile app to prompt
+                    the consumer to input a transaction Reference Label. For
+                    example, the Reference Label may be used by the consumer mobile
+                    application for transaction logging or receipt display.
+                customerLabel:
+                  type: string
+                  description: >
+                    Any value identifying a specific consumer. This value can be
+                    provided by the merchant (if known), or can be an indication for
+                    the mobile application to prompt the consumer to input their
+                    Customer Label. For example, the Customer Label may be a
+                    subscriber ID for subscription services, a student enrolment
+                    number, etc.
+                  example: "***"
+                terminalLabel:
+                  type: string
+                  description: >
+                    A distinctive value associated to a terminal in the store. This
+                    value can be provided by the merchant or can be an indication
+                    for the mobile application to prompt the consumer to input a
+                    Terminal Label. For example, the Terminal Label may be displayed
+                    to the consumer on the mobile application identifying a specific
+                    terminal.
+                  example: A6008667
+                purposeTransaction:
+                  type: string
+                  description: >
+                    Any value defining the purpose of the transaction. This value can
+                    be provided by the merchant or can be an indication for the
+                    mobile application to prompt the consumer to input a value
+                    describing the purpose of the transaction. For example, the
+                    Purpose of Transaction may have the value "International Data
+                    Package" for display on the mobile application.
+                additionalConsumerDataRequest:
+                  type: string
+                  description: >
+                    Contains indications that the mobile application is to provide the
+                    requested information in order to complete the transaction. The
+                    information requested should be provided by the mobile
+                    application in the authorization without unnecessarily prompting
+                    the consumer. For example, the Additional Consumer Data Request
+                    may indicate that the consumer mobile number is required to
+                    complete the transaction, in which case the mobile application
+                    should be able to provide this number (that the mobile
+                    application has previously stored) without unnecessarily
+                    prompting the consumer.
+                  example: ME            
+
+    RSSendPayment:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+        data:
+          type: object
+          properties:
+            srcCorrelationId:
+              type: string
+              description: The unique identifier generated by Visa to track and link API
+                messages. This is used as a transaction identifier assigned by Visa 
+                for this particular transaction.
+              example: "5821c929-deee-49b7-a6ce-ba88dadbb734"
+            paymentStatus:
+              type: string
+              description: Returns status of checkout request as an enum value.
+              example: SUCCESSFUL
+              enum:
+                - DECLINED
+                - PENDING
+                - SUCCESSFUL
+                - CONFIRMATION_ERROR
+
+    RSMakePayment:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+
+    RSNotificationPayment:
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time    
+    
+    RSGenerateQrCode400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+  requestBodies:
+    RQCreateMerchant:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQCreateMerchant"
+      required: true
+    RQGenerateQrCode:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQGenerateQrCode"
+      required: true
+    RQDecoderQrCode:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQDecoderQrCode"
+
+    RQSendPayment:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQSendPayment"
+    RQMakePayment:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQMakePayment"
+    RQNotificationPayment:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQNotificationPayment"
+
+      required: true
+    RQOnboardingRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RQOnboardingRequest"
+      required: true
+  responses:
+    RSCreateMerchant:
+      description: Process Ok
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateMerchant"
+          examples:
+            Process Ok:
+              $ref: "#/components/examples/CreateMerchantOk"
+            No Results Found:
+              $ref: "#/components/examples/NoResultsFound"
+    RSCreateMerchant400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSCreateMerchant400"
+          examples:
+            Params Required:
+              $ref: "#/components/examples/ParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Data:
+              $ref: "#/components/examples/InvalidData"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Error General Services:
+              $ref: "#/components/examples/ErrorGeneralServices"
+
+    RSGenerateQrCode:
+      description: Process Ok
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenerateQrCode"
+          examples:
+            Process Ok:
+              value:
+                code: "200.22.000"
+                message: "Process Ok"
+                datetime: "2020-01-03T16:05:56.517Z"
+                data:
+                  qrCodeImage: "iVBOR...CYII="
+                  qrCodeHeight: 200
+                  qrCodeWidth: 200
+                  qrCodeString: "000201010211031140000000456520441115303170540105502015802CO5915Pizzeria Pepito6009MANIZALES62680103***0203***030412340403***0503***0603***0708A60086670803***0902ME6304B111"
+
+    RSDecoderQR:
+      description: Decoder QR response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSDecoderQR"
+
+    RSSendPayment:
+      description: Send Payment response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSSendPayment"
+
+    RSMakePayment:
+      description: Make Payment response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSMakePayment"
+
+    RSNotificationPayment:
+      description: Make Payment response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSNotificationPayment"
+
+    RSGenerateQrCode400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenerateQrCode400"
+          examples:
+            Params Required:
+              $ref: "#/components/examples/ParamsRequired"
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid Data:
+              $ref: "#/components/examples/InvalidData"
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Error General Services:
+              $ref: "#/components/examples/ErrorGeneralServices"
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS500:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"

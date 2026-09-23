@@ -1,0 +1,330 @@
+specification: API Commons DeclineCodes
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: derived
+source: openapi/novopayment-cards-openapi.yml, openapi/novopayment-payment-authorizer-openapi.yml, openapi/novopayment-accounts-openapi.yml,
+  openapi/novopayment-alias-directory-openapi.yml and the other provider-published specs
+description: Authorization decline and rejection codes NovoPayment publishes in its own OpenAPI response examples.
+  The detail segment tracks ISO 8583-style reason codes (044 insufficient funds, 511-520 pick-up/fraud conditions),
+  and the same detail number recurs across product segments (400.01.044 cards, 400.02.044 accounts, 400.08.044 payments).
+envelope_field: code
+masking:
+  documented: false
+  note: NovoPayment does not publish guidance on which decline reasons may be shown to a cardholder or buyer and
+    which must be masked. Treat fraud/pick-up conditions (511-520) as issuer-only until the provider states otherwise.
+decline_codes:
+- code: 400.01.008
+  meaning: Card is blocked
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.01.009
+  meaning: Invalid Card ID
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.01.044
+  meaning: Insufficient funds
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.01.362
+  meaning: Invalid card status
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.01.394
+  meaning: Invalid Card Type
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.01.407
+  meaning: Card is expired
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.01.409
+  meaning: The card is permanently blocked
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.01.456
+  meaning: Card is inactive
+  http_status: 400
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+- code: 400.02.008
+  meaning: Card is blocked.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.026
+  meaning: Your linking process has been blocked.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.027
+  meaning: Customer status is not allowed for this action.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.036
+  meaning: Account to be debited is inactive or blocked.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.037
+  meaning: Inactive or blocked destination account.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.044
+  meaning: Insufficient funds.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.101
+  meaning: Card not allowed.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.406
+  meaning: Account is blocked.
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.532
+  meaning: Invalid card batch status id
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.02.557
+  meaning: Invalid card embosser id
+  http_status: 400
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 400.08.044
+  meaning: Insufficient funds
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.046
+  meaning: The payment could not be processed because of invalid card information
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.101
+  meaning: Card not allowed
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.435
+  meaning: Sender card is inactive
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.511
+  meaning: Fraud free pick up card.
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.512
+  meaning: Pick up card, special condition, fraud account.
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.515
+  meaning: Lost card, pick up, fraud account.
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.516
+  meaning: Stolen card, pick up (fraud account)..
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.520
+  meaning: Suspected fraud.
+  http_status: 400
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-real-time-payments
+- code: 400.09.101
+  meaning: Card not allowed
+  http_status: 400
+  segment: Alias directory
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.362
+  meaning: Invalid card status
+  http_status: 400
+  segment: Alias directory
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-alias-directory
+- code: 400.18.027
+  meaning: Customer status is not allowed for this action.
+  http_status: 400
+  segment: Customers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-customers
+- code: 400.22.009
+  meaning: Invalid Card Id
+  http_status: 400
+  segment: Tokenization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.25.027
+  meaning: Customer status is not allowed for this action.
+  http_status: 400
+  segment: Merchant QR
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-onboarding
+- code: 400.25.046
+  meaning: The payment could not be processed because of invalid card information.
+  http_status: 400
+  segment: Merchant QR
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-onboarding
+- code: 400.25.392
+  meaning: Code expired, request a new code.
+  http_status: 400
+  segment: Merchant QR
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 401.00.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Common / platform
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-push-provisioning
+- code: 401.01.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Cards
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-cards
+  - novopayment-operations
+- code: 401.02.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Accounts & transfers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-accounts
+- code: 401.08.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Payments & authorization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-compliance
+  - novopayment-oauth2-data-encryption
+  - novopayment-payment-authorizer
+  - novopayment-real-time-payments
+- code: 401.09.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Alias directory
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-alias-directory
+- code: 401.18.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Customers
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-customers
+- code: 401.22.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Tokenization
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 401.25.993
+  meaning: Access token expired
+  http_status: 401
+  segment: Merchant QR
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 404.00.009
+  meaning: Invalid Card ID
+  http_status: 404
+  segment: Common / platform
+  action: See the operation's published response examples; NovoPayment documents no per-code remediation text.
+  apis:
+  - novopayment-push-provisioning
+count: 43
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,50 @@
+specification: API Commons AgentSkill
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: generated
+source: >-
+  openapi/novopayment-*-openapi.yml (operationIds verified against the provider-published specs),
+  conventions/novopayment-conventions.yml, errors/novopayment-error-codes.yml
+description: >-
+  Packaged agent skills for the marquee NovoPayment flows. Every operationId referenced was read out
+  of NovoPayment's own OpenAPI documents; where the provider publishes no operationId (Payment
+  Authorizer, Payment Refund, Payment Reverse) the skill names the method and path instead rather
+  than inventing one.
+provider_published_skills: none found
+skills:
+  - file: novopayment-digital-account-onboarding.md
+    name: novopayment-digital-account-onboarding
+    apis:
+      - onboarding
+      - compliance
+      - customers
+      - accounts
+    operations: 19
+  - file: novopayment-card-issuing-lifecycle.md
+    name: novopayment-card-issuing-lifecycle
+    apis:
+      - cards
+      - accounts
+    operations: 22
+  - file: novopayment-alias-real-time-payment.md
+    name: novopayment-alias-real-time-payment
+    apis:
+      - alias-directory
+      - real-time-payments
+    operations: 19
+  - file: novopayment-merchant-payment-acceptance.md
+    name: novopayment-merchant-payment-acceptance
+    apis:
+      - payment-authorizer
+      - merchant-presented-qr
+    operations: 2
+cross_cutting_rules:
+  - OAuth2 client credentials, BearerToken valid 1799 seconds, refreshed before expiry.
+  - X-Tenant-Id on every call; X-Transaction-Id is a trace id and NOT an idempotency key.
+  - No idempotency, no dry-run and no rate-limit signal anywhere on the surface — query before retry.
+  - Reversal operations exist for cards, payments and transfers; no reversal window is published.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

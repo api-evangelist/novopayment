@@ -1,0 +1,2299 @@
+specification: API Commons ErrorCatalog
+specificationVersion: '0.1'
+provider: NovoPayment
+providerId: novopayment
+generated: '2026-09-17'
+method: derived
+source: openapi/novopayment-*-openapi.yml (15 provider-published OpenAPI 3.0 specs harvested 2026-09-17 from developer.novopayment.com)
+description: Response-code registry for the NovoPayment API surface, derived from the response examples in the provider's
+  own OpenAPI documents. NovoPayment publishes a single ten-character code space (HTTP-status.product-segment.detail)
+  that spans success and failure; this catalog records every distinct code that appears in the published contracts.
+format: novopayment-response-code
+envelope:
+  fields:
+  - name: code
+    type: string
+    description: Ten-character NovoPayment response code, HTTP-status.product-segment.detail (e.g. 400.01.044).
+    example: 400.01.044
+  - name: message
+    type: string
+    description: Human-readable description of the response code.
+    example: Insufficient funds
+  - name: datetime
+    type: string(date-time)
+    description: UTC timestamp the response was produced.
+    example: '2020-01-03T16:05:56.517Z'
+  - name: info
+    type: string(uri)
+    description: Optional link to the documentation for the operation that produced the error.
+    example: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+  - name: errors
+    type: array
+    description: 'Optional per-field validation detail; each item carries a message such as ''attributeOneCamelCase:
+      Can not be null''.'
+  media_type: application/json
+  rfc9457: false
+  note: NovoPayment does NOT use RFC 9457 application/problem+json. It returns a first-party envelope on every status,
+    including success (200.xx.000 'Process Ok'), so the code field — not the HTTP status alone — carries the outcome.
+code_scheme:
+  pattern: ^[0-9]{3}\.[0-9]{2}\.[0-9]{3}$
+  segments:
+  - position: 1
+    meaning: HTTP status family the response is returned with (200, 201, 202, 400, 401, 404, 500)
+  - position: 2
+    meaning: Product segment that owns the code
+  - position: 3
+    meaning: Specific condition within that segment
+  segment_map:
+    '00': Common / platform
+    '01': Cards
+    '02': Accounts & transfers
+    08: Payments & authorization
+    09: Alias directory
+    '12': Onboarding
+    '17': Profile
+    '18': Customers
+    '22': Tokenization
+    '25': Merchant QR
+counts:
+  total: 359
+  error: 342
+  success: 17
+  decline_like: 43
+http_status_families:
+- status: '200'
+  count: 15
+- status: '201'
+  count: 1
+- status: '202'
+  count: 1
+- status: '400'
+  count: 291
+- status: '401'
+  count: 34
+- status: '404'
+  count: 7
+- status: '500'
+  count: 10
+codes:
+- code: 200.00.000
+  message: Process Ok
+  segment: Common / platform
+  http_status: 200
+  apis:
+  - novopayment-cards
+  - novopayment-push-provisioning
+- code: 200.00.001
+  message: Pending
+  segment: Common / platform
+  http_status: 200
+  apis:
+  - novopayment-cards
+- code: 200.00.364
+  message: No results found
+  segment: Common / platform
+  http_status: 200
+  apis:
+  - novopayment-cards
+- code: 200.01.000
+  message: Process Ok
+  segment: Cards
+  http_status: 200
+  apis:
+  - novopayment-cards
+- code: 200.02.000
+  message: Process Ok
+  segment: Accounts & transfers
+  http_status: 200
+  apis:
+  - novopayment-accounts
+- code: 200.08.000
+  message: Process OK
+  segment: Payments & authorization
+  http_status: 200
+  apis:
+  - novopayment-compliance
+  - novopayment-real-time-payments
+- code: 200.08.343
+  message: Not search results found
+  segment: Payments & authorization
+  http_status: 200
+  apis:
+  - novopayment-real-time-payments
+- code: 200.09.000
+  message: Process OK
+  segment: Alias directory
+  http_status: 200
+  apis:
+  - novopayment-alias-directory
+- code: 200.09.343
+  message: Not search results found
+  segment: Alias directory
+  http_status: 200
+  apis:
+  - novopayment-alias-directory
+- code: 200.12.000
+  message: Process Ok
+  segment: Onboarding
+  http_status: 200
+  apis:
+  - novopayment-payment-authorizer
+- code: 200.17.000
+  message: Process OK
+  segment: Profile
+  http_status: 200
+  apis:
+  - novopayment-operations
+- code: 200.18.000
+  message: Process Ok
+  segment: Customers
+  http_status: 200
+  apis:
+  - novopayment-customers
+- code: 200.22.000
+  message: Process Ok
+  segment: Tokenization
+  http_status: 200
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 200.22.364
+  message: No results found
+  segment: Tokenization
+  http_status: 200
+  apis:
+  - novopayment-merchant-presented-qr
+- code: 200.25.000
+  message: Process Ok
+  segment: Merchant QR
+  http_status: 200
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 201.09.000
+  message: Process OK
+  segment: Alias directory
+  http_status: 201
+  apis:
+  - novopayment-alias-directory
+- code: 202.02.535
+  message: Your request was accepted successfully
+  segment: Accounts & transfers
+  http_status: 202
+  apis:
+  - novopayment-accounts
+- code: 400.00.001
+  message: Header Params Required
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.002
+  message: JWE Invalid format
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.004
+  message: Invalid Tenant ID
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.324
+  message: We were unable to process your request
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.350
+  message: Error General Service.
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.356
+  message: Component configuration not found.
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.376
+  message: Integration Error
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.396
+  message: Invalid parameters.
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.00.994
+  message: Encryption error
+  segment: Common / platform
+  http_status: 400
+  apis:
+  - novopayment-push-provisioning
+- code: 400.01.001
+  message: Header Params Required
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.004
+  message: Invalid tenant ID
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.005
+  message: Client already registered in this program
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.006
+  message: Invalid program Id
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.007
+  message: Card is already activated
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.008
+  message: Card is blocked
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.009
+  message: Invalid Card ID
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.012
+  message: Invalid PIN format
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.013
+  message: Original PIN no match
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.014
+  message: Invalid block code
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.015
+  message: Account is already registered
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.016
+  message: Branch is not registered
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.033
+  message: User not found
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.044
+  message: Insufficient funds
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.050
+  message: Transaction rejected
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.051
+  message: Maximum number of transactions reached
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.078
+  message: New PIN must be different to original
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.079
+  message: PIN already used
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.080
+  message: Empty parameters
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.108
+  message: OFAC record found*
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.109
+  message: Duplicate operation
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.110
+  message: Transaction not found
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.317
+  message: Product status could not be updated
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.320
+  message: Invalid Encrypted Data
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.338
+  message: Invalid transaction code
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.340
+  message: Transaction already cancelled
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.354
+  message: Exceeds the limit amount
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.361
+  message: Invalid transaction type
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.362
+  message: Invalid card status
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.363
+  message: Card has no pin
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.365
+  message: Invalid date range
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.366
+  message: Date range cannot exceed 90 days
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.367
+  message: The card is not active
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.368
+  message: Paging limit is outside the allowed range
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.369
+  message: Page number is outside the allowed range
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.370
+  message: Tax cannot be a negative value
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.371
+  message: Tax cannot be higher than the amount
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.374
+  message: The card does not have a linked account
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.375
+  message: It was not possible to get the card detail
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.377
+  message: Invalid User ID
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.378
+  message: Card activated. You must cancel the card to complete the replenishment flow.
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.379
+  message: There is more than one active registered card, you must indicate the cardId you want to replace.
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.394
+  message: Invalid Card Type
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.396
+  message: Invalid parameters
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.397
+  message: The allowed balance limit has been reached
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.400
+  message: KYC validations error*
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.407
+  message: Card is expired
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.409
+  message: The card is permanently blocked
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.437
+  message: Unable to process transaction
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.450
+  message: Card has already been assigned a pin*
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.456
+  message: Card is inactive
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.485
+  message: The card is not associated with the account
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.486
+  message: The card is already linked to an account
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.487
+  message: Card not found
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.522
+  message: Exceeds withdrawal frequency limit
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.801
+  message: The transaction has not been processed due to problems in the validation of the business
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.01.994
+  message: Encryption error
+  segment: Cards
+  http_status: 400
+  apis:
+  - novopayment-cards
+- code: 400.02.001
+  message: Header Params Required
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.003
+  message: Params required
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.004
+  message: Invalid tenant ID
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.006
+  message: Invalid program ID
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.008
+  message: Card is blocked.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.012
+  message: Invalid PIN format.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.013
+  message: The current PIN doesn't match.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.014
+  message: Invalid block code.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.019
+  message: The process could not be completed.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.020
+  message: Database result was ok, but it was not possible recognize data base response.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.021
+  message: Something unexpected has happened, please try again.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.022
+  message: The requested resource was not found.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.023
+  message: Request acknowledge failure, please try again.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+  - novopayment-profile
+- code: 400.02.024
+  message: Invalid session parameters.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.025
+  message: We can not find what youre looking for.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.026
+  message: Your linking process has been blocked.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.027
+  message: Customer status is not allowed for this action.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.028
+  message: Personal data was not registered correctly.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.029
+  message: Main ID document not found.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.030
+  message: Phone number not found.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.031
+  message: Email not found.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.032
+  message: Address not found.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.033
+  message: User not found.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.034
+  message: ID document is duplicated.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.035
+  message: Open escalations exist.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.036
+  message: Account to be debited is inactive or blocked.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.037
+  message: Inactive or blocked destination account.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.038
+  message: Number of daily transactions for this account is reached.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.039
+  message: Number of weekly transactions for this account is reached.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.040
+  message: Number of monthly transactions for this account reached.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.041
+  message: Exceeds daily operations limit.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.042
+  message: Exceeds weekly operations limit.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.043
+  message: Exceeds monthly operations limit.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.044
+  message: Insufficient funds.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.045
+  message: Operation is already in process.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.068
+  message: It is not possible to obtain information about the requested product.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.070
+  message: The requested account does not exist or does not belong to the customer. Please verify your information
+    and try again.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.078
+  message: The new PIN must be different than the current PIN.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.081
+  message: Parameter format error
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.089
+  message: Invalid data.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.101
+  message: Card not allowed.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.108
+  message: OFAC record found
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.343
+  message: No search results were found.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.354
+  message: Exceeds the limit amount.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.365
+  message: Invalid date range
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.372
+  message: At least one operation must be specified.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.382
+  message: Customer not found
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.383
+  message: At least one value must be update.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.396
+  message: The card is closed.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.406
+  message: Account is blocked.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.410
+  message: Account is closed.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.416
+  message: The embosser ID does not match the assigned program ID
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.445
+  message: The card does not have an embossing request.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.485
+  message: The card is not associated with the account.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.486
+  message: The card is already linked to an account.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.490
+  message: Currency not match
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.502
+  message: There is an active embossing request in progress.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.503
+  message: The maximum amount of accounts per account program was reached
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.530
+  message: The maximum limit of batches per day has been reached.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.531
+  message: The quantity of cards in the batch exceeds the allowed quantity.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.532
+  message: Invalid card batch status id
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.533
+  message: Current batch status does not allow this action
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.534
+  message: The maximum limit of batches approval per day has been reached
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.537
+  message: It was not possible to process the request because the card has transactions recorded.
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.538
+  message: Card does not belong to anonymous issuance
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.02.557
+  message: Invalid card embosser id
+  segment: Accounts & transfers
+  http_status: 400
+  apis:
+  - novopayment-accounts
+- code: 400.08.001
+  message: Header Params Required
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-compliance
+  - novopayment-oauth2-data-encryption
+  - novopayment-payment-authorizer
+  - novopayment-real-time-payments
+- code: 400.08.002
+  message: JWE Invalid format
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.003
+  message: Params required
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.004
+  message: Invalid Tenant ID
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.038
+  message: Exceeds the limit count of daily operations. The number of daily transactions for this account has been
+    reached
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.039
+  message: The number of weekly transactions for this account has been reached
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.040
+  message: The number of monthly transactions for this account has been reached
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.041
+  message: Exceeds the limit amount of daily operations
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.042
+  message: Exceeds the limit amount of weekly operations
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.043
+  message: Exceeds the limit amount of monthly operations
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.044
+  message: Insufficient funds
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.046
+  message: The payment could not be processed because of invalid card information
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.049
+  message: Card security code is invalid
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.052
+  message: Data not available, please try again
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.101
+  message: Card not allowed
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.102
+  message: Invalid Alias
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.105
+  message: Unable process request
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.110
+  message: Transaction not found
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.301
+  message: Bank Customer Service not available
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.320
+  message: Invalid Encrypted Data
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.338
+  message: Invalid transaction code
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.339
+  message: Currency not supported
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.340
+  message: Transaction already cancelled
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.356
+  message: Component configuration not found.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.361
+  message: Invalid transaction type
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.391
+  message: The customer reported problems in this transaction.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.396
+  message: Invalid parameters
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.431
+  message: Recipient has hits in compliance lists
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.434
+  message: Sender has hits in compliance lists
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.435
+  message: Sender card is inactive
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.441
+  message: Unable to reverse transaction
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.500
+  message: Cross border transactions not supported
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.501
+  message: Domestic transactions not supported
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.504
+  message: Payment instrument in verification
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.505
+  message: Failed verification of payment instrument
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.510
+  message: Invalid merchant.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.511
+  message: Fraud free pick up card.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.512
+  message: Pick up card, special condition, fraud account.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.513
+  message: No such issuer.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.514
+  message: No credit account.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.515
+  message: Lost card, pick up, fraud account.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.516
+  message: Stolen card, pick up (fraud account)..
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.517
+  message: No checking account.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.518
+  message: No savings account.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.519
+  message: Transaction not permitted to cardholder.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.520
+  message: Suspected fraud.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.521
+  message: Source is not correct issuer.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.522
+  message: Exceeds withdrawal frequency limit.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.523
+  message: Already reversed by Switch.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.524
+  message: Transaction cannot be completed.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.525
+  message: Additional customer authentication required.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.526
+  message: Cash request exceeds issuer or approved limit.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.527
+  message: Transaction amount exceeds preauthorized approval amount.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.528
+  message: Card Authentication failed.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.529
+  message: Stop Payment Order.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.08.801
+  message: The transaction has not been processed due to problems in the validation of the business.
+  segment: Payments & authorization
+  http_status: 400
+  apis:
+  - novopayment-real-time-payments
+- code: 400.09.001
+  message: Header Params Required
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.004
+  message: Invalid Tenant ID
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.015
+  message: Account is already registered
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.099
+  message: Unregistered devices
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.101
+  message: Card not allowed
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.102
+  message: Invalid alias
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.105
+  message: Unable process request
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.320
+  message: Invalid Encrypted Data
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.357
+  message: Tenant not found.
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.362
+  message: Invalid card status
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.367
+  message: The card is not active
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.393
+  message: The card has the status of the requested action.
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.396
+  message: Invalid parameters.
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.401
+  message: User already has a registered alias
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.427
+  message: Card is invalid
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.431
+  message: User has hits in compliance lists
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.446
+  message: Issuer country not supported
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.448
+  message: Alias not found
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.459
+  message: Alias already exists
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.487
+  message: Card not found
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.539
+  message: Deletion of the primary payment instrument is not allowed
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.09.554
+  message: Invalid identity document type
+  segment: Alias directory
+  http_status: 400
+  apis:
+  - novopayment-alias-directory
+- code: 400.17.003
+  message: Params required
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.020
+  message: The database result was ok, but it was not possible to recognize the database response.
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.022
+  message: The requested resource was not found
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.035
+  message: There are open escalations.
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.115
+  message: Amount must be more than zero
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.317
+  message: product status could not be updated
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.354
+  message: Exceeds the limit amount
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.361
+  message: Invalid transaction type
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.477
+  message: Unable to process transactions
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.17.478
+  message: The process is held by third party system
+  segment: Profile
+  http_status: 400
+  apis:
+  - novopayment-operations
+- code: 400.18.001
+  message: Header Params Required
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.003
+  message: Params required
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.004
+  message: Invalid tenant ID
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.020
+  message: Database result was ok, but it was not possible recognize data base response.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.021
+  message: Something unexpected has happened, please try again.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.022
+  message: The requested resource was not found.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.025
+  message: We can not find what youre looking for.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.027
+  message: Customer status is not allowed for this action.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.035
+  message: Open escalations exist.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.055
+  message: This person is not registered.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.063
+  message: Someone else already has this username.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.065
+  message: There is already a registered user with that email.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.068
+  message: It is not possible to obtain information about the requested product.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.081
+  message: Parameter format error
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.089
+  message: Invalid data.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.108
+  message: OFAC record found
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.317
+  message: Product status could not be updated.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.343
+  message: No search results were found.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.382
+  message: Customer not found
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.390
+  message: The requested document has not been uploaded yet.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.405
+  message: Document number already exist.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.411
+  message: Only one primary document is allowed.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.412
+  message: There is more than one identity document present in the list, but none of them is marked as primary.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.418
+  message: The customer could not be saved.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.420
+  message: Customer has open accounts.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.422
+  message: Customer must have at least one primary identity document.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.18.423
+  message: The requested identity document does not exist or does not belong to the customer.
+  segment: Customers
+  http_status: 400
+  apis:
+  - novopayment-customers
+- code: 400.22.001
+  message: Header Params Required
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.22.002
+  message: JWE Invalid format
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.22.003
+  message: Params required
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-merchant-presented-qr
+- code: 400.22.004
+  message: Invalid Tenant ID
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 400.22.009
+  message: Invalid Card Id
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.22.089
+  message: Invalid data.
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 400.22.324
+  message: We were unable to process your request
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.22.350
+  message: Error General Service.
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 400.22.356
+  message: Component configuration not found.
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.22.376
+  message: Integration Error
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.22.396
+  message: Invalid parameters.
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 400.22.487
+  message: Card not found
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-issuer-tokenization
+- code: 400.22.994
+  message: Encryption error
+  segment: Tokenization
+  http_status: 400
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+- code: 400.25.001
+  message: Header Params Required
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.003
+  message: Params required
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.004
+  message: Invalid tenant ID
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.019
+  message: The process could not be completed.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.023
+  message: It was not possible to acknowledge the request, please try again.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.024
+  message: Invalid session parameters.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.027
+  message: Customer status is not allowed for this action.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.028
+  message: Personal data was not registered correctly.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.029
+  message: Main ID document not found.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.030
+  message: Phone number not found.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.031
+  message: Email not found.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.032
+  message: Address not found.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.033
+  message: User not found.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.034
+  message: ID document is duplicated.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.035
+  message: Open escalations exist.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.046
+  message: The payment could not be processed because of invalid card information.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.047
+  message: The card number is invalid.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.048
+  message: Card expiration date is invalid.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.049
+  message: Card security code is invalid.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.065
+  message: There is already a registered user with that email.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.066
+  message: There is already a registered user with that cell number.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.081
+  message: Parameter format error
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.089
+  message: Invalid data.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.108
+  message: OFAC record found
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.382
+  message: Customer not found
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.384
+  message: Wrong code, verify the data and try again.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.385
+  message: Your account is on the way! We'll let you know when your account is ready.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.386
+  message: Your account was created! You can now use your credentials to enter your account.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+- code: 400.25.388
+  message: You have exceeded the number of attempts, wait 10 minutes and request a new one.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.389
+  message: You have exceeded number of attempts, please request a new code.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 400.25.392
+  message: Code expired, request a new code.
+  segment: Merchant QR
+  http_status: 400
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 401.00.990
+  message: Invalid Access Token
+  segment: Common / platform
+  http_status: 401
+  apis:
+  - novopayment-push-provisioning
+- code: 401.00.991
+  message: Access Token not approved
+  segment: Common / platform
+  http_status: 401
+  apis:
+  - novopayment-push-provisioning
+- code: 401.00.992
+  message: Invalid signature
+  segment: Common / platform
+  http_status: 401
+  apis:
+  - novopayment-push-provisioning
+- code: 401.00.993
+  message: Access token expired
+  segment: Common / platform
+  http_status: 401
+  apis:
+  - novopayment-push-provisioning
+- code: 401.00.997
+  message: Decryption Error
+  segment: Common / platform
+  http_status: 401
+  apis:
+  - novopayment-push-provisioning
+- code: 401.01.990
+  message: Invalid Access Token
+  segment: Cards
+  http_status: 401
+  apis:
+  - novopayment-cards
+  - novopayment-operations
+- code: 401.01.991
+  message: Access Token not approved
+  segment: Cards
+  http_status: 401
+  apis:
+  - novopayment-cards
+  - novopayment-operations
+- code: 401.01.992
+  message: Invalid signature
+  segment: Cards
+  http_status: 401
+  apis:
+  - novopayment-cards
+  - novopayment-operations
+- code: 401.01.993
+  message: Access token expired
+  segment: Cards
+  http_status: 401
+  apis:
+  - novopayment-cards
+  - novopayment-operations
+- code: 401.02.990
+  message: Invalid Access Token
+  segment: Accounts & transfers
+  http_status: 401
+  apis:
+  - novopayment-accounts
+- code: 401.02.991
+  message: Access Token not approved
+  segment: Accounts & transfers
+  http_status: 401
+  apis:
+  - novopayment-accounts
+- code: 401.02.992
+  message: Invalid signature
+  segment: Accounts & transfers
+  http_status: 401
+  apis:
+  - novopayment-accounts
+- code: 401.02.993
+  message: Access token expired
+  segment: Accounts & transfers
+  http_status: 401
+  apis:
+  - novopayment-accounts
+- code: 401.08.990
+  message: Invalid Access Token
+  segment: Payments & authorization
+  http_status: 401
+  apis:
+  - novopayment-compliance
+  - novopayment-oauth2-data-encryption
+  - novopayment-payment-authorizer
+  - novopayment-real-time-payments
+- code: 401.08.991
+  message: Access Token not approved
+  segment: Payments & authorization
+  http_status: 401
+  apis:
+  - novopayment-compliance
+  - novopayment-oauth2-data-encryption
+  - novopayment-payment-authorizer
+  - novopayment-real-time-payments
+- code: 401.08.992
+  message: Invalid signature
+  segment: Payments & authorization
+  http_status: 401
+  apis:
+  - novopayment-compliance
+  - novopayment-oauth2-data-encryption
+  - novopayment-payment-authorizer
+  - novopayment-real-time-payments
+- code: 401.08.993
+  message: Access token expired
+  segment: Payments & authorization
+  http_status: 401
+  apis:
+  - novopayment-compliance
+  - novopayment-oauth2-data-encryption
+  - novopayment-payment-authorizer
+  - novopayment-real-time-payments
+- code: 401.09.990
+  message: Invalid Access Token
+  segment: Alias directory
+  http_status: 401
+  apis:
+  - novopayment-alias-directory
+- code: 401.09.991
+  message: Access Token not approved
+  segment: Alias directory
+  http_status: 401
+  apis:
+  - novopayment-alias-directory
+- code: 401.09.992
+  message: Invalid signature
+  segment: Alias directory
+  http_status: 401
+  apis:
+  - novopayment-alias-directory
+- code: 401.09.993
+  message: Access token expired
+  segment: Alias directory
+  http_status: 401
+  apis:
+  - novopayment-alias-directory
+- code: 401.18.990
+  message: Invalid Access Token
+  segment: Customers
+  http_status: 401
+  apis:
+  - novopayment-customers
+- code: 401.18.991
+  message: Access Token not approved
+  segment: Customers
+  http_status: 401
+  apis:
+  - novopayment-customers
+- code: 401.18.992
+  message: Invalid signature
+  segment: Customers
+  http_status: 401
+  apis:
+  - novopayment-customers
+- code: 401.18.993
+  message: Access token expired
+  segment: Customers
+  http_status: 401
+  apis:
+  - novopayment-customers
+- code: 401.22.990
+  message: Invalid Access Token
+  segment: Tokenization
+  http_status: 401
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 401.22.991
+  message: Access Token not approved
+  segment: Tokenization
+  http_status: 401
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 401.22.992
+  message: Invalid signature
+  segment: Tokenization
+  http_status: 401
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 401.22.993
+  message: Access token expired
+  segment: Tokenization
+  http_status: 401
+  apis:
+  - novopayment-issuer-tokenization
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 401.22.997
+  message: Decryption Error
+  segment: Tokenization
+  http_status: 401
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+- code: 401.25.990
+  message: Invalid Access Token
+  segment: Merchant QR
+  http_status: 401
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 401.25.991
+  message: Access Token not approved
+  segment: Merchant QR
+  http_status: 401
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 401.25.992
+  message: Invalid signature
+  segment: Merchant QR
+  http_status: 401
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 401.25.993
+  message: Access token expired
+  segment: Merchant QR
+  http_status: 401
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+- code: 404.00.009
+  message: Invalid Card ID
+  segment: Common / platform
+  http_status: 404
+  apis:
+  - novopayment-push-provisioning
+- code: 404.00.900
+  message: Not Found
+  segment: Common / platform
+  http_status: 404
+  apis:
+  - novopayment-push-provisioning
+- code: 404.09.015
+  message: Account is already registered
+  segment: Alias directory
+  http_status: 404
+  apis:
+  - novopayment-alias-directory
+- code: 404.09.017
+  message: Favorite already exists
+  segment: Alias directory
+  http_status: 404
+  apis:
+  - novopayment-alias-directory
+- code: 404.09.495
+  message: Favorite already exists
+  segment: Alias directory
+  http_status: 404
+  apis:
+  - novopayment-alias-directory
+- code: 404.09.497
+  message: Alias parent must be different from alias favorite
+  segment: Alias directory
+  http_status: 404
+  apis:
+  - novopayment-alias-directory
+- code: 404.09.498
+  message: Favorite name not found
+  segment: Alias directory
+  http_status: 404
+  apis:
+  - novopayment-alias-directory
+- code: 500.00.999
+  message: Internal Server Error
+  segment: Common / platform
+  http_status: 500
+  apis:
+  - novopayment-push-provisioning
+- code: 500.01.999
+  message: Internal Server Error
+  segment: Cards
+  http_status: 500
+  apis:
+  - novopayment-cards
+- code: 500.02.999
+  message: Internal Server Error
+  segment: Accounts & transfers
+  http_status: 500
+  apis:
+  - novopayment-accounts
+- code: 500.08.001
+  message: Internal Server Error
+  segment: Payments & authorization
+  http_status: 500
+  apis:
+  - novopayment-compliance
+  - novopayment-oauth2-data-encryption
+  - novopayment-payment-authorizer
+  - novopayment-real-time-payments
+- code: 500.09.999
+  message: Internal Server Error
+  segment: Alias directory
+  http_status: 500
+  apis:
+  - novopayment-alias-directory
+- code: 500.17.999
+  message: Internal Server Error
+  segment: Profile
+  http_status: 500
+  apis:
+  - novopayment-operations
+- code: 500.18.001
+  message: Internal Server Error
+  segment: Customers
+  http_status: 500
+  apis:
+  - novopayment-customers
+- code: 500.22.001
+  message: Internal Server Error
+  segment: Tokenization
+  http_status: 500
+  apis:
+  - novopayment-issuer-tokenization
+- code: 500.22.999
+  message: Internal Server Error
+  segment: Tokenization
+  http_status: 500
+  apis:
+  - novopayment-mastercard-issuer-tokenization
+  - novopayment-merchant-presented-qr
+- code: 500.25.001
+  message: Internal Server Error
+  segment: Merchant QR
+  http_status: 500
+  apis:
+  - novopayment-onboarding
+  - novopayment-profile
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

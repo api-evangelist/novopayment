@@ -1,0 +1,2932 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: API Support
+    email: support@novopayment.com
+    url: https://developer.novopayment.com/
+
+  description: >
+    The Real-time payments API leverage the newest technologies to
+    pull/push payments amongst VISA or MasterCard branded products such as
+    debit, prepaid, and credit cards to manage transactions between individual
+    banked consumers (P2P). All this developed with effective integrations and
+    collaborations with relevant local and global payment networks and the
+    domestic markets.
+
+
+    Below operations are available for Real-Time Payments API:
+
+
+    - Account to Account (AA): This operation is used to transfer to the same sender with different payment instruments. Both banks and non-banks can use it.
+
+    - Person to Person: This operation is used to transfer funds when the sender and recipient are two different users.
+
+    - Wallet Transfer: This operation is used to cash in a digital wallet from a Visa account.
+
+
+    The operations available for the Real-time payments API are:
+
+
+    - Money Transfer
+
+    - Fund disbursement (Coming soon)
+  version: v1.0.0
+  title: Real-Time Payments API
+
+
+
+tags:
+  - name: Rtp-Send
+    description: Rtp Send Money operations
+  - name: Reverse
+    description: Rtp reverse
+  - name: Query
+    description: Query Status Transaction
+  - name: Summary
+    description: Transaction Summary
+ 
+    
+servers:
+  - description: Sandbox
+    url: https://sandbox-api.novopayment.com/realtimepayments/v1
+paths:
+  /moneytransfer:
+    post:
+      summary: Money Transfer
+      operationId: sendmoney
+      tags:
+        - Rtp-Send
+      description: >
+        Send funds to any Visa or Mastercard eligible card for domestic and
+        cross-border transactions.
+
+
+        The funds will be available within 30 minutes.
+      requestBody:
+        $ref: "#/components/requestBodies/RQMoneytransfer"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSMoneytransfer200"
+        "400":
+          $ref: "#/components/responses/RSMoneytransfer400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+        default:
+          $ref: "#/components/responses/RS500"
+
+  /moneytransfer/transactions/adjustments/{transactionId}:
+    post:
+      summary: Reverse Adjustment
+      operationId: adjustment
+      tags:
+        - Reverse
+      description: |
+        Execute a pull reverse manually without the 24-hour window.
+      parameters:
+        - in: path
+          name: transactionId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 40
+            pattern: ^[A-Za-z0-9-]+$
+          description: The transaction identificator
+          example: 87b42ea2-2db6-4dab-a5b4-11a41f373179
+      requestBody:
+        $ref: "#/components/requestBodies/RQReverseAdjustment"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSReverseAdjustment200"
+        "400":
+          $ref: "#/components/responses/RSReverseAdjustment400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+        default:
+          $ref: "#/components/responses/RS500"
+  /moneytransfer/transactions/funds/pull:
+    post:
+      summary: Pull Funds
+      operationId: pull
+      tags:
+        - Rtp-Send
+      description: >
+        Pull Transfer, withdraw funds from a sender's card to later send
+        them to a recipient's card.
+      requestBody:
+        $ref: "#/components/requestBodies/RQPullFunds"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSPullFunds200"
+        "400":
+          $ref: "#/components/responses/RSPullTransfer400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+        default:
+          $ref: "#/components/responses/RS500"
+  /moneytransfer/transactions/funds/push:
+    post:
+      summary: Push Funds
+      operationId: push
+      tags:
+        - Rtp-Send
+      description: |
+        Push Transfer, adds resources to a recipient's account.
+      requestBody:
+        $ref: "#/components/requestBodies/RQPushFunds"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSPushFunds200"
+        "400":
+          $ref: "#/components/responses/RSPushFunds400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+        default:
+          $ref: "#/components/responses/RS500"
+  /moneytransfer/transactions/funds/reverse/{transactionId}:
+    post:
+      tags:
+        - Reverse
+      summary: Reverse Funds
+      operationId: reverse
+      description: |
+        Execute the reverse of a pull transfer transaction
+      parameters:
+        - in: path
+          name: transactionId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 40
+            pattern: ^[A-Za-z0-9-]+$
+          description: The transaction Identificator
+          example: c3c90deb537246ea8689ed6f5a9a3d23
+
+      responses:
+        "200":
+          $ref: "#/components/responses/RSReverseFunds200"
+        "400":
+          $ref: "#/components/responses/RSReverseFunds400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+        default:
+          $ref: "#/components/responses/RS500"
+  /transactions/summary:
+    post:
+      summary: Transaction Summary
+      operationId: summary
+      tags:
+        - Summary
+      description: |
+        shows the information of the transaction to be carried out
+      requestBody:
+        $ref: "#/components/requestBodies/RQTransactionSummary"
+      responses:
+        "200":
+          $ref: "#/components/responses/RSTransactionSummary200"
+        "400":
+          $ref: "#/components/responses/RSSummary400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+        default:
+          $ref: "#/components/responses/RS500"
+  /query/transactions:
+    get:
+      summary: Query Transaction 
+      operationId: query
+      tags:
+        - Query
+      description: |
+        Get transactions by the reference (**tr**) or by transaction identifiers (**stan** and **rrn**)
+      parameters:
+        - in: query
+          name: tr 
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 40
+            pattern: ^[A-Za-z0-9]{40}$
+          description: |
+            **transactionReferece** (tr) used to relate to a financial transaction.
+          example: c3c90deb537246ea8689ed6f5a9a3d2322ac23gs
+        - in: query
+          name: stan
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 6
+            pattern: ^[\d]{6}$
+          description: |
+            The **systemTraceAuditNumber** (stan) for the transaction.
+            (**This parameter is mandatory if retrievalReferenceNumber is present**)
+          example: "350420"
+          x-suggested:
+            description: |
+              The retrieval Reference Number for the transaction. 
+              This parameter is mandatory if retrievalReferenceNumber is present.
+        - in: query
+          name: rrn
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 12
+            pattern: ^[\d]{12}$
+          description: |
+            The **retrievalReferenceNumber** (rrn) for the transaction. 
+            (**This parameter is mandatory if systemsTraceAuditNumber is present**)
+          x-suggested:
+            description: |
+              The retrieval Reference Number for the transaction. 
+              This parameter is mandatory if systemsTraceAuditNumber is present.
+          example: "401010350420"
+
+      responses:
+        "200":
+          $ref: "#/components/responses/RSQuery200"
+        "400":
+          $ref: "#/components/responses/RSQuery400"
+        "401":
+          $ref: "#/components/responses/RS401"
+        "500":
+          $ref: "#/components/responses/RS500"
+        default:
+          $ref: "#/components/responses/RS500"
+security:
+  - oAuth2ClientCredentials: []
+components:
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+        See [Oauth2
+        API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+  examples:
+    RQRecipientWithAlias:
+      value:
+        domesticTransaction: true
+        transactionCode: "02"
+        transactionReference: "4498567a-ace5-4498-b382-a1c0038c4aa0"
+        sender:
+          aliasDirectory: true
+          aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+          paymentInstrumentId: 87f1467d40154354a8f6d5ec83005626
+        recipient:
+          aliasDirectory: true
+          aliasType: EMAIL
+          alias: jhondoe@gmail.com
+        transactionAmount:
+          senderAmount: 10000
+          sourceCurrencyCode: "USD"
+          surcharge: 2.2
+          purpose: "Domestic Funds Transfer"
+    RQRecipientWithoutAlias:
+      value:
+        domesticTransaction: true
+        transactionCode: "02"
+        sender:
+          aliasDirectory: true
+          aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+          paymentInstrumentId: 87f1467d40154354a8f6d5ec83005626
+        recipient:
+          aliasDirectory: false
+          paymentInformation:
+            cardToken: 40IsnNA9r2s0XTvsqYqkYBwFKVbEzE7f3CijGRfI2Ss=
+            cardHolder:
+              firstName: Jane
+              lastName: Doe
+              documentType:
+                code: "GOVERNMENT_ID"
+              documentNumber: "12345678"
+              email: janedoe@example.com
+              address:
+                line1: 123 Main st
+                line2: Apt 2002
+                city: Austin
+                state: TX
+                postalCode: "78759"
+                country: USA
+        transactionAmount:
+          senderAmount: 10000
+          sourceCurrencyCode: USD
+          surcharge: 2.2
+          purpose: Funds Transfer Domestic
+        transactionReference: 9a081ed0-3f3d-11eb-b378-0242ac130002
+
+    RQEndpointReverseAdjustment:
+      value:
+        adjustmentTransactionCode: "12"
+        amount: 10000
+        currencyCode: "USA"
+        surcharge: 200
+        transactionCode: "02"
+    RQEndpointPullFundsAlias:
+      value:
+        domesticTransaction: true
+        transactionCode: "02"
+        transactionReference: "34081ed0-3f3d-11eb-b378-0242ac130002"
+        sender:
+          aliasDirectory: true
+          aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+          paymentInstrumentId: "12345678901234567890123456789012"
+        recipient:
+          aliasDirectory: true
+          alias: noalias@gmial.com
+          aliasType: EMAIL
+
+        transactionAmount:
+          senderAmount: 230
+          sourceCurrencyCode: USD
+          purpose: "rent"
+          surcharge: 260
+
+    RQEndpointPullFunds:
+      value:
+        domesticTransaction: true
+        transactionCode: "02"
+        transactionReference: "4498567a-ace5-4498-b382-a1c0038c4aa0"
+        sender:
+          aliasDirectory: false
+          paymentInstrumentId: "12345678901234567890123456789012"
+          paymentInformation:
+            cardToken: Hs3xlaAXURkx+K1yF5nk9w04rZnC3BS17wh/qe+m+lQ=
+            cvvNumber: Hs3xlaAXURkx+K1yERTTYUIO
+            cardHolder:
+              documentNumber: "124315643"
+              documentType:
+                code: GOVERNMENT_ID
+              firstName: Juan
+              lastName: Santos
+              address:
+                line1: calle 34
+                line2: white house
+                city: miami
+                country: USA
+                postalCode: "12345"
+                state: FL
+
+        recipient:
+          aliasDirectory: false
+          alias: noalias@gmial.com
+          aliasType: EMAIL
+          paymentInformation:
+            cardToken: Hs3xlaAXURkx+K1yF5nk9w04rZnC3BS17wh/qe+m+lQ=
+            cardHolder:
+              documentNumber: "124315643"
+              documentType:
+                code: GOVERNMENT_ID
+              firstName: Adriana
+              lastName: Perez
+              address:
+                line1: calle 90
+                line2: white house
+                city: miami
+                country: USA
+                state: FL
+                postalCode: "12345"
+        transactionAmount:
+            senderAmount: 230
+            sourceCurrencyCode: USD
+            purpose: "rent"
+            surcharge: 260
+
+    RQEndpointPushFundsSenderAliasRecipientNotAlias:
+      value:
+        transactionCode: "17"
+        domesticTransaction: true
+        transactionReference: 4498567a-ace5-4498-b382-a1c0038c4aa0
+        sender:
+          aliasDirectory: true
+          aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+          paymentInstrumentId: 0035253fce61485d8ffa5caf42f42ccf
+        recipient:
+          aliasDirectory: false
+          paymentInformation:
+            cardToken: VPEEIIsMLff5b+uwX2rwexWuS+vAtSWm4ZjlYNKeK84=
+            cardHolder:
+              firstName: Deborah
+              lastName: White
+              documentType: 
+                code: GOVERNMENT_ID
+              documentNumber: "12345678"
+              email: deborahWhite@mail.com
+              address:
+                line1: 123 Main st
+                line2: Apt 2002
+                city: Austin
+                state: TX
+                postalCode: "78759"
+                country: USA
+
+        transactionAmount:
+          senderAmount: 1000
+          sourceCurrencyCode: "356"
+          destinationCurrencyCode: "356"
+          surcharge: 300
+          purpose: Funds Transfer
+    RQEndpointPushFundsNotAlias:
+      value:
+        transactionCode: "17"
+        domesticTransaction: true
+        transactionReference: 4498567a-ace5-4498-b382-a1c0038c4aa0
+        sender:
+          aliasDirectory: false
+          paymentInformation:
+            cardToken: fRuh9leWqJgc8shMb56hZy3QnBUjH4fCw48FHySR9QE=
+            cardHolder:
+              firstName: junior
+              lastName: White
+              documentType: 
+                code: GOVERNMENT_ID
+              documentNumber: "13245678"
+              email: junior@mail.com
+              address:
+                line1: 321 Main st
+                line2: Apt 2222
+                city: Austin
+                state: TX
+                postalCode: "78759"
+                country: INR
+    
+        recipient:
+          aliasDirectory: false
+          paymentInformation:
+            cardToken: VPEEIIsMLff5b+uwX2rwexWuS+vAtSWm4ZjlYNKeK84=
+            cardHolder:
+              firstName: Deborah
+              lastName: White
+              documentType: 
+                code: GOVERNMENT_ID
+              documentNumber: "12345678"
+              email: deborahWhite@mail.com
+              address:
+                line1: 123 Main st
+                line2: Apt 2002
+                city: Austin
+                state: TX
+                postalCode: "78759"
+                country: USA
+               
+               
+        transactionAmount:
+          senderAmount: 1000
+          sourceCurrencyCode: "356"
+          destinationCurrencyCode: "356"
+          surcharge: 300
+          purpose: Funds Transfer
+    RQEndpointPushFundsRecipientWithAlias:
+      value:
+        transactionCode: "17"
+        domesticTransaction: true
+        transactionReference: 4498567a-ace5-4498-b382-a1c0038c4aa0
+        sender:
+          aliasDirectory: false
+          paymentInformation:
+            cardToken: fRuh9leWqJgc8shMb56hZy3QnBUjH4fCw48FHySR9QE=
+            cardHolder:
+              firstName: junior
+              lastName: White
+              documentType: 
+                code: GOVERNMENT_ID
+              documentNumber: "13245678"
+              email: junior@mail.com
+              address:
+                line1: 321 Main st
+                line2: Apt 2222
+                city: Austin
+                state: TX
+                postalCode: "78759"
+                country: INR
+               
+        recipient:
+          aliasDirectory: true
+          alias: junioSender@gmail.com
+          aliasType: EMAIL
+          
+        transactionAmount:
+          senderAmount: 1000
+          sourceCurrencyCode: "356"
+          destinationCurrencyCode: "356"
+          surcharge: 300
+          purpose: Funds Transfer
+    RQEndpointPushFundsSenderAndRecipientAlias:
+      value:
+        transactionCode: "17"
+        domesticTransaction: true
+        transactionReference: 4498567a-ace5-4498-b382-a1c0038c4aa0
+        sender:
+          aliasDirectory: true
+          aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+          paymentInstrumentId: 8d24929d0981421395fc02b9591474c4
+        recipient:
+          aliasDirectory: true
+          alias: junioSender@gmail.com
+          aliasType: EMAIL
+        transactionAmount:
+          senderAmount: 1000
+          sourceCurrencyCode: "356"
+          destinationCurrencyCode: "356"
+          surcharge: 300
+          purpose: Funds Transfer
+    RQEndpointTransactionSummary:
+      value:
+        amount: 1000
+        sourceCurrency: "INR"
+        destinationCurrency: "INR"
+        transaction:
+          operationType: "MONEY"
+          brandType: "VISA"
+          transactionCode: "08"
+          applyTo: "SOURCE"
+        surchargeInfo:
+          countrySender: "IND"
+          countryRecipient: "IND"
+          
+    RQEndpointTransactionSummaryFX:
+      value:
+        amount: 1000
+        sourceCurrency: "INR"
+        destinationCurrency: "ZAR"
+        transaction:
+          operationType: "MONEY"
+          brandType: "VISA"
+          transactionCode: "08"
+          applyTo: "SOURCE"
+        surchargeInfo:
+          countrySender: "IND"
+          countryRecipient: "ZAF"
+        
+    JweInvalidFormat:
+      value:
+        code: 400.08.002
+        message: JWE Invalid format
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidParameters:
+      value:
+        code: "400.08.396"
+        message: "Invalid parameters"
+        datetime: "2020-01-03T16:05:56.517Z"
+        data:
+          errors:
+            - message: "Field fielName: must not be blank"
+    ParamsRequired:
+      value:
+        code: 400.08.003
+        message: Params required
+        datetime: "2020-01-03T16:05:56.517Z"
+        data:
+          errors:
+            - message: "if you want to search by rrn, the field stan is mandatory"
+    CardNotAllowed:
+      value:
+        code: 400.08.101
+        message: Card not allowed
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidTrCode:
+      value:
+        code: 400.08.338
+        message: Invalid transaction code
+        datetime: "2020-01-03T16:05:56.517Z"
+    InsufficientFunds:
+      value:
+        code: 400.08.044
+        message: Insufficient funds
+        datetime: "2020-01-03T16:05:56.517Z"
+    ExceedsLimitDaily:
+      value:
+        code: 400.08.041
+        message: Exceeds the limit amount of daily operations
+        datetime: "2020-01-03T16:05:56.517Z"
+    ExceedsLimitWeekly:
+      value:
+        code: 400.08.042
+        message: Exceeds the limit amount of weekly operations
+        datetime: "2020-01-03T16:05:56.517Z"
+    ExceedsLimitMontly:
+      value:
+        code: 400.08.043
+        message: Exceeds the limit amount of monthly operations
+        datetime: "2020-01-03T16:05:56.517Z"  
+    ExceedsCountDaily:
+      value:
+        code: 400.08.038
+        message: Exceeds the limit count of daily operations. The number of daily transactions for this account has been reached
+        datetime: "2020-01-03T16:05:56.517Z"   
+    ExceedsCountWeekly:
+      value:
+        code: 400.08.039
+        message: The number of weekly transactions for this account has been reached
+        datetime: "2020-01-03T16:05:56.517Z"
+    ExceedsCountMontly:
+      value:
+        code: 400.08.040
+        message: The number of monthly transactions for this account has been reached
+        datetime: "2020-01-03T16:05:56.517Z"
+    PIVerification:
+      value:
+        code: 400.08.504
+        message: Payment instrument in verification
+        datetime: "2020-01-03T16:05:56.517Z"
+    PIFailed:
+      value:
+        code: 400.08.505
+        message: Failed verification of payment instrument
+        datetime: "2020-01-03T16:05:56.517Z"
+    BankCustomerNotAvailable:
+      value:
+        code: 400.08.301
+        message: Bank Customer Service not available
+        datetime: "2020-01-03T16:05:56.517Z"
+    CustomerProblems:
+      value:
+        code: 400.08.391
+        message: The customer reported problems in this transaction.
+        datetime: "2020-01-03T16:05:56.517Z"
+    CardSecurityCode:
+      value:
+        code: 400.08.049
+        message: Card security code is invalid
+        datetime: "2020-01-03T16:05:56.517Z"
+    TransactionCancelled:
+      value:
+        code: 400.08.340
+        message: Transaction already cancelled 
+        datetime: "2020-01-03T16:05:56.517Z"
+    DomesticTrNoSupported:
+      value:
+        code: 400.08.501
+        message: Domestic transactions not supported
+        datetime: "2020-01-03T16:05:56.517Z"
+    CrossBorderTrNoSupported:
+      value:
+        code: 400.08.500
+        message: Cross border transactions not supported
+        datetime: "2020-01-03T16:05:56.517Z"
+        
+    InvalidMerchant:
+      value:
+        code: 400.08.510
+        message: Invalid merchant.
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    FraudFree:
+      value:
+        code: 400.08.511
+        message: Fraud free pick up card.
+        datetime: "2020-01-03T16:05:56.517Z" 
+
+    PickUpCard:
+      value:
+        code: 400.08.512
+        message: Pick up card, special condition, fraud account.
+        datetime: "2020-01-03T16:05:56.517Z" 
+
+    NoSuchIssuer:
+      value:
+        code: 400.08.513
+        message: No such issuer.
+        datetime: "2020-01-03T16:05:56.517Z" 
+
+    NoCreditAccount:
+      value:
+        code: 400.08.514
+        message: No credit account.
+        datetime: "2020-01-03T16:05:56.517Z" 
+    
+    LostCard:
+      value:
+        code: 400.08.515
+        message: Lost card, pick up, fraud account.
+        datetime: "2020-01-03T16:05:56.517Z" 
+
+    StolenCard:
+      value:
+        code: 400.08.516
+        message: Stolen card, pick up (fraud account)..
+        datetime: "2020-01-03T16:05:56.517Z" 
+
+    NoCheckingAccount:
+      value:
+        code: 400.08.517
+        message: No checking account.
+        datetime: "2020-01-03T16:05:56.517Z" 
+    
+    NoSavingsAccount:
+      value:
+        code: 400.08.518
+        message: No savings account.
+        datetime: "2020-01-03T16:05:56.517Z" 
+
+    TransactionNotCardholder:
+      value:
+        code: 400.08.519
+        message: Transaction not permitted to cardholder.
+        datetime: "2020-01-03T16:05:56.517Z" 
+
+    SuspectedFraud:
+      value:
+        code: 400.08.520
+        message: Suspected fraud.
+        datetime: "2020-01-03T16:05:56.517Z" 
+    
+    SourceNotCorrect:
+      value:
+        code: 400.08.521
+        message: Source is not correct issuer.
+        datetime: "2020-01-03T16:05:56.517Z"
+    
+    ExceedsWithdrawal:
+      value:
+        code: 400.08.522
+        message: Exceeds withdrawal frequency limit.
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    AlreadyReversed:
+      value:
+        code: 400.08.523
+        message: Already reversed by Switch.
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    TransactionCannotCompleted:
+      value:
+        code: 400.08.524
+        message: Transaction cannot be completed.
+        datetime: "2020-01-03T16:05:56.517Z"
+    
+    AdditionalCustomer:
+      value:
+        code: 400.08.525
+        message: Additional customer authentication required.
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    CashExceedsLimit:
+      value:
+        code: 400.08.526
+        message: Cash request exceeds issuer or approved limit.
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    TransactionAmountExceeds:
+      value:
+        code: 400.08.527
+        message: Transaction amount exceeds preauthorized approval amount.
+        datetime: "2020-01-03T16:05:56.517Z"
+    
+    CardAuthenticationFailed:
+      value:
+        code: 400.08.528
+        message: Card Authentication failed.
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    StopPaymentOrder:
+      value:
+        code: 400.08.529
+        message: Stop Payment Order.
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: "2020-01-03T16:05:56.517Z"
+    DataNotAvailable:
+      value:
+        code: 400.08.052
+        message: Data not available, please try again
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidEncryptedData:
+      value:
+        code: 400.08.320
+        message: Invalid Encrypted Data
+        datetime: "2020-01-03T16:05:56.517Z"
+    CurrencyNotSupported:
+      value:
+        code: 400.08.339
+        message: Currency not supported
+        datetime: "2020-01-03T16:05:56.517Z"
+    TransactionNotProcessed:
+      value:
+        code: 400.08.801
+        message: The transaction has not been processed due to problems in the validation of the business.
+        datetime: "2020-01-03T16:05:56.517Z"
+    SenderCardInactive:
+      value:
+        code: 400.08.435
+        message: Sender card is inactive
+        datetime: "2020-01-03T16:05:56.517Z"
+    TransactionCanceled:
+      value:
+        code: 400.08.340
+        message: Transaction already cancelled
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidTransactionCode:
+      value:
+        code: 400.08.338
+        message: Invalid transaction code
+        datetime: "2020-01-03T16:05:56.517Z"
+
+    CardSecurityCodeInvalid:
+      value:
+        code: 400.08.049
+        message: Card security code is invalid 
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidAlias:
+      value:
+        code: 400.08.102
+        message: Invalid Alias 
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidCardInformation:
+      value:
+        code: 400.08.046
+        message: The payment could not be processed because of invalid card information 
+        datetime: "2020-01-03T16:05:56.517Z"
+    ComponentConfigurationNotFound:
+      value:
+        code: 400.08.356
+        message: Component configuration not found.
+        datetime: "2020-01-03T16:05:56.517Z"
+    SenderComplianceList:
+      value:
+        code: 400.08.434
+        message: Sender has hits in compliance lists
+        datetime: "2020-01-03T16:05:56.517Z"
+    RecipientComplianceList:
+      value:
+        code: 400.08.431
+        message: Recipient has hits in compliance lists
+        datetime: "2020-01-03T16:05:56.517Z"
+    TransactionNotFound:
+      value:
+        code: 400.08.110
+        message: Transaction not found
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidTransactionType:
+      value:
+        code: 400.08.361
+        message: Invalid transaction type
+        datetime: "2020-01-03T16:05:56.517Z"   
+    TransactionRejected:
+      value:
+        code: 400.08.505
+        message: Transaction rejected
+        datetime: "2020-01-03T16:05:56.517Z"  
+    UnableToReverseTransaction:
+      value:
+        code: 400.08.441
+        message: Unable to reverse transaction
+        datetime: "2020-01-03T16:05:56.517Z"                                
+    InvalidTenantId :
+      value:
+        code: 400.08.004
+        message: Invalid Tenant ID
+        datetime: "2020-01-03T16:05:56.517Z" 
+    UnableProcessRequest :
+      value:
+        code: 400.08.105
+        message: Unable process request
+        datetime: "2020-01-03T16:05:56.517Z"               
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: "2020-01-03T16:05:56.517Z"
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: "2020-01-03T16:05:56.517Z"
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: "2020-01-03T16:05:56.517Z"
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: "2020-01-03T16:05:56.517Z"
+  schemas:
+
+    MoneyTransferRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - transactionCode
+        - sender
+        - recipient
+        - transactionAmount
+        - transactionReference
+      properties:
+        domesticTransaction:
+          type: boolean
+          description: |
+            __Allowed values:__
+            __true__ (Domestic Transaction)
+            __false__ (Cross-border Transaction)
+            Transaction is Domestic or Cross-border. 
+            boolean represents two values: true and false. Note: that truthy and falsy values such as "true", "", 0 or null are not considered boolean values
+          example: true
+        transactionCode:
+          type: string
+          description: |
+            Type of operation, Allowed values: 02: Person to Person (PP). 08:
+            Account to Account (AA).
+          example: '02'
+          pattern: 02|08
+          enum:
+            - '02'
+            - '08'
+          maxLength: 2
+          minLength: 2
+
+        transactionReference:
+          type: string
+          description: |
+            A value used to related to a financial transaction (**this field should be unique**)
+          example: "9a081ed0-3f3d-11eb-b37"
+          minLength: 1
+          maxLength: 40
+          pattern: ^[A-Za-z0-9-]+$
+        sender:
+          $ref: "#/components/schemas/Sender"
+
+        recipient:
+          $ref: "#/components/schemas/Recipient"
+
+        transactionAmount:
+          $ref: "#/components/schemas/TransactionAmount"
+
+    ReverseTransactionsRequest:
+      type: object
+      additionalProperties: false
+      description: |
+        Represents the data to Request Adjustment Reverse
+      required:
+        - adjustmentTransactionCode
+        - amount
+        - currencyCode
+        - transactionCode
+      properties:
+        adjustmentTransactionCode:
+          type: string
+          description: |
+            Type of transaction to be adjusted. 11 Debit Adjustment, 12 Credit Adjustment
+          example: "12"
+          pattern: 11|12
+          enum:
+            - "11"
+            - "12"
+          maxLength: 2
+          minLength: 2
+
+        amount:
+          type: number
+          format: decimal
+          description: |
+            Total transaction amount, including all transactions fee
+          example: 10000
+          minimum: 1
+          maximum: 999999999
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+
+        currencyCode:
+          type: string
+          description: |
+            Use a 3-character alpha currency code.
+            __Refer to:__ [ISO Currency Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocurrencycodes)
+          example: "USA"
+          pattern: "[A-Z]{3}"
+          maxLength: 3
+          minLength: 3
+        surcharge:
+          type: number
+          format: decimal
+          description: |
+            Operation fee or surcharge. This field must be in the same currency and format of the amount.
+          example: 200
+          minimum: 0
+          maximum: 999999999
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+
+        transactionCode:
+          type: string
+          description: |
+            Transaction code of the original transaction to be reversed, 02 Person to Person (PP),08 Account to Account (AA) ,17(FT) 
+          example: "02"
+          pattern: 02|08|17
+          enum:
+            - "02"
+            - "08"
+            - "17"
+          maxLength: 2
+          minLength: 2
+
+    PullFundsRequest:
+      type: object
+      additionalProperties: false
+      required: 
+        - domesticTransaction
+        - sender
+        - transactionAmount
+        - recipient
+        - transactionCode
+        - transactionReference
+      properties:
+        domesticTransaction:
+          type: boolean
+          description: |
+            __Allowed values:__
+            __true__ (Domestic Transaction)
+            __false__ (Cross-border Transaction)
+            Transaction is Domestic or Cross-border. 
+            boolean represents two values: true and false. Note: that truthy and falsy values such as "true", "", 0 or null are not considered boolean values
+          example: true
+        transactionReference:
+          type: string
+          description: |
+            A value used to related to a financial transaction (**this field should be unique**)
+          example: 9a081ed0-3f3d-11eb-b378-0242ac130002
+          maxLength: 40
+          minLength: 1
+          pattern: ^[A-Za-z0-9-]+$
+        systemsTraceAuditNumber:
+          type: string
+          description: |
+            A unique value should be used for each API method. However, when passing the (AFTR) method, this value must match the systemsTraceAuditNumber previously passed with the AFT method for the current transaction (**this field should be unique**)
+          example: "554527"
+          maxLength: 6
+          minLength: 6
+          pattern: \d+
+        retrievalReferenceNumber:
+          type: string
+          description: |
+            value used to tie together service calls related to a single financial transaction. When passing Account Funding Transaction (AFT) and an Original Credit Transaction (OCT) methods, this value must differ between the two methods.
+            Requirered Format: ydddhhnnnnnn 
+            The first four digits must be a valid Julian date in the pattern yddd, where the next three digits are the day number of the year (001-366) and the first digit is the last digit of the current year, 0-9.
+            The two-digit hour in a 24-hour clock (00–23) that is used for the transaction can be represented by hh. 
+            nnnnnn can be any six-digit number, or it can be the systemsTraceAuditNumber. (**this field should be unique**)
+          example: "307511561880"
+          maxLength: 12
+          minLength: 12
+          pattern: \d+
+        transactionCode:
+          type: string
+          description: |
+            Type of operation, Allowed values: 02: Person to Person (PP). 08: Account to Account (AA). 17(FT)
+          example: "02"
+          minLength: 2
+          maxLength: 2
+          pattern: 02|08|17
+
+        sender:
+          $ref: "#/components/schemas/Sender"
+
+        recipient:
+          $ref: "#/components/schemas/Recipient"
+
+        transactionAmount:
+          $ref: "#/components/schemas/TransactionAmount"
+
+    PushTransferRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - transactionCode
+        - domesticTransaction
+        - sender
+        - recipient
+        - transactionAmount
+        - transactionReference
+      properties:
+        domesticTransaction:
+          description: >
+            Indicates whether the transaction is domestic or crossborder.
+          type: boolean
+          example: true
+        transactionCode:
+          description: >
+            Type of operation, Allowed values: 02: Person to Person (PP). 08: Account to Account (AA). 17(FT)
+          type: string
+          pattern: 02|08|17
+          minLength: 2
+          maxLength: 2
+        systemsTraceAuditNumber:
+          type: string
+          description: |
+            A unique value should be used for each API method. However, when passing the (AFTR) method, this value must match the systemsTraceAuditNumber previously passed with the AFT method for the current transaction (**this field should be unique**)
+          example: "554527"
+          maxLength: 6
+          minLength: 6
+          pattern: \d+
+        retrievalReferenceNumber:
+          type: string
+          description: |
+            value used to tie together service calls related to a single financial transaction. When passing Account Funding Transaction (AFT) and an Original Credit Transaction (OCT) methods, this value must differ between the two methods.
+            Requirered Format: ydddhhnnnnnn 
+            The first four digits must be a valid Julian date in the pattern yddd, where the next three digits are the day number of the year (001-366) and the first digit is the last digit of the current year, 0-9.
+            The two-digit hour in a 24-hour clock (00–23) that is used for the transaction can be represented by hh. 
+            nnnnnn can be any six-digit number, or it can be the systemsTraceAuditNumber. (**this field should be unique**)
+          example: "307511561880"
+          maxLength: 12
+          minLength: 12
+          pattern: \d+
+        transactionIdentifier:
+          type: integer
+          description: >
+            The VisaNet transaction identifier. If you have previously sent an AFT, this field must include the VisaNet transaction identifier returned in the AFT response.
+          example: 38122864943001
+          minimum: 1
+          maximum: 99999999999999
+          format: int64
+        transactionReference:
+          type: string
+          description: >
+             A value used to related to a financial transaction (**this field should be unique**)
+          example: 97f1467d40154354a8f6d5ec83005626
+          minLength: 1
+          maxLength: 40
+          pattern: ^[A-Za-z0-9-]+$
+
+        recipient:
+          $ref: "#/components/schemas/Recipient"
+        sender:
+          description: Object Sender Information
+          type: object
+          additionalProperties: false
+          required:
+            - aliasDirectory
+          properties:
+            aliasDirectory:
+              type: boolean
+              description: |
+                __Allowed values:__
+                __true__ (with Alias Directory)
+                __false__ (without Alias Directory)
+                Flag for Alias. boolean represents two values: true and false. Note: that truthy and falsy values such as "true", "", 0 or null are not considered boolean values.
+              example: false
+            aliasId:
+              type: string
+              description: |
+                Unique identifier of an Alias in NovoPayment.  Is required if the flag aliasDirectory is true.
+              example: 5d1bf399902e42f79681c5be8dfdcb02
+              maxLength: 32
+              minLength: 32
+              pattern: ^[A-Za-z0-9-]{32}$
+            paymentInstrumentId:
+              type: string
+              description: |
+                The paymentInstrument ID
+              example: "3245436ddddddddddfffffffffff1623"
+              maxLength: 32
+              minLength: 32
+              pattern: ^[A-Za-z0-9-]{32}$
+            paymentInformation:
+              description: Payment Info
+              type: object
+              additionalProperties: false
+              properties:
+                cardToken:
+                  type: string
+                  description: "Card data encrypted with the AES256 algorithm. The cardToken attribute is composed of the following values: PAN: Card’s primary account number or token Expiration Date: Card expiration date SALT: Random Value StringWith the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value."
+                  example: fRuh9leWqJgc8shMb56hZy3QnBUjH4fCw48FHySR9QE=
+                  maxLength: 44
+                  minLength: 44
+                  pattern: \s*|[\w\d=/+]{44}
+                cardHolder:
+                  $ref: "#/components/schemas/CardHolder"
+        transactionAmount:
+          $ref: "#/components/schemas/TransactionAmount"
+
+    TransactionSummaryRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - amount
+        - sourceCurrency
+        - destinationCurrency
+        - transaction
+        - surchargeInfo
+      properties:
+        amount:
+          description: >
+            The amount of the transaction
+          type: number
+          format: double
+          example: 1000
+          minimum: 1
+          maximum: 9999999
+        sourceCurrency:
+          description: >
+            Source currency code. Use a 3-character alpha or numeric currency code for currency of the sender.
+          type: string
+          example: "INR"
+          maxLength: 3
+          minLength: 3
+        destinationCurrency:
+          description: >
+            Destination currency code. Use a 3-character alpha or numeric currency code for currency of the recipient.
+          type: string
+          example: "INR"
+          maxLength: 3
+          minLength: 3
+        transaction: 
+          type: object
+          additionalProperties: false
+          required:
+            - operationType
+            - brandType
+            - transactionCode
+          properties:
+            operationType: 
+              type: string
+              description: type of operation (AFT, OCT, MONEY)
+              example: "OCT"
+              enum:
+                - AFT
+                - OCT
+                - MONEY
+            brandType:
+              type: string
+              description: Card brand type.
+              example: "VISA"
+              enum:
+                - VISA
+                - MASTERCARD
+                - AMEX
+            transactionCode:
+              type: string
+              description: "Type of operation, Allowed values: 02: Person to Person (PP). 08: Account to Account (AA). 17(AFT)"
+              example: "08"
+              enum:
+                - "02"
+                - "08"
+                - "17"
+            applyTo:
+              description: Indicates whether the conversion rate is to the destination or source currency.
+              type: string
+              example: "SOURCE"
+        surchargeInfo:
+          type: object
+          additionalProperties: false
+          required:
+            - countrySender
+            - countryRecipient
+          properties:
+            countrySender: 
+              description: country sender in alpha code
+              type: string
+              example: "IND"
+              maxLength: 3
+              minLength: 3
+            countryRecipient:
+              description: country recipient in alpha code
+              type: string
+              example: "IND"
+              maxLength: 3
+              minLength: 3
+            surcharge: 
+              description: Is required when transaction.operationType is equal to OCT
+              type: number
+              format: double
+              example: 5
+              maximum: 9999999
+
+
+    # Object comunes
+    TransactionDetail:
+      type: object
+      additionalProperties: false
+      required:
+        - actionCode
+        - approvalCode
+        - responseCode
+        - retrievalReferenceNumber
+        - systemsTraceAuditNumber
+        - transactionIdentifier
+        - transmissionDateTime
+      properties:
+        actionCode:
+          type: string
+          description: The results of the transaction request
+          example: "00"
+          minLength: 2
+          maxLength: 2
+          pattern: "^\\d{2}$"
+        approvalCode:
+          type: string
+          description: The authorization code from the issuer.
+          example: "21324K"
+          maxLength: 6
+          minLength: 1
+          pattern: "^.{1,6}$"
+        responseCode:
+          type: string
+          description: The source for the response; typically, either the recipient issuer or a Visa system.
+          example: "05"
+          maxLength: 5
+          minLength: 1
+          pattern: "^\\d{1,5}$"
+        retrievalReferenceNumber:
+          type: string
+          description: The retrieval Reference Number for the transaction
+          maxLength: 12
+          minLength: 12
+          example: "307511561880"
+          pattern: "^\\d{12}$"
+        systemsTraceAuditNumber:
+          type: string
+          description: The systems Trace Audit Number for the transaction
+          example: "927165"
+          minLength: 6
+          maxLength: 6
+          pattern: "^\\d{6}$"
+        transactionIdentifier:
+          type: integer
+          description: The reference number for the transaction
+          example: 410999684107987
+          format: int64
+          minimum: 1
+        transmissionDateTime:
+          type: string
+          description: The transmission DateTime for the transaction
+          example: "2022-09-23T20:52:14.000Z"
+          minLength: 24
+          maxLength: 24
+
+    DocumentType:
+      description: Identification types. Document Type Object, contains the document code.
+      type: object
+      additionalProperties: false
+      required:
+        - "code"
+      properties:
+        code:
+            type: string
+            description: >
+              Type of identification
+
+              __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+            example: "GOVERNMENT_ID"
+            maxLength: 25
+            minLength: 1
+            pattern: "^\\S{1,25}$"
+    Address:
+      description: Address for card-holder
+      type: object
+      additionalProperties: false
+      required:
+        - "line1"
+        - "city"
+        - "country"
+      properties:
+        line1:
+          type: string
+          description: |
+            First line of the address. Usually for the complete address.
+          example: cll 12 45
+          maxLength: 20
+          minLength: 1
+          pattern: "^(?!\\s*$).+"
+        line2:
+          type: string
+          description: |
+            Second line, usually corresponds to house, apartment.
+          example: white house
+          maxLength: 80
+          minLength: 0
+          pattern: "^(?!\\s*$).+"
+        city:
+          type: string
+          description: |
+            Name of the city
+          example: miami
+          maxLength: 20
+          minLength: 1
+          pattern: "^(?!\\s*$).+"
+        country:
+          type: string
+          description: |
+            Country code.
+            __Refer to:__ [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes)
+          example: USA
+          maxLength: 3
+          minLength: 3
+          pattern: ([A-Z]{3}|[0-9]{3})
+        postalCode:
+          type: string
+          description: |
+            Postal Code. 
+            Note: Conditional, required if the originator is of "US" address. or "CA" and for all cross-border transactions when the issuer is in Canada or Australia.
+          example: "12345"
+          maxLength: 9
+          minLength: 5
+          pattern: ^\d{5,9}$
+        state:
+          type: string
+          description: |
+            State code in the country. This field must be valid for the respective country. The country will be related to the country of the issuer bank. This field is required when the country is the US or Canada.
+          example: "TX"
+          maxLength: 3
+          minLength: 2
+          pattern: "^(?!\\s*$).+"
+    CardHolder:
+      description: CardHolder Information
+      type: object
+      additionalProperties: false
+      required:
+        - documentNumber
+        - documentType
+        - firstName
+        - lastName
+        - address
+      properties:
+        documentNumber:
+          type: string
+          description: |
+            The Document Number
+          example: "3568945"
+          maxLength: 32
+          minLength: 1
+          pattern: "^\\d{1,35}$"
+        documentType:
+          $ref: "#/components/schemas/DocumentType"
+
+        email:
+          type: string
+          description: Personal email cardholder
+          example: personal@gmail.com
+          maxLength: 50
+          minLength: 0
+          pattern: ".+[@].+[\\.].+"
+        firstName:
+          type: string
+          description: FirstName cardholder
+          example: Juan
+          pattern: ^[\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+$
+          maxLength: 35
+          minLength: 1
+        lastName:
+          type: string
+          description: LastName cardholder
+          example: Santos
+          pattern: ^[\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+$
+          maxLength: 35
+          minLength: 1
+
+        address:
+          $ref: "#/components/schemas/Address"
+    TransactionAmount:
+      description: Object
+      type: object
+      additionalProperties: false
+      required:
+        - senderAmount
+        - sourceCurrencyCode
+      properties:
+        senderAmount:
+          type: number
+          format: double
+          example: 1000
+          minimum: 1
+          maximum: 9999999
+          exclusiveMinimum: false
+          exclusiveMaximum: true
+          description: >
+            The amount of the transaction, inclusive of all fees you assess for the transaction.
+        sourceCurrencyCode:
+          type: string
+          description: >
+            Use a 3-character alpha or numeric currency code for currency of
+            the sender.
+            __Refer to:__ [ISO Currency Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocurrencycodes)
+          example: COP
+          maxLength: 3
+          minLength: 3
+          pattern: ([A-Z]{3}|[0-9]{3})
+        destinationCurrencyCode:
+          type: string
+          description: >
+            Use a 3-character alpha or numeric currency code for crossborder,  with different currencies.
+            __Refer to:__ [ISO Currency Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocurrencycodes)
+          example: USD
+          maxLength: 3
+          minLength: 3
+          pattern: ([A-Z]{3}|[0-9]{3})
+        purpose:
+          type: string
+          description: >
+            Description of the purpose of the transaction
+          example: Payment
+          maxLength: 100
+          minLength: 0
+          pattern: "^.{0,100}$"
+        surcharge:
+          type: number
+          format: double
+          example: 100
+          minimum: 0
+          maximum: 9999999
+          exclusiveMinimum: false
+          exclusiveMaximum: true
+          description: >
+            When present, this field contains the sender's surcharge as
+            assessed by the originator. Values in this field must be in the
+            same currency and format as defined in the amount field.
+
+    Sender:
+      description: Object Sender Information
+      type: object
+      additionalProperties: false
+      required:
+        - aliasDirectory
+      properties:
+        aliasDirectory:
+          type: boolean
+          description: |
+            __Allowed values:__
+            __true__ (with Alias Directory)
+            __false__ (without Alias Directory)
+            Flag for Alias. boolean represents two values: true and false. Note: that truthy and falsy values such as "true", "", 0 or null are not considered boolean values.
+          example: false
+        aliasId:
+          type: string
+          description: |
+            Unique identifier of an Alias for the Sender, is required if the flag aliasDirectory is true.
+          example: 5d1bf399902e42f79681c5be8dfdcb02
+          maxLength: 32
+          minLength: 32
+          pattern: "^.{32,32}$"
+
+        paymentInstrumentId:
+          type: string
+          description: |
+            Payment Instrument Identification
+          example: 9b72e7aaa9804118a40b464c43f19d23
+          maxLength: 32
+          minLength: 32
+          pattern: "^[0-9a-fA-F]{32}$"
+        paymentInformation:
+          description: Payment Info
+          type: object
+          additionalProperties: false
+          required:
+          - cardToken
+          - cvvNumber
+          - cardHolder
+          properties:
+            cardToken:
+              type: string
+              description: >
+                    Card data encrypted with the AES256 algorithm.
+
+                    The cardToken attribute is composed of the following values:
+
+                    PAN: Card’s primary account number or token
+
+                    Expiration Date: Card expiration date
+
+                    SALT: Random Value StringWith the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value.
+      
+              example: Hs3xlaAXURkx+K1yF5nk9w04rZnC3BS17wh/qe+m+lQ=
+              maxLength: 44
+              minLength: 44
+              pattern: \s*|[\w\d=/+]{44}
+            cvvNumber:
+              type: string
+              example: Hs3dddddfgx17wh/qe+m+lQ=
+              description: "CVV Number Encrypted"
+              minLength: 24
+              maxLength: 24
+              pattern: \s*|[\w\d=/+]{24}
+            cardHolder:
+              $ref: "#/components/schemas/CardHolder"
+
+    Recipient:
+      description: Recipient Info
+      type: object
+      additionalProperties: false
+      required:
+        - aliasDirectory
+      properties:
+        aliasDirectory:
+          type: boolean
+          description: |
+            __Allowed values:__
+            __true__ (with Alias Directory)
+            __false__ (without Alias Directory)
+            Flag for Alias. boolean represents two values: true and false. Note: that truthy and falsy values such as "true", "", 0 or null are not considered boolean values.
+          example: false
+        alias:
+          type: string
+          description: |
+            The alias value for the Recipient, is required if the flag  aliasDirectory is true
+          example: alias@gmail.com
+          maxLength: 50
+          minLength: 1
+        aliasType:
+          type: string
+          description: |
+            __Allowed values:__
+            __MOBILE,__
+            __EMAIL,__
+            __IDENTIFICATION,__
+            __IBAN,__
+            __CUSTOM__
+            This Alias Type field is required if the flag  aliasDirectory is true.
+          example: EMAIL
+          maxLength: 15
+          minLength: 1
+          pattern: (\s)*|MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+
+        paymentInformation:
+          description: Payment Info
+          type: object
+          additionalProperties: false
+          required:
+            - cardHolder
+            - cardToken
+          properties:
+            cardToken:
+              type: string
+              description: "Card data encrypted with the AES256 algorithm. The cardToken attribute is composed of the following values: PAN: Card’s primary account number or token Expiration Date: Card expiration date SALT: Random Value StringWith the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value."
+              example: tRuh9leWqJgc8shMb56hZ/D5VnGx5orFpC3fgvI13Nk=
+              maxLength: 44
+              minLength: 44
+              pattern: \s*|[\w\d=/+]{44}
+            cardHolder:
+              $ref: "#/components/schemas/CardHolder"
+
+    # Responses
+    MoneyTransferResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+        - data
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          maxLength: 10
+          minLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\s]{1,140}$"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          maxLength: 24
+          minLength: 24
+        data:
+          additionalProperties: false
+          type: object
+          required:
+            - transactionId
+            - transactionStatus
+            - transactionReference
+          properties:
+            transactionId:
+              type: string
+              description: Unique ID of the transaction.
+              example: 87b42ea2-2db6-4dab-a5b4-11a41f373179
+              maxLength: 36
+              minLength: 36
+              pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            transactionReference:
+              type: string
+              description: A value used to related to a financial transaction (**this field should be unique**)
+              example: 9a081ed0-3f3d-11eb-b378-0242ac130002
+              minLength: 1
+              maxLength: 40
+              pattern: "^[A-Za-z0-9-]+$"
+            transactionStatus:
+              type: string
+              minLength: 6
+              maxLength: 8
+              description: |
+                Status of the transaction.
+              example: APPROVED
+              enum:
+                - APPROVED
+                - REJECT
+
+    ReverseTransactionsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          maxLength: 10
+          minLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          required:
+            - transactionId
+            - transactionReference
+            - approvalCode
+            - transactionStatus
+            - transactionIdentifier
+          properties:
+            transactionId:
+              type: string
+              description: Transaction identifier of the original transaction
+              example: 9a081ed0-3f3d-11eb-b378-0242ac130002
+              maxLength: 36
+              minLength: 36
+              pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            transactionReference:
+              type: string
+              description: A value used to relate to a financial transaction (**this field should be unique**)
+              example: 9a081ed0-3f3d-11eb-b378-0242ac130003
+              minLength: 1
+              maxLength: 40
+              pattern: "^[A-Za-z0-9-]+$"
+            transactionIdentifier:
+              type: string
+              description: A visa value used to related to a financial transaction.
+              example: 9a081ed0-3f3d-11eb-b378-0242ac130023
+              minLength: 1
+              maxLength: 40
+              pattern: "^[A-Za-z0-9-]+$"
+            approvalCode:
+              type: string
+              description: The authorization code from the issues
+              example: 50708Z
+              maxLength: 6
+              minLength: 1
+              pattern : "^.{1,6}$"
+            transactionStatus:
+              type: string
+              description: |
+                Status of the transaction.
+              example: APPROVED
+              enum:
+                - APPROVED
+                - REJECT
+              maxLength: 8
+              minLength: 6
+            retrievalReferenceNumber:
+              type: string
+              description: The retrieval Reference Number for the transaction
+              maxLength: 12
+              minLength: 12
+              example: "307511561880"
+              pattern: "^\\d{12}$"
+            systemsTraceAuditNumber:
+              type: string
+              description: The systems Trace Audit Number for the transaction
+              example: "927165"
+              minLength: 6
+              maxLength: 6
+              pattern: "^\\d{6}$"
+    RSReverseAdjustment400:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    maxLength: 300
+                    pattern: "^[a-zA-Z0-9:.,\\s]{1,300}$"
+    PullFundsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          required:
+            - transactionId
+            - transactionStatus
+            - transactionReference
+          properties:
+            transactionId:
+              type: string
+              description: Transaction identification.
+              example: 87b42ea2-2db6-4dab-a5b4-11a41f373179
+              maxLength: 36
+              minLength: 36
+              pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            transactionStatus:
+              type: string
+              description: The results of the transaction request
+              example: "APPROVED"
+              maxLength: 8
+              minLength: 6
+              pattern: "^[a-zA-Z]+$"
+            transactionReference:
+              type: string
+              description: Transaction Reference, a value used to relate to a financial transaction (**this field should be unique**)
+              example: c14e139f-925b-47b8-be8c-535177aebcd5
+              maxLength: 40
+              minLength: 1
+            transactionDetail:
+              $ref: "#/components/schemas/TransactionDetail"
+
+
+    PushTransferResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          required:
+            - transactionId
+            - transactionStatus
+            - transactionReference
+          properties:
+            transactionId:
+              type: string
+              description: Unique ID of the transaction.
+              example: c14e139f-925b-47b8-be8c-535177aebcd5
+              maxLength: 36
+              minLength: 36
+              pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+            transactionStatus:
+              type: string
+              description: The results of the transaction request
+              example: APPROVED
+              maxLength: 8
+              minLength: 6
+              pattern: "^[a-zA-Z]{6,8}$"
+            transactionReference:
+              type: string
+              description: Transaction Reference, a value used to relate to a financial transaction (**this field should be unique**)
+              example: c14e139f-925b-47b8-be8c-535177aebcd5
+              maxLength: 40
+              minLength: 1
+            transactionDetail:
+              $ref: "#/components/schemas/TransactionDetail"
+
+    ReverseAutomaticTransferResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          minLength: 1
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          required:
+            - transactionId
+            - transactionStatus
+            - transactionReference
+          properties:
+            transactionId:
+              type: string
+              description: Unique ID of the transaction
+              example: c14e139f-925b-47b8-be8c-535177aebcd5
+              maxLength: 40
+              minLength: 1
+              pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+            transactionReference:
+              type: string
+              description: Transaction Reference, a value used to relate to a financial transaction.
+              example: c14e139f-925b-47b8-be8c-535177aebcd5
+              maxLength: 40
+              minLength: 1
+            transactionStatus:
+              type: string
+              description: Transaction Status, Allowed values
+              enum:
+                - APPROVED
+                - REJECT
+              example: "APPROVED"
+              maxLength: 10
+              minLength: 1
+            transactionDetail:
+              $ref: "#/components/schemas/TransactionDetail"
+  
+    QueryTransactionResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          minLength: 1
+          maxLength: 29
+        data:
+          type: object
+          additionalProperties: false
+
+          properties:
+            transactions:
+              type: array
+              xml:
+                name: detail
+                wrapped: true
+              items:
+                $ref: '#/components/schemas/TransactionQuery'
+    TransactionSummaryResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          minLength: 1
+          maxLength: 24
+        data:
+              $ref: '#/components/schemas/TransactionSummary'
+            
+    TransactionQuery:
+      type: object
+      additionalProperties: false
+      required:
+            - statusCode
+            - transactionDate
+            - transactionId
+            - transactionReference
+      properties:
+        actionCode:
+          type: string
+          example: "00"
+          description: The results of the transaction request 
+          minLength: 2
+          maxLength: 2
+          pattern: "^[0-9]{2}$"
+        approvalCode:
+          type: string
+          example: 21324K
+          description: The authorization code from the issuer
+          maxLength: 6
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,6}"
+        responseCode:
+          type: string
+          example: "5"
+          description: The source for the response; typically, either the recipient issuer
+          maxLength: 5
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,5}"
+        retrievalReferenceNumber:
+          type: string
+          example: "401010350420"
+          description: The retrieval Reference Number for the transaction. This field is from a previous transaction
+          maxLength: 12
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,12}"
+        statusCode:
+          type: string
+          description: |
+                Transaction’s status
+          example: TP
+          enum:
+                - TP
+                - TIP
+                - TD
+                - TPP
+                - TAR
+                - TPTR
+                - TC
+                - TADJR
+                - VALIDATION FAILED
+          maxLength: 17
+          minLength: 2
+        systemsTraceAuditNumber:
+          type: string
+          example: "350420"
+          description: The systems Trace Audit Number for the transaction. This field is from a previous transaction
+          maxLength: 6
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,6}"
+        transactionDate:
+          type: string
+          example: 18-09-2023 00:01:25
+          description: The transmission DateTime for the transaction
+          maxLength: 29
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]"
+        transactionIdentifier:
+          type: string
+          example: "234234322342343"
+          description: The VisaNet reference number for the transaction
+          maxLength: 30
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,30}"
+        transactionType:
+          type: string
+          example: AFT
+          description: Transaction type
+          maxLength: 30
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,30}"
+        transactionReference:
+          type: string
+          example: e681d7e-33b6-4ee4-ab61-0fbeb8662006
+          description: A value used to relate to a financial transaction (**this field should be unique**)
+          maxLength: 36
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,36}"
+        transactionId:
+          type: string
+          example: e1ac6dda-e819-4380-a0b0-2b03cc78207b
+          description: id associated with the transaction.
+          maxLength: 36
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.\\s]{1,36}"
+    TransactionSummary:
+      description: The transaction Detail
+      type: object
+      additionalProperties: false
+      required:
+            - destinationAmount
+            - surcharge
+            - markupRateApplied
+            - totalWithFee
+            - destionationCurrencyCode
+            - sourceAmountWithoutMarkup
+            - conversionRate
+      properties:
+        destinationAmount:
+          type: string
+          example: "216.7"
+          description: Amount in destination currency.
+          minLength: 1
+        surcharge:
+          type: string
+          example: "100"
+          description: The surcharge of the transaction
+        markupRateApplied:
+          type: string
+          example: "2.0"
+          description: Percentage of commission applied.  
+        totalWithFee:
+          type: string
+          example: "1200"
+          description: Total amount with fee and surcharge  
+        destionationCurrencyCode:   
+          type: string
+          example: "ZAR"
+          description: currency code of the destination
+        sourceAmountWithoutMarkup:  
+          type: string
+          example: "980.39"
+          description: Source amount whit mark up
+        conversionRate:  
+          type: string
+          example: "1.0"
+          description: This is the conversion Rate.
+    RSGenericResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - "code"
+        - "message"
+        - "datetime"
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: "[a-zA-Z0-9:.,\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+          maxLength: 29
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    maxLength: 300
+                    pattern: "^[a-zA-Z0-9:.,\\s]{1,300}$"
+
+    RS401:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+          minLength: 1
+          maxLength: 29
+    RS500:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - datetime
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: "^[0-9]{3}.[0-9]{2}.[0-9]{3}$"
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: "[a-zA-Z0-9:.\\s]{1,140}"
+        datetime:
+          type: string
+          example: "2020-01-03T16:05:56.517Z"
+          format: date-time
+          maxLength: 29
+  requestBodies:
+    RQMoneytransfer:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MoneyTransferRequest"
+          examples:
+            Recipient with alias:
+              $ref: "#/components/examples/RQRecipientWithAlias"
+            Recipient without alias:
+              $ref: "#/components/examples/RQRecipientWithoutAlias"
+      required: true
+    RQReverseAdjustment:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReverseTransactionsRequest"
+          examples:
+            Reverse Adjustment:
+              $ref: "#/components/examples/RQEndpointReverseAdjustment"
+      required: true
+    RQPullFunds:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PullFundsRequest"
+          examples:
+            Pull Funds With  Alias:
+              $ref: "#/components/examples/RQEndpointPullFundsAlias"
+            Pull Funds Without  Alias:
+              $ref: "#/components/examples/RQEndpointPullFunds"
+      required: true
+    RQPushFunds:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PushTransferRequest"
+          examples:
+            Push Funds sender alias recipient whitout alias:
+              $ref: "#/components/examples/RQEndpointPushFundsSenderAliasRecipientNotAlias"
+            Push Funds whitoutAlias:
+              $ref: "#/components/examples/RQEndpointPushFundsNotAlias"
+            Push Funds recipient with alias:
+              $ref: "#/components/examples/RQEndpointPushFundsRecipientWithAlias"
+            Push Funds sender and recipient alias:
+              $ref: "#/components/examples/RQEndpointPushFundsSenderAndRecipientAlias"
+      required: true
+    RQTransactionSummary:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TransactionSummaryRequest"
+          examples:
+            Transaction Summary:
+              $ref: "#/components/examples/RQEndpointTransactionSummary"
+            Transaction Summary With FX:
+              $ref: "#/components/examples/RQEndpointTransactionSummaryFX"
+      required: true
+
+
+  responses:
+    RSMoneytransfer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MoneyTransferResponse"
+          examples:
+            Money transfer:
+              value:
+                code: 200.08.000
+                message: Process OK
+                datetime: "2021-12-03 16:05:56.517Z"
+                data:
+                  transactionId: "87b42ea2-2db6-4dab-a5b4-11a41f373179"
+                  transactionReference: "9a081ed03f3d11ebb3780242ac130002"
+                  transactionStatus: APPROVED
+
+    RSMoneytransfer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenericResponse"
+          examples:
+            Jwe Invalid Format:
+              $ref: "#/components/examples/JweInvalidFormat"
+            Invalid parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Card no Allowed:
+              $ref: "#/components/examples/CardNotAllowed"
+            Invalid transaction code:
+              $ref: "#/components/examples/InvalidTrCode"
+            Insufficient funds:
+              $ref: "#/components/examples/InsufficientFunds"
+            Exceeds the limit amount of daily:
+              $ref: "#/components/examples/ExceedsLimitDaily"
+            Exceeds the limit amount of weekly :
+              $ref: "#/components/examples/ExceedsLimitWeekly"
+            Exceeds the limit amount of monthly:
+              $ref: "#/components/examples/ExceedsLimitMontly"
+            Exceeds the limit count of daily :
+              $ref: "#/components/examples/ExceedsCountDaily"
+            Exceeds the limit count of Weekly:
+              $ref: "#/components/examples/ExceedsCountWeekly"
+            Exceeds the limit count of monthly:
+              $ref: "#/components/examples/ExceedsCountMontly"
+            PI verification:
+              $ref: "#/components/examples/PIVerification"
+            PI Failed:
+              $ref: "#/components/examples/PIFailed"
+            Bank Customer No tAvailable:
+              $ref: "#/components/examples/BankCustomerNotAvailable"
+            Customer Problems:
+              $ref: "#/components/examples/CustomerProblems"
+            Card Security Code:
+              $ref: "#/components/examples/CardSecurityCode"
+            Transaction already Cancelled:
+              $ref: "#/components/examples/TransactionCancelled"
+            Invalid Alias:
+              $ref: "#/components/examples/InvalidAlias"
+            Invalid Card Information:
+              $ref: "#/components/examples/InvalidCardInformation"
+            Domestic transactions not supported:
+              $ref: "#/components/examples/DomesticTrNoSupported"
+            Cross border transactions not supported:
+              $ref: "#/components/examples/CrossBorderTrNoSupported"
+            Component Configuration NotFound:
+              $ref: "#/components/examples/ComponentConfigurationNotFound"
+            Invalid merchant:
+              $ref: "#/components/examples/InvalidMerchant"
+            Fraud Free pick up card:
+              $ref: "#/components/examples/FraudFree"
+            Pick up card:
+              $ref: "#/components/examples/PickUpCard"
+            No such issuer:
+              $ref: "#/components/examples/NoSuchIssuer"
+            No Credit Account:
+              $ref: "#/components/examples/NoCreditAccount"
+            Lost card:
+              $ref: "#/components/examples/LostCard"
+            Stolen card:
+              $ref: "#/components/examples/StolenCard"
+            No Checking Account:
+              $ref: "#/components/examples/NoCheckingAccount"
+            No savings account: 
+              $ref: "#/components/examples/NoSavingsAccount"
+            Transaction not permitted to cardholder:
+              $ref: "#/components/examples/TransactionNotCardholder"
+            Suspected fraud:
+              $ref: "#/components/examples/SuspectedFraud"
+            Source is not correct issuer:
+              $ref: "#/components/examples/SourceNotCorrect"
+            Exceeds withdrawal:
+              $ref: "#/components/examples/ExceedsWithdrawal"
+            Already reversed by Switch:
+              $ref: "#/components/examples/AlreadyReversed"
+            Transaction cannot be completed :
+              $ref: "#/components/examples/TransactionCannotCompleted"
+            Additional customer authentication required:
+              $ref: "#/components/examples/AdditionalCustomer"
+            Cash request exceeds Limit:
+              $ref: "#/components/examples/CashExceedsLimit"
+            Transaction Amount Exceeds:
+              $ref: "#/components/examples/TransactionAmountExceeds"
+            Card Authentication Failed:
+              $ref: "#/components/examples/CardAuthenticationFailed"
+            Stop Payment Order:
+              $ref: "#/components/examples/StopPaymentOrder"
+
+    RSPullTransfer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenericResponse"
+          examples:
+            Jwe Invalid Format:
+              $ref: "#/components/examples/JweInvalidFormat"
+            Invalid parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Card no Allowed:
+              $ref: "#/components/examples/CardNotAllowed"
+            Invalid transaction code:
+              $ref: "#/components/examples/InvalidTrCode"
+            Insufficient funds:
+              $ref: "#/components/examples/InsufficientFunds"
+            Exceeds the limit amount of daily:
+              $ref: "#/components/examples/ExceedsLimitDaily"
+            Exceeds the limit amount of weekly :
+              $ref: "#/components/examples/ExceedsLimitWeekly"
+            Exceeds the limit amount of monthly:
+              $ref: "#/components/examples/ExceedsLimitMontly"
+            Exceeds the limit count of daily :
+              $ref: "#/components/examples/ExceedsCountDaily"
+            Exceeds the limit count of Weekly:
+              $ref: "#/components/examples/ExceedsCountWeekly"
+            Exceeds the limit count of monthly:
+              $ref: "#/components/examples/ExceedsCountMontly"
+            PI verification:
+              $ref: "#/components/examples/PIVerification"
+            PI Failed:
+              $ref: "#/components/examples/PIFailed"
+            Bank Customer No tAvailable:
+              $ref: "#/components/examples/BankCustomerNotAvailable"
+            Customer Problems:
+              $ref: "#/components/examples/CustomerProblems"
+            Card Security Code:
+              $ref: "#/components/examples/CardSecurityCode"
+            Transaction already Cancelled:
+              $ref: "#/components/examples/TransactionCancelled"
+            Invalid Alias:
+              $ref: "#/components/examples/InvalidAlias"
+            Invalid Card Information:
+              $ref: "#/components/examples/InvalidCardInformation"
+            Domestic transactions not supported:
+              $ref: "#/components/examples/DomesticTrNoSupported"
+            Cross border transactions not supported:
+              $ref: "#/components/examples/CrossBorderTrNoSupported"
+            Component Configuration NotFound:
+              $ref: "#/components/examples/ComponentConfigurationNotFound"
+            Invalid merchant:
+              $ref: "#/components/examples/InvalidMerchant"
+            Fraud Free pick up card:
+              $ref: "#/components/examples/FraudFree"
+            Pick up card:
+              $ref: "#/components/examples/PickUpCard"
+            No such issuer:
+              $ref: "#/components/examples/NoSuchIssuer"
+            No Credit Account:
+              $ref: "#/components/examples/NoCreditAccount"
+            Lost card:
+              $ref: "#/components/examples/LostCard"
+            Stolen card:
+              $ref: "#/components/examples/StolenCard"
+            No Checking Account:
+              $ref: "#/components/examples/NoCheckingAccount"
+            No savings account: 
+              $ref: "#/components/examples/NoSavingsAccount"
+            Transaction not permitted to cardholder:
+              $ref: "#/components/examples/TransactionNotCardholder"
+            Suspected fraud:
+              $ref: "#/components/examples/SuspectedFraud"
+            Source is not correct issuer:
+              $ref: "#/components/examples/SourceNotCorrect"
+            Exceeds withdrawal:
+              $ref: "#/components/examples/ExceedsWithdrawal"
+            Already reversed by Switch:
+              $ref: "#/components/examples/AlreadyReversed"
+            Transaction cannot be completed :
+              $ref: "#/components/examples/TransactionCannotCompleted"
+            Additional customer authentication required:
+              $ref: "#/components/examples/AdditionalCustomer"
+            Cash request exceeds Limit:
+              $ref: "#/components/examples/CashExceedsLimit"
+            Transaction Amount Exceeds:
+              $ref: "#/components/examples/TransactionAmountExceeds"
+            Card Authentication Failed:
+              $ref: "#/components/examples/CardAuthenticationFailed"
+            Stop Payment Order:
+              $ref: "#/components/examples/StopPaymentOrder"
+
+
+    RSReverseAdjustment200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReverseTransactionsResponse"
+          examples:
+            Reverse Adjustment:
+              value:
+                code: 200.08.000
+                message: Process OK
+                datetime: "2021-12-03 16:05:56.517"
+                data:
+                  transactionId: "9a081ed0-3f3d-11eb-b378-0242ac130002"
+                  transactionReference: "8a081ed0-3f3d-11eb-b378-0242ac130002"
+                  approvalCode: "50708Z"
+                  transactionStatus: APPROVED
+                  retrievalReferenceNumber: "401010350420"
+                  systemsTraceAuditNumber: "350420"
+                  transactionIdentifier: "1323141355441"
+    RSReverseAdjustment400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSReverseAdjustment400"
+          examples:
+            Invalid tenant id:
+              $ref: "#/components/examples/InvalidTenantId"
+            Invalid parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Transaction not found:
+              $ref: "#/components/examples/TransactionNotFound"
+            Unable to reverse transaction:
+              $ref: "#/components/examples/UnableToReverseTransaction"
+            Invalid transaction type:
+              $ref: "#/components/examples/InvalidTransactionType"  
+                                                      
+    RSPullFunds200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PullFundsResponse"
+          examples:
+            Pull Funds:
+              value:
+                code: 200.08.000
+                datetime: "2022-09-23T20:52:14.861Z"
+                message: Process Ok
+                data:
+                  transactionId: 87b42ea2-2db6-4dab-a5b4-11a41f373179
+                  transactionReference: 34081ed0-3f3d-11eb-b378-0242ac130002
+                  transactionStatus: APPROVED
+                  transactionDetail:
+                    actionCode: "00"
+                    approvalCode: "50708Z"
+                    responseCode: "05"
+                    transactionIdentifier: 410999684107987
+                    transmissionDateTime: "2022-09-23T20:52:14.000Z"
+                    retrievalReferenceNumber: "307209358738"
+                    systemsTraceAuditNumber: "927165"
+
+    RSPushFunds200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PushTransferResponse"
+          examples:
+            Push Funds:
+              value:
+                code: 200.08.000
+                datetime: "2023-03-16T16:36:01.752Z"
+                message: Process Ok
+                data:
+                  transactionDetail:
+                    actionCode: "00"
+                    approvalCode: 21324K
+                    responseCode: "5"
+                    retrievalReferenceNumber: "307511561880"
+                    systemsTraceAuditNumber: "554527"
+                    transactionIdentifier: 234234322342367
+                    transmissionDateTime: "2023-03-16T16:36:02.000Z"
+                  transactionId: 724d567a-ace5-4498-b382-a1c0038c4aa0
+                  transactionReference: 4498567a-ace5-4498-b382-a1c0038c4aa0
+                  transactionStatus: APPROVED
+    RSPushFunds400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenericResponse"
+          examples:
+            Header Params Required:
+              $ref: "#/components/examples/HeaderParamsRequired"
+            Invalid parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Data not available:
+              $ref: "#/components/examples/DataNotAvailable"
+            Invalid encrypted data:
+              $ref: "#/components/examples/InvalidEncryptedData"
+            Currency not supported:
+              $ref: "#/components/examples/CurrencyNotSupported"
+            Transaction has not been processed:
+              $ref: "#/components/examples/TransactionNotProcessed"
+            Sender card inactive:
+              $ref: "#/components/examples/SenderCardInactive"
+            Transaction cancelled:
+              $ref: "#/components/examples/TransactionCanceled"
+            Card not allowed:
+              $ref: "#/components/examples/CardNotAllowed"
+            Invalid transaction code:
+              $ref: "#/components/examples/InvalidTransactionCode"
+            Bank Customer Service not available:
+              $ref: "#/components/examples/BankCustomerNotAvailable"
+            Customer problems in the transaction:
+              $ref: "#/components/examples/CustomerProblems"
+            Card security code invalid:
+              $ref: "#/components/examples/CardSecurityCodeInvalid"
+            Invalid alias:
+              $ref: "#/components/examples/InvalidAlias"
+            Invalid card information:
+              $ref: "#/components/examples/InvalidCardInformation"
+            Component configuration not found:
+              $ref: "#/components/examples/ComponentConfigurationNotFound"
+            Sender compliance list:
+              $ref: "#/components/examples/SenderComplianceList"
+            Recipient compliance list:
+              $ref: "#/components/examples/RecipientComplianceList"
+    RSReverseFunds200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReverseAutomaticTransferResponse"
+          examples:
+            Reverse Funds:
+              value:
+                code: 200.08.000
+                datetime: "2022-09-23T20:52:14.861Z"
+                message: Process Ok
+                data:
+                  transactionId: "87b42ea2-2db6-4dab-a5b4-11a41f373179"
+                  transactionReference: 34081ed0-3f3d-11eb-b378-0242ac130002
+                  transactionStatus: "APPROVED"
+                  transactionDetail:
+                    actionCode: "00"
+                    approvalCode: "50708Z"
+                    responseCode: "05"
+                    transactionIdentifier: 410999684107987
+                    transmissionDateTime: "2022-09-23T20:52:14.000Z"
+                    retrievalReferenceNumber: "307209358738"
+                    systemsTraceAuditNumber: "927165"
+    RSQuery200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/QueryTransactionResponse"
+          examples:
+            Transaction Results:
+              value:
+                code: 200.08.000
+                datetime: "2022-09-23T20:52:14.861Z"
+                message: Process Ok
+                data:
+                  transactions:
+                    - actionCode: "00"
+                      approvalCode: "21324K"
+                      responseCode: "5"
+                      retrievalReferenceNumber: "401010350420"
+                      statusCode: "TP"
+                      systemsTraceAuditNumber: "350420"
+                      transactionDate: "18-09-2023 00:01:25"
+                      transactionIdentifier: "234234322342343"
+                      transactionType: "AFT"
+                      transactionReference: "e681d7e-33b6-4ee4-ab61-0fbeb8662006"
+                      transactionId: "e1ac6dda-e819-4380-a0b0-2b03cc78207b"
+                    - actionCode: "00"
+                      approvalCode: "21324K"
+                      responseCode: "5"
+                      retrievalReferenceNumber: "401010350420"
+                      statusCode: "TP"
+                      systemsTraceAuditNumber: "350420"
+                      transactionDate: "18-09-2023 00:01:25"
+                      transactionIdentifier: "234234322342343"
+                      transactionType: "OCT"
+                      transactionReference: "e681d7e-33b6-4ee4-ab61-0fbeb8662006"
+                      transactionId: "e1ac6dda-e819-4380-a0b0-2b03cc78207b"
+                    - statusCode: "VALIDATION FAILED"
+                      transactionDate: "18-09-2023 00:01:25"
+                      transactionReference: "3481d7e-33b6-4ee4-ab61-0fbeb8662006"
+                      transactionId: "f1ac6dda-e819-4380-a0b0-2b03cc78207b"
+            Transaction Not Found:
+              value:
+                code: 200.08.343
+                datetime: "2022-09-23T20:52:14.861Z"
+                message: Not search results found
+    RSTransactionSummary200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TransactionSummaryResponse"
+          examples:
+            Transaction Summary FX:
+              value:
+                code: 200.08.000
+                datetime: "2022-09-23T20:52:14.861Z"
+                message: Process Ok
+                data:
+                  destinationAmount: "909.09"
+                  surcharge: "100"
+                  markupRateApplied: "10"
+                  totalWithFee: "1100"
+                  destionationCurrencyCode: "ZAR"
+                  sourceAmountWithoutMarkup: "909.09"
+                  conversionRate: "1.0"
+            Transaction Summary Not FX:
+              value:
+                code: 200.08.000
+                datetime: "2022-09-23T20:52:15.861Z"
+                message: Process Ok
+                data:
+                  destinationAmount: "1000"
+                  surcharge: "100"
+                  markupRateApplied: "0"
+                  totalWithFee: "1100"
+                  destionationCurrencyCode: "IND"
+                  sourceAmountWithoutMarkup: "1000"
+                  conversionRate: "0"
+                  
+    RSQuery400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenericResponse"
+          examples:
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Params Required:
+              $ref: "#/components/examples/ParamsRequired"  
+            Invalid Tenant Id:
+              $ref: "#/components/examples/InvalidTenantId"  
+            Unable Process Request:
+              $ref: "#/components/examples/UnableProcessRequest" 
+    RSSummary400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenericResponse"
+          examples:
+            Invalid Parameters:
+              $ref: "#/components/examples/InvalidParameters"
+            Params Required:
+              $ref: "#/components/examples/ParamsRequired"
+
+    RSReverseFunds400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RSGenericResponse"
+          examples:
+            Invalid parameters:
+              $ref: "#/components/examples/InvalidParameters"  
+            Invalid transaction code:
+              $ref: "#/components/examples/InvalidTransactionCode" 
+            Transaction already cancelled:
+              $ref: "#/components/examples/TransactionCanceled" 
+            Card not allowed:
+              $ref: "#/components/examples/CardNotAllowed" 
+            Configuration not found :
+              $ref: "#/components/examples/ComponentConfigurationNotFound" 
+            Transaction not found:
+              $ref: "#/components/examples/TransactionNotFound"     
+            Invalid transaction type:
+              $ref: "#/components/examples/InvalidTransactionType"  
+            Transaction rejected:
+              $ref: "#/components/examples/TransactionRejected"                                       
+
+    RS401:
+      description: Unauthorized (AP)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS401"
+          examples:
+            Invalid Access Token:
+              $ref: "#/components/examples/InvalidAccessToken"
+            Access Token Not Approved:
+              $ref: "#/components/examples/AccessTokenNotApproved"
+            Invalid Signature:
+              $ref: "#/components/examples/InvalidSignature"
+            Access Token Expired:
+              $ref: "#/components/examples/AccessTokenExpired"
+    RS500:
+      description: Internal Server Error (AP*)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RS500"
+          examples:
+            Internal Server Error:
+              $ref: "#/components/examples/InternalServerError"
