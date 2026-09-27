@@ -1,0 +1,470 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Summary API
+  version: v1.0.0
+  contact:
+    name: API Support
+    email: support@novopayment.com
+    url: https://developer.novopayment.com/
+  description: 'Operations tagged Summary across 2 of this provider''s published API definitions: novopayment-real-time-payments.yaml, novopayment-real-time-payments-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/realtimepayments/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Summary
+  description: Transaction Summary
+paths:
+  /transactions/summary:
+    post:
+      summary: Transaction Summary
+      operationId: summary
+      tags:
+      - Summary
+      description: shows the information of the transaction to be carried out
+      requestBody:
+        $ref: '#/components/requestBodies/RQTransactionSummary'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSTransactionSummary200'
+        '400':
+          $ref: '#/components/responses/RSSummary400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+        default:
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/realtimepayments/v1
+components:
+  schemas:
+    TransactionSummaryRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - amount
+      - sourceCurrency
+      - destinationCurrency
+      - transaction
+      - surchargeInfo
+      properties:
+        amount:
+          description: 'The amount of the transaction
+
+            '
+          type: number
+          format: double
+          example: 1000
+          minimum: 1
+          maximum: 9999999
+        sourceCurrency:
+          description: 'Source currency code. Use a 3-character alpha or numeric currency code for currency of the sender.
+
+            '
+          type: string
+          example: INR
+          maxLength: 3
+          minLength: 3
+        destinationCurrency:
+          description: 'Destination currency code. Use a 3-character alpha or numeric currency code for currency of the recipient.
+
+            '
+          type: string
+          example: INR
+          maxLength: 3
+          minLength: 3
+        transaction:
+          type: object
+          additionalProperties: false
+          required:
+          - operationType
+          - brandType
+          - transactionCode
+          properties:
+            operationType:
+              type: string
+              description: type of operation (AFT, OCT, MONEY)
+              example: OCT
+              enum:
+              - AFT
+              - OCT
+              - MONEY
+            brandType:
+              type: string
+              description: Card brand type.
+              example: VISA
+              enum:
+              - VISA
+              - MASTERCARD
+              - AMEX
+            transactionCode:
+              type: string
+              description: 'Type of operation, Allowed values: 02: Person to Person (PP). 08: Account to Account (AA). 17(AFT)'
+              example: 08
+              enum:
+              - '02'
+              - 08
+              - '17'
+            applyTo:
+              description: Indicates whether the conversion rate is to the destination or source currency.
+              type: string
+              example: SOURCE
+        surchargeInfo:
+          type: object
+          additionalProperties: false
+          required:
+          - countrySender
+          - countryRecipient
+          properties:
+            countrySender:
+              description: country sender in alpha code
+              type: string
+              example: IND
+              maxLength: 3
+              minLength: 3
+            countryRecipient:
+              description: country recipient in alpha code
+              type: string
+              example: IND
+              maxLength: 3
+              minLength: 3
+            surcharge:
+              description: Is required when transaction.operationType is equal to OCT
+              type: number
+              format: double
+              example: 5
+              maximum: 9999999
+    TransactionSummaryResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          minLength: 1
+          maxLength: 24
+        data:
+          $ref: '#/components/schemas/TransactionSummary'
+    TransactionSummary:
+      description: The transaction Detail
+      type: object
+      additionalProperties: false
+      required:
+      - destinationAmount
+      - surcharge
+      - markupRateApplied
+      - totalWithFee
+      - destionationCurrencyCode
+      - sourceAmountWithoutMarkup
+      - conversionRate
+      properties:
+        destinationAmount:
+          type: string
+          example: '216.7'
+          description: Amount in destination currency.
+          minLength: 1
+        surcharge:
+          type: string
+          example: '100'
+          description: The surcharge of the transaction
+        markupRateApplied:
+          type: string
+          example: '2.0'
+          description: Percentage of commission applied.
+        totalWithFee:
+          type: string
+          example: '1200'
+          description: Total amount with fee and surcharge
+        destionationCurrencyCode:
+          type: string
+          example: ZAR
+          description: currency code of the destination
+        sourceAmountWithoutMarkup:
+          type: string
+          example: '980.39'
+          description: Source amount whit mark up
+        conversionRate:
+          type: string
+          example: '1.0'
+          description: This is the conversion Rate.
+    RSGenericResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.,\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 29
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    maxLength: 300
+                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
+    RS500:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 29
+    RS401:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          minLength: 1
+          maxLength: 29
+  responses:
+    RSTransactionSummary200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionSummaryResponse'
+          examples:
+            Transaction Summary FX:
+              value:
+                code: 200.08.000
+                datetime: '2022-09-23T20:52:14.861Z'
+                message: Process Ok
+                data:
+                  destinationAmount: '909.09'
+                  surcharge: '100'
+                  markupRateApplied: '10'
+                  totalWithFee: '1100'
+                  destionationCurrencyCode: ZAR
+                  sourceAmountWithoutMarkup: '909.09'
+                  conversionRate: '1.0'
+            Transaction Summary Not FX:
+              value:
+                code: 200.08.000
+                datetime: '2022-09-23T20:52:15.861Z'
+                message: Process Ok
+                data:
+                  destinationAmount: '1000'
+                  surcharge: '100'
+                  markupRateApplied: '0'
+                  totalWithFee: '1100'
+                  destionationCurrencyCode: IND
+                  sourceAmountWithoutMarkup: '1000'
+                  conversionRate: '0'
+    RSSummary400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenericResponse'
+          examples:
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+    RS401:
+      description: Unauthorized (AP)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error (AP*)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+  examples:
+    InvalidParameters:
+      value:
+        code: 400.08.396
+        message: Invalid parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field fielName: must not be blank'
+    ParamsRequired:
+      value:
+        code: 400.08.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: if you want to search by rrn, the field stan is mandatory
+    RQEndpointTransactionSummary:
+      value:
+        amount: 1000
+        sourceCurrency: INR
+        destinationCurrency: INR
+        transaction:
+          operationType: MONEY
+          brandType: VISA
+          transactionCode: 08
+          applyTo: SOURCE
+        surchargeInfo:
+          countrySender: IND
+          countryRecipient: IND
+    RQEndpointTransactionSummaryFX:
+      value:
+        amount: 1000
+        sourceCurrency: INR
+        destinationCurrency: ZAR
+        transaction:
+          operationType: MONEY
+          brandType: VISA
+          transactionCode: 08
+          applyTo: SOURCE
+        surchargeInfo:
+          countrySender: IND
+          countryRecipient: ZAF
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
+    RQTransactionSummary:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionSummaryRequest'
+          examples:
+            Transaction Summary:
+              $ref: '#/components/examples/RQEndpointTransactionSummary'
+            Transaction Summary With FX:
+              $ref: '#/components/examples/RQEndpointTransactionSummaryFX'
+      required: true
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-real-time-payments.yaml
+- novopayment-real-time-payments-openapi.yml

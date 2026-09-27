@@ -1,0 +1,351 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Session API
+  version: v1
+  description: 'Operations tagged Session across 2 of this provider''s published API definitions: novopayment-onboarding.yaml, novopayment-onboarding-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/onboarding/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Session
+paths:
+  /session:
+    get:
+      summary: Onboarding Session
+      description: This operation allows to originate a registration session with the purpose of creating an account.
+      operationId: OnboardingSession
+      responses:
+        '200':
+          $ref: '#/components/responses/RSOnboardingSession200'
+        '400':
+          $ref: '#/components/responses/RSOnboardingSession400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Session
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/onboarding/v1
+  /session/resume:
+    post:
+      summary: Session Summary
+      description: This operation allows to recover a previously created registration session in order to continue with a previous process.
+      requestBody:
+        $ref: '#/components/requestBodies/RQSessionSummary'
+      operationId: SessionSummary
+      responses:
+        '200':
+          $ref: '#/components/responses/RSSessionSummary200'
+        '400':
+          $ref: '#/components/responses/RSSessionSummary400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Session
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/onboarding/v1
+components:
+  schemas:
+    RQSessionSummary:
+      type: object
+      required:
+      - applicationOnboarding
+      - digits
+      properties:
+        applicationOnboarding:
+          type: string
+          description: Unique code of the session previously created.
+          example: VEDXLRU8YN
+          maxLength: 6
+        digits:
+          type: string
+          description: Last 4 digits of the card used to made the payment.
+          example: 4427
+          maxLength: 4
+    RSSessionSummary400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSOnboardingSession200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - sessionId
+          properties:
+            sessionId:
+              type: string
+              description: Session hash.
+              example: 25BFDFF1E7846799C5A2FA35126C813D
+              maxLength: 32
+    RSSessionSummary200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - sessionId
+          properties:
+            sessionId:
+              type: string
+              description: Session hash.
+              example: 25BFDFF1E7846799C5A2FA35126C813D
+              maxLength: 32
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Opertion Timestamp
+          format: date-time
+    RSOnboardingSession400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  responses:
+    RSOnboardingSession400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOnboardingSession400'
+          examples:
+            Invalid Session Parameters:
+              $ref: '#/components/examples/InvalidSessionParameters'
+    RSOnboardingSession200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOnboardingSession200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  sessionId: 25BFDFF1E7846799C5A2FA35126C813D
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSSessionSummary200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSSessionSummary200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  sessionId: 25BFDFF1E7846799C5A2FA35126C813D
+    RSSessionSummary400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSSessionSummary400'
+          examples:
+            Invalid Session Parameters:
+              $ref: '#/components/examples/InvalidSessionParameters'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+  examples:
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSessionParameters:
+      value:
+        code: 400.25.024
+        message: Invalid session parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
+    RQSessionSummary:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQSessionSummary'
+      required: true
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-onboarding.yaml
+- novopayment-onboarding-openapi.yml

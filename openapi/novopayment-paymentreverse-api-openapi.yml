@@ -1,0 +1,334 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Paymentreverse API
+  version: v1
+  description: 'Operations tagged Paymentreverse across 2 of this provider''s published API definitions: novopayment-payment-authorizer.yaml, novopayment-payment-authorizer-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Paymentreverse
+paths:
+  /paymentreverse:
+    post:
+      summary: Payment Reverse
+      description: In case of failure, you can execute the payment reverse within the first 3 hours after the transaction has been made.
+      requestBody:
+        $ref: '#/components/requestBodies/RQPaymentReverse'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSPaymentReverse200'
+        '400':
+          $ref: '#/components/responses/RSPaymentReverse400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Paymentreverse
+      operationId: postPaymentreverse
+      x-operation-id-source: derived
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
+components:
+  examples:
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointPaymentReverse:
+      value:
+        referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+        card:
+          nameOnCard: Joshua Washington
+          cardId: zWNTka0/Pvl8MnFGqPhE5A==
+          cvalidation: zWNTka0/Pvl8MnFGqPhE5A==
+        amount: 58080825.5
+        localDateTime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestParamsRequired:
+      value:
+        code: 400.08.001
+        message: Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+        - message: 'attributeOneCamelCase: Can not be null'
+  requestBodies:
+    RQPaymentReverse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQPaymentReverse'
+          examples:
+            Payment Reverse:
+              $ref: '#/components/examples/RQEndpointPaymentReverse'
+      required: true
+  schemas:
+    RSPaymentReverse200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Describes the meaning of the response code
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Date and time of the transaction according to ISO 8601 standards.
+          format: date-time
+        data:
+          type: object
+          description: 'Object containing the attributes of the response.
+
+            '
+          properties:
+            authCode:
+              type: string
+              description: Authorization number
+              example: 234
+              maxLength: 6
+            codeDeclined:
+              type: string
+              description: 'Detail of the result or the statusRequired if the reverse is declined.
+
+
+                __Allowed values:__ See the list Transaction response codes
+
+                '
+              example: null
+              maxLength: 5
+            transactionId:
+              type: string
+              description: Unique payment identifier
+              example: b3a7dbec3eb0d71798c4f19fec445795
+              maxLength: 40
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQPaymentReverse:
+      type: object
+      required:
+      - referenceCode
+      - amount
+      - localDatetime
+      properties:
+        referenceCode:
+          type: string
+          description: 'Reference code sent in the request.
+
+            '
+          example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+          maxLength: 40
+        card:
+          type: object
+          description: 'Object containing the attributes of the payment instrument.
+
+            '
+          required:
+          - nameOnCard
+          - cardId
+          - cvalidation
+          properties:
+            nameOnCard:
+              type: string
+              description: 'Name printed on card, no special characters.
+
+
+                __Allowed characters:__ Alphabetic and spaces.
+
+                '
+              example: Joshua Washington
+              maxLength: 100
+            cardId:
+              type: string
+              description: 'Unique card identifier encrypted with AES256.
+
+                The cardId attribute is composed of the following values: - pan: Card’s primary account number String(16) - expiration: Card expiration date String(4) - SALT: Random Value String(3)
+
+
+                __Allowed characters:__ Alphanumeric and special characters.
+
+                '
+              example: zWNTka0/Pvl8MnFGqPhE5A==
+              maxLength: 32
+            cvalidation:
+              type: string
+              description: 'Card verification value (CVV) encrypted with AES256.
+
+                '
+              example: zWNTka0/Pvl8MnFGqPhE5A==
+              maxLength: 32
+        amount:
+          type: number
+          description: 'Transaction amount, use dot sign for decimal, without thousands separator.
+
+            '
+          example: 58080825.5
+          multipleOf: 10.2
+        cardToken:
+          type: string
+          description: 'Card token. This field is required for tokenized card transactions When present the object card is not sent Allowed characters: Alphanumeric.
+
+            '
+          example: null
+          maxLength: 32
+        localDatetime:
+          type: string
+          example: '2020-04-20T20:40:52Z'
+          description: Date and time of the transaction according to ISO 8601 standards.
+          format: date-time
+    RSPaymentReverse400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  responses:
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSPaymentReverse400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentReverse400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+    RSPaymentReverse200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentReverse200'
+          examples:
+            Payment Reverse:
+              value:
+                code: 200.12.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: 234
+                  transactionId: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-payment-authorizer.yaml
+- novopayment-payment-authorizer-openapi.yml

@@ -1,0 +1,3224 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Account Cards API
+  version: v1
+  description: 'Operations tagged Novopayment Account Cards across 2 of this provider''s published API definitions: novopayment-accounts.yaml, novopayment-accounts-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/accounts/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Novopayment Account Cards
+paths:
+  /customers/{customerId}/cards/{cardId}/associate:
+    post:
+      tags:
+      - Novopayment Account Cards
+      summary: Card To Account Association
+      description: Use this endpoint to link an unnamed card to an account.
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardToAccountAssociation'
+      operationId: CardToAccountAssociation
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardToAccountAssociation200'
+        '400':
+          $ref: '#/components/responses/RSCardToAccountAssociation400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/disassociate:
+    post:
+      tags:
+      - Novopayment Account Cards
+      summary: Card To Account Disassociation
+      description: 'This endpoint serves the purpose of reversing the operation ***POST
+
+        /customers/{customerId}/cards/{cardId}/associate*** linking the account to
+
+        the card.
+
+
+        It is designed to be used when the activation flow fails or when it is
+
+        determined that the linking decision was incorrect. By utilizing this
+
+        API, the previous association between the card and the linked account
+
+        can be reversed.
+
+
+        To ensure the proper functioning of this API, the following conditions must be met:
+
+
+        - ***Anonymous Card:***
+
+        The card in question must have been issued anonymously.
+
+        This means that it does not contain any personally identifiable
+
+        information (PII) of the cardholder.
+
+
+        - ***No Associated Transactions:***
+
+        The card should not have any associated transactions. This implies
+
+        that no financial activities, such as purchases or payments, have
+
+        been performed using the card.
+
+
+        By meeting these conditions, the API can successfully reverse the
+
+        decision regarding the linked account for the card. This functionality
+
+        allows for rectifying any activation flow failures or incorrect linking
+
+        decisions that may have occurred during the initial card setup process.'
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardToAccountDisassociation'
+      operationId: CardToAccountDisassociation
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardToAccountDisassociation200'
+        '400':
+          $ref: '#/components/responses/RSCardToAccountDisassociation400'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/activate:
+    put:
+      tags:
+      - Novopayment Account Cards
+      summary: Card Activation
+      description: This operation allows the activation of a card.
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardActivation'
+      operationId: CardActivation
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardActivation200'
+        '400':
+          $ref: '#/components/responses/RSCardActivation400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/emboss:
+    post:
+      tags:
+      - Novopayment Account Cards
+      summary: Card Embossing
+      description: This operation allows issuing a physical card of an existing virtual card.
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardEmbossing'
+      operationId: CardEmbossing
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardEmbossing200'
+        '400':
+          $ref: '#/components/responses/RSCardEmbossing400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/block:
+    post:
+      tags:
+      - Novopayment Account Cards
+      summary: Block Card
+      description: This operation allows to temporarily block the card.
+      operationId: BlockCard
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      requestBody:
+        $ref: '#/components/requestBodies/RQBlockCard'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSBlockCard200'
+        '400':
+          $ref: '#/components/responses/RSBlockCard400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards:
+    post:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      summary: Card Creation
+      description: Issue a virtual card for a specific customer and account. The card program must already be established using the Programs API.
+      operationId: CardCreation
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardCreation'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardCreation200'
+        '400':
+          $ref: '#/components/responses/RSCardCreation400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}:
+    get:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      summary: Card Detail
+      description: 'This operation allows to retrieve detailed information about a specific
+
+        card.'
+      operationId: CardDetail
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardDetail200'
+        '400':
+          $ref: '#/components/responses/RSCardDetail400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/pin:
+    post:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      summary: Card PIN Assignment
+      description: This operation sets the card PIN.
+      operationId: CardPINAssignment
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardPINAssignment'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardPINAssignment200'
+        '400':
+          $ref: '#/components/responses/RSCardPINAssignment400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    put:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      summary: Card PIN Update
+      description: This operation allows to update the current PIN of a specific card.
+      operationId: CardPINUpdate
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardPINUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardPINUpdate200'
+        '400':
+          $ref: '#/components/responses/RSCardPINUpdate400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/replacement:
+    post:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      summary: Card Replacement
+      description: This operation allows to replace a card.
+      operationId: CardReplacement
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardReplacement'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardReplacement200'
+        '400':
+          $ref: '#/components/responses/RSCardReplacement400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/accounts/{accountId}/cards/{cardId}/securitcode:
+    get:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/accountId'
+      - $ref: '#/components/parameters/cardId'
+      summary: Card Security Code CVV2
+      description: This operation allows to get the card security code CVV2.
+      operationId: CardSecurityCodeCVV2
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardSecurityCodeCVV2200'
+        '400':
+          $ref: '#/components/responses/RSCardSecurityCodeCVV2400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/transactions:
+    get:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      - $ref: '#/components/parameters/count'
+      - $ref: '#/components/parameters/type'
+      - $ref: '#/components/parameters/fromDate'
+      - $ref: '#/components/parameters/toDate'
+      summary: Card Transactions
+      description: This operation allows getting the transactions of a specific card.
+      operationId: CardTransactions
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardTransactions200'
+        '400':
+          $ref: '#/components/responses/RSCardTransactions400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/operationlimits:
+    put:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      summary: Customize Card Operations Limits
+      description: A user or administrator can establish more restrictive limits at an account level than those established by the card program. The Customize Card Operations Limits endpoint is used to place restrictions on the amount that can be spent with a card or the number of transactions that can be done with a card on a daily, weekly, or monthly basis as well as restrictions on the types of operations that can be performed with a card. This endpoint can be used to implement or update restrictions.
+      operationId: CustomizeCardOperationsLimits
+      requestBody:
+        $ref: '#/components/requestBodies/RQCustomizeCardOperationsLimits'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCustomizeCardOperationsLimits200'
+        '400':
+          $ref: '#/components/responses/RSCustomizeCardOperationsLimits400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /customers/{customerId}/cards/{cardId}/unblock:
+    post:
+      tags:
+      - Novopayment Account Cards
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/cardId'
+      summary: Unblock Card
+      description: This operation allows to unblock a card.
+      operationId: UnblockCard
+      requestBody:
+        $ref: '#/components/requestBodies/RQUnblockCard'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSUnblockCard200'
+        '400':
+          $ref: '#/components/responses/RSUnblockCard400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+  /cards/lookup:
+    post:
+      tags:
+      - Novopayment Account Cards
+      summary: Card Lookup
+      description: 'This API endpoint allows users to create batches of cards with ease.
+
+        Users can customize each card with their own designs, logos, and text,
+
+        and choose from a wide range of templates to get started. The API is
+
+        designed to be fast, reliable, and secure, ensuring that data is always
+
+        protected.
+
+
+        We have different lookup types:
+
+
+        - Activation code and the last four digits of the card.
+
+
+        - Only with the card number.'
+      parameters:
+      - in: query
+        name: type
+        required: true
+        schema:
+          $ref: '#/components/schemas/HeaderTypeParam'
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardLookup'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardLookup200'
+        '400':
+          $ref: '#/components/responses/RSCardLookup400'
+        '500':
+          $ref: '#/components/responses/RS500'
+      operationId: postCardsLookup
+      x-operation-id-source: derived
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/accounts/v1
+components:
+  parameters:
+    count:
+      name: Count
+      in: query
+      description: 'Required data numbers.
+
+        '
+      required: true
+      schema:
+        type: number
+    type:
+      name: type
+      in: query
+      description: 'Transaction type
+
+
+        **Possible values:**
+
+
+        **Credit**
+
+
+        **Debit**
+
+        '
+      required: true
+      schema:
+        type: string
+    accountId:
+      name: accountId
+      in: path
+      description: Unique customer identifier.
+      required: true
+      schema:
+        type: string
+        example: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+        maxLength: 40
+    toDate:
+      name: toDate
+      in: query
+      description: 'The final range of the creation date of the batches to be consulted.
+
+
+        Format YYYYMMDD.
+
+        '
+      schema:
+        type: string
+    cardId:
+      name: cardId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: L1KJ2B35KLJB34L2J4BKK6J4
+    customerId:
+      name: customerId
+      in: path
+      description: Unique customer identifier.
+      required: true
+      schema:
+        type: string
+        example: 69E2DBE6B18C7ACD
+        maxLength: 40
+    fromDate:
+      name: fromDate
+      in: query
+      description: 'Initial range of the creation date of the batches to be consulted.
+
+
+        Format YYYYMMDD.
+
+        '
+      schema:
+        type: string
+  examples:
+    RQCardLookupCardNumber:
+      value:
+        cardNumber: 56F9GGIEOYDNDLODUYAQGQ==
+    CurrencyNotMatch:
+      value:
+        code: 400.02.490
+        message: Currency not match
+        datetime: '2020-01-03T16:05:56.517Z'
+    TheCardIsClosed:
+      value:
+        code: 400.02.396
+        message: The card is closed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestedProductNotExist:
+      value:
+        code: 400.02.068
+        message: It is not possible to obtain information about the requested product.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.02.999
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.02.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.02.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidBlockCode:
+      value:
+        code: 400.02.014
+        message: Invalid block code.
+        datetime: '2020-01-03T16:05:56.517Z'
+    OneValueUpdate:
+      value:
+        code: 400.02.383
+        message: At least one value must be update.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CustomerNotFound:
+      value:
+        code: 400.02.382
+        message: Customer not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardIsBlocked:
+      value:
+        code: 400.02.008
+        message: Card is blocked.
+        datetime: '2020-01-03T16:05:56.517Z'
+    EmbossingRequestInProgress:
+      value:
+        code: 400.02.502
+        message: There is an active embossing request in progress.
+        datetime: '2020-01-03T16:05:56.517Z'
+    GeneralError:
+      value:
+        code: 400.02.021
+        message: Something unexpected has happened, please try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidPINFormat:
+      value:
+        code: 400.02.012
+        message: Invalid PIN format.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.02.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestedResourceNotFound:
+      value:
+        code: 400.02.022
+        message: The requested resource was not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    PINUsed:
+      value:
+        code: 400.02.013
+        message: PIN already used.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNotAnonymous:
+      value:
+        code: 400.02.538
+        message: Card does not belong to anonymous issuance
+        datetime: '2020-01-03T16:05:56.517Z'
+    TheCurrentPINNotMatch:
+      value:
+        code: 400.02.013
+        message: The current PIN doesn't match.
+        datetime: '2020-01-03T16:05:56.517Z'
+    NoSearchResultsWereFound:
+      value:
+        code: 400.02.343
+        message: No search results were found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardTransactionRecorded:
+      value:
+        code: 400.02.537
+        message: It was not possible to process the request because the card has transactions recorded.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNotAllowed:
+      value:
+        code: 400.02.101
+        message: Card not allowed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    ProcessNotCompleted:
+      value:
+        code: 400.02.019
+        message: The process could not be completed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    OperationNotSpecified:
+      value:
+        code: 400.02.372
+        message: At least one operation must be specified.
+        datetime: '2020-01-03T16:05:56.517Z'
+    NewPINDifferentFromTheCurrent:
+      value:
+        code: 400.02.013
+        message: The new PIN must be different from the current one.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQCardLookupActivationCode:
+      value:
+        activationCode: 56F9GGIEOYDNDLODUYAQGQ==
+    CardLinkedToAccount:
+      value:
+        code: 400.02.486
+        message: The card is already linked to an account.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNotAssociatedToAccount:
+      value:
+        code: 400.02.485
+        message: The card is not associated with the account.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.02.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    PINCurrentPIN:
+      value:
+        code: 400.02.078
+        message: The new PIN must be different than the current PIN.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestParamsRequired:
+      value:
+        code: 400.02.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNumberInvalid:
+      value:
+        code: 400.02.383
+        message: The card number is invalid.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountNotExist:
+      value:
+        code: 400.02.070
+        message: The requested account does not exist or does not belong to the customer. Please verify your information and try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountIsBlocked:
+      value:
+        code: 400.02.406
+        message: Account is blocked.
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParameterFormatError:
+      value:
+        code: 400.02.081
+        message: Parameter format error
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestCardEmbossingNotFound:
+      value:
+        code: 400.02.445
+        message: The card does not have an embossing request.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.02.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountIsClosed:
+      value:
+        code: 400.02.410
+        message: Account is closed.
+        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
+    RSCardPINUpdate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardPINUpdate400'
+          examples:
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid PIN Format:
+              $ref: '#/components/examples/InvalidPINFormat'
+            The Current PIN Not Match:
+              $ref: '#/components/examples/TheCurrentPINNotMatch'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            New PIN Different From The Current:
+              $ref: '#/components/examples/NewPINDifferentFromTheCurrent'
+            PIN Used:
+              $ref: '#/components/examples/PINUsed'
+            PIN Current PIN:
+              $ref: '#/components/examples/PINCurrentPIN'
+    RSCardToAccountDisassociation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardToAccountDisassociation400'
+          examples:
+            Requested Product Not Exist:
+              $ref: '#/components/examples/RequestedProductNotExist'
+            Parameter Required Error:
+              $ref: '#/components/examples/RequestParamsRequired'
+            InvalidData Error:
+              $ref: '#/components/examples/InvalidData'
+            Card Not Anonymous:
+              $ref: '#/components/examples/CardNotAnonymous'
+            Card Transaction Recorded:
+              $ref: '#/components/examples/CardTransactionRecorded'
+    RSCardDetail400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardDetail400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Embossing Request In Progress:
+              $ref: '#/components/examples/EmbossingRequestInProgress'
+            Requested Product Not Exist:
+              $ref: '#/components/examples/RequestedProductNotExist'
+    RSCardReplacement200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardReplacement200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  account:
+                    accountId: 4FC9550C979F37B34194113F43A24AAF3AB3DB26
+                    accountNumber: cLGsb6ag90umlxMxO8OEtntq9JQFdhxQV+bfyxbGI3A=
+                    accountProgram:
+                      accountProgramId: 1
+                  card:
+                    cardId: F8F383DA3843E55943ECB79E12CF5A9575F7B427
+                    cardNumber: xQ6jqbV1OA3QrS/6dl4XdwWNzS/cbgW+FOiE4PcDRvc=
+                    expirationDate: 2F7DRW9d1wJBNxjDv+ZQRQ==
+                    cardProgram:
+                      cardProgramId: 1
+                      isTokenizableEnable: false
+    RSCardReplacement400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardReplacement400'
+          examples:
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            General Error:
+              $ref: '#/components/examples/GeneralError'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RSCardPINUpdate200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardPINUpdate200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSUnblockCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUnblockCard400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Requested Product Not Exist:
+              $ref: '#/components/examples/RequestedProductNotExist'
+    RSCardActivation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardActivation400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            ParameterFormatError:
+              $ref: '#/components/examples/ParameterFormatError'
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Account Is Closed:
+              $ref: '#/components/examples/AccountIsClosed'
+            Request Card Embossing Not Found:
+              $ref: '#/components/examples/RequestCardEmbossingNotFound'
+            Card Not Associated To Account:
+              $ref: '#/components/examples/CardNotAssociatedToAccount'
+    RSCustomizeCardOperationsLimits400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCustomizeCardOperationsLimits400'
+          examples:
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            One Value Update:
+              $ref: '#/components/examples/OneValueUpdate'
+            Operation Not Specified:
+              $ref: '#/components/examples/OperationNotSpecified'
+            Account Is Blocked:
+              $ref: '#/components/examples/AccountIsBlocked'
+    RSCardLookup200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardLookup200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  cardId: E4555088EE3BA858346A6E0359B803C38C43EEDE
+                  cardProgram:
+                    cardProgramId: 1
+                    name: My card program
+                  accountId: J658A1DDC6730BE1A4A7D00432BEF1B28EE1B06F
+                  customerId: BFIF0BD9980E5D0B
+                  isAssociated: true
+    RSCardToAccountAssociation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardToAccountAssociation200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCardTransactions200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardTransactions200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  transactions:
+                  - transactionId: 70
+                    description: TEST
+                    sign: +
+                    creationDate: 2022/02/11 15:36:03
+                    amount: 10
+                    fee: 0
+                    tax: 0
+                    registrationDate: 2022/02/11 15:36:05
+                    internalRef: 321133122232
+                    authCode: 587456
+                    transactionCatalog:
+                      id: 11
+                      description: MEMBERSHIP PAYMENT
+                    originCard:
+                      cardId: E4555088EE3BA858346A6E0359B803C38C43EEDE
+                      maskedNumber: '************0081'
+                      cardNumber: 40IsnNA9r2s0XTvsqYqkYBwFKVbEzE7f3CijGRfI2Ss
+                    targetAccount:
+                      accountId: 501BF87320F278DC9F41C835AD0D5111B2B0FF68
+                      accountNumber: 1DcRlnvg9no1CRHDbOes0Q==
+                    originAccount:
+                      accountId: 501BF87320F278DC9F41C835AD0D5111B2B0FF68
+                      accountNumber: 1DcRlnvg9no1CRHDbOes0Q==
+                    receivingAccount:
+                      accountId: 4FC9550C979F37B34194113F43A24AAF3AB3DB26
+                      accountNumber: cLGsb6ag90umlxMxO8OEtntq9JQFdhxQV
+    RSCardDetail200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardDetail200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  cardId: A85E575D98DE2C56A77FE4ACD9BA5C49C4682F21
+                  cardStatus: 1
+                  maskedNumber: '************0192'
+                  cardNumber: xQ6jqbV1OA3QrS/6dl4XdwWNzS/cbgW+FOiE4PcDRvc=
+                  createdDate: 2022/02/07 11:18:41
+                  expirationDate: GX0PhcF6g4TJbktZ+5KX5w==
+                  cardProgram:
+                    cardProgramId: 1
+                    name: Debit Classic
+                    expirationDateFormat: YYMM
+                    bin: 44240900
+                    cardBrand:
+                      brandId: 1
+                      name: Visa
+                    isTokenizableEnable: true
+                  accountId: 02F29123CA89AB709053A7269FF4C3027ADE419F
+                  customerId: 0415DC7135E45DBE
+                  isAssociated: true
+    RSBlockCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSBlockCard400'
+          examples:
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid Block Code:
+              $ref: '#/components/examples/InvalidBlockCode'
+            The Card Is Closed:
+              $ref: '#/components/examples/TheCardIsClosed'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Embossing Request In Progress:
+              $ref: '#/components/examples/EmbossingRequestInProgress'
+    RSCardPINAssignment400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardPINAssignment400'
+          examples:
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid PIN Format:
+              $ref: '#/components/examples/InvalidPINFormat'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+    RSCustomizeCardOperationsLimits200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCustomizeCardOperationsLimits200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCardActivation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardActivation200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCardToAccountDisassociation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardToAccountDisassociation200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCardCreation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardCreation400'
+          examples:
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Currency Not Match:
+              $ref: '#/components/examples/CurrencyNotMatch'
+            Account Not Exist:
+              $ref: '#/components/examples/AccountNotExist'
+            Card Not Allowed:
+              $ref: '#/components/examples/CardNotAllowed'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+    RSCardTransactions400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardTransactions400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            No Search Results Were Found:
+              $ref: '#/components/examples/NoSearchResultsWereFound'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RSUnblockCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUnblockCard200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSCardPINAssignment200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardPINAssignment200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCardEmbossing400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardEmbossing400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+    RSCardEmbossing200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardEmbossing200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSBlockCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSBlockCard200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCardLookup400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardLookup400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Card Number Invalid:
+              $ref: '#/components/examples/CardNumberInvalid'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RSCardCreation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardCreation200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  card:
+                    cardId: E4555088EE3BA858346A6E0359B803C38C43EEDE
+                    cardNumber: 40IsnNA9r2s0XTvsqYqkYBwFKVbEzE7f3CijGRfI2Ss=
+                    expirationDate: dnUqHp23XcLPYjRPS8GseA==
+                    cardProgram:
+                      cardProgramId: 1
+                  account:
+                    accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+                    accountNumber: 1DcRlnvg9no1CRHDbOes0Q==
+                    accountProgram:
+                      accountProgramId: 1
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSCardSecurityCodeCVV2200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardSecurityCodeCVV2200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  securityCode: DcKOvFDExPLR9l9LyCqLog==
+    RSCardToAccountAssociation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardToAccountAssociation400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+            CurrencyNotMatch:
+              $ref: '#/components/examples/CurrencyNotMatch'
+            ProcessNotCompleted:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            AccountNotExist:
+              $ref: '#/components/examples/AccountNotExist'
+            Account Is Blocked:
+              $ref: '#/components/examples/AccountIsBlocked'
+            Account Is Closed:
+              $ref: '#/components/examples/AccountIsClosed'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Card Not Allowed:
+              $ref: '#/components/examples/CardNotAllowed'
+            Request Card Embossing Not Found:
+              $ref: '#/components/examples/RequestCardEmbossingNotFound'
+            Card Linked To Account:
+              $ref: '#/components/examples/CardLinkedToAccount'
+    RSCardSecurityCodeCVV2400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardSecurityCodeCVV2400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+  schemas:
+    RSCardToAccountDisassociation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardActivation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSUnblockCard400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardReplacement400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardPINUpdate200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardPINUpdate400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardSecurityCodeCVV2400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCardToAccountAssociation:
+      type: object
+      required:
+      - accountId
+      properties:
+        accountId:
+          type: string
+          description: Unique account identifier.
+          example: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+          maxLength: 100
+    RSCardEmbossing200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardLookup400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCardActivation:
+      type: object
+      properties:
+        activationCode:
+          type: string
+          description: Activation code receive for OTP encrypted in AES-256.
+          example: 5Y2vVI9Dhf1ipl+C6QYyUQ==
+          maxLength: 40
+        cvv2:
+          type: string
+          description: CVV2 encrypted in AES-256.
+          example: mFJcy7CX0dIoI9x8a/JKlw==
+          maxLength: 40
+        expirationDate:
+          type: string
+          description: Expiration date encrypted in AES-256.
+          example: hlnYq93Md01m++byjzTB3A==
+          maxLength: 40
+    RSCardToAccountAssociation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCustomizeCardOperationsLimits:
+      type: object
+      properties:
+        atmWhitdrawals:
+          type: object
+          properties:
+            active:
+              type: string
+              description: Transaction limit status.
+              example: true
+              maxLength: 100
+            amountLimit:
+              type: object
+              description: 'A custom object that contains the amount limits per day, week, and month
+
+
+                __*At least one value must be sent to achieve a successful configuration.__
+
+                '
+              properties:
+                daily:
+                  type: number
+                  description: Daily limit amount.
+                  example: 100.55
+                  maxLength: 10
+                weekly:
+                  type: number
+                  description: Weekly limit amount.
+                  example: 1000.55
+                  maxLength: 10
+                monthly:
+                  type: number
+                  description: Monthly limit amount.
+                  example: 10000.55
+                  maxLength: 10
+            countLimit:
+              type: object
+              description: 'A custom object that contains the count limits per day, week, and month.
+
+                __*At least one value must be sent to achieve a successful configuration.__
+
+                '
+              properties:
+                daily:
+                  type: integer
+                  description: Daily limit amount.
+                  example: 100
+                  maxLength: 10
+                weekly:
+                  type: integer
+                  description: Weekly limit amount.
+                  example: 1000
+                  maxLength: 10
+                monthly:
+                  type: integer
+                  description: Monthly limit amount.
+                  example: 10000
+                  maxLength: 10
+        posPurchases:
+          type: object
+          properties:
+            active:
+              type: string
+              description: Transaction limit status.
+              example: true
+              maxLength: 100
+            amountLimit:
+              type: object
+              description: 'A custom object that contains the amount limits per day, week, and month
+
+
+                __*At least one value must be sent to achieve a successful configuration.__
+
+                '
+              properties:
+                daily:
+                  type: number
+                  description: Daily limit amount.
+                  example: 100.55
+                  maxLength: 10
+                weekly:
+                  type: number
+                  description: Weekly limit amount.
+                  example: 1000.55
+                  maxLength: 10
+                monthly:
+                  type: number
+                  description: Monthly limit amount.
+                  example: 10000.55
+                  maxLength: 10
+            countLimit:
+              type: object
+              description: 'A custom object that contains the count limits per day, week, and month.
+
+                __*At least one value must be sent to achieve a successful configuration.__
+
+                '
+              properties:
+                daily:
+                  type: integer
+                  description: Daily limit amount.
+                  example: 100
+                  maxLength: 10
+                weekly:
+                  type: integer
+                  description: Weekly limit amount.
+                  example: 1000
+                  maxLength: 10
+                monthly:
+                  type: integer
+                  description: Monthly limit amount.
+                  example: 10000
+                  maxLength: 10
+        ecommerce:
+          type: object
+          properties:
+            active:
+              type: string
+              description: Transaction limit status.
+              example: true
+              maxLength: 100
+            amountLimit:
+              type: object
+              description: 'A custom object that contains the amount limits per day, week, and month
+
+
+                __*At least one value must be sent to achieve a successful configuration.__
+
+                '
+              properties:
+                daily:
+                  type: number
+                  description: Daily limit amount.
+                  example: 100.55
+                  maxLength: 10
+                weekly:
+                  type: number
+                  description: Weekly limit amount.
+                  example: 1000.55
+                  maxLength: 10
+                monthly:
+                  type: number
+                  description: Monthly limit amount.
+                  example: 10000.55
+                  maxLength: 10
+            countLimit:
+              type: object
+              description: 'A custom object that contains the count limits per day, week, and month.
+
+                __*At least one value must be sent to achieve a successful configuration.__
+
+                '
+              properties:
+                daily:
+                  type: integer
+                  description: Daily limit amount.
+                  example: 100
+                  maxLength: 10
+                weekly:
+                  type: integer
+                  description: Weekly limit amount.
+                  example: 1000
+                  maxLength: 10
+                monthly:
+                  type: integer
+                  description: Monthly limit amount.
+                  example: 10000
+                  maxLength: 10
+    RSCardEmbossing400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardCreation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQBlockCard:
+      type: object
+      required:
+      - blockType
+      properties:
+        blockType:
+          type: string
+          description: 'Blockage code in ISO 8583.
+
+
+            **Refer to:** [Block Type](https://developer.novopayment.com/api/request-and-response-codes#item-blocktype)
+
+            '
+          example: 1
+          maxLength: 5
+        reasonId:
+          type: string
+          description: 'Blockage reason ID.
+
+
+            **Refer to:** [Reason](https://developer.novopayment.com/api/request-and-response-codes#item-reason)
+
+
+            __*This field is required, when the blockTypeId is different from PB__
+
+            '
+          example: 1
+          maxLength: 5
+        observations:
+          type: string
+          description: Additional comments related to the card blocking action.
+          example: Lost card
+          maxLength: 100
+    RSCardDetail400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardLookup200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - cardId
+          - cardProgram
+          properties:
+            cardId:
+              type: string
+              description: Encrypted identifier unique card in AES-256.
+              example: E4555088EE3BA858346A6E0359B803C38C43EEDE
+              maxLength: 40
+            cardProgram:
+              type: object
+              description: This object contains the information program card.
+              required:
+              - cardProgramId
+              - name
+              properties:
+                cardProgramId:
+                  type: string
+                  description: Unique account identifier.
+                  example: 1
+                  maxLength: 10
+                name:
+                  type: string
+                  description: Unique account identifier.
+                  example: My card program
+                  maxLength: 10
+            customerId:
+              type: string
+              description: Unique customer identifier associated with card.
+              example: BFIF0BD9980E5D0B
+              maxLength: 40
+            accountId:
+              type: string
+              description: Unique account identifier associated with the card.
+              example: J658A1DDC6730BE1A4A7D00432BEF1B28EE1B06F
+              maxLength: 40
+            isAssociated:
+              type: boolean
+              description: 'Possible values :
+
+                - True : The card is associated with an account
+
+                - False : The card is not associated with an account
+
+                '
+              example: true
+    RSCustomizeCardOperationsLimits200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardReplacement200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - account
+          - card
+          properties:
+            account:
+              type: object
+              description: 'Customized account objetct.
+
+
+                Contains the account information.
+
+                '
+              required:
+              - accountId
+              - accountNumber
+              - accountProgram
+              properties:
+                accountId:
+                  type: string
+                  description: Unique account identifier.
+                  example: 4FC9550C979F37B34194113F43A24AAF3AB3DB26
+                  maxLength: 40
+                accountNumber:
+                  type: string
+                  description: encrypted account number in AES-256.
+                  example: cLGsb6ag90umlxMxO8OEtntq9JQFdhxQV+bfyxbGI3A=
+                  maxLength: 40
+                accountProgram:
+                  type: object
+                  description: 'Customized account program object.
+
+
+                    Contain the account program information.
+
+                    '
+                  required:
+                  - accountProgramId
+                  properties:
+                    accountProgramId:
+                      type: string
+                      description: Account program identification.
+                      example: 1
+                      maxLength: 40
+            card:
+              type: object
+              description: 'Customized card objetct.
+
+
+                Contains the card information.
+
+                '
+              required:
+              - cardId
+              - cardNumber
+              - expirationDate
+              - cardprogram
+              properties:
+                cardId:
+                  type: string
+                  description: Unique card ID.
+                  example: F8F383DA3843E55943ECB79E12CF5A9575F7B427
+                  maxLength: 40
+                cardNumber:
+                  type: string
+                  description: Card number using AES-256 encryption.
+                  example: xQ6jqbV1OA3QrS/6dl4XdwWNzS/cbgW+FOiE4PcDRvc=
+                  maxLength: 40
+                expirationDate:
+                  type: string
+                  description: Card expiration date using AES-256 encryption.
+                  example: 2F7DRW9d1wJBNxjDv+ZQRQ==
+                  maxLength: 40
+                cardprogram:
+                  type: object
+                  description: 'Customized card program object.
+
+
+                    Contains the card program information.
+
+                    '
+                  required:
+                  - cardProgramId
+                  - isTokenizableEnable
+                  properties:
+                    cardProgramId:
+                      type: string
+                      description: Card program identification.
+                      example: 1
+                      maxLength: 40
+                    isTokenizableEnable:
+                      type: boolean
+                      description: 'Specifies whether the card is tokenizable or not.
+
+
+                        **Possible values:**
+
+
+                        true, if the card is tokenizable.
+
+
+                        false, if the card is not tokenizable
+
+                        '
+                      enum:
+                      - true
+                      - false
+    RQCardEmbossing:
+      type: object
+      properties:
+        line1:
+          type: string
+          description: 'Cardholder name to being embossed.
+
+
+            __* If the field is not sent, the system defines the line 1 through an algorithm.__
+
+            '
+          example: JOHN DOE
+          maxLength: 50
+        line2:
+          type: string
+          description: 'Cardholder company name.
+
+
+            __* If the field is not sent, the system defines the line 1 through an algorithm.__
+
+            '
+          example: NOVOPAYMENT
+          maxLength: 50
+        observations:
+          type: string
+          description: Additional observations related to this process.
+          example: Customer requests a physical card
+          maxLength: 200
+        cardDesignId:
+          type: string
+          description: Card design ID.
+          example: A1
+          maxLength: 20
+        requestNumber:
+          type: string
+          description: Embossing request number.
+          example: 64876
+          maxLength: 40
+        reference:
+          type: string
+          description: Request Reference.
+          example: AS749
+          maxLength: 40
+        address:
+          type: object
+          description: 'Customized object that contains the card delivery information.
+
+
+            __* If one field of the address object is sent, the other fields of the object change in data type to required.__
+
+            '
+          properties:
+            street:
+              type: string
+              description: Address line 1.
+              example: calle
+              maxLength: 100
+            number:
+              type: string
+              description: Building number.
+              example: 1
+              maxLength: 100
+            homeNumber:
+              type: string
+              description: Home or apartment number.
+              example: 789
+              maxLength: 50
+            sector:
+              type: string
+              description: Address sector name.
+              example: sector
+              maxLength: 40
+            city:
+              type: string
+              description: Name of the city of residence.
+              example: Bogotá
+              maxLength: 100
+            state:
+              type: string
+              description: Name of the state of residence.
+              example: Bogotá D.C
+              maxLength: 100
+    RQCardPINAssignment:
+      type: object
+      required:
+      - pin
+      properties:
+        pin:
+          type: string
+          description: Four-digit numeric PIN encrypted using AES-256 encryption.
+          example: 3F9DRW9d1kJBBxjDv+AQGQ==
+          maxLength: 32
+    RSCardToAccountDisassociation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardDetail200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - cardId
+          - cardStatus
+          - maskedNumber
+          - cardNumber
+          - createdDate
+          - expirationDate
+          - cardProgram
+          properties:
+            cardId:
+              type: string
+              description: Unique card identifier.
+              example: A85E575D98DE2C56A77FE4ACD9BA5C49C4682F21
+              maxLength: 40
+            cardStatus:
+              type: integer
+              description: 'Current card status
+
+
+                **Possible values:**
+
+
+                1 ACTIVE
+
+
+                2 INACTIVE
+
+                '
+              enum:
+              - 1
+              - 2
+              maxLength: 38
+            maskedNumber:
+              type: string
+              description: Encrypted card number in AES-256
+              example: '************0192'
+              maxLength: 40
+            cardNumber:
+              type: string
+              description: Encrypted card number in AES-256
+              example: j2jUBVXEd50vR2TvZ19KYSm1pmW0r31xx6mXz+D2BWM=
+              maxLength: 40
+            createdDate:
+              type: string
+              description: Creation date.
+              example: 2022/02/07 11:18:41
+            expirationDate:
+              type: string
+              description: Expiration date encrypted using AES-256 algorithm.
+              example: GX0PhcF6g4TJbktZ+5KX5w==
+              maxLength: 40
+            embossedInfo:
+              type: object
+              description: This object contains the card embossing information
+              required:
+              - status
+              - Line1
+              - cardDesign
+              properties:
+                status:
+                  type: object
+                  description: This object contains the embossing status
+                  required:
+                  - Id
+                  - name
+                  properties:
+                    Id:
+                      type: string
+                      description: Card embossing status ID
+                      example: '01'
+                      maxLength: 2
+                    Name:
+                      type: string
+                      description: Card embossing status name
+                      example: John Smith
+                      maxLength: 50
+                Line1:
+                  type: string
+                  description: Line1
+                  example: Line1
+                  maxLength: 50
+                cardDesign:
+                  type: string
+                  description: Card design ID
+                  example: cardDesign ID
+                  maxLength: 50
+            cardProgram:
+              type: object
+              description: Contains the card program information.
+              required:
+              - cardProgramId
+              - name
+              - bin
+              - cardBrand
+              - isTokenizableEnable
+              properties:
+                cardProgramId:
+                  type: string
+                  description: Card program identification.
+                  example: 1
+                  maxLength: 10
+                name:
+                  type: string
+                  description: Card program name.
+                  example: Debit Classic
+                  maxLength: 140
+                bin:
+                  type: string
+                  description: Bank identification number (BIN), which identifies the financial institution that has issued the card.
+                  example: 44240900
+                  maxLength: 30
+                cardBrand:
+                  type: object
+                  description: 'CardBrand object.
+
+                    Contains the card brand information.
+
+                    '
+                  required:
+                  - brandId
+                  - name
+                  properties:
+                    brandId:
+                      type: string
+                      description: 'Card Brand Id.
+
+
+                        **Refer to:** [Network Scheme / Brand Type](https://developer.novopayment.com/api/accounts-api/card-detail)
+
+                        '
+                      example: 1
+                      maxLength: 10
+                    name:
+                      type: string
+                      description: 'Card Brand Name.
+
+
+                        **Refer to:** [Network Scheme / Brand Type](https://developer.novopayment.com/api/accounts-api/card-detail)
+
+                        '
+                      example: Visa
+                      maxLength: 50
+                isTokenizableEnable:
+                  type: boolean
+                  description: 'Specifies whether the card is tokenizable or not.
+
+
+                    **Possible values:**
+
+
+                    - true, if the card is tokenizable.
+
+
+                    - false, if the card is not tokenizable
+
+                    '
+                  enum:
+                  - true
+                  - false
+            customerId:
+              type: string
+              description: Unique customer identifier associated with card
+              example: BFIF0BD9980E5D0B
+              maxLength: 40
+            accountId:
+              type: string
+              description: Unique account identifier associated with the card
+              example: J658A1DDC6730BE1A4A7D00432BEF1B28EE1B06F
+              maxLength: 40
+            isAssociated:
+              type: boolean
+              description: 'Possible values :
+
+                - True : The card is associated with an account
+
+                - False : The card is not associated with an account
+
+                '
+              example: true
+    RQUnblockCard:
+      type: object
+      required:
+      - observations
+      properties:
+        observations:
+          type: string
+          description: Observation the unblocking the account.
+          example: Card modification
+          maxLength: 140
+    RQCardToAccountDisassociation:
+      type: object
+      required:
+      - comments
+      - updatedBy
+      properties:
+        comments:
+          type: string
+          description: Descriptive text about the reason for dissociation
+          maxLength: 200
+          example: The card activation has failed, disassociation is required.
+        updatedBy:
+          type: string
+          description: The user who performed the card disassociation.
+          maxLength: 25
+          example: Admin
+    HeaderTypeParam:
+      type: string
+      description: 'Card lookup type.
+
+        Allowed values:
+
+        - ACTIVATION_CODE
+
+        - CARD_NUMBER
+
+        '
+      enum:
+      - ACTIVATION_CODE
+      - CARD_NUMBER
+      example: ACTIVATION_CODE
+      maxLength: 15
+    RSCustomizeCardOperationsLimits400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Timestamp
+          format: date-time
+    RSCardToAccountAssociation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardPINAssignment400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardSecurityCodeCVV2200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - securityCode
+          properties:
+            securityCode:
+              type: string
+              description: CVV2 encrypted using AES-256.
+              example: DcKOvFDExPLR9l9LyCqLog==
+              maxLength: 40
+    RQCardCreation:
+      type: object
+      required:
+      - account
+      - card
+      properties:
+        account:
+          type: object
+          description: 'Customized object.
+
+            Contains the card information
+
+            '
+          required:
+          - accountId
+          properties:
+            accountId:
+              type: string
+              description: Unique account identifier.
+              example: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+              maxLength: 40
+        card:
+          type: object
+          description: A customized object that contains the card information.
+          required:
+          - cardProgramId
+          properties:
+            cardProgramId:
+              type: string
+              description: Card program identification.
+              example: 1
+              maxLength: 10
+            cardDesignId:
+              type: string
+              description: Card design ID
+              example: A1
+              maxLength: 20
+            line1:
+              type: string
+              description: Cardholder name of the card.
+              example: line1
+              maxLength: 20
+            line2:
+              type: string
+              description: 'Cardholder company name of the card
+
+
+                __*Applies when it is a corporate card.__
+
+                '
+              example: line2
+              maxLength: 20
+            requestNumber:
+              type: string
+              description: Embossing request number.
+              example: 64876
+              maxLength: 40
+            reference:
+              type: string
+              description: Application reference.
+              example: AS749
+              maxLength: 40
+            address:
+              type: object
+              description: 'A customized object that contains the card delivery information.
+
+
+                __**Note:** If one field of the address object is sent, the other fields of the object change in data type to required.__
+
+                '
+              properties:
+                street:
+                  type: string
+                  description: Address line 1.
+                  example: calle
+                  maxLength: 100
+                number:
+                  type: string
+                  description: Building number.
+                  example: 1
+                  maxLength: 100
+                homeNumber:
+                  type: string
+                  description: Home or apartment number.
+                  example: 789
+                  maxLength: 50
+                sector:
+                  type: string
+                  description: Address sector name.
+                  example: sector
+                  maxLength: 40
+                city:
+                  type: string
+                  description: Name of the city of residence.
+                  example: New York
+                  maxLength: 100
+                state:
+                  type: string
+                  description: Name of the state of residence.
+                  example: Manhattan
+                  maxLength: 100
+    RSCardActivation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCardPINUpdate:
+      type: object
+      required:
+      - pin
+      - newPin
+      properties:
+        pin:
+          type: string
+          description: Four-digit numeric PIN encrypted using AES-256 encryption.
+          example: 3F9DRW9d1kJBBxjDv+AQGQ==
+          maxLength: 32
+        newPin:
+          type: string
+          description: New card PIN encrypted using AES-256.
+          example: 4F9DSW1d4kJTBxjDg+AQGQ==
+          maxLength: 32
+    RSBlockCard400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardPINAssignment200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardCreation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          description: Customized response object
+          required:
+          - account
+          properties:
+            account:
+              type: object
+              required:
+              - accountId
+              properties:
+                accountId:
+                  type: string
+                  description: Unique account identifier.
+                  example: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+                  maxLength: 40
+                accountNumber:
+                  type: string
+                  description: encrypted account number in AES-256.
+                  example: 1DcRlnvg9no1CRHDbOes0Q==
+                  maxLength: 40
+                accountProgram:
+                  type: object
+                  description: A customized object that contains the account program information.
+                  properties:
+                    accountProgramId:
+                      type: string
+                      description: Unique Program ID for accounts.
+                      example: 1
+                      maxLength: 10
+            card:
+              type: object
+              description: 'Customized object that contains the card information.
+
+                __* If the card program ID is not sent in the request body, this field will be empty in the response body.__
+
+                '
+              properties:
+                cardId:
+                  type: string
+                  description: Unique card identifier.
+                  example: E4555088EE3BA858346A6E0359B803C38C43EEDE
+                  maxLength: 40
+                cardNumber:
+                  type: string
+                  description: Encrypted card number in AES-256.
+                  example: 40IsnNA9r2s0XTvsqYqkYBwFKVbEzE7f3CijGRfI2Ss=
+                  maxLength: 40
+                expirationDate:
+                  type: string
+                  description: Encrypted expiration date in AES-256.
+                  example: dnUqHp23XcLPYjRPS8GseA==
+                  maxLength: 40
+                cardprogram:
+                  type: object
+                  description: Customized object that contains the card program information.
+                  properties:
+                    cardProgramId:
+                      type: string
+                      description: Unique program ID for cards.
+                      example: 1
+                      maxLength: 40
+    RSCardTransactions400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCardReplacement:
+      type: object
+      required:
+      - blockReasonId
+      - observations
+      - blockTypeId
+      properties:
+        blockReasonId:
+          type: string
+          description: 'Blockage reason ID.
+
+
+            **Refer to:** [Reason](https://developer.novopayment.com/api/request-and-response-codes#item-reason)
+
+            '
+          example: 5
+          maxLength: 5
+        observations:
+          type: string
+          description: Describes the reasons for blocking the card.
+          example: Lost card
+          maxLength: 50
+        blockTypeId:
+          type: string
+          description: 'Blockage code in ISO 8583 format.
+
+
+            **Refer to:** [Block Type](https://developer.novopayment.com/api/request-and-response-codes#item-blocktype)
+
+            '
+          example: 1
+          maxLength: 40
+    RSCardTransactions200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - transactions
+          properties:
+            transactions:
+              type: object
+              required:
+              - transactionId
+              - description
+              - sign
+              - creationDate
+              - amount
+              - registrationDate
+              - internalRef
+              - transactionCatalog
+              - targetAccount
+              properties:
+                transactionId:
+                  type: string
+                  description: Unique transaction ID.
+                  example: 70
+                  maxLength: 38
+                description:
+                  type: string
+                  description: Transaction description.
+                  example: TEST
+                  maxLength: 40
+                sign:
+                  type: string
+                  description: 'Transaction type
+
+
+                    **Possible values:**
+
+
+                    + for a credit transaction
+
+
+                    - for a debit transaction
+
+                    '
+                  enum:
+                  - +
+                  - '-'
+                  maxLength: 1
+                creationDate:
+                  type: string
+                  description: Transaction creation date.
+                  example: 2022/02/11 15:36:03
+                amount:
+                  type: number
+                  description: Transaction Amount.
+                  example: 1
+                  maxLength: 38
+                fee:
+                  type: number
+                  description: Transaction commission amount.
+                  example: 0.03
+                  maxLength: 38
+                tax:
+                  type: number
+                  description: Transaction tax.
+                  example: 0.03
+                  maxLength: 38
+                registrationDate:
+                  type: string
+                  description: Transaction date.
+                  example: 2022/02/11 15:36:05
+                internalRef:
+                  type: string
+                  description: Internal reference generated by the processing core.
+                  example: 321133122232
+                  maxLength: 12
+                authCode:
+                  type: string
+                  description: Transaction authorization code.
+                  example: 587456
+                  maxLength: 6
+                isReleased:
+                  type: boolean
+                  description: 'indicates if the transaction was released by the processor. This field applies only when a transaction is Authorized but not confirmed by the card network.
+
+
+                    __Possible values:__
+
+
+                    **True:** if the transaction was released and the blocked balance was returned to the account.
+
+
+                    **False:** The transaction has not been released
+
+                    '
+                  example: false
+                  enum:
+                  - true
+                  - false
+                  minLength: 5
+                  maxLength: 5
+                releasedDate:
+                  type: string
+                  description: Datetime when the transaction was released.
+                  example: '2020-01-03T16:05:56.517Z'
+                  format: date-time
+                transactionCatalog:
+                  type: object
+                  required:
+                  - id
+                  - description
+                  description: 'Transaction Catalogue Object.
+
+
+                    Contains the transaction catalog information.
+
+                    '
+                  properties:
+                    id:
+                      type: string
+                      description: 'Transaction ID.
+
+
+                        **Refer to:** [Transactions](https://developer.novopayment.com/api/accounts-api/card-transaction-0)
+
+                        '
+                      example: 11
+                      maxLength: 5
+                    description:
+                      type: string
+                      description: Description of the transaction catalog.
+                      example: MEMBERSHIP PAYMENT
+                      maxLength: 100
+                originCard:
+                  type: object
+                  required:
+                  - cardId
+                  - maskedNumber
+                  - cardNumber
+                  description: 'Origin Card Object.
+
+
+                    Contains the information of the card used in the transaction.
+
+
+                    __*In case a card was used in the transaction.__
+
+                    '
+                  properties:
+                    cardId:
+                      type: string
+                      description: Unique card identifier.
+                      example: E4555088EE3BA858346A6E0359B803C38C43EEDE
+                      maxLength: 40
+                    maskedNumber:
+                      type: string
+                      description: Masked account number.
+                      example: '****************2716'
+                      maxLength: 50
+                    cardNumber:
+                      type: string
+                      description: Card number encrypted using AES-256 algorithm.
+                      example: xQ6jqbV1OA3QrS/6dl4XdwWNzS/cbgW+FOiE4PcDRvc
+                      maxLength: 50
+                targetAccount:
+                  type: object
+                  required:
+                  - accountId
+                  - accountNumber
+                  description: 'Target Account Object.
+
+
+                    Contains the information of the account to which the credit or debit was made. Mostly related to the account being queried.
+
+                    '
+                  properties:
+                    accountId:
+                      type: string
+                      description: Unique account identifier
+                      example: 501BF87320F278DC9F41C835AD0D5111B2B0FF68
+                      maxLength: 40
+                    accountNumber:
+                      type: string
+                      description: Account number encrypted using AES-256 algorithm.
+                      example: 1DcRlnvg9no1CRHDbOes0Q==
+                      maxLength: 50
+                originAccount:
+                  type: object
+                  required:
+                  - accountId
+                  - accountNumber
+                  description: 'Target Account Object.
+
+
+                    Contains the information of the account to which the credit or debit was made. Mostly related to the account being queried.
+
+                    '
+                  properties:
+                    accountId:
+                      type: string
+                      description: Unique account identifier
+                      example: 501BF87320F278DC9F41C835AD0D5111B2B0FF68
+                      maxLength: 40
+                    accountNumber:
+                      type: string
+                      description: Account number encrypted using AES-256 algorithm.
+                      example: 1DcRlnvg9no1CRHDbOes0Q==
+                      maxLength: 50
+                receivingAccount:
+                  type: object
+                  required:
+                  - accountId
+                  - accountNumber
+                  description: 'Target Account Object.
+
+
+                    Contains the information of the account to which the credit or debit was made. Mostly related to the account being queried.
+
+                    '
+                  properties:
+                    accountId:
+                      type: string
+                      description: Unique account identifier
+                      example: 4FC9550C979F37B34194113F43A24AAF3AB3DB26
+                      maxLength: 40
+                    accountNumber:
+                      type: string
+                      description: Account number encrypted using AES-256 algorithm.
+                      example: cLGsb6ag90umlxMxO8OEtntq9JQFdhxQV
+                      maxLength: 50
+    RSUnblockCard200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSBlockCard200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCardLookup:
+      type: object
+      properties:
+        activationCode:
+          type: string
+          description: 'Encrypted the activation code configured by the tenant in AES-256
+
+
+            - *This field is REQUIRED WHEN sending the ACTIVATION_CODE by lookup type.
+
+            '
+          example: 5Y2vVI9Dhf1ipl+C6QYyUQ==
+          maxLength: 40
+        lastFourDigits:
+          type: string
+          description: 'Encrypted last four digits of card number in AES-256
+
+
+            - *This field is REQUIRED WHEN sending the ACTIVATION_CODE by lookup type.
+
+            '
+          example: 9A2vVI9Dhf1i3gC6QAaUQ==
+          maxLength: 40
+        cardNumber:
+          type: string
+          description: 'Encrypted the card Number in AES-256
+
+
+            - * This field is required when sending the CARD_NUMBER by lookup type.
+
+            '
+          example: 56F9GGIEOYDNDLODUYAQGQ==
+          maxLength: 45
+  requestBodies:
+    RQCustomizeCardOperationsLimits:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCustomizeCardOperationsLimits'
+      required: true
+    RQCardLookup:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardLookup'
+          examples:
+            activationCode:
+              $ref: '#/components/examples/RQCardLookupActivationCode'
+            cardNumber:
+              $ref: '#/components/examples/RQCardLookupCardNumber'
+    RQCardEmbossing:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardEmbossing'
+      required: true
+    RQCardPINAssignment:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardPINAssignment'
+      required: true
+    RQBlockCard:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQBlockCard'
+      required: true
+    RQCardCreation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardCreation'
+      required: true
+    RQCardPINUpdate:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardPINUpdate'
+      required: true
+    RQCardReplacement:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardReplacement'
+      required: true
+    RQCardActivation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardActivation'
+      required: true
+    RQCardToAccountDisassociation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardToAccountDisassociation'
+    RQCardToAccountAssociation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardToAccountAssociation'
+      required: true
+    RQUnblockCard:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQUnblockCard'
+      required: true
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-accounts.yaml
+- novopayment-accounts-openapi.yml

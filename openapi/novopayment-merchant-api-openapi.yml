@@ -1,0 +1,428 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Merchant API
+  version: v1
+  description: 'Operations tagged Merchant across 2 of this provider''s published API definitions: novopayment-customers.yaml, novopayment-customers-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/customers/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Merchant
+paths:
+  /merchant:
+    post:
+      summary: Create Merchant Customers
+      description: Operation that allows to create a merchant type customer.
+      requestBody:
+        $ref: '#/components/requestBodies/RQCreateMerchantCustomer'
+      operationId: CreateMerchantCustomers
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCreateMerchantCustomer200'
+        '400':
+          $ref: '#/components/responses/RSCreateMerchantCustomer400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Merchant
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/customers/v1
+components:
+  examples:
+    InvalidAccessToken:
+      value:
+        code: 401.18.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.18.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.18.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.18.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParameterFormatError:
+      value:
+        code: 400.18.081
+        message: Parameter format error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.18.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
+    RSCreateMerchantCustomer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreateMerchantCustomer400'
+          examples:
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSCreateMerchantCustomer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreateMerchantCustomer200'
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  customerId: 49BCD622C6A07726594D63AAB2F436D366782AD1
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+  schemas:
+    RQCreateMerchantCustomer:
+      type: object
+      required:
+      - legalName
+      - tradingName
+      - mcc
+      - annualCardVolum
+      - maxTransactionAmount
+      - defaultStatementDescriptor
+      - hasAcceptedCreditCardsPreviously
+      - industryType
+      - entityType
+      - entityPurpose
+      - registrationNumber
+      - incorporationDate
+      - identifications
+      - webSite
+      - contacts
+      - addresses
+      properties:
+        legalName:
+          type: string
+          description: 'Legal name of the entity, just like is presented in the official documentation. Only letters, numbers and the following special characters are allowed: dash, apostrophes, period, coma and spaces.
+
+            '
+          example: commercial LegalName
+          maxLength: 50
+        tradingName:
+          type: string
+          description: 'Commercial name of the entity, the. Way it appears in official documentation Only letters, numbers and the following special characters are allowed: dash, apostrophes, period, coma and spaces.
+
+            '
+          example: commercial TradingName.
+          maxLength: 50
+        mcc:
+          type: string
+          description: Merchant Category Code that this merchant will be classified under.
+          example: 7834
+          maxLength: 4
+        annualCardVolum:
+          type: number
+          description: Approximate annual credit card sales expected to be processed in cents by this merchant.
+          example: 1000
+          maxLength: 12
+        maxTransactionAmount:
+          type: number
+          description: Maximum amount that can be transacted for a single transaction in cents.
+          example: 2000
+          maxLength: 12
+        defaultStatementDescriptor:
+          type: string
+          description: Billing descriptor displayed on the buyer’s bank or card statement.
+          example: Prestige World Wide
+          maxLength: 20
+        hasAcceptedCreditCardsPreviously:
+          type: boolean
+          description: Defaults to false if not passed.
+          example: true
+        industryType:
+          type: string
+          description: '**Refer to:** [Industry Type](https://developer.novopayment.com/api/request-and-response-codes#item-industrytype)
+
+            '
+          example: 44122
+          maxLength: 50
+        entityType:
+          type: string
+          description: '**Refer to:** [Entity Type](https://developer.novopayment.com/api/request-and-response-codes#item-entitytype)
+
+            '
+          example: UNIQUE OWNER
+          maxLength: 50
+        entityPurpose:
+          type: string
+          description: commercial Purpose
+          example: commercial Purpose
+          maxLength: 50
+        registrationNumber:
+          type: string
+          description: Tax id number or tax record number of the business.
+          example: 9834092375230
+          maxLength: 50
+        incorporationDate:
+          type: string
+          description: Date of the business incorporation in ISO 8601 format.
+          example: '2020-01-03T16:05:56.517Z'
+        identifications:
+          type: array
+          description: This array allows to add more than one business id to a business BUSINESS_TAX_ID BUSINESS_NUMBER TAXPAYER_IDENTIFICATION_NUMBER.
+          required:
+          - type
+          - value
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: 'Identification.
+
+
+                  *Format:* BUSINESS_TAX_ID, BUSINESS_NUMBER o TAXPAYER_IDENTIFICATION_NUMBER
+
+                  '
+                enum:
+                - BUSINESS_TAX_ID
+                - BUSINESS_NUMBER
+                - TAXPAYER_IDENTIFICATION_NUMBER
+                maxLength: 50
+              value:
+                type: string
+                description: Identification number associated to the format.
+                example: XX-XXXXXXX
+                maxLength: 50
+        webSite:
+          type: string
+          description: Company website.
+          example: https://by.com
+          maxLength: 50
+        contacts:
+          type: array
+          description: An array containing contact information.
+          required:
+          - type
+          - value
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: A standard set of values that indicate the contact type [EMAIL, PHONE].
+                enum:
+                - EMAIL
+                - PHONE
+                maxLength: 50
+              value:
+                type: string
+                description: 'If type is ''email'', string must be match email format, the ''+'' character is not allowed. If type is ''phone'', string must be in an international format, the + symbol and the 1-3 digit country calling code.
+
+                  '
+                example: email@email.com
+                maxLength: 50
+        addresses:
+          type: array
+          description: 'An array containing business''s addresses. Address should follow USPS normalization practices. (Example: "St" instead of "street", common unit designator "APT" instead of "apartment"). Periods "." are not allowed. Zip+4 is not required.
+
+            '
+          required:
+          - addressType
+          items:
+            type: object
+            properties:
+              addressType:
+                type: string
+                description: Address type.
+                example: RESIDENCE
+                maxLength: 20
+              addressLine1:
+                type: string
+                description: Address Line One.
+                example: address line 1
+                maxLength: 100
+              addressLine2:
+                type: string
+                description: Address Line Two.
+                example: address line 2
+                maxLength: 100
+              homeNumber:
+                type: string
+                description: House number.
+                example: Office 124
+                maxLength: 50
+              buildingNumber:
+                type: string
+                description: Building number.
+                example: Building C
+                maxLength: 50
+              city:
+                type: string
+                description: City.
+                example: New York
+                maxLength: 100
+              zipCode:
+                type: string
+                description: ZIP code.
+                example: 94398
+                maxLength: 10
+              country:
+                type: string
+                description: Country in ISO code 2 digits.
+                example: US
+                maxLength: 2
+    RSCreateMerchantCustomer400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Opertion Timestamp
+          format: date-time
+    RSCreateMerchantCustomer200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - customerId
+          properties:
+            customerId:
+              type: string
+              description: Unique customer identifier.
+              example: 49BCD622C6A07726594D63AAB2F436D366782AD1
+              maxLength: 40
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  requestBodies:
+    RQCreateMerchantCustomer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCreateMerchantCustomer'
+      required: true
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-customers.yaml
+- novopayment-customers-openapi.yml

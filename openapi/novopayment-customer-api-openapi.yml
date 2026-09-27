@@ -1,0 +1,579 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Customer API
+  version: v1.3
+  description: 'Operations tagged Customer across 2 of this provider''s published API definitions: novopayment-cards.yaml, novopayment-cards-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/api/v1.3
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Customer
+paths:
+  /cards/cardholders:
+    put:
+      tags:
+      - Customer
+      summary: Cardholder Update
+      description: 'Updates the card issuer data such as names, address, phone, marital status, nationality, email, gender, date of birth, place of birth, and agency.
+
+
+        Only the data provided in the request object will be updated. Parameters not provided in the request will not be updated.
+
+
+        The fields account number, card identifier, document number, document type, and verification digit will not be updated.'
+      operationId: CardCardholdersUpdate
+      requestBody:
+        $ref: '#/components/requestBodies/RQCardCardholdersUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCardIdUserId200'
+        '400':
+          $ref: '#/components/responses/RSCardHolderCreate400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/api/v1.3
+components:
+  responses:
+    RSCardIdUserId200:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardIdUserId200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  cardId: d2cb2441-0034-4211-93af-dcddc892a680
+                  userId: d2cb2441-0034-4211-93af-dcddc892a680
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSCardHolderCreate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardHolderCreate400'
+          examples:
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersCardHolderCreate'
+            The Card Is Already Linked To An Account:
+              $ref: '#/components/examples/TheCardIsAlreadyLinkedToAnAccount'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Card Is Expired:
+              $ref: '#/components/examples/CardIsExpired'
+            Card Activated:
+              $ref: '#/components/examples/CardActivated'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Account Is Already Registered:
+              $ref: '#/components/examples/AccountIsAlreadyRegistered'
+            Invalid Card Id:
+              $ref: '#/components/examples/InvalidCardId'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+  examples:
+    CardIsBlocked:
+      value:
+        code: 400.01.008
+        message: Card is blocked
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsAlreadyLinkedToAnAccount:
+      value:
+        code: 400.01.486
+        message: The card is already linked to an account
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidTenantId:
+      value:
+        code: 400.01.004
+        message: Invalid tenant ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenExpired:
+      value:
+        code: 401.01.993
+        message: Access token expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidCardId:
+      value:
+        code: 400.01.009
+        message: Invalid Card ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InternalServerError:
+      value:
+        code: 500.01.999
+        message: Internal Server Error
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccountIsAlreadyRegistered:
+      value:
+        code: 400.01.015
+        message: Account is already registered
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenNotApproved:
+      value:
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    HeaderParamsRequired:
+      value:
+        code: 400.01.001
+        message: Header Params Required
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsExpired:
+      value:
+        code: 400.01.407
+        message: Card is expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsNotActive:
+      value:
+        code: 400.01.367
+        message: The card is not active
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersCardHolderCreate:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - message: 'Field accountNumber: exceeded character limit (28)'
+        - message: 'Field verificationDigit: is not valid'
+        - message: 'Field cardId: is required, it must be not empty or blank'
+    CardActivated:
+      value:
+        code: 400.01.378
+        message: Card activated. You must cancel the card to complete the replenishment flow.
+        datetime: 2020-01-03 16:05:56.517000+00:00
+  schemas:
+    RSCardIdUserId200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: 'Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+
+            '
+          example: 2020-01-03 16:05:56.517000+00:00
+        data:
+          type: object
+          $ref: '#/components/schemas/ObjCardIdUserIdData'
+    ObjCardIdUserIdData:
+      type: object
+      required:
+      - cardId
+      - userId
+      properties:
+        cardId:
+          type: string
+          maxLength: 36
+          description: 'Unique card identification (uuid format)
+
+            '
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+        userId:
+          type: string
+          maxLength: 36
+          description: 'Unique user identification (uuid format)
+
+            '
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+    RQCardCardholders:
+      type: object
+      required:
+      - accountNumber
+      - cardId
+      - documentType
+      - documentNumber
+      - firstName
+      - lastName
+      properties:
+        accountNumber:
+          type: string
+          maxLength: 28
+          description: Unique record for registered account
+          example: 123456789
+        cardId:
+          type: string
+          maxLength: 36
+          description: Unique card identification (uuid format)
+          example: 123456789
+        documentType:
+          type: string
+          description: 'Type of identification used by the person registering.
+
+
+            **Possible values**:
+
+            CC: National ID
+
+            PP: Passport
+
+            EX: Residency (Green Card)
+
+            '
+          example: CC
+          enum:
+          - CC
+          - PP
+          - EX
+          minLength: 2
+          maxLength: 2
+        documentNumber:
+          type: string
+          description: 'Document number that will be combined with the documentType to generate a unique identification
+
+
+            **Allowed characters**: Alphanumeric
+
+            '
+          example: 16084704
+          maxLength: 23
+        verificationDigit:
+          type: string
+          description: 'Verification digit of the identification document, which depends on the country of issuance.
+
+
+            **Allowed characters**: Numeric
+
+            '
+          example: 6
+          maxLength: 1
+        firstName:
+          type: string
+          description: 'First name of the person registering.
+
+
+            **Allowed characters**: Alphabetic
+
+
+            **Conditionals**: To update names, firstName and lastName are mandatory
+
+            '
+          example: John
+          maxLength: 32
+        middleName:
+          type: string
+          description: 'Middle name of the person registering, optional field as some individuals may have only one name.
+
+
+            **Allowed characters**: Alphabetic
+
+
+            **Conditionals**: To update names, firstName and lastName are mandatory
+
+            '
+          example: Jesse
+          maxLength: 32
+        lastName:
+          type: string
+          description: 'Last name of the person registering
+
+
+            **Allowed characters**: Alphabetic
+
+
+            **Conditionals**: To update names, firstName and lastName are mandatory
+
+            '
+          example: Doe
+          maxLength: 32
+        maternalSurname:
+          type: string
+          description: 'Maternal surname of the person registering, optional field as some individuals may have only one surname.
+
+
+            **Allowed characters**: Alphabetic
+
+
+            **Conditionals**: To update names, firstName and lastName are mandatory
+
+            '
+          example: Anders
+          maxLength: 32
+        birthDate:
+          type: string
+          description: 'Birth date of the person registering. User birth date in ISO 8601 format
+
+
+            date – full-date notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21
+
+            '
+          example: 2017-07-21
+          minLength: 10
+          maxLength: 10
+        birthPlace:
+          type: string
+          description: 'A specific place, whether it be a city, town, or state, where the person was born.
+
+
+            **Allowed characters**: Alphabetic, special characters (. # -)
+
+            '
+          example: New Orleans, EEUU
+          maxLength: 32
+        nationality:
+          type: string
+          description: 'Indicates the citizenship or place of origin of the person registering.
+
+
+            **Refer to**: [List Of Nationalities](https://www.gov.uk/government/publications/nationalities/list-of-nationalities)
+
+            '
+          example: American
+          maxLength: 20
+        gender:
+          type: string
+          description: 'Gender identification personal in relation to the traditional categories of male or female.
+
+
+            **Allowed values**:
+
+            M: male
+
+            F: female
+
+            '
+          example: M
+          enum:
+          - M
+          - F
+          maxLength: 1
+        maritalStatus:
+          type: string
+          description: 'Legal or social status of a person in terms of their marital relationship.
+
+
+            **Allowed values**:
+
+            S: single
+
+            D: divorced
+
+            M: married
+
+            '
+          example: S
+          enum:
+          - S
+          - D
+          - M
+          maxLength: 1
+        phone:
+          type: string
+          description: 'Number used for customer contact. Can be provided with or without country code in parentheses.
+
+
+            **Allowed formats**:
+
+            - 963856324 (local number)
+
+            - (57)963856324 (with country code in parentheses)
+
+
+            **Allowed characters**: numeric, parentheses
+
+            '
+          example: (57)963856324
+          maxLength: 20
+        email:
+          type: string
+          description: Email owned by the person registering.
+          example: username@domain.com
+          maxLength: 50
+        address:
+          type: string
+          description: 'The physical location where the person usually resides.
+
+
+            **Allowed characters**: Alphabetic, special characters (. # -)
+
+
+            **Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory
+
+            '
+          example: 666, 5TH Avenue, 35th Floor, New York
+          maxLength: 150
+        codeAddress:
+          type: string
+          description: "The postal code is a scheme assigned to different areas or locations within a country, a code that serves to facilitate and mechanize the routing of a piece of mail. Generally, it is a series of digits, although in some countries, it includes letters.\n\n**Allowed characters**: Alphanumeric.\n\n**Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                \n"
+          example: '12401'
+          maxLength: 8
+        city:
+          type: string
+          description: "City to which the provided address belongs\n\n**Allowed characters**: Alphabetic, special characters (. # -)\n\n**Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                \n"
+          example: New York
+          maxLength: 20
+        state:
+          type: string
+          description: "Represents the state/department to which the city of the provided address belongs.\n\n**Allowed characters**: Alphabetic, special characters (. # -)\n\n**Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                \n"
+          example: New York State
+          maxLength: 20
+        country:
+          type: string
+          description: "It is the alpha-2 or alpha-3 code of the ISO-3166-1 standard.\n\n**Refer to**: [ISO Country Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocountrycodes).\n\n**Conditionals**: To update address, the fields address, codeAddress, city, state and country are mandatory                \n"
+          example: CAN
+          maxLength: 3
+        branchId:
+          type: string
+          description: 'Unique identifier of the office/branch representing the client
+
+
+            **Allowed values**: Numeric
+
+            '
+          example: 1
+          maxLength: 2
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RSCardHolderCreate400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+  requestBodies:
+    RQCardCardholdersUpdate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardCardholders'
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-cards.yaml
+- novopayment-cards-openapi.yml

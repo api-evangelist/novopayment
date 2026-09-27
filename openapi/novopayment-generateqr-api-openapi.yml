@@ -1,0 +1,485 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Generateqr API
+  version: v1
+  description: 'Operations tagged Generateqr across 2 of this provider''s published API definitions: novopayment-merchant-presented-qr.yaml, novopayment-merchant-presented-qr-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/api/v1/mpqr
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Generateqr
+paths:
+  /generateqr:
+    post:
+      summary: Generate QR Code
+      description: Acquirers use this endpoint to register a Merchant in the MPQR ecosystem
+      operationId: GenerateQRCode
+      parameters:
+      - $ref: '#/components/parameters/XRequestId'
+      - $ref: '#/components/parameters/XPayToken'
+      - $ref: '#/components/parameters/XTenantId'
+      - $ref: '#/components/parameters/Accept'
+      - $ref: '#/components/parameters/apikey'
+      - $ref: '#/components/parameters/createApiKey'
+      requestBody:
+        $ref: '#/components/requestBodies/RQGenerateQrCode'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSGenerateQrCode'
+        '400':
+          $ref: '#/components/responses/RSGenerateQrCode400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Generateqr
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/api/v1/mpqr
+components:
+  responses:
+    RSGenerateQrCode400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenerateQrCode400'
+          examples:
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Error General Services:
+              $ref: '#/components/examples/ErrorGeneralServices'
+    RSGenerateQrCode:
+      description: Process Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenerateQrCode'
+          examples:
+            Process Ok:
+              value:
+                code: 200.22.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  qrCodeImage: iVBOR...CYII=
+                  qrCodeHeight: 200
+                  qrCodeWidth: 200
+                  qrCodeString: 000201010211031140000000456520441115303170540105502015802CO5915Pizzeria Pepito6009MANIZALES62680103***0203***030412340403***0503***0603***0708A60086670803***0902ME6304B111
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+  requestBodies:
+    RQGenerateQrCode:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQGenerateQrCode'
+      required: true
+  examples:
+    ErrorGeneralServices:
+      value:
+        code: 400.22.350
+        message: Error General Services
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParamsRequired:
+      value:
+        code: 400.22.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: '2020-01-03T16:05:56.517Z'
+  schemas:
+    RQGenerateQrCode:
+      type: object
+      required:
+      - merchantId
+      - acquirerId
+      - pointOfInitiationMethod
+      - merchantCategoryCode
+      - transactionCurrency
+      - transactionAmount
+      - tipOrConvenienceIndicator
+      - countryCode
+      - merchantName
+      - merchantCity
+      properties:
+        merchantId:
+          type: string
+          description: Identification of the merchant in Novo's system
+          example: 75102765
+          maxLength: 25
+        acquirerId:
+          type: string
+          description: Identification of the acquirer registered in Novo's system
+          maxLength: 15
+        merchantAccountInformation:
+          type: string
+          description: Account Information of Merchant
+          example: '4156821587554841'
+        payloadFormatIndicator:
+          type: string
+        pointOfInitiationMethod:
+          type: string
+          description: Identifies the communication technology (here QR Code) and whether the data is static or dynamic
+          example: 12
+          maxLength: 2
+        merchantCategoryCode:
+          type: string
+          description: As defined by [ISO 18245] and assigned by the Acquirer
+          example: 4111
+          maxLength: 100
+        transactionCurrency:
+          type: string
+          description: Indicates the currency code of the transaction. A 3-digit numeric value, as defined by [ISO 4217]. This value will be used by the mobile application to display a recognizable currency to the consumer whenever an amount is being displayed or whenever the consumer is prompted to enter an amount.
+          example: 156
+          maxLength: 3
+        transactionAmount:
+          type: string
+          description: The transaction amount (excluding tips and convenience fees), if known. For instance, "99.34". If present, this value is displayed to the consumer by the mobile application when processing the transaction. If this data object is not present, the consumer is prompted to input the transaction amount to be paid to the merchant.
+          example: 237200
+          maxLength: 50
+        tipOrConvenienceIndicator:
+          type: string
+          description: Indicates whether the consumer will be prompted to enter a tip or whether the merchant has determined that a flat, or percentage convenience fee is charged.
+          example: 1
+          maxLength: 100
+        countryCode:
+          type: string
+          description: Indicates the country of the merchant acceptance device. A 2-character alpha value, as defined by [ISO 3166-1 alpha 2] and assigned by the Acquirer. The country may be displayed to the consumer by the mobile application when processing the transaction.
+          example: CO
+          maxLength: 10
+        merchantName:
+          type: string
+          description: The "doing business as" name for the merchant, recognizable to the consumer. This name may be displayed to the consumer by the mobile application when processing the transaction.
+          example: Pizzería Pepito
+          maxLength: 100
+        merchantCity:
+          type: string
+          description: City of operations for the merchant. This name may be displayed to the consumer by the mobile application when processing the transaction.
+          example: MANIZALES
+          maxLength: 100
+        additionalDataField:
+          type: object
+          description: Additional Information
+          properties:
+            billNumber:
+              type: string
+              description: 'The invoice number or bill number. This number can be provided by the merchant or can be an indicator for the mobile application to prompt the consumer to input a Bill Number. For example, the Bill Number may be present when the QR Code is used for bill payment.
+
+                '
+            mobileNumber:
+              type: string
+              description: 'The mobile number can be provided by the merchant or can be an indicator for the mobile application to prompt the consumer to input a Mobile Number. For example, the Mobile Number to be used for multiple use cases, such as mobile top-up and bill payment.
+
+                '
+            storeLabel:
+              type: string
+              description: 'A distinctive value associated to a store. This value can be provided by the merchant or can be an indication for the mobile application to prompt the consumer to input a Store Label.
+
+                '
+              example: 1234
+            loyaltyNumber:
+              type: string
+              description: 'Typically, a loyalty card number. This number can be provided by the merchant, if known, or can be an indication for the mobile application to prompt the consumer to input their Loyalty Number.
+
+                '
+            referenceLabel:
+              type: string
+              description: 'Any value as defined by the merchant or acquirer in order to identify the transaction. This value can be provided by the merchant or can be an indication for the mobile app to prompt the consumer to input a transaction Reference Label. For example, the Reference Label may be used by the consumer mobile application for transaction logging or receipt display.
+
+                '
+            customerLabel:
+              type: string
+              description: 'Any value identifying a specific consumer. This value can be provided by the merchant (if known), or can be an indication for the mobile application to prompt the consumer to input their Customer Label. For example, the Customer Label may be a subscriber ID for subscription services, a student enrolment number, etc.
+
+                '
+              example: '***'
+            terminalLabel:
+              type: string
+              description: 'A distinctive value associated to a terminal in the store. This value can be provided by the merchant or can be an indication for the mobile application to prompt the consumer to input a Terminal Label. For example, the Terminal Label may be displayed to the consumer on the mobile application identifying a specific terminal.
+
+                '
+              example: A6008667
+            purposeTransaction:
+              type: string
+              description: 'Any value defining the purpose of the transaction. This value can be provided by the merchant or can be an indication for the mobile application to prompt the consumer to input a value describing the purpose of the transaction. For example, the Purpose of Transaction may have the value "International Data Package" for display on the mobile application.
+
+                '
+            additionalConsumerDataRequest:
+              type: string
+              description: 'Contains indications that the mobile application is to provide the requested information in order to complete the transaction. The information requested should be provided by the mobile application in the authorization without unnecessarily prompting the consumer. For example, the Additional Consumer Data Request may indicate that the consumer mobile number is required to complete the transaction, in which case the mobile application should be able to provide this number (that the mobile application has previously stored) without unnecessarily prompting the consumer.
+
+                '
+              example: ME
+        sizeQR:
+          type: string
+          description: 'Size in pixels for the QR Code Generate.
+
+
+            **Available Values:**
+
+            A – 200 x 200
+
+            B – 400 x 400
+
+            C – 600 x 600
+
+
+            **Default values is B**
+
+            '
+          maxLength: 1
+          enum:
+          - A
+          - B
+          - C
+    RSGenerateQrCode:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+        data:
+          type: object
+          required:
+          - qrCodeImage
+          - qrCodeHeight
+          - qrCodeWidth
+          - qrCodeString
+          properties:
+            qrCodeImage:
+              type: string
+              description: 'Image of the QR Code
+
+                '
+              example: iVBOR...CYII=
+            qrCodeHeight:
+              type: integer
+              description: 'Height of the image
+
+                '
+              example: 200
+              maxLength: 3
+            qrCodeWidth:
+              type: integer
+              description: 'Width of the image
+
+                '
+              example: 200
+              maxLength: 3
+            qrCodeString:
+              type: string
+              description: 'String of the QR Code
+
+                '
+              example: 000201010211031140000000456520441115303170540105502015802CO5915Pizzeria Pepito6009MANIZALES62680103***0203***030412340403***0503***0603***0708A60086670803***0902ME6304B111
+    RSGenerateQrCode400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  parameters:
+    apikey:
+      name: apikey
+      in: query
+      description: Public API key, which is different from the shared secret.
+      required: true
+      schema:
+        type: string
+        maxLength: 49
+    Accept:
+      name: Accept
+      in: header
+      description: 'Acceptable response format.
+
+
+        Format: Must include application/json
+
+        '
+      required: true
+      schema:
+        type: string
+    XPayToken:
+      name: x-pay-token
+      in: header
+      description: 'A token identifying the transaction and its contents.
+
+
+        The token expires in 480 seconds (8 minutes) for all clients.
+
+        '
+      required: true
+      schema:
+        type: string
+    XRequestId:
+      name: x-request-id
+      in: header
+      description: 'Unique ID for the API request.
+
+
+        Format: Alphabetic, numeric, and hyphens ( - ), e.g. spaces are not allowed.
+
+        '
+      required: true
+      schema:
+        type: string
+        maxLength: 36
+    XTenantId:
+      name: X-tenant-id
+      in: header
+      description: 'It is necessary send all petitions for identified the client.
+
+        '
+      required: true
+      schema:
+        type: string
+    createApiKey:
+      name: createApiKey
+      in: query
+      description: 'Whether to create a new API key for the client.
+
+
+        Note: do not set to true.
+
+        '
+      required: true
+      schema:
+        type: string
+        enum:
+        - false
+        - true
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-merchant-presented-qr.yaml
+- novopayment-merchant-presented-qr-openapi.yml

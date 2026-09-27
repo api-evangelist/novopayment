@@ -1,0 +1,410 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Universal API
+  version: v1.0
+  description: 'Operations tagged Universal across 2 of this provider''s published API definitions: novopayment-push-provisioning.yaml, novopayment-push-provisioning-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/pushprovisioning/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Universal
+paths:
+  /universal/core/cards/encryption:
+    post:
+      summary: Encrypt card
+      description: This endpoint returns the card information in an encrypted form.
+      operationId: EncryptCard
+      requestBody:
+        $ref: '#/components/requestBodies/RQEncryptCard'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSEncryptCard200'
+        '400':
+          $ref: '#/components/responses/RSEncryptCard400'
+        '401':
+          $ref: '#/components/responses/RSEncryptCard401'
+        '500':
+          $ref: '#/components/responses/RSEncryptCard500'
+      tags:
+      - Universal
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/pushprovisioning/v1
+components:
+  schemas:
+    RS400Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.00.001
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Header Params Required
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
+          description: 'Operation Time Stamp in ISO 8601 format<br>date-time - the date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
+
+            '
+          minLength: 24
+          maxLength: 24
+    RSEncryptCard200:
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: 'Operation Time Stamp in ISO 8601 format
+
+
+            date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example, 2017-07-21T17:32:28Z
+
+            '
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
+        data:
+          $ref: '#/components/schemas/ObjSignedPayload'
+    ObjBillingAddressEnablement:
+      type: object
+      required:
+      - addressLine1
+      - stateProvinceCode
+      - postalCode
+      - city
+      - phoneNumber
+      properties:
+        addressLine1:
+          type: string
+          maxLength: 140
+          description: 'Line 1 of the billing address (Must use UTF-8 characters)
+
+            '
+          example: 5 Central Drive
+        stateProvinceCode:
+          type: string
+          maxLength: 3
+          description: "Must be in ISO 3166-2 format, alphabetic value with max length of 3 characters, \nwith no dashes or spaces\n"
+          example: NC
+        postalCode:
+          type: string
+          maxLength: 16
+          description: 'U.S.: 5-digit numeric value (e.g. 94100), spaces not allowed.
+
+            Canada: 6-digit alphanumeric value (e.g. M4B1B3), spaces allowed.
+
+            Other countries: 5-16 digit alphanumeric value without special characters, spaces allowed.
+
+            '
+          example: '27265'
+        countryCode:
+          type: string
+          maxLength: 3
+          description: 'Must be in ISO 3166-1 alpha-2 or ISO 3166-1 alpha-3 or ISO 3-digit numeric format
+
+            '
+          example: '840'
+        city:
+          type: string
+          maxLength: 100
+          description: 'City of the billing address, no special characters
+
+            '
+          example: High Point
+        phoneNumber:
+          type: string
+          maxLength: 32
+          description: 'Cardholder phone number including country code
+
+            '
+          example: 336-222-6060
+    ObjCardEncryptionEncryptedData:
+      type: object
+      description: 'Encrypted and signed request data
+
+        '
+      required:
+      - signedNonce
+      - accountNumber
+      - expirationMonth
+      - expirationYear
+      - nameOnAccount
+      - cardType
+      - cardBrand
+      - billingAddress
+      properties:
+        signedNonce:
+          type: string
+          maxLength: 256
+          description: 'Nonce signed with signature shared secret
+
+            '
+          example: eyJle...XcClc
+        accountNumber:
+          type: string
+          maxLength: 19
+          description: 'Full Card Number, numeric value
+
+            '
+          example: '4012888888881881'
+        expirationMonth:
+          type: string
+          maxLength: 2
+          description: 'Month when the card is set to expire
+
+            '
+          example: '02'
+        expirationYear:
+          type: string
+          maxLength: 4
+          description: 'Year when the card is set to expire
+
+            '
+          example: '2025'
+        nameOnAccount:
+          type: string
+          maxLength: 256
+          description: "Full name on the card, alphanumeric value with no \nspecial characters\n"
+          example: John Doe
+        cardType:
+          type: string
+          maxLength: 20
+          enum:
+          - DEBIT
+          - CREDIT
+          - PREPAID
+        cardBrand:
+          type: string
+          maxLength: 20
+          enum:
+          - VISA
+          - MC
+        billingAddress:
+          $ref: '#/components/schemas/ObjBillingAddressEnablement'
+        user:
+          $ref: '#/components/schemas/ObjUserEnablement'
+    ObjSignedPayload:
+      type: object
+      required:
+      - signedPayload
+      properties:
+        signedPayload:
+          type: string
+          description: 'Encrypted and signed card information
+
+            '
+          example: eyJle...y3fmkg
+    RQEncryptCard:
+      type: object
+      required:
+      - encryptedData
+      properties:
+        encryptedData:
+          $ref: '#/components/schemas/ObjCardEncryptionEncryptedData'
+    RS401Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.00.992
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid signature
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
+    ObjUserEnablement:
+      type: object
+      required:
+      - firstName
+      - lastName
+      - email
+      - phoneNumber
+      properties:
+        firstName:
+          type: string
+          maxLength: 20
+          description: 'Required for VCEH
+
+            '
+          example: Lewis
+        lastName:
+          type: string
+          maxLength: 20
+          description: 'Required for VCEH
+
+            '
+          example: Schultz
+        email:
+          type: string
+          maxLength: 256
+          description: 'Required for VCEH
+
+            '
+          example: lschultz@gmail.com
+        phoneNumber:
+          type: string
+          maxLength: 32
+          description: 'Required for VCEH
+
+            '
+          example: 336-222-6060
+    RS500Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.00.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
+  responses:
+    RSEncryptCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSEncryptCard200'
+          examples:
+            Default:
+              value:
+                code: 200.00.000
+                message: Process Ok
+                datetime: '2022-04-25T23:19:12.000Z'
+                data:
+                  signedPayload: eyJle...y3fmkg
+    RSEncryptCard401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401Tk'
+          examples:
+            Invalid signature:
+              $ref: '#/components/examples/InvalidSignatureTk'
+            Decryption Error:
+              $ref: '#/components/examples/DecryptionError'
+    RSEncryptCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS400Tk'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequiredTk'
+            Error General Service:
+              $ref: '#/components/examples/ErrorGeneralService'
+            Invalid parameters:
+              $ref: '#/components/examples/InvalidParams'
+            Component configuration not found:
+              $ref: '#/components/examples/ConfigurationNotFound'
+            Encryption error:
+              $ref: '#/components/examples/EncryptionError'
+    RSEncryptCard500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500Tk'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerErrorTk'
+  requestBodies:
+    RQEncryptCard:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQEncryptCard'
+  examples:
+    HeaderParamsRequiredTk:
+      value:
+        code: 400.00.001
+        message: Header Params Required
+        datetime: '2022-04-25T23:19:12.000Z'
+    InternalServerErrorTk:
+      value:
+        code: 500.00.999
+        message: Internal Server Error
+        datetime: '2022-04-25T23:19:12.000Z'
+    ErrorGeneralService:
+      value:
+        code: 400.00.350
+        message: Error General Service.
+        datetime: '2022-04-25T23:19:12.000Z'
+    ConfigurationNotFound:
+      value:
+        code: 400.00.356
+        message: Component configuration not found.
+        datetime: '2024-07-17T00:57:36.360Z'
+    EncryptionError:
+      value:
+        code: 400.00.994
+        message: Encryption error
+        datetime: '2024-07-17T00:57:36.360Z'
+    DecryptionError:
+      value:
+        code: 401.00.997
+        message: Decryption Error
+        datetime: '2024-07-17T00:57:36.360Z'
+    InvalidSignatureTk:
+      value:
+        code: 401.00.992
+        message: Invalid signature
+        datetime: '2024-07-17T00:57:36.360Z'
+    InvalidParams:
+      value:
+        code: 400.00.396
+        message: Invalid parameters.
+        datetime: '2024-07-17T00:57:36.360Z'
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-push-provisioning.yaml
+- novopayment-push-provisioning-openapi.yml

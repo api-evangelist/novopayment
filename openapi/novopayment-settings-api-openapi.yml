@@ -1,0 +1,1177 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Settings API
+  version: '1.0'
+  description: 'Operations tagged Settings across 4 of this provider''s published API definitions: novopayment-cards.yaml, novopayment-profile.yaml, novopayment-cards-openapi.yml, novopayment-profile-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/api/v1.3
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/profiles/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Settings
+paths:
+  /cards/cardholders/{cardId}/operationlimits:
+    patch:
+      tags:
+      - Settings
+      summary: Customize Operation Limits
+      description: 'The Customize Operation Limits establishes limits at an account level that differs from those established by the card program
+
+
+        The Customize Operations Limits endpoint is used to place restrictions on the amount
+
+        that can be spent with a card or the number of transactions that can be done with a
+
+        card on a daily, weekly, or monthly basis.
+
+
+        This endpoint can be used to implement or update restrictions,
+
+        and can be sent only with the values that are to be modified
+
+        (e.g. only the monthly limit for amounts).'
+      operationId: CustomizeOperationLimits
+      parameters:
+      - $ref: '#/components/parameters/cardId'
+      requestBody:
+        $ref: '#/components/requestBodies/RQCustomizeOperationLimits'
+      responses:
+        '200':
+          $ref: '#/components/responses/RS200'
+        '400':
+          $ref: '#/components/responses/RSLimits400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/api/v1.3
+  /cards/{cardId}/transactionrules:
+    post:
+      tags:
+      - Settings
+      summary: Associate Transaction Rules
+      description: 'Allows the cardholder to associate specific transaction rules to a card, providing greater control over transaction behavior.
+
+
+        This operation can be used to block certain types of transactions or define security parameters based on predefined rules.
+
+
+        With the cardId, NovoPayment will record the specified transaction rules, ensuring that all transactions comply with the defined security settings.'
+      operationId: AssociateTransactionalRules
+      parameters:
+      - $ref: '#/components/parameters/cardId'
+      requestBody:
+        $ref: '#/components/requestBodies/RQCreateTransactionRules'
+      responses:
+        '200':
+          $ref: '#/components/responses/RS200'
+        '400':
+          $ref: '#/components/responses/RSTransactionRules400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    get:
+      tags:
+      - Settings
+      summary: List Transaction Rules
+      description: 'Allows the cardholder to retrieve and view the transactional rules associated with a card.
+
+
+        This operation makes it easier for users to understand what restrictions or security settings are applied to their transactions.
+
+
+        Using the cardId, NovoPayment will return a list of active transaction rules associated with a specific card.'
+      operationId: ListTransactionRules
+      parameters:
+      - $ref: '#/components/parameters/cardId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSListTransactionRules200'
+        '400':
+          $ref: '#/components/responses/RSListTransactionRules400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    patch:
+      tags:
+      - Settings
+      summary: Update Transaction Rules
+      description: 'Allows the cardholder to activate or deactivate specific transactional rules associated with a card.
+
+
+        This operation provides the ability to dynamically manage transaction permissions, improving security and control over card usage.
+
+
+        With the cardId, NovoPayment will update the status of the specified transactional rules, determining whether transactions in categories such as: e-commerce, ATMs, or Points of Sale (POS) are allowed or restricted.'
+      operationId: EnableDisableTransactionalRules
+      parameters:
+      - $ref: '#/components/parameters/cardId'
+      requestBody:
+        $ref: '#/components/requestBodies/RQUpdateTransactionRules'
+      responses:
+        '200':
+          $ref: '#/components/responses/RS200'
+        '400':
+          $ref: '#/components/responses/RSEnableDisableTransactionalRules400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/api/v1.3
+  /{customerId}/settings/{settingId}:
+    put:
+      summary: Customer Configuration Update
+      description: This operation allows to update a customer-specific configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/RQCustomerConfigurationUpdate'
+      operationId: CustomerConfigurationUpdate
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      - $ref: '#/components/parameters/settingId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSCustomerConfigurationUpdate200'
+        '400':
+          $ref: '#/components/responses/RSCustomerConfigurationUpdate400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Settings
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/profiles/v1
+  /{customerId}/settings:
+    get:
+      summary: Get Customer Configuration Parameters
+      description: This operation allows to consult the different configurations of a customer.
+      operationId: GetCustomerConfigurationParameters
+      parameters:
+      - $ref: '#/components/parameters/customerId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSGetCustomerConfigurationParameters200'
+        '400':
+          $ref: '#/components/responses/RSGetCustomerConfigurationParameters400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Settings
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/profiles/v1
+components:
+  parameters:
+    cardId:
+      name: cardId
+      in: path
+      description: Unique card identification (uuid format)
+      required: true
+      example: 502c2656-7110-4994-a820-f593e468c6b4
+      schema:
+        type: string
+        maxLength: 36
+        minLength: 36
+    customerId:
+      name: customerId
+      in: path
+      description: Unique customer identifier.
+      required: true
+      schema:
+        type: string
+        example: 43DED66474E259FD
+        maxLength: 40
+    settingId:
+      name: settingId
+      in: path
+      description: Configuration identifier.
+      required: true
+      schema:
+        type: integer
+        example: 1
+  examples:
+    ClientAlreadyRegisteredInThisProgram:
+      value:
+        code: 400.01.005
+        message: Client already registered in this program
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsBlocked:
+      value:
+        code: 400.01.008
+        message: Card is blocked
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    UserNotFound:
+      value:
+        code: 400.01.033
+        message: User not found
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParameters:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        data:
+        - message: 'Field email: must not be blank'
+        - message: 'Field email: must not be null'
+        - message: 'Field to: must not be blank'
+        - message: 'Field to: must not be null'
+        - message: 'Field subject: must not be blank'
+        - message: 'Field subject: must not be null'
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardNotFound:
+      value:
+        code: 400.01.487
+        message: Card not found
+        datetime: 2025-01-31 22:39:11.547000+00:00
+    InvalidTenantId:
+      value:
+        code: 400.01.004
+        message: Invalid tenant ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenExpired:
+      value:
+        code: 401.01.993
+        message: Access token expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidCardId:
+      value:
+        code: 400.01.009
+        message: Invalid Card ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InternalServerError:
+      value:
+        code: 500.01.999
+        message: Internal Server Error
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenNotApproved:
+      value:
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsInactive:
+      value:
+        code: 400.01.456
+        message: Card is inactive
+        datetime: 2025-01-03 16:05:56.517000+00:00
+    HeaderParamsRequired:
+      value:
+        code: 400.01.001
+        message: Header Params Required
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsNotActive:
+      value:
+        code: 400.01.367
+        message: The card is not active
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersRules:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        data:
+        - message: 'Field transactionRule: is required, it must be not empty or blank'
+        - message: 'Field status: is not valid'
+        datetime: 2025-01-03 16:05:56.517000+00:00
+    ProcessNotCompleted:
+      value:
+        code: 400.25.019
+        message: The process could not be completed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired_2:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError_2:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature_2:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken_2:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved_2:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    CustomerNotFound:
+      value:
+        code: 400.25.382
+        message: Customer not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired_3:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError_3:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature_3:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken_3:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved_3:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
+    RQCustomizeOperationLimits:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCustomizeOperationLimits'
+    RQCreateTransactionRules:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCreateTransactionRules'
+    RQUpdateTransactionRules:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQUpdateTransactionRules'
+    RQCustomerConfigurationUpdate:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCustomerConfigurationUpdate'
+      required: true
+  schemas:
+    ObjCreateTransactionRules:
+      type: object
+      required:
+      - transactionRule
+      properties:
+        transactionRule:
+          type: string
+          minLength: 3
+          maxLength: 10
+          description: 'Transaction rule name
+
+            '
+          enum:
+          - ecommerce
+          - atm
+          - pos
+          example: ecommerce
+    RQCreateTransactionRules:
+      type: array
+      items:
+        $ref: '#/components/schemas/ObjCreateTransactionRules'
+    ObjListTransactionRules:
+      type: object
+      required:
+      - transactionRule
+      - status
+      properties:
+        transactionRule:
+          type: string
+          minLength: 3
+          maxLength: 10
+          description: 'Transaction rule name
+
+            '
+          enum:
+          - ecommerce
+          - atm
+          - pos
+          example: ecommerce
+        status:
+          type: string
+          minLength: 6
+          maxLength: 10
+          description: 'Rule status. Indicates whether the transaction is enabled or disabled
+
+            '
+          enum:
+          - active
+          - inactive
+          example: active
+    RQUpdateTransactionRules:
+      type: array
+      items:
+        $ref: '#/components/schemas/ObjListTransactionRules'
+    RSListTransactionRules200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: 'Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2024-07-21T17:32:28Z
+
+            '
+          example: 2025-01-03 16:05:56.517000+00:00
+        data:
+          type: array
+          $ref: '#/components/schemas/ObjListTransactionRules'
+    RS200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: 'Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+
+            '
+          example: 2020-01-03 16:05:56.517000+00:00
+    RSTransactionRules400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: 'Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2024-07-21T17:32:28Z
+
+            '
+    ObjCustomizeOperationLimitsAmountLimit:
+      type: object
+      properties:
+        daily:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99999999.99
+          description: 'Daily limit amount.
+
+            Note: If no decimals are sent, the service will autocomplete with two decimals in zero.
+
+            Sample: 12.30, 12.00, 12, 12.1, 12.33
+
+            '
+          example: 1000.55
+        weekly:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99999999.99
+          description: 'Weekly limit amount.
+
+            Note: If no decimals are sent, the service will autocomplete with two decimals in zero.
+
+            Sample: 12.30, 12.00, 12, 12.1, 12.33
+
+            '
+          example: 7003.55
+        monthly:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99999999.99
+          description: 'Monthly limit amount.
+
+            Note: If no decimals are sent, the service will autocomplete with two decimals in zero.
+
+            Sample: 12.30, 12.00, 12, 12.1, 12.33
+
+            '
+          example: 30016.55
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RQCustomizeOperationLimits:
+      type: object
+      required:
+      - operations
+      properties:
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjCustomizeOperationLimitsOperations'
+    ObjCustomizeOperationLimitsCountLimit:
+      type: object
+      properties:
+        daily:
+          type: number
+          format: integer
+          minimum: 0
+          maximum: 9999
+          description: Daily count amount.
+          example: 4
+        weekly:
+          type: number
+          format: integer
+          minimum: 0
+          maximum: 9999
+          description: Weekly count amount.
+          example: 28
+        monthly:
+          type: number
+          format: integer
+          minimum: 0
+          maximum: 9999
+          description: Monthly count amount.
+          example: 112
+    RSCardHolderCreate400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
+    ObjCustomizeOperationLimitsOperations:
+      type: object
+      required:
+      - amountLimit
+      - countLimit
+      - operationName
+      properties:
+        operationName:
+          type: string
+          example: cahsIn
+          description: "Type of operation to which the limits will be updated\n **Allowed values **:\ncashIn,\ncashout,\np2pTransferIn,\np2pTransferOut,\np2mTransferIn,\np2mTransferOut,\natmWithdrawals,\nposPurchases,\necommerce\n"
+        amountLimit:
+          $ref: '#/components/schemas/ObjCustomizeOperationLimitsAmountLimit'
+        countLimit:
+          $ref: '#/components/schemas/ObjCustomizeOperationLimitsCountLimit'
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RSGetCustomerConfigurationParameters200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - settingCategories
+          properties:
+            settingCategories:
+              type: array
+              description: Contains the array of customer configurations.
+              required:
+              - categoryId
+              - categoryName
+              - settings
+              items:
+                type: object
+                properties:
+                  categoryId:
+                    type: string
+                    description: Configuration category.
+                    example: 1
+                    maxLength: 25
+                  categoryName:
+                    type: string
+                    description: Configuration category name.
+                    example: account
+                    maxLength: 25
+                  settings:
+                    type: array
+                    description: Array object containing the category configuration options.
+                    required:
+                    - settingId
+                    - name
+                    - value
+                    - defaultValue
+                    - createdDate
+                    - settingType
+                    items:
+                      type: object
+                      properties:
+                        settingId:
+                          type: integer
+                          description: Configuration identifier.
+                          example: 1
+                          maxLength: 38
+                        name:
+                          type: string
+                          description: Configuration name.
+                          example: receive monthly account statements
+                          maxLength: 50
+                        value:
+                          type: string
+                          description: User-assigned value for the configuration.
+                          example: false
+                          maxLength: 50
+                        defaultValue:
+                          type: string
+                          description: Default value assigned to configuration.
+                          example: true
+                          maxLength: 50
+                        createdDate:
+                          type: string
+                          description: Creation date of the configuration of the user.
+                          example: '2020-10-10'
+                        updatedDate:
+                          type: string
+                          description: User update date.
+                          example: '2021-01-01'
+                        settingType:
+                          type: object
+                          description: Configuration type object.
+                          required:
+                          - id
+                          - name
+                          properties:
+                            id:
+                              type: integer
+                              description: Configuration type identifier.
+                              example: 1
+                              maxLength: 10
+                            name:
+                              type: string
+                              description: Configuration type name.
+                              example: boolean
+                              maxLength: 20
+    RSCustomerConfigurationUpdate200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCustomerConfigurationUpdate:
+      type: object
+      required:
+      - value
+      properties:
+        value:
+          type: string
+          description: Value to update.
+          example: true
+          maxLength: 50
+    RS500_2:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Timestamp
+          format: date-time
+    RSGetCustomerConfigurationParameters400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCustomerConfigurationUpdate400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401_2:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500_3:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Timestamp
+          format: date-time
+    RS401_3:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  responses:
+    RSEnableDisableTransactionalRules400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransactionRules400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersRules'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
+            Card Not Found:
+              $ref: '#/components/examples/CardNotFound'
+            Card Is Inactive:
+              $ref: '#/components/examples/CardIsInactive'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Client Already Registered In This Program:
+              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
+    RSListTransactionRules200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSListTransactionRules200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                - transactionRule: ecommerce
+                  status: active
+                - transactionRule: atm
+                  status: inactive
+    RS200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSLimits400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardHolderCreate400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            User Not Found:
+              $ref: '#/components/examples/UserNotFound'
+    RSListTransactionRules400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransactionRules400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
+            Card Not Found:
+              $ref: '#/components/examples/CardNotFound'
+            Card Is Inactive:
+              $ref: '#/components/examples/CardIsInactive'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Client Already Registered In This Program:
+              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
+    RSTransactionRules400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransactionRules400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
+            Card Is Inactive:
+              $ref: '#/components/examples/CardIsInactive'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Client Already Registered In This Program:
+              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
+            Card Not Found:
+              $ref: '#/components/examples/CardNotFound'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSGetCustomerConfigurationParameters200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetCustomerConfigurationParameters200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  settingCategories:
+                  - categoryId: 1
+                    categoryName: account
+                    settings:
+                    - settingId: 1
+                      name: receive monthly account statements
+                      value: false
+                      defaultValue: true
+                      createdDate: '2020-10-10'
+                      updatedDate: '2021-01-01'
+                      settingType:
+                        id: 1
+                        name: boolean
+    RSGetCustomerConfigurationParameters400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetCustomerConfigurationParameters400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+    RSCustomerConfigurationUpdate200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCustomerConfigurationUpdate200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCustomerConfigurationUpdate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCustomerConfigurationUpdate400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-cards.yaml
+- novopayment-profile.yaml
+- novopayment-cards-openapi.yml
+- novopayment-profile-openapi.yml

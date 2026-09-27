@@ -1,0 +1,465 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Query API
+  version: v1.0.0
+  contact:
+    name: API Support
+    email: support@novopayment.com
+    url: https://developer.novopayment.com/
+  description: 'Operations tagged Query across 2 of this provider''s published API definitions: novopayment-real-time-payments.yaml, novopayment-real-time-payments-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/realtimepayments/v1
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Query
+  description: Query Status Transaction
+paths:
+  /query/transactions:
+    get:
+      summary: Query Transaction
+      operationId: query
+      tags:
+      - Query
+      description: Get transactions by the reference (**tr**) or by transaction identifiers (**stan** and **rrn**)
+      parameters:
+      - in: query
+        name: tr
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 40
+          pattern: ^[A-Za-z0-9]{40}$
+        description: '**transactionReferece** (tr) used to relate to a financial transaction.
+
+          '
+        example: c3c90deb537246ea8689ed6f5a9a3d2322ac23gs
+      - in: query
+        name: stan
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 6
+          pattern: ^[\d]{6}$
+        description: 'The **systemTraceAuditNumber** (stan) for the transaction.
+
+          (**This parameter is mandatory if retrievalReferenceNumber is present**)
+
+          '
+        example: '350420'
+        x-suggested:
+          description: "The retrieval Reference Number for the transaction. \nThis parameter is mandatory if retrievalReferenceNumber is present.\n"
+      - in: query
+        name: rrn
+        required: false
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 12
+          pattern: ^[\d]{12}$
+        description: "The **retrievalReferenceNumber** (rrn) for the transaction. \n(**This parameter is mandatory if systemsTraceAuditNumber is present**)\n"
+        x-suggested:
+          description: "The retrieval Reference Number for the transaction. \nThis parameter is mandatory if systemsTraceAuditNumber is present.\n"
+        example: '401010350420'
+      responses:
+        '200':
+          $ref: '#/components/responses/RSQuery200'
+        '400':
+          $ref: '#/components/responses/RSQuery400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+        default:
+          $ref: '#/components/responses/RS500'
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/realtimepayments/v1
+components:
+  responses:
+    RSQuery200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QueryTransactionResponse'
+          examples:
+            Transaction Results:
+              value:
+                code: 200.08.000
+                datetime: '2022-09-23T20:52:14.861Z'
+                message: Process Ok
+                data:
+                  transactions:
+                  - actionCode: '00'
+                    approvalCode: 21324K
+                    responseCode: '5'
+                    retrievalReferenceNumber: '401010350420'
+                    statusCode: TP
+                    systemsTraceAuditNumber: '350420'
+                    transactionDate: 18-09-2023 00:01:25
+                    transactionIdentifier: '234234322342343'
+                    transactionType: AFT
+                    transactionReference: e681d7e-33b6-4ee4-ab61-0fbeb8662006
+                    transactionId: e1ac6dda-e819-4380-a0b0-2b03cc78207b
+                  - actionCode: '00'
+                    approvalCode: 21324K
+                    responseCode: '5'
+                    retrievalReferenceNumber: '401010350420'
+                    statusCode: TP
+                    systemsTraceAuditNumber: '350420'
+                    transactionDate: 18-09-2023 00:01:25
+                    transactionIdentifier: '234234322342343'
+                    transactionType: OCT
+                    transactionReference: e681d7e-33b6-4ee4-ab61-0fbeb8662006
+                    transactionId: e1ac6dda-e819-4380-a0b0-2b03cc78207b
+                  - statusCode: VALIDATION FAILED
+                    transactionDate: 18-09-2023 00:01:25
+                    transactionReference: 3481d7e-33b6-4ee4-ab61-0fbeb8662006
+                    transactionId: f1ac6dda-e819-4380-a0b0-2b03cc78207b
+            Transaction Not Found:
+              value:
+                code: 200.08.343
+                datetime: '2022-09-23T20:52:14.861Z'
+                message: Not search results found
+    RS401:
+      description: Unauthorized (AP)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSQuery400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenericResponse'
+          examples:
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Unable Process Request:
+              $ref: '#/components/examples/UnableProcessRequest'
+    RS500:
+      description: Internal Server Error (AP*)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+  examples:
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.08.396
+        message: Invalid parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field fielName: must not be blank'
+    InvalidTenantId:
+      value:
+        code: 400.08.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    UnableProcessRequest:
+      value:
+        code: 400.08.105
+        message: Unable process request
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParamsRequired:
+      value:
+        code: 400.08.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: if you want to search by rrn, the field stan is mandatory
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+  schemas:
+    RSGenericResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.,\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 29
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    maxLength: 300
+                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
+    QueryTransactionResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.08.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          minLength: 1
+          maxLength: 29
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            transactions:
+              type: array
+              xml:
+                name: detail
+                wrapped: true
+              items:
+                $ref: '#/components/schemas/TransactionQuery'
+    RS500:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 29
+    TransactionQuery:
+      type: object
+      additionalProperties: false
+      required:
+      - statusCode
+      - transactionDate
+      - transactionId
+      - transactionReference
+      properties:
+        actionCode:
+          type: string
+          example: '00'
+          description: The results of the transaction request
+          minLength: 2
+          maxLength: 2
+          pattern: ^[0-9]{2}$
+        approvalCode:
+          type: string
+          example: 21324K
+          description: The authorization code from the issuer
+          maxLength: 6
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,6}'
+        responseCode:
+          type: string
+          example: '5'
+          description: The source for the response; typically, either the recipient issuer
+          maxLength: 5
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,5}'
+        retrievalReferenceNumber:
+          type: string
+          example: '401010350420'
+          description: The retrieval Reference Number for the transaction. This field is from a previous transaction
+          maxLength: 12
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,12}'
+        statusCode:
+          type: string
+          description: 'Transaction’s status
+
+            '
+          example: TP
+          enum:
+          - TP
+          - TIP
+          - TD
+          - TPP
+          - TAR
+          - TPTR
+          - TC
+          - TADJR
+          - VALIDATION FAILED
+          maxLength: 17
+          minLength: 2
+        systemsTraceAuditNumber:
+          type: string
+          example: '350420'
+          description: The systems Trace Audit Number for the transaction. This field is from a previous transaction
+          maxLength: 6
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,6}'
+        transactionDate:
+          type: string
+          example: 18-09-2023 00:01:25
+          description: The transmission DateTime for the transaction
+          maxLength: 29
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]'
+        transactionIdentifier:
+          type: string
+          example: '234234322342343'
+          description: The VisaNet reference number for the transaction
+          maxLength: 30
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,30}'
+        transactionType:
+          type: string
+          example: AFT
+          description: Transaction type
+          maxLength: 30
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,30}'
+        transactionReference:
+          type: string
+          example: e681d7e-33b6-4ee4-ab61-0fbeb8662006
+          description: A value used to relate to a financial transaction (**this field should be unique**)
+          maxLength: 36
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,36}'
+        transactionId:
+          type: string
+          example: e1ac6dda-e819-4380-a0b0-2b03cc78207b
+          description: id associated with the transaction.
+          maxLength: 36
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,36}'
+    RS401:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          minLength: 1
+          maxLength: 29
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-real-time-payments.yaml
+- novopayment-real-time-payments-openapi.yml

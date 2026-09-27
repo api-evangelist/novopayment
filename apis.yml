@@ -66,6 +66,36 @@ modified: '2026-09-17'
 url: https://raw.githubusercontent.com/api-evangelist/novopayment/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 common:
+- type: Overlay
+  url: overlays/novopayment-accounts-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-alias-directory-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-cards-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-compliance-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-customers-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-issuer-tokenization-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-mastercard-issuer-tokenization-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-merchant-presented-qr-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-oauth2-data-encryption-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-onboarding-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-operations-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-payment-authorizer-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-profile-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-push-provisioning-overlay.yaml
+- type: Overlay
+  url: overlays/novopayment-real-time-payments-overlay.yaml
 - type: OAuthScopes
   url: scopes/novopayment-scopes.yml
 - type: Authentication
@@ -131,437 +161,3393 @@ common:
 - type: FinOps
   url: finops/novopayment-finops.yml
 apis:
-- aid: novopayment:accounts
+- aid: novopayment:novopayment-accounts-api
   name: NovoPayment Accounts API
-  description: NovoPayment offers the Accounts API to provide a customized, scalable, light and portable
-    set of functionalities. These functionalities can be used by financial institutions for supporting
-    banking activities.
+  description: The Accounts API from NovoPayment — 12 operation(s) for accounts.
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
-  tags:
-  - Digital Banking
-  - Account
-  - Banking as a Service
-  - Payments
-  tags_raw:
-  - Digital Banking
-  - Accounts
-  - Banking as a Service
-  - Payments
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-accounts-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/accounts-api/accounts-api-spec-v1.yaml
-  - type: Documentation
-    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
-  - type: APIReference
-    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-accounts-overlay.yaml
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:alias-directory
-  name: NovoPayment Alias Directory API
-  description: The Alias Directory API enables a set of operations to store and manage users' information
-    safely for sending funds between them. One of the main advantages of using NovoPayment's Alias Directory
-    is that the information sent in each transaction is the alias; therefore, sensitive data such as a
-    PAN is not exposed in each transaction.
-  humanURL: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
   tags:
-  - Payments
-  - Aliases
-  - Directory
-  - Money Transfer
+  - Accounts
   properties:
   - type: OpenAPI
-    url: openapi/novopayment-alias-directory-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/alias-directory-api/alias-directory-api-v1.yml
+    url: openapi/novopayment-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   - type: Documentation
     url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-alias-directory-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/aliasdirectory/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:cards
-  name: NovoPayment Cards API
-  description: Card Issuing, Switching, and Transaction Processing groups together the activities surrounding
-    creating card programs, issuing cards to customers, managing those cards, and processing the transactions
-    those customers make. These components can be implemented modularly. For example, an issuer may want
-    to only employ NovoPayment’s Switch, while another uses only Issuing capabilities and handles transaction
-    authorization in-house.
-  humanURL: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
-  tags:
-  - Card Issuing
-  - Cards
-  - Payments
-  - Prepaid
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-cards-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/cards-api/cards-api-spec-v1.3.yaml
   - type: Documentation
     url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
   - type: APIReference
     url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
-  - type: Overlay
-    url: overlays/novopayment-cards-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/api/v1.3
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:compliance
-  name: NovoPayment Compliance API
-  description: The Compliance API allows you to validate the identity of the person who is registering
-    in the system, with facial, document, and address verification among others. It is easy to implement
-    and is applicable for all onboardings.
-  humanURL: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
-  tags:
-  - KYC
-  - Compliance
-  - Identity Verification
-  - Digital Banking
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-compliance-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/compliance-api/compliance-api-v1.yml
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-compliance-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/kyc/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:customers
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-alias-admin-api
+  name: NovoPayment Alias Admin API
+  description: Alias Administrator
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Alias Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-alias-admin-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-balances-api
+  name: NovoPayment Balances API
+  description: The Balances API from NovoPayment — 6 operation(s) for balances.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Balances
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-balances-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-card-batch-api
+  name: NovoPayment Card Batch API
+  description: The Card Batch API from NovoPayment — 3 operation(s) for card batch.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Card Batch
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-card-batch-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-commercial-api
+  name: NovoPayment Commercial API
+  description: The Commercial API from NovoPayment — 1 operation(s) for commercial.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Commercial
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-commercial-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-credentials-api
+  name: NovoPayment Credentials API
+  description: The Credentials API from NovoPayment — 9 operation(s) for credentials.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Credentials
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-credentials-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-customer-api
+  name: NovoPayment Customer API
+  description: The Customer API from NovoPayment — 1 operation(s) for customer.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Customer
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-customer-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-customers-api
   name: NovoPayment Customers API
-  description: The Customers API allows to handle the different type of customers that can be served by
-    NovoPayment’s platform. This includes individuals, commercial and merchant customers. For most of
-    the operations to be performed in the platform you will need to provide the customer id in order to
-    complete the operation. Below operations are available for Customers API Create Commercial Customers
-    This operation can be used for commercial customer creation.
-  humanURL: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  description: The Customers API from NovoPayment — 11 operation(s) for customers.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
   - Customers
-  - Digital Banking
-  - Onboarding
   properties:
   - type: OpenAPI
-    url: openapi/novopayment-customers-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/customers-api/customers-api-spec-v1.yaml
+    url: openapi/novopayment-customers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-customers-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/customers/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:issuer-tokenization
-  name: NovoPayment Issuer Tokenization API
-  description: NovoPayment, as a Token Service Provider, has a collection of APIs that enables Issuers
-    to participate in the Tokenization ecosystem; we are responsible for the interaction between the Issuer
-    and the franchises. Providing security in the process, ease of implementation and support for your
-    development teams throughout the project.
-  humanURL: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
-  tags:
-  - Tokenization
-  - Card Issuing
-  - Payments
-  - Digital Wallet
-  tags_raw:
-  - Tokenization
-  - Card Issuing
-  - Payments
-  - Digital Wallets
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-issuer-tokenization-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/tokenization-api/tokenization-api-v1.yml
   - type: Documentation
     url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-issuer-tokenization-overlay.yaml
-  baseURL: https://cert-api.novopayment.com
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:mastercard-issuer-tokenization
-  name: NovoPayment MasterCard Tokenization API
-  description: Introduction  NovoPayment, as a Token Service Provider, has a collection of APIs that enables
-    Issuers to participate in the Tokenization ecosystem; we are responsible for the interaction between
-    the Issuer and the franchises. Providing security in the process, ease of implementation and support
-    for your development teams throughout the project.
-  humanURL: https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
-  tags:
-  - Tokenization
-  - Mastercard
-  - Payments
-  - Digital Wallet
-  tags_raw:
-  - Tokenization
-  - Mastercard
-  - Payments
-  - Digital Wallets
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-mastercard-issuer-tokenization-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/tokenization-api/mastercard-tokenization-api-v1.yaml
   - type: Documentation
-    url: https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
   - type: APIReference
-    url: https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-mastercard-issuer-tokenization-overlay.yaml
-  x-base-url-note: 'Templated per issuer in NovoPayment''s own spec (servers[0] = https://[URLIssuer]/v2):
-    the Mastercard tokenization contract runs on the issuer''s host, so no single NovoPayment base URL
-    is published. Kept verbatim rather than substituted with a different NovoPayment service.'
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-  baseURL: https://[URLIssuer]/v2
-- aid: novopayment:merchant-presented-qr
-  name: NovoPayment Merchant Presented QR
-  description: Merchant Presented QR is a Service that includes payment or transactions process with tokens.
-    A Registered Merchant on the service can expose a QR in the store, and the users of an Issuer´s Tokenized
-    Wallet can read the QR Code and introduce the payment information. This system includes the process
-    of generating the QR Token for merchants, Reading that QR and making payment with token.
-  humanURL: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
-  tags:
-  - QR Payments
-  - Digital Wallet
-  - Merchants
-  - Payments
-  tags_raw:
-  - QR Payments
-  - Digital Wallets
-  - Merchants
-  - Payments
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-merchant-presented-qr-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/merchant-presented-qr-api/merchant-presented-qr-api-v1.yaml
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-merchant-presented-qr-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/api/v1/mpqr
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:oauth2-data-encryption
-  name: NovoPayment Security OAuth2 API
-  description: '"The OAuth 2.0 authorization framework allows a third-party application to gain limited
-    access to an HTTP service, either on behalf of the resource owner by orchestrating an approval interaction
-    between the resource owner and the HTTP service, or by allowing the third-party application to access
-    it on its own behalf" This means that you can allow certain users/apps to access your resources on
-    a limited basis.'
-  humanURL: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
-  tags:
-  - Authentication
-  - Security
-  - Encryption
-  tags_raw:
-  - OAuth
-  - Authentication
-  - Security
-  - Encryption
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-oauth2-data-encryption-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/security-oauth2-api/security-oauth2-api-v1.yml
   - type: Documentation
     url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-oauth2-data-encryption-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/oauth2/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:onboarding
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-decoderqr-api
+  name: NovoPayment Decoderqr API
+  description: The Decoderqr API from NovoPayment — 1 operation(s) for decoderqr.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Decoderqr
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-decoderqr-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-device-api
+  name: NovoPayment Device API
+  description: The Device API from NovoPayment — 2 operation(s) for device.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Device
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-device-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-documents-api
+  name: NovoPayment Documents API
+  description: The Documents API from NovoPayment — 2 operation(s) for documents.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-documents-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-expectedactivity-api
+  name: NovoPayment Expectedactivity API
+  description: The Expectedactivity API from NovoPayment — 1 operation(s) for expectedactivity.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Expectedactivity
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-expectedactivity-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-favorites-api
+  name: NovoPayment Favorites API
+  description: Favorites management
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Favorites
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-favorites-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-generateqr-api
+  name: NovoPayment Generateqr API
+  description: The Generateqr API from NovoPayment — 1 operation(s) for generateqr.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Generateqr
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-generateqr-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-income-api
+  name: NovoPayment Income API
+  description: The Income API from NovoPayment — 1 operation(s) for income.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Income
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-income-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-individuals-api
+  name: NovoPayment Individuals API
+  description: The Individuals API from NovoPayment — 1 operation(s) for individuals.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Individuals
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-individuals-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-issuance-api
+  name: NovoPayment Issuance API
+  description: The Issuance API from NovoPayment — 6 operation(s) for issuance.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Issuance
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-issuance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-life-cycle-management-api
+  name: NovoPayment Life Cycle Management API
+  description: >-
+    The Life Cycle Management API from NovoPayment — 5 operation(s) for life cycle management.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Life Cycle Management
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-life-cycle-management-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-merchant-api
+  name: NovoPayment Merchant API
+  description: The Merchant API from NovoPayment — 1 operation(s) for merchant.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Merchant
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-merchant-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-movements-api
+  name: NovoPayment Movements API
+  description: The Movements API from NovoPayment — 3 operation(s) for movements.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Movements
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-movements-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-notifications-api
+  name: NovoPayment Notifications API
+  description: The Notifications API from NovoPayment — 1 operation(s) for notifications.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-novopayment-account-cards-api
+  name: NovoPayment Novopayment Account Cards API
+  description: >-
+    The Novopayment Account Cards API from NovoPayment — 14 operation(s) for novopayment account cards.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Novopayment Account Cards
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-novopayment-account-cards-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-occupation-api
+  name: NovoPayment Occupation API
+  description: The Occupation API from NovoPayment — 2 operation(s) for occupation.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Occupation
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-occupation-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-onboarding-api
   name: NovoPayment Onboarding API
-  description: The Onboarding API, groups together a pool of operations for the creation of a request
-    for a digital bank account. Below operations are available for onboarding API Validate Identity Document.
-    This operation verifies that the Identity Document sent is not registered with active status. Device
-    Registration This operation allows to register a new device or update an existing one.
-  humanURL: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  description: The Onboarding API from NovoPayment — 1 operation(s) for onboarding.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
   - Onboarding
-  - Digital Banking
-  - KYC
-  - Account
-  tags_raw:
-  - Onboarding
-  - Digital Banking
-  - KYC
-  - Accounts
   properties:
   - type: OpenAPI
-    url: openapi/novopayment-onboarding-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/onboarding-api/onboarding-api-spec-v1.yaml
+    url: openapi/novopayment-onboarding-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-onboarding-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/onboarding/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:operations
-  name: NovoPayment Operations API
-  description: 'The transaction operations API can be used to generate the transactional operations that
-    can be configured in an existing account or card program. Below operations are available for Transaction
-    Operations API: - Create transaction operations This operation can be used to create a transactional
-    operation associated with a tenant.'
-  humanURL: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-payment-api
+  name: NovoPayment Payment API
+  description: The Payment API from NovoPayment — 1 operation(s) for payment.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Payment
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-payment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-payment-instruments-api
+  name: NovoPayment Payment Instruments API
+  description: Payment Instruments, cards management
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Payment Instruments
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-payment-instruments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-paymentreverse-api
+  name: NovoPayment Paymentreverse API
+  description: The Paymentreverse API from NovoPayment — 1 operation(s) for paymentreverse.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Paymentreverse
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-paymentreverse-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-payments-api
+  name: NovoPayment Payments API
+  description: The Payments API from NovoPayment — 3 operation(s) for payments.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-payments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-personal-api
+  name: NovoPayment Personal API
+  description: The Personal API from NovoPayment — 8 operation(s) for personal.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Personal
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-personal-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-query-api
+  name: NovoPayment Query API
+  description: Query Status Transaction
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Query
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-query-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-recipients-api
+  name: NovoPayment Recipients API
+  description: The Recipients API from NovoPayment — 1 operation(s) for recipients.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Recipients
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-recipients-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-regulatoryassessment-api
+  name: NovoPayment Regulatoryassessment API
+  description: The Regulatoryassessment API from NovoPayment — 1 operation(s) for regulatoryassessment.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Regulatoryassessment
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-regulatoryassessment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-reverse-api
+  name: NovoPayment Reverse API
+  description: Rtp reverse
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Reverse
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-reverse-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-rtp-send-api
+  name: NovoPayment Rtp Send API
+  description: Rtp Send Money operations
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Rtp-Send
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-rtp-send-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-sendpayment-api
+  name: NovoPayment Sendpayment API
+  description: The Sendpayment API from NovoPayment — 1 operation(s) for sendpayment.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Sendpayment
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-sendpayment-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-session-api
+  name: NovoPayment Session API
+  description: The Session API from NovoPayment — 2 operation(s) for session.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Session
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-session-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-settings-api
+  name: NovoPayment Settings API
+  description: The Settings API from NovoPayment — 4 operation(s) for settings.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-settings-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-summary-api
+  name: NovoPayment Summary API
+  description: Transaction Summary
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Summary
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-summary-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-support-api
+  name: NovoPayment Support API
+  description: The Support API from NovoPayment — 4 operation(s) for support.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Support
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-support-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-terms-api
+  name: NovoPayment Terms API
+  description: The Terms API from NovoPayment — 1 operation(s) for terms.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Terms
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-terms-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-token-api
+  name: NovoPayment Token API
+  description: The Token API from NovoPayment — 1 operation(s) for token.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Token
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-token-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-tokenization-process-api
+  name: NovoPayment Tokenization Process API
+  description: >-
+    The Tokenization Process API from NovoPayment — 11 operation(s) for tokenization process.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Tokenization Process
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-tokenization-process-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-transaction-api
+  name: NovoPayment Transaction API
+  description: The Transaction API from NovoPayment — 1 operation(s) for transaction.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
   - Transaction
-  - Digital Banking
-  - Payments
-  tags_raw:
-  - Transactions
-  - Digital Banking
-  - Payments
   properties:
   - type: OpenAPI
-    url: openapi/novopayment-operations-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/operations-api/operations-api-v1.yaml
+    url: openapi/novopayment-transaction-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-operations-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/operations/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:payment-authorizer
-  name: NovoPayment Payment Authorizer API
-  description: 'The Payment Authorizer API enables the authorization process of a transaction from a payment
-    gateway. In addition, this API can retrieve the details of a transaction and execute the reversal
-    and refund of purchase. Below operations are available for this API: - Payment Authorizer - Payment
-    Detail - Payment Reverse - Payment Refund'
-  humanURL: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
-  tags:
-  - Digital Acquiring
-  - Authorization
-  - Payments
-  - Merchants
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-payment-authorizer-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/payment-authorizer-api/payment-authorizer-api-v1.yml
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-payment-authorizer-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/paymentauthorizer/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:profile
-  name: NovoPayment Profile API
-  description: Below operations are available for Profile API Get Customer Configuration Parameters This
-    operation allows to consult the different configurations of a customer. Customer Configuration Update
-    This operation allows to update a customer-specific configuration. Customer Document Upload This operation
-    allows to uppload of the requested documents for the validation of all the account information. Later,
-    the tenant may request additional documents.
-  humanURL: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
-  tags:
-  - Configuration
-  - Digital Banking
-  - Profiles
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-profile-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/profile-api/profile-api-spec-v1.yaml
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-profile-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/profiles/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:push-provisioning
-  name: NovoPayment Push Provisioning API
-  description: Use Cases  If you are a Bank that wants to give your customers the possibility to seamless
-    register their debit and credit cards in payment platforms such as Apple Pay, Samsung Pay and Google
-    Pay, as easily as including only one button on your website or app, this API is the solution. NovoPayment
-    does the heavy lifting for you, we take care of providing the service for you, so you can focus on
-    the core of your business and the UX/UI.
-  humanURL: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
-  tags:
-  - Push Provisioning
-  - Digital Wallet
-  - Tokenization
-  - Apple Pay
-  tags_raw:
-  - Push Provisioning
-  - Digital Wallets
-  - Tokenization
-  - Apple Pay
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-push-provisioning-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/push-provisioning/push-provisioning-api-spec-v1.yaml
   - type: Documentation
     url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-push-provisioning-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/pushprovisioning/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
-- aid: novopayment:real-time-payments
-  name: NovoPayment Real-Time Payments API
-  description: The Real-time payments API leverage the newest technologies to pull/push payments amongst
-    VISA or MasterCard branded products such as debit, prepaid, and credit cards to manage transactions
-    between individual banked consumers (P2P). All this developed with effective integrations and collaborations
-    with relevant local and global payment networks and the domestic markets.
-  humanURL: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
-  tags:
-  - Real-Time Payments
-  - Payments
-  - Money Transfer
-  - Visa
-  properties:
-  - type: OpenAPI
-    url: openapi/novopayment-real-time-payments-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://dcrpi6aufyoyb.cloudfront.net/main/realtime-payment-api/realtime-payment-api-v1.yml
   - type: Documentation
     url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
   - type: APIReference
     url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
-  - type: Overlay
-    url: overlays/novopayment-real-time-payments-overlay.yaml
-  baseURL: https://sandbox-api.novopayment.com/realtimepayments/v1
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/novopayment.png
+- aid: novopayment:novopayment-try-it-out-api
+  name: NovoPayment Try it out! API
+  description: The Try it out! API from NovoPayment — 6 operation(s) for try it out!.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Try it out!
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-try-it-out-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-universal-api
+  name: NovoPayment Universal API
+  description: The Universal API from NovoPayment — 1 operation(s) for universal.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Universal
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-universal-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-user-api
+  name: NovoPayment User API
+  description: The User API from NovoPayment — 1 operation(s) for user.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-user-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+- aid: novopayment:novopayment-usercreation-api
+  name: NovoPayment Usercreation API
+  description: The Usercreation API from NovoPayment — 1 operation(s) for usercreation.
+  humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  baseURL: https://sandbox-api.novopayment.com/accounts/v1
+  tags:
+  - Usercreation
+  properties:
+  - type: OpenAPI
+    url: openapi/novopayment-usercreation-api-openapi.yml
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/alias-directory-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: APIReference
+    url: https://developer.novopayment.com/api/card-solutions/cards-api-v1.3
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/compliance-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/customers-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/tokenization/issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: APIReference
+    url: >-
+      https://developer.novopayment.com/api/tokenization/mastercard-issuer-tokenization-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/merchant-presented-qr-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/data-encryption/oauth2-data-encryption-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/onboarding-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/operations-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-acquiring/payment-authorizer-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-banking/profile-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/digital-wallets/push-provisioning-api-v1.0
+  - type: Documentation
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
+  - type: APIReference
+    url: https://developer.novopayment.com/api/payments/real-time-payments-api-v1.0
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

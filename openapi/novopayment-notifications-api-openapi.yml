@@ -1,0 +1,429 @@
+openapi: 3.2.0
+info:
+  title: Novopayment Notifications API
+  version: v1
+  description: 'Operations tagged Notifications across 2 of this provider''s published API definitions: novopayment-merchant-presented-qr.yaml, novopayment-merchant-presented-qr-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Sandbox
+  url: https://sandbox-api.novopayment.com/api/v1/mpqr
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Notifications
+paths:
+  /notifications/payment:
+    post:
+      summary: Notify status for a payment
+      operationId: notificationsPayment
+      parameters:
+      - $ref: '#/components/parameters/XRequestId'
+      - $ref: '#/components/parameters/XPayToken'
+      - $ref: '#/components/parameters/XTenantId'
+      - $ref: '#/components/parameters/Accept'
+      - $ref: '#/components/parameters/apikey'
+      - $ref: '#/components/parameters/createApiKey'
+      requestBody:
+        $ref: '#/components/requestBodies/RQNotificationPayment'
+      responses:
+        '201':
+          $ref: '#/components/responses/RSNotificationPayment'
+        '400':
+          $ref: '#/components/responses/RSGenerateQrCode400'
+        '401':
+          $ref: '#/components/responses/RS401'
+        '500':
+          $ref: '#/components/responses/RS500'
+      tags:
+      - Notifications
+    servers:
+    - description: Sandbox
+      url: https://sandbox-api.novopayment.com/api/v1/mpqr
+components:
+  responses:
+    RSGenerateQrCode400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenerateQrCode400'
+          examples:
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Error General Services:
+              $ref: '#/components/examples/ErrorGeneralServices'
+    RSNotificationPayment:
+      description: Make Payment response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSNotificationPayment'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+  schemas:
+    ObjtransactionAmount:
+      type: object
+      required:
+      - transactionAmount
+      - transactionCurrencyCode
+      properties:
+        transactionAmount:
+          type: string
+          description: Amount associated with transaction. Amount as populated in ISO or API is cumulative of tip or convenience fee as encoded in the QR code or tip as entered by the consumer on the mobile app.
+          example: '99.34'
+          maxLength: 18
+        transactionCurrencyCode:
+          type: string
+          description: Currency code used for the transaction amount. ISO 4217 three-digit currency code.
+          example: USD
+          maxLength: 3
+        additionalAmounts:
+          type: array
+          description: "A list of additional amounts related to the transaction Each additional amount is a two-item key-value pair, where the key \nfor the first item is “additionalAmountType” and the key for the second item is “additionalAmountValue.” AdditionalAmountType \nis one of following enums:\n  - TIP\n  - CONVENIENCE_FEE\n  - CONVENIENCE_FEE_PERCENTAGE\n  - SUB_TOTAL\n"
+          example:
+          - “additionalAmountType”: “TIP”
+            “additionalAmountValue”: “3”
+    RSGenerateQrCode400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSNotificationPayment:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQNotificationPayment:
+      type: object
+      required:
+      - srcClientId
+      - srcDigitalCardId
+      - eventTimestamp
+      properties:
+        srcClientId:
+          type: string
+          description: Identifies the connecting client, e.g. SRCI, DCF, SRCP.
+          example: JI1GA0M2FTMYR6CDP6OG21x-OD7_z0ZPBcF1-MB1aKlZTLBm4
+        srcCorrelationId:
+          type: string
+          description: Correlation ID generated by the SRC system and returned by previous Checkout call.
+          example: a
+        srciTransactionId:
+          type: string
+          description: A unique ID created by the Mobile Application Provider.
+          example: a
+          maxLength: 100
+        serviceId:
+          type: string
+          description: Form of payment service. In case of Visa QR, value is SELLER_PRESENTED.
+          example: SELLER_PRESENTED
+          enum:
+          - SELLER_PRESENTED
+        srcDigitalCardId:
+          type: string
+          description: In Visa QR use case, field utilized for vProvisionedTokenID (unique Token ID for the payment instrument selected).
+          example: a
+        eventTimestamp:
+          type: string
+          description: UTC
+          example: a
+        confirmationStatus:
+          type: string
+          description: "Status of the event as provided by the SRC Initiator in the Confirmation message. Valid values are:\n  - 01: Success\n  - 02: Failure \n  - 03: Other\n"
+          example: 1
+          maxLength: 2
+          enum:
+          - 1
+          - 2
+          - 3
+        authAmount:
+          type: object
+          $ref: '#/components/schemas/ObjtransactionAmount'
+        customData:
+          type: array
+          description: list of key-value pair.
+          example:
+          - key: samplekey
+            value: '31000'
+        assuranceData:
+          type: object
+          $ref: '#/components/schemas/ObjAssuranceData'
+    ObjAssuranceData:
+      type: object
+      properties:
+        cardVerificationEntity:
+          type: string
+        cardVerificationMethod:
+          type: string
+        cardVerificationResults:
+          type: string
+        cardVerificationTimestamp:
+          type: string
+        cardAssuranceData:
+          type: string
+        cardholderAuthenticationEntity:
+          type: string
+        cardholderAuthenticationMethod:
+          type: string
+        cardholderAuthenticationResults:
+          type: string
+        cardholderAuthenticationTimestamp:
+          type: string
+        cardholderAssuranceData:
+          type: string
+        consumerVerificationEntity:
+          type: string
+        consumerVerificationMethod:
+          type: string
+        consumerVerificationResults:
+          type: string
+        consumerVerificationTimestamp:
+          type: string
+        consumerAssuranceData:
+          type: string
+        deviceVerificationEntity:
+          type: string
+        deviceVerificationMethod:
+          type: string
+        deviceVerificationResults:
+          type: string
+        deviceVerificationTimestamp:
+          type: string
+        deviceAssuranceData:
+          type: string
+        relationshipVerificationEntity:
+          type: string
+        relationshipVerificationMethod:
+          type: string
+        relationshipVerificationResults:
+          type: string
+        relationshipVerificationTimestamp:
+          type: string
+        relationshipAssuranceData:
+          type: string
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  examples:
+    ErrorGeneralServices:
+      value:
+        code: 400.22.350
+        message: Error General Services
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParamsRequired:
+      value:
+        code: 400.22.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: '2020-01-03T16:05:56.517Z'
+  parameters:
+    apikey:
+      name: apikey
+      in: query
+      description: Public API key, which is different from the shared secret.
+      required: true
+      schema:
+        type: string
+        maxLength: 49
+    Accept:
+      name: Accept
+      in: header
+      description: 'Acceptable response format.
+
+
+        Format: Must include application/json
+
+        '
+      required: true
+      schema:
+        type: string
+    XPayToken:
+      name: x-pay-token
+      in: header
+      description: 'A token identifying the transaction and its contents.
+
+
+        The token expires in 480 seconds (8 minutes) for all clients.
+
+        '
+      required: true
+      schema:
+        type: string
+    XRequestId:
+      name: x-request-id
+      in: header
+      description: 'Unique ID for the API request.
+
+
+        Format: Alphabetic, numeric, and hyphens ( - ), e.g. spaces are not allowed.
+
+        '
+      required: true
+      schema:
+        type: string
+        maxLength: 36
+    XTenantId:
+      name: X-tenant-id
+      in: header
+      description: 'It is necessary send all petitions for identified the client.
+
+        '
+      required: true
+      schema:
+        type: string
+    createApiKey:
+      name: createApiKey
+      in: query
+      description: 'Whether to create a new API key for the client.
+
+
+        Note: do not set to true.
+
+        '
+      required: true
+      schema:
+        type: string
+        enum:
+        - false
+        - true
+  requestBodies:
+    RQNotificationPayment:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQNotificationPayment'
+      required: true
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: 'See [Oauth2 API](https://developer.novopayment.com/api/authentication-method-and-encryption/oauth2-api)
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
+          scopes: {}
+x-refined-from:
+- novopayment-merchant-presented-qr.yaml
+- novopayment-merchant-presented-qr-openapi.yml
