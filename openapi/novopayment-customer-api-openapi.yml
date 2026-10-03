@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Customer API
+  description: Card Issuing, Switching, and Transaction Processing groups together the activities surrounding creating card programs, issuing cards to customers, managing those cards, and processing the transactions those customers make.
   version: v1.3
-  description: 'Operations tagged Customer across 2 of this provider''s published API definitions: novopayment-cards.yaml, novopayment-cards-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Cards Customer API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/api/v1.3
@@ -35,132 +35,32 @@ paths:
           $ref: '#/components/responses/RS401'
         '500':
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/api/v1.3
 components:
-  responses:
-    RSCardIdUserId200:
-      description: Ok
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardIdUserId200'
-          examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  cardId: d2cb2441-0034-4211-93af-dcddc892a680
-                  userId: d2cb2441-0034-4211-93af-dcddc892a680
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSCardHolderCreate400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardHolderCreate400'
-          examples:
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersCardHolderCreate'
-            The Card Is Already Linked To An Account:
-              $ref: '#/components/examples/TheCardIsAlreadyLinkedToAnAccount'
-            The Card Is Not Active:
-              $ref: '#/components/examples/TheCardIsNotActive'
-            Card Is Expired:
-              $ref: '#/components/examples/CardIsExpired'
-            Card Activated:
-              $ref: '#/components/examples/CardActivated'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Account Is Already Registered:
-              $ref: '#/components/examples/AccountIsAlreadyRegistered'
-            Invalid Card Id:
-              $ref: '#/components/examples/InvalidCardId'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
   examples:
-    CardIsBlocked:
+    AccessTokenNotApproved:
       value:
-        code: 400.01.008
-        message: Card is blocked
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TheCardIsAlreadyLinkedToAnAccount:
-      value:
-        code: 400.01.486
-        message: The card is already linked to an account
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidTenantId:
-      value:
-        code: 400.01.004
-        message: Invalid tenant ID
+        code: 401.01.991
+        message: Access Token not approved
         datetime: 2020-01-03 16:05:56.517000+00:00
     AccessTokenExpired:
       value:
         code: 401.01.993
         message: Access token expired
         datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidCardId:
+    InvalidTenantId:
       value:
-        code: 400.01.009
-        message: Invalid Card ID
+        code: 400.01.004
+        message: Invalid tenant ID
         datetime: 2020-01-03 16:05:56.517000+00:00
-    InternalServerError:
+    CardIsBlocked:
       value:
-        code: 500.01.999
-        message: Internal Server Error
+        code: 400.01.008
+        message: Card is blocked
         datetime: 2020-01-03 16:05:56.517000+00:00
     InvalidSignature:
       value:
         code: 401.01.992
         message: Invalid signature
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccountIsAlreadyRegistered:
-      value:
-        code: 400.01.015
-        message: Account is already registered
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidAccessToken:
-      value:
-        code: 401.01.990
-        message: Invalid Access Token
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenNotApproved:
-      value:
-        code: 401.01.991
-        message: Access Token not approved
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    HeaderParamsRequired:
-      value:
-        code: 400.01.001
-        message: Header Params Required
         datetime: 2020-01-03 16:05:56.517000+00:00
     CardIsExpired:
       value:
@@ -172,6 +72,11 @@ components:
         code: 400.01.367
         message: The card is not active
         datetime: 2020-01-03 16:05:56.517000+00:00
+    CardActivated:
+      value:
+        code: 400.01.378
+        message: Card activated. You must cancel the card to complete the replenishment flow.
+        datetime: 2020-01-03 16:05:56.517000+00:00
     InvalidParametersCardHolderCreate:
       value:
         code: 400.01.396
@@ -181,12 +86,82 @@ components:
         - message: 'Field accountNumber: exceeded character limit (28)'
         - message: 'Field verificationDigit: is not valid'
         - message: 'Field cardId: is required, it must be not empty or blank'
-    CardActivated:
+    InvalidAccessToken:
       value:
-        code: 400.01.378
-        message: Card activated. You must cancel the card to complete the replenishment flow.
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccountIsAlreadyRegistered:
+      value:
+        code: 400.01.015
+        message: Account is already registered
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsAlreadyLinkedToAnAccount:
+      value:
+        code: 400.01.486
+        message: The card is already linked to an account
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InternalServerError:
+      value:
+        code: 500.01.999
+        message: Internal Server Error
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    HeaderParamsRequired:
+      value:
+        code: 400.01.001
+        message: Header Params Required
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidCardId:
+      value:
+        code: 400.01.009
+        message: Invalid Card ID
         datetime: 2020-01-03 16:05:56.517000+00:00
   schemas:
+    RSCardHolderCreate400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
     RSCardIdUserId200:
       type: object
       required:
@@ -223,26 +198,29 @@ components:
         data:
           type: object
           $ref: '#/components/schemas/ObjCardIdUserIdData'
-    ObjCardIdUserIdData:
+    RS401:
       type: object
       required:
-      - cardId
-      - userId
+      - code
+      - message
+      - datetime
       properties:
-        cardId:
+        code:
           type: string
-          maxLength: 36
-          description: 'Unique card identification (uuid format)
-
-            '
-          example: d2cb2441-0034-4211-93af-dcddc892a680
-        userId:
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
           type: string
-          maxLength: 36
-          description: 'Unique user identification (uuid format)
-
-            '
-          example: d2cb2441-0034-4211-93af-dcddc892a680
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
     RQCardCardholders:
       type: object
       required:
@@ -489,74 +467,93 @@ components:
             '
           example: 1
           maxLength: 2
+    ObjCardIdUserIdData:
+      type: object
+      required:
+      - cardId
+      - userId
+      properties:
+        cardId:
+          type: string
+          maxLength: 36
+          description: 'Unique card identification (uuid format)
+
+            '
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+        userId:
+          type: string
+          maxLength: 36
+          description: 'Unique user identification (uuid format)
+
+            '
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+  responses:
     RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
-    RSCardHolderCreate400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          minLength: 10
-          maxLength: 10
-          description: Operation response code
-        message:
-          type: string
-          maxLength: 140
-          description: Response code description
-        datetime:
-          type: string
-          format: date-time
-          minLength: 24
-          maxLength: 24
-          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSCardIdUserId200:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardIdUserId200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  cardId: d2cb2441-0034-4211-93af-dcddc892a680
+                  userId: d2cb2441-0034-4211-93af-dcddc892a680
+    RSCardHolderCreate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardHolderCreate400'
+          examples:
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersCardHolderCreate'
+            The Card Is Already Linked To An Account:
+              $ref: '#/components/examples/TheCardIsAlreadyLinkedToAnAccount'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Card Is Expired:
+              $ref: '#/components/examples/CardIsExpired'
+            Card Activated:
+              $ref: '#/components/examples/CardActivated'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Account Is Already Registered:
+              $ref: '#/components/examples/AccountIsAlreadyRegistered'
+            Invalid Card Id:
+              $ref: '#/components/examples/InvalidCardId'
   requestBodies:
     RQCardCardholdersUpdate:
       required: true
@@ -574,6 +571,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-cards.yaml
-- novopayment-cards-openapi.yml

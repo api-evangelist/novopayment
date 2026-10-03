@@ -1,8 +1,23 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Payments API
+  description: 'The Payment Authorizer API enables the authorization process of a transaction from a payment gateway. In addition, this API can retrieve the details of a transaction and execute the reversal and refund of purchase.
+
+
+    Below operations are available for this API:
+
+
+    - Payment Authorizer
+
+
+    - Payment Detail
+
+
+    - Payment Reverse
+
+
+    - Payment Refund'
   version: v1
-  description: 'Operations tagged Payments across 2 of this provider''s published API definitions: novopayment-payment-authorizer.yaml, novopayment-payment-authorizer-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Payment Authorizer Payments API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
@@ -30,9 +45,6 @@ paths:
       - Payments
       operationId: postPayments
       x-operation-id-source: derived
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
   /payments/{referenceCode}:
     get:
       summary: Payment Detail
@@ -51,9 +63,6 @@ paths:
           $ref: '#/components/responses/RS500'
       tags:
       - Payments
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
   /payments/{transactionId}:
     patch:
       summary: Payment Refund
@@ -75,10 +84,172 @@ paths:
       - Payments
       operationId: patchPaymentsByTransactionId
       x-operation-id-source: derived
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
 components:
+  examples:
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointPaymentRefund:
+      value:
+        referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+    RQEndpointTokenizedCardTransactionsExample:
+      value:
+        cardToken: b3a7dbec3eb0d71798c4f19fec445795
+        merchant:
+          merchantId: K213JA45
+          terminalId: VKJ23H
+          categoryId: 5699
+          name: Sportswear
+          description: Clothing Stores
+          countryCode: CO
+          city: Bogota
+          address: Cra. 141-23
+          acquirerIdCode: H3K123BMM12
+        transaction:
+          order:
+            description: Buying baseball shoes
+            notifyUrl: https://webhook.com/notification
+            buyer:
+              fullname: Joshua Washington
+              emailAddress: username@mail.com
+              contactPhone: 14153214567
+              documentType: CE
+              documentNumber: 8081023876
+              billingAddress:
+                street1: Cra 86
+                street2: null
+                city: Bogota
+                state: Cundinamarca
+                country: Colombia
+                postalCode: 33133
+                phone: 14153214567
+          metadata:
+            INSTALLMENTS_NUMBER: 1
+          paymentMethod: CLOSELOOP
+          paymentCountry: CO
+          paymentCurrency: 170
+          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+          amount: 58080825.5
+          commissionFee: 808.5
+          localDateTime: '2020-04-20T20:40:52Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestParamsRequired:
+      value:
+        code: 400.08.001
+        message: Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+        - message: 'attributeOneCamelCase: Can not be null'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointNotTokenizedCardTransactionsExample:
+      value:
+        merchant:
+          merchantId: K213JA45
+          terminalId: VKJ23H
+          categoryId: 5699
+          name: Sportswear
+          description: Clothing Stores
+          countryCode: CO
+          city: Bogota
+          address: Cra. 141-23
+          acquirerIdCode: H3K123BMM12
+        transaction:
+          order:
+            description: Buying baseball shoes
+            notifyUrl: https://webhook.com/notification
+            buyer:
+              fullname: Joshua Washington
+              emailAddress: username@mail.com
+              contactPhone: 14153214567
+              documentType: CE
+              documentNumber: 8081023876
+              billingAddress:
+                street1: Cra 86
+                street2: null
+                city: Bogota
+                state: Cundinamarca
+                country: Colombia
+                postalCode: 33133
+                phone: 14153214567
+          card:
+            nameOnCard: Joshua Washington
+            cardId: ulEIrV9g/zlqoKgjIrPGqfGGS0dX6d+q
+            cvalidation: zWNTka0/Pvl8MnFGqPhE5A==
+          metadata:
+            INSTALLMENTS_NUMBER: 1
+          paymentMethod: CLOSELOOP
+          paymentCountry: CO
+          paymentCurrency: 170
+          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+          amount: 58080825.5
+          commissionFee: 808.5
+          localDateTime: '2020-04-20T20:40:52Z'
+  parameters:
+    referenceCode:
+      name: referenceCode
+      in: path
+      description: 'Unique transaction identifier.
+
+        '
+      required: true
+      schema:
+        type: string
+    transactionId:
+      name: transactionId
+      in: path
+      description: 'Transaction reference code. This is value must be unique.
+
+        '
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    RQPaymentAuthorizer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQPaymentAuthorizer'
+          examples:
+            Tokenized Card Transactions Example:
+              $ref: '#/components/examples/RQEndpointTokenizedCardTransactionsExample'
+            Not Tokenized Card Transactions Example:
+              $ref: '#/components/examples/RQEndpointNotTokenizedCardTransactionsExample'
+      required: true
+    RQPaymentRefund:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQPaymentRefund'
+          examples:
+            Payment Refund:
+              $ref: '#/components/examples/RQEndpointPaymentRefund'
+      required: true
   schemas:
     RSPaymentRefund200:
       type: object
@@ -124,7 +295,43 @@ components:
               description: Unique payment identifier
               example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
               maxLength: 40
-    RSPaymentAuthorizer400:
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSPaymentRefund400:
       type: object
       properties:
         code:
@@ -545,117 +752,6 @@ components:
               example: '2020-04-20T20:40:52Z'
               description: Date and time of the transaction according to ISO 8601 standards.
               format: date-time
-    RSPaymentAuthorizer200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Describes the meaning of the response code
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Date and time of the transaction according to ISO 8601 standards.
-          format: date-time
-        data:
-          type: object
-          description: 'Object containing the attributes of the response.
-
-            '
-          required:
-          - authCode
-          - transactionId
-          - referenceCode
-          - status
-          properties:
-            authCode:
-              type: string
-              description: Authorization number
-              example: 234
-              maxLength: 6
-            transactionId:
-              type: string
-              description: Unique payment identifier
-              example: b3a7dbec3eb0d71798c4f19fec445795
-              maxLength: 40
-            referenceCode:
-              type: string
-              description: Reference code sent in the request.
-              example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-              maxLength: 40
-            status:
-              type: string
-              description: Transaction status.
-              example: AUTHORIZED
-              maxLength: 10
-            codeDeclined:
-              type: string
-              description: 'Detail of the result or the status. Required if the transaction is declined.
-
-
-                __Allowed values:__ __Refer to:__ [Transaction Response Code](https://developer.novopayment.com/api/request-and-response-codes#item-transactionresponsecodes%22_blank%22)
-
-                '
-              example: null
-              maxLength: 5
-    RS500:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.08.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQPaymentRefund:
-      type: object
-      required:
-      - referenceCode
-      properties:
-        referenceCode:
-          type: string
-          description: 'Reference code sent in the request.
-
-            '
-          example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-          maxLength: 40
-    RSPaymentRefund400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RSGetPaymentDetail200:
       type: object
       required:
@@ -1056,7 +1152,7 @@ components:
                     '
                   example: REFUND
                   maxLength: 7
-    RSGetPaymentDetail400:
+    RSPaymentAuthorizer400:
       type: object
       properties:
         code:
@@ -1074,18 +1170,93 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RS401:
+    RQPaymentRefund:
+      type: object
+      required:
+      - referenceCode
+      properties:
+        referenceCode:
+          type: string
+          description: 'Reference code sent in the request.
+
+            '
+          example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+          maxLength: 40
+    RSPaymentAuthorizer200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Describes the meaning of the response code
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Date and time of the transaction according to ISO 8601 standards.
+          format: date-time
+        data:
+          type: object
+          description: 'Object containing the attributes of the response.
+
+            '
+          required:
+          - authCode
+          - transactionId
+          - referenceCode
+          - status
+          properties:
+            authCode:
+              type: string
+              description: Authorization number
+              example: 234
+              maxLength: 6
+            transactionId:
+              type: string
+              description: Unique payment identifier
+              example: b3a7dbec3eb0d71798c4f19fec445795
+              maxLength: 40
+            referenceCode:
+              type: string
+              description: Reference code sent in the request.
+              example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+              maxLength: 40
+            status:
+              type: string
+              description: Transaction status.
+              example: AUTHORIZED
+              maxLength: 10
+            codeDeclined:
+              type: string
+              description: 'Detail of the result or the status. Required if the transaction is declined.
+
+
+                __Allowed values:__ __Refer to:__ [Transaction Response Code](https://developer.novopayment.com/api/request-and-response-codes#item-transactionresponsecodes%22_blank%22)
+
+                '
+              example: null
+              maxLength: 5
+    RSGetPaymentDetail400:
       type: object
       properties:
         code:
           type: string
-          example: 401.08.990
+          example: 400.08.003
           description: Operation response code
           minLength: 10
           maxLength: 10
         message:
           type: string
-          example: Invalid Access Token
+          example: Params required
           description: Response code description
           maxLength: 140
         datetime:
@@ -1154,29 +1325,47 @@ components:
                     amount: 58080825.50,
                     localDateTime: '2020-04-20T20:40:52Z'
                     type: REFUND
-    RSPaymentAuthorizer200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPaymentAuthorizer200'
-          examples:
-            Payment Authorizer:
-              value:
-                code: 200.12.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: 234
-                  transactionId: b3a7dbec3eb0d71798c4f19fec445795
-                  referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-                  status: AUTHORIZED
     RSPaymentAuthorizer400:
       description: Bad Request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RSPaymentAuthorizer400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSPaymentRefund400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentRefund400'
           examples:
             Header Params Required:
               $ref: '#/components/examples/HeaderParamsRequired'
@@ -1208,206 +1397,23 @@ components:
               $ref: '#/components/examples/HeaderParamsRequired'
             Request Params Required:
               $ref: '#/components/examples/RequestParamsRequired'
-    RSPaymentRefund400:
-      description: Bad Request
+    RSPaymentAuthorizer200:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSPaymentRefund400'
+            $ref: '#/components/schemas/RSPaymentAuthorizer200'
           examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-  requestBodies:
-    RQPaymentAuthorizer:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQPaymentAuthorizer'
-          examples:
-            Tokenized Card Transactions Example:
-              $ref: '#/components/examples/RQEndpointTokenizedCardTransactionsExample'
-            Not Tokenized Card Transactions Example:
-              $ref: '#/components/examples/RQEndpointNotTokenizedCardTransactionsExample'
-      required: true
-    RQPaymentRefund:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQPaymentRefund'
-          examples:
-            Payment Refund:
-              $ref: '#/components/examples/RQEndpointPaymentRefund'
-      required: true
-  parameters:
-    referenceCode:
-      name: referenceCode
-      in: path
-      description: 'Unique transaction identifier.
-
-        '
-      required: true
-      schema:
-        type: string
-    transactionId:
-      name: transactionId
-      in: path
-      description: 'Transaction reference code. This is value must be unique.
-
-        '
-      required: true
-      schema:
-        type: string
-  examples:
-    AccessTokenExpired:
-      value:
-        code: 401.08.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointNotTokenizedCardTransactionsExample:
-      value:
-        merchant:
-          merchantId: K213JA45
-          terminalId: VKJ23H
-          categoryId: 5699
-          name: Sportswear
-          description: Clothing Stores
-          countryCode: CO
-          city: Bogota
-          address: Cra. 141-23
-          acquirerIdCode: H3K123BMM12
-        transaction:
-          order:
-            description: Buying baseball shoes
-            notifyUrl: https://webhook.com/notification
-            buyer:
-              fullname: Joshua Washington
-              emailAddress: username@mail.com
-              contactPhone: 14153214567
-              documentType: CE
-              documentNumber: 8081023876
-              billingAddress:
-                street1: Cra 86
-                street2: null
-                city: Bogota
-                state: Cundinamarca
-                country: Colombia
-                postalCode: 33133
-                phone: 14153214567
-          card:
-            nameOnCard: Joshua Washington
-            cardId: ulEIrV9g/zlqoKgjIrPGqfGGS0dX6d+q
-            cvalidation: zWNTka0/Pvl8MnFGqPhE5A==
-          metadata:
-            INSTALLMENTS_NUMBER: 1
-          paymentMethod: CLOSELOOP
-          paymentCountry: CO
-          paymentCurrency: 170
-          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-          amount: 58080825.5
-          commissionFee: 808.5
-          localDateTime: '2020-04-20T20:40:52Z'
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointTokenizedCardTransactionsExample:
-      value:
-        cardToken: b3a7dbec3eb0d71798c4f19fec445795
-        merchant:
-          merchantId: K213JA45
-          terminalId: VKJ23H
-          categoryId: 5699
-          name: Sportswear
-          description: Clothing Stores
-          countryCode: CO
-          city: Bogota
-          address: Cra. 141-23
-          acquirerIdCode: H3K123BMM12
-        transaction:
-          order:
-            description: Buying baseball shoes
-            notifyUrl: https://webhook.com/notification
-            buyer:
-              fullname: Joshua Washington
-              emailAddress: username@mail.com
-              contactPhone: 14153214567
-              documentType: CE
-              documentNumber: 8081023876
-              billingAddress:
-                street1: Cra 86
-                street2: null
-                city: Bogota
-                state: Cundinamarca
-                country: Colombia
-                postalCode: 33133
-                phone: 14153214567
-          metadata:
-            INSTALLMENTS_NUMBER: 1
-          paymentMethod: CLOSELOOP
-          paymentCountry: CO
-          paymentCurrency: 170
-          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-          amount: 58080825.5
-          commissionFee: 808.5
-          localDateTime: '2020-04-20T20:40:52Z'
-    InvalidAccessToken:
-      value:
-        code: 401.08.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.08.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointPaymentRefund:
-      value:
-        referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-    AccessTokenNotApproved:
-      value:
-        code: 401.08.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.08.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestParamsRequired:
-      value:
-        code: 400.08.001
-        message: Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
-        errors:
-        - message: 'attributeOneCamelCase: Can not be null'
+            Payment Authorizer:
+              value:
+                code: 200.12.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: 234
+                  transactionId: b3a7dbec3eb0d71798c4f19fec445795
+                  referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+                  status: AUTHORIZED
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
@@ -1418,6 +1424,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-payment-authorizer.yaml
-- novopayment-payment-authorizer-openapi.yml

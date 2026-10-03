@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Occupation API
+  description: The Onboarding API, groups together a pool of operations for the creation of a request for a digital bank account.
   version: v1
-  description: 'Operations tagged Occupation across 2 of this provider''s published API definitions: novopayment-onboarding.yaml, novopayment-onboarding-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Onboarding Occupation API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/onboarding/v1
@@ -29,9 +29,6 @@ paths:
           $ref: '#/components/responses/RS500'
       tags:
       - Occupation
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/onboarding/v1
   /occupation/other:
     post:
       summary: Other Type Of Occupation
@@ -50,26 +47,124 @@ paths:
           $ref: '#/components/responses/RS500'
       tags:
       - Occupation
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/onboarding/v1
 components:
-  schemas:
+  responses:
+    RSOccupation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOccupation200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSOtherTypeOfOccupation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOtherTypeOfOccupation400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSOtherTypeOfOccupation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOtherTypeOfOccupation200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSOccupation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOccupation400'
+          examples:
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+  examples:
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    ProcessNotCompleted:
+      value:
+        code: 400.25.019
+        message: The process could not be completed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
     RQOtherTypeOfOccupation:
-      type: object
-      properties:
-        occupationType:
-          type: string
-          description: 'Type of occupation.
-
-
-            **Possible values:** self employed, student, other.
-
-            '
-          enum:
-          - student
-          - self employed
-          - other
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQOtherTypeOfOccupation'
+      required: true
+    RQOccupation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQOccupation'
+      required: true
+  schemas:
     RSOccupation400:
       type: object
       required:
@@ -87,6 +182,74 @@ components:
           type: string
           example: Params required
           description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Opertion Timestamp
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSOtherTypeOfOccupation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -178,28 +341,6 @@ components:
                       description: Address city identifier.
                       example: 918537
                       maxLength: 38
-    RSOtherTypeOfOccupation200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RSOccupation200:
       type: object
       required:
@@ -222,6 +363,21 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RQOtherTypeOfOccupation:
+      type: object
+      properties:
+        occupationType:
+          type: string
+          description: 'Type of occupation.
+
+
+            **Possible values:** self employed, student, other.
+
+            '
+          enum:
+          - student
+          - self employed
+          - other
     RSOtherTypeOfOccupation400:
       type: object
       required:
@@ -245,168 +401,6 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Opertion Timestamp
-          format: date-time
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-  responses:
-    RSOccupation200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOccupation200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSOtherTypeOfOccupation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOtherTypeOfOccupation400'
-          examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-    RSOtherTypeOfOccupation200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOtherTypeOfOccupation200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSOccupation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOccupation400'
-          examples:
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-  examples:
-    ProcessNotCompleted:
-      value:
-        code: 400.25.019
-        message: The process could not be completed.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.25.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.25.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.25.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.25.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.25.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
-  requestBodies:
-    RQOtherTypeOfOccupation:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQOtherTypeOfOccupation'
-      required: true
-    RQOccupation:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQOccupation'
-      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
@@ -417,6 +411,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-onboarding.yaml
-- novopayment-onboarding-openapi.yml

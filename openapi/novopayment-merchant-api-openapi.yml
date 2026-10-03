@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Merchant API
+  description: The Customers API allows to handle the different type of customers that can be served by NovoPayment’s platform.
   version: v1
-  description: 'Operations tagged Merchant across 2 of this provider''s published API definitions: novopayment-customers.yaml, novopayment-customers-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Customers Merchant API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/customers/v1
@@ -29,9 +29,6 @@ paths:
           $ref: '#/components/responses/RS500'
       tags:
       - Merchant
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/customers/v1
 components:
   examples:
     InvalidAccessToken:
@@ -39,15 +36,15 @@ components:
         code: 401.18.990
         message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.18.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
         code: 500.18.001
         message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.18.991
+        message: Access Token not approved
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenExpired:
       value:
@@ -64,55 +61,109 @@ components:
         code: 401.18.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-  responses:
-    RSCreateMerchantCustomer400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCreateMerchantCustomer400'
-          examples:
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RSCreateMerchantCustomer200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCreateMerchantCustomer200'
-          examples:
-            Success:
-              value:
-                code: 200.18.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  customerId: 49BCD622C6A07726594D63AAB2F436D366782AD1
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
   schemas:
+    RSCreateMerchantCustomer200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - customerId
+          properties:
+            customerId:
+              type: string
+              description: Unique customer identifier.
+              example: 49BCD622C6A07726594D63AAB2F436D366782AD1
+              maxLength: 40
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Opertion Timestamp
+          format: date-time
+    RSCreateMerchantCustomer400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RQCreateMerchantCustomer:
       type: object
       required:
@@ -304,108 +355,6 @@ components:
                 description: Country in ISO code 2 digits.
                 example: US
                 maxLength: 2
-    RSCreateMerchantCustomer400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.18.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Opertion Timestamp
-          format: date-time
-    RSCreateMerchantCustomer200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.18.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-        data:
-          type: object
-          required:
-          - customerId
-          properties:
-            customerId:
-              type: string
-              description: Unique customer identifier.
-              example: 49BCD622C6A07726594D63AAB2F436D366782AD1
-              maxLength: 40
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
   requestBodies:
     RQCreateMerchantCustomer:
       content:
@@ -413,6 +362,54 @@ components:
           schema:
             $ref: '#/components/schemas/RQCreateMerchantCustomer'
       required: true
+  responses:
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSCreateMerchantCustomer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreateMerchantCustomer400'
+          examples:
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSCreateMerchantCustomer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreateMerchantCustomer200'
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  customerId: 49BCD622C6A07726594D63AAB2F436D366782AD1
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
@@ -423,6 +420,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-customers.yaml
-- novopayment-customers-openapi.yml

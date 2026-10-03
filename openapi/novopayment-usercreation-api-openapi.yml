@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Usercreation API
+  description: The Onboarding API, groups together a pool of operations for the creation of a request for a digital bank account.
   version: v1
-  description: 'Operations tagged Usercreation across 2 of this provider''s published API definitions: novopayment-onboarding.yaml, novopayment-onboarding-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Onboarding Usercreation API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/onboarding/v1
@@ -29,25 +29,12 @@ paths:
           $ref: '#/components/responses/RS500'
       tags:
       - Usercreation
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/onboarding/v1
 components:
   examples:
-    AccountCreate:
-      value:
-        code: 400.25.386
-        message: Your account was created! You can now use your credentials to enter your account.
-        datetime: '2020-01-03T16:05:56.517Z'
     InvalidAccessToken:
       value:
         code: 401.25.990
         message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.25.991
-        message: Access Token not approved
         datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
@@ -59,10 +46,20 @@ components:
         code: 400.25.385
         message: Your account is on the way! We'll let you know when your account is ready.
         datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenExpired:
       value:
         code: 401.25.993
         message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountCreate:
+      value:
+        code: 400.25.386
+        message: Your account was created! You can now use your credentials to enter your account.
         datetime: '2020-01-03T16:05:56.517Z'
     InvalidSignature:
       value:
@@ -70,18 +67,6 @@ components:
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
   responses:
-    RSUserCreation200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUserCreation200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
     RS401:
       description: Unauthorized
       content:
@@ -97,6 +82,27 @@ components:
               $ref: '#/components/examples/InvalidSignature'
             Access Token Expired:
               $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSUserCreation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUserCreation200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
     RSUserCreation400:
       description: Bad Request
       content:
@@ -108,17 +114,8 @@ components:
               $ref: '#/components/examples/AccountIsOnTheWay'
             Account Create:
               $ref: '#/components/examples/AccountCreate'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
   schemas:
-    RSUserCreation400:
+    RSUserCreation200:
       type: object
       required:
       - code
@@ -127,14 +124,13 @@ components:
       properties:
         code:
           type: string
-          example: 400.25.003
           description: Operation response code
-          minLength: 10
+          example: 200.25.000
           maxLength: 10
         message:
           type: string
-          example: Params required
           description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -164,6 +160,45 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
           format: date-time
+    RQUserCreation:
+      type: object
+      required:
+      - userName
+      - userPassword
+      properties:
+        userName:
+          type: string
+          description: Username to enter the system.
+          example: johnDoe.user
+          maxLength: 20
+        userPassword:
+          type: string
+          description: System access password.
+          example: JohnDoe.Password
+          maxLength: 100
+    RSUserCreation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RS401:
       type: object
       required:
@@ -187,44 +222,6 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSUserCreation200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQUserCreation:
-      type: object
-      required:
-      - userName
-      - userPassword
-      properties:
-        userName:
-          type: string
-          description: Username to enter the system.
-          example: johnDoe.user
-          maxLength: 20
-        userPassword:
-          type: string
-          description: System access password.
-          example: JohnDoe.Password
-          maxLength: 100
   requestBodies:
     RQUserCreation:
       content:
@@ -242,6 +239,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-onboarding.yaml
-- novopayment-onboarding-openapi.yml

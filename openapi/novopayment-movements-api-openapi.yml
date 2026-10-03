@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Movements API
+  description: Card Issuing, Switching, and Transaction Processing groups together the activities surrounding creating card programs, issuing cards to customers, managing those cards, and processing the transactions those customers make.
   version: v1.3
-  description: 'Operations tagged Movements across 2 of this provider''s published API definitions: novopayment-cards.yaml, novopayment-cards-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Cards Movements API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/api/v1.3
@@ -39,9 +39,6 @@ paths:
           $ref: '#/components/responses/RS401'
         '500':
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/api/v1.3
   /cards/{cardId}/transactions/{transactionIdentifier}:
     get:
       tags:
@@ -78,9 +75,6 @@ paths:
           $ref: '#/components/responses/RS401'
         '500':
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/api/v1.3
   /cards/{cardId}/transactions/summary:
     get:
       tags:
@@ -118,20 +112,163 @@ paths:
           $ref: '#/components/responses/RS401'
         '500':
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/api/v1.3
 components:
+  responses:
+    RSCardMovementsQuery200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardMovementsQuery200'
+          examples:
+            No Results Found:
+              $ref: '#/components/examples/NoResultsFound'
+            Transaction Movements Query OK:
+              $ref: '#/components/examples/TransactionMovementsQueryOK'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSCardMovementsQuery400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardMovementsQuery400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Transaction Code:
+              $ref: '#/components/examples/InvalidTransactionCode'
+            Invalid Date Range:
+              $ref: '#/components/examples/InvalidDateRange'
+            Date Range Cannot Exceed 90 Days:
+              $ref: '#/components/examples/DateRangeCannotExceed90Days'
+            Paging Limit Is Outside The Allowed Range:
+              $ref: '#/components/examples/PagingLimitIsOutsideTheAllowedRange'
+            Page Number Is Outside The Allowed Range:
+              $ref: '#/components/examples/PageNumberIsOutsideTheAllowedRange'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Invalid Card Id:
+              $ref: '#/components/examples/InvalidCardId'
+            Empty Parameters:
+              $ref: '#/components/examples/EmptyParameters'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSTransactionSummary200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransactionSummary200'
+          examples:
+            No Results Found:
+              $ref: '#/components/examples/NoResultsFound'
+            Transaction Summary OK:
+              $ref: '#/components/examples/TransactionSummaryOK'
+    RSTransactionSummary400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransactionSummary400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Transaction Code:
+              $ref: '#/components/examples/InvalidTransactionCode'
+            Invalid Date Range:
+              $ref: '#/components/examples/InvalidDateRange'
+            Date Range Cannot Exceed 90 Days:
+              $ref: '#/components/examples/DateRangeCannotExceed90Days'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Invalid Card Id:
+              $ref: '#/components/examples/InvalidCardId'
+    RSTransactionDetail200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransactionDetail200'
+          examples:
+            Default:
+              value:
+                code: 200.00.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  referenceNumber: '006014260007'
+                  transactionCode: '01'
+                  transactionType: D
+                  amount: 95.25
+                  date: '2020-01-03T16:05:56.517Z'
+                  merchantName: Mega Store Inc
+                  commissionFee: 1.15
+                  originAccount: '1600'
+                  receivingAccount: '1900'
+                  originName: GABRIEL TORRES
+                  receivingName: JOHN DOE
+                  description: Payment
+                  externalId: b3779728-90a6-11eb-a8b3-0242ac130003
+                  source: Bank transfer
+                  channel: WEB
+                  authCode: '991982'
+    RSTransactionDetail400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransactionDetail400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Transaction Not Found:
+              $ref: '#/components/examples/TransactionNotFound'
+            Invalid Card Id:
+              $ref: '#/components/examples/InvalidCardId'
   examples:
-    TransactionNotFound:
+    PagingLimitIsOutsideTheAllowedRange:
       value:
-        code: 400.01.110
-        message: Transaction not found
+        code: 400.01.368
+        message: Paging limit is outside the allowed range
         datetime: 2020-01-03 16:05:56.517000+00:00
-    NoResultsFound:
+    AccessTokenNotApproved:
       value:
-        code: 200.00.364
-        message: No results found
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenExpired:
+      value:
+        code: 401.01.993
+        message: Access token expired
         datetime: 2020-01-03 16:05:56.517000+00:00
     TransactionSummaryOK:
       value:
@@ -163,10 +300,10 @@ components:
           dateTo: '2020-12-31'
           transactionType: C
           totalTransactions: 5
-    DateRangeCannotExceed90Days:
+    InvalidDateRange:
       value:
-        code: 400.01.366
-        message: Date range cannot exceed 90 days
+        code: 400.01.365
+        message: Invalid date range
         datetime: 2020-01-03 16:05:56.517000+00:00
     InvalidParameters:
       value:
@@ -180,10 +317,47 @@ components:
         - message: 'Field subject: must not be blank'
         - message: 'Field subject: must not be null'
         datetime: 2020-01-03 16:05:56.517000+00:00
-    PagingLimitIsOutsideTheAllowedRange:
+    InvalidTenantId:
       value:
-        code: 400.01.368
-        message: Paging limit is outside the allowed range
+        code: 400.01.004
+        message: Invalid tenant ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TransactionNotFound:
+      value:
+        code: 400.01.110
+        message: Transaction not found
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    PageNumberIsOutsideTheAllowedRange:
+      value:
+        code: 400.01.369
+        message: Page number is outside the allowed range
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidTransactionCode:
+      value:
+        code: 400.01.338
+        message: Invalid transaction code
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    EmptyParameters:
+      value:
+        code: 400.01.080
+        message: Empty parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - messageBusiness: You must enter at least the date or the number of days
+    InternalServerError:
+      value:
+        code: 500.01.999
+        message: Internal Server Error
         datetime: 2020-01-03 16:05:56.517000+00:00
     TransactionMovementsQueryOK:
       value:
@@ -242,95 +416,27 @@ components:
             prevPageUrl: null
             from: 1
             to: 5
-    InvalidTenantId:
+    NoResultsFound:
       value:
-        code: 400.01.004
-        message: Invalid tenant ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenExpired:
-      value:
-        code: 401.01.993
-        message: Access token expired
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidDateRange:
-      value:
-        code: 400.01.365
-        message: Invalid date range
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidCardId:
-      value:
-        code: 400.01.009
-        message: Invalid Card ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InternalServerError:
-      value:
-        code: 500.01.999
-        message: Internal Server Error
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    PageNumberIsOutsideTheAllowedRange:
-      value:
-        code: 400.01.369
-        message: Page number is outside the allowed range
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidSignature:
-      value:
-        code: 401.01.992
-        message: Invalid signature
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidAccessToken:
-      value:
-        code: 401.01.990
-        message: Invalid Access Token
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenNotApproved:
-      value:
-        code: 401.01.991
-        message: Access Token not approved
+        code: 200.00.364
+        message: No results found
         datetime: 2020-01-03 16:05:56.517000+00:00
     HeaderParamsRequired:
       value:
         code: 400.01.001
         message: Header Params Required
         datetime: 2020-01-03 16:05:56.517000+00:00
-    EmptyParameters:
+    DateRangeCannotExceed90Days:
       value:
-        code: 400.01.080
-        message: Empty parameters
+        code: 400.01.366
+        message: Date range cannot exceed 90 days
         datetime: 2020-01-03 16:05:56.517000+00:00
-        data:
-        - messageBusiness: You must enter at least the date or the number of days
-    InvalidTransactionCode:
+    InvalidCardId:
       value:
-        code: 400.01.338
-        message: Invalid transaction code
+        code: 400.01.009
+        message: Invalid Card ID
         datetime: 2020-01-03 16:05:56.517000+00:00
   parameters:
-    cardId:
-      name: cardId
-      in: path
-      description: Unique card identification (uuid format)
-      required: true
-      example: 502c2656-7110-4994-a820-f593e468c6b4
-      schema:
-        type: string
-        maxLength: 36
-        minLength: 36
-    limit:
-      name: limit
-      in: query
-      description: 'Maximum number of transactions by page.
-
-
-        **Note**: The default value is twenty five (25), that is, if this value is not sent in the request, if a number less than 1 or a greater number is sent, pagination is performed with twenty five (25) records per page.
-
-
-        **Allowed range**: 1 - 25
-
-        '
-      required: false
-      schema:
-        type: integer
-        maxLength: 3
     page:
       name: page
       in: query
@@ -367,39 +473,6 @@ components:
         type: string
         minLength: 10
         maxLength: 10
-    transactionCode:
-      name: transactionCode
-      in: query
-      description: 'Refer to: [Transaction Code](https://developer.novopayment.com/api/request-and-response-codes#item-transactioncode)
-
-        '
-      required: false
-      schema:
-        type: string
-        maxLength: 2
-    transactionIdentifier:
-      name: transactionIdentifier
-      in: path
-      description: ID of pet to return
-      required: true
-      schema:
-        type: string
-    date:
-      name: date
-      in: query
-      description: 'Indicates the month and year to be consulted, or if receives only one number this will.
-
-
-        **Format**: MM/YYYY.
-
-
-        **Required if days field is not sent**
-
-        '
-      required: false
-      schema:
-        type: string
-        maxLength: 7
     transactionType:
       name: transactionType
       in: query
@@ -417,6 +490,22 @@ components:
       schema:
         type: string
         maxLength: 1
+    limit:
+      name: limit
+      in: query
+      description: 'Maximum number of transactions by page.
+
+
+        **Note**: The default value is twenty five (25), that is, if this value is not sent in the request, if a number less than 1 or a greater number is sent, pagination is performed with twenty five (25) records per page.
+
+
+        **Allowed range**: 1 - 25
+
+        '
+      required: false
+      schema:
+        type: integer
+        maxLength: 3
     dateToSummary:
       name: dateTo
       in: query
@@ -426,6 +515,49 @@ components:
         type: string
         minLength: 10
         maxLength: 10
+    transactionCode:
+      name: transactionCode
+      in: query
+      description: 'Refer to: [Transaction Code](https://developer.novopayment.com/api/request-and-response-codes#item-transactioncode)
+
+        '
+      required: false
+      schema:
+        type: string
+        maxLength: 2
+    transactionIdentifier:
+      name: transactionIdentifier
+      in: path
+      description: ID of pet to return
+      required: true
+      schema:
+        type: string
+    cardId:
+      name: cardId
+      in: path
+      description: Unique card identification (uuid format)
+      required: true
+      example: 502c2656-7110-4994-a820-f593e468c6b4
+      schema:
+        type: string
+        maxLength: 36
+        minLength: 36
+    date:
+      name: date
+      in: query
+      description: 'Indicates the month and year to be consulted, or if receives only one number this will.
+
+
+        **Format**: MM/YYYY.
+
+
+        **Required if days field is not sent**
+
+        '
+      required: false
+      schema:
+        type: string
+        maxLength: 7
     hasAuthCode:
       name: hasAuthCode
       in: query
@@ -436,390 +568,7 @@ components:
       schema:
         type: boolean
         example: true
-  responses:
-    RSTransactionSummary400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransactionSummary400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Transaction Code:
-              $ref: '#/components/examples/InvalidTransactionCode'
-            Invalid Date Range:
-              $ref: '#/components/examples/InvalidDateRange'
-            Date Range Cannot Exceed 90 Days:
-              $ref: '#/components/examples/DateRangeCannotExceed90Days'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Invalid Card Id:
-              $ref: '#/components/examples/InvalidCardId'
-    RSTransactionSummary200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransactionSummary200'
-          examples:
-            No Results Found:
-              $ref: '#/components/examples/NoResultsFound'
-            Transaction Summary OK:
-              $ref: '#/components/examples/TransactionSummaryOK'
-    RSTransactionDetail400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransactionDetail400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Transaction Not Found:
-              $ref: '#/components/examples/TransactionNotFound'
-            Invalid Card Id:
-              $ref: '#/components/examples/InvalidCardId'
-    RSCardMovementsQuery200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardMovementsQuery200'
-          examples:
-            No Results Found:
-              $ref: '#/components/examples/NoResultsFound'
-            Transaction Movements Query OK:
-              $ref: '#/components/examples/TransactionMovementsQueryOK'
-    RSTransactionDetail200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransactionDetail200'
-          examples:
-            Default:
-              value:
-                code: 200.00.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  referenceNumber: '006014260007'
-                  transactionCode: '01'
-                  transactionType: D
-                  amount: 95.25
-                  date: '2020-01-03T16:05:56.517Z'
-                  merchantName: Mega Store Inc
-                  commissionFee: 1.15
-                  originAccount: '1600'
-                  receivingAccount: '1900'
-                  originName: GABRIEL TORRES
-                  receivingName: JOHN DOE
-                  description: Payment
-                  externalId: b3779728-90a6-11eb-a8b3-0242ac130003
-                  source: Bank transfer
-                  channel: WEB
-                  authCode: '991982'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSCardMovementsQuery400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardMovementsQuery400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Transaction Code:
-              $ref: '#/components/examples/InvalidTransactionCode'
-            Invalid Date Range:
-              $ref: '#/components/examples/InvalidDateRange'
-            Date Range Cannot Exceed 90 Days:
-              $ref: '#/components/examples/DateRangeCannotExceed90Days'
-            Paging Limit Is Outside The Allowed Range:
-              $ref: '#/components/examples/PagingLimitIsOutsideTheAllowedRange'
-            Page Number Is Outside The Allowed Range:
-              $ref: '#/components/examples/PageNumberIsOutsideTheAllowedRange'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Invalid Card Id:
-              $ref: '#/components/examples/InvalidCardId'
-            Empty Parameters:
-              $ref: '#/components/examples/EmptyParameters'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
   schemas:
-    RSTransactionDetail200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-        data:
-          type: object
-          required:
-          - referenceNumber
-          - transactionCode
-          - transactionType
-          - amount
-          - date
-          - merchantName
-          - commissionFee
-          - originAccount
-          - receivingAccount
-          - brandType
-          - description
-          - source
-          - transactionIdentifier
-          properties:
-            referenceNumber:
-              type: string
-              description: Reference number associated to a transaction
-              example: 6014260007
-              maxLength: 12
-            transactionCode:
-              type: string
-              description: 'Code that identifies the type of transaction
-
-
-                **Allowed values: **
-
-                21:Cash-in
-
-                40:Send money
-
-                00:e-Commerce/Card Present Purchase
-
-                '
-              example: 1
-              enum:
-              - '21'
-              - '40'
-              - '00'
-              maxLength: 2
-            transactionType:
-              type: string
-              description: 'Type of the transaction executed
-
-
-                **Allowed values: **
-
-                D:Debit
-
-                C:Credit
-
-                '
-              enum:
-              - C
-              - D
-              example: C
-              maxLength: 1
-            amount:
-              type: number
-              description: 'Amount of the transaction
-
-                '
-              format: double
-              maximum: 9999999999.99
-              example: 95
-            date:
-              type: string
-              description: Transaction timestamp expressed in ISO 8601 format
-              format: date-time
-              example: 06-12-2020 11:00:35
-            merchantName:
-              type: string
-              description: 'Name of the merchant
-
-
-                **Allowed characters:** Alphanumeric
-
-                '
-              example: TRANSFERENCIA API CLIENT
-              maxLength: 40
-            commissionFee:
-              type: number
-              description: 'Amount of the charged fee.
-
-
-                **Allowed characters:** numeric
-
-                '
-              maximum: 9999999999.99
-              example: -1
-            originAccount:
-              type: string
-              description: 'Las 4 digits of the account that originated the transaction
-
-
-                **Allowed characters:** numeric
-
-                '
-              example: 1600
-              maxLength: 4
-            receivingAccount:
-              type: string
-              description: 'Las 4 digits of the account that received the transaction.
-
-
-                **Allowed characters:** numeric
-
-                '
-              example: 1900
-              maxLength: 4
-            originName:
-              type: string
-              description: 'Name of the person who sent the money.
-
-
-                **Allowed characters:** alphabetic
-
-                '
-              example: GABRIEL TORRES
-              maxLength: 100
-            receivingName:
-              type: string
-              description: 'Name of the person who receives the money.
-
-
-                **Allowed characters:** alphabetic
-
-                '
-              example: JOHN DOE
-              maxLength: 100
-            description:
-              type: string
-              description: 'Field that indicates description.
-
-
-                **Allowed characters:** alphanumeric
-
-                '
-              example: Payment
-              maxLength: 100
-            externalId:
-              type: string
-              description: 'Field that indicates unique identification value of third-party related to the operation.
-
-                '
-              example: b3779728-90a6-11eb-a8b3-0242ac130003
-              maxLength: 50
-            source:
-              type: string
-              description: 'Field that indicates the source of founds.
-
-
-                **Allowed characters:** alphabetic
-
-                '
-              example: Bank Transfer
-              maxLength: 50
-            channel:
-              type: string
-              description: 'Interface that originates the petition.
-
-
-                **Allowed characters:** alphabetic
-
-                '
-              example: WEB
-              maxLength: 50
-            tax:
-              type: number
-              description: 'Amount of tax for the operation, this field should have at least one digit and maximum 10 digits.
-
-                **Allowed characters:** numeric
-
-                '
-              maximum: 9999999999.99
-              example: 2
-            transactionIdentifier:
-              type: string
-              description: 'Unique transaction identification (uuid format).
-
-
-
-                **Allowed**: alphanumeric
-
-                '
-              example: 3155310
-              maxLength: 32
-              minLength: 32
-            authCode:
-              type: string
-              description: 'Transaction authorization code
-
-                '
-              example: '123456'
-              maxLength: 6
-    RSTransactionDetail400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
     RSTransactionSummary200:
       type: object
       required:
@@ -976,29 +725,6 @@ components:
           example: 2020-01-03 16:05:56.517000+00:00
           description: Operation Timestamp
           format: date-time
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
     RSCardMovementsQuery200:
       type: object
       required:
@@ -1283,6 +1009,248 @@ components:
                   description: URL of the previous page
                   example: ?page=2&limit=5
                   maxLength: 50
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RSTransactionDetail200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+          - referenceNumber
+          - transactionCode
+          - transactionType
+          - amount
+          - date
+          - merchantName
+          - commissionFee
+          - originAccount
+          - receivingAccount
+          - brandType
+          - description
+          - source
+          - transactionIdentifier
+          properties:
+            referenceNumber:
+              type: string
+              description: Reference number associated to a transaction
+              example: 6014260007
+              maxLength: 12
+            transactionCode:
+              type: string
+              description: 'Code that identifies the type of transaction
+
+
+                **Allowed values: **
+
+                21:Cash-in
+
+                40:Send money
+
+                00:e-Commerce/Card Present Purchase
+
+                '
+              example: 1
+              enum:
+              - '21'
+              - '40'
+              - '00'
+              maxLength: 2
+            transactionType:
+              type: string
+              description: 'Type of the transaction executed
+
+
+                **Allowed values: **
+
+                D:Debit
+
+                C:Credit
+
+                '
+              enum:
+              - C
+              - D
+              example: C
+              maxLength: 1
+            amount:
+              type: number
+              description: 'Amount of the transaction
+
+                '
+              format: double
+              maximum: 9999999999.99
+              example: 95
+            date:
+              type: string
+              description: Transaction timestamp expressed in ISO 8601 format
+              format: date-time
+              example: 06-12-2020 11:00:35
+            merchantName:
+              type: string
+              description: 'Name of the merchant
+
+
+                **Allowed characters:** Alphanumeric
+
+                '
+              example: TRANSFERENCIA API CLIENT
+              maxLength: 40
+            commissionFee:
+              type: number
+              description: 'Amount of the charged fee.
+
+
+                **Allowed characters:** numeric
+
+                '
+              maximum: 9999999999.99
+              example: -1
+            originAccount:
+              type: string
+              description: 'Las 4 digits of the account that originated the transaction
+
+
+                **Allowed characters:** numeric
+
+                '
+              example: 1600
+              maxLength: 4
+            receivingAccount:
+              type: string
+              description: 'Las 4 digits of the account that received the transaction.
+
+
+                **Allowed characters:** numeric
+
+                '
+              example: 1900
+              maxLength: 4
+            originName:
+              type: string
+              description: 'Name of the person who sent the money.
+
+
+                **Allowed characters:** alphabetic
+
+                '
+              example: GABRIEL TORRES
+              maxLength: 100
+            receivingName:
+              type: string
+              description: 'Name of the person who receives the money.
+
+
+                **Allowed characters:** alphabetic
+
+                '
+              example: JOHN DOE
+              maxLength: 100
+            description:
+              type: string
+              description: 'Field that indicates description.
+
+
+                **Allowed characters:** alphanumeric
+
+                '
+              example: Payment
+              maxLength: 100
+            externalId:
+              type: string
+              description: 'Field that indicates unique identification value of third-party related to the operation.
+
+                '
+              example: b3779728-90a6-11eb-a8b3-0242ac130003
+              maxLength: 50
+            source:
+              type: string
+              description: 'Field that indicates the source of founds.
+
+
+                **Allowed characters:** alphabetic
+
+                '
+              example: Bank Transfer
+              maxLength: 50
+            channel:
+              type: string
+              description: 'Interface that originates the petition.
+
+
+                **Allowed characters:** alphabetic
+
+                '
+              example: WEB
+              maxLength: 50
+            tax:
+              type: number
+              description: 'Amount of tax for the operation, this field should have at least one digit and maximum 10 digits.
+
+                **Allowed characters:** numeric
+
+                '
+              maximum: 9999999999.99
+              example: 2
+            transactionIdentifier:
+              type: string
+              description: 'Unique transaction identification (uuid format).
+
+
+
+                **Allowed**: alphanumeric
+
+                '
+              example: 3155310
+              maxLength: 32
+              minLength: 32
+            authCode:
+              type: string
+              description: 'Transaction authorization code
+
+                '
+              example: '123456'
+              maxLength: 6
     RS401:
       type: object
       required:
@@ -1306,6 +1274,29 @@ components:
           example: 2020-01-03 16:05:56.517000+00:00
           minLength: 24
           maxLength: 24
+    RSTransactionDetail400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
@@ -1316,6 +1307,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-cards.yaml
-- novopayment-cards-openapi.yml

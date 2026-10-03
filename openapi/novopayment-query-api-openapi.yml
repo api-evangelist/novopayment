@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Query API
-  version: v1.0.0
   contact:
     name: API Support
     email: support@novopayment.com
     url: https://developer.novopayment.com/
-  description: 'Operations tagged Query across 2 of this provider''s published API definitions: novopayment-real-time-payments.yaml, novopayment-real-time-payments-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: The Real-time payments API leverage the newest technologies to pull/push payments amongst VISA or MasterCard branded products such as debit, prepaid, and credit cards to manage transactions between individual banked consumers (P2P).
+  version: v1.0.0
+  title: Real-Time Payments Query API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/realtimepayments/v1
@@ -75,11 +75,99 @@ paths:
           $ref: '#/components/responses/RS500'
         default:
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/realtimepayments/v1
 components:
+  examples:
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParamsRequired:
+      value:
+        code: 400.08.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: if you want to search by rrn, the field stan is mandatory
+    InvalidParameters:
+      value:
+        code: 400.08.396
+        message: Invalid parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field fielName: must not be blank'
+    InvalidTenantId:
+      value:
+        code: 400.08.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    UnableProcessRequest:
+      value:
+        code: 400.08.105
+        message: Unable process request
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
   responses:
+    RS401:
+      description: Unauthorized (AP)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error (AP*)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSQuery400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenericResponse'
+          examples:
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Unable Process Request:
+              $ref: '#/components/examples/UnableProcessRequest'
     RSQuery200:
       description: OK
       content:
@@ -125,99 +213,8 @@ components:
                 code: 200.08.343
                 datetime: '2022-09-23T20:52:14.861Z'
                 message: Not search results found
-    RS401:
-      description: Unauthorized (AP)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSQuery400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGenericResponse'
-          examples:
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Params Required:
-              $ref: '#/components/examples/ParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Unable Process Request:
-              $ref: '#/components/examples/UnableProcessRequest'
-    RS500:
-      description: Internal Server Error (AP*)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-  examples:
-    InvalidAccessToken:
-      value:
-        code: 401.08.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.08.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.08.396
-        message: Invalid parameters
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field fielName: must not be blank'
-    InvalidTenantId:
-      value:
-        code: 400.08.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    UnableProcessRequest:
-      value:
-        code: 400.08.105
-        message: Unable process request
-        datetime: '2020-01-03T16:05:56.517Z'
-    ParamsRequired:
-      value:
-        code: 400.08.003
-        message: Params required
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: if you want to search by rrn, the field stan is mandatory
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.08.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.08.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
-    RSGenericResponse:
+    RS500:
       type: object
       additionalProperties: false
       required:
@@ -227,37 +224,23 @@ components:
       properties:
         code:
           type: string
+          example: 500.08.999
           description: Operation response code
           minLength: 10
           maxLength: 10
           pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
         message:
           type: string
+          example: Internal Server Error
           description: Response code description
-          maxLength: 140
           minLength: 1
-          pattern: '[a-zA-Z0-9:.,\s]{1,140}'
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
         datetime:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
           maxLength: 29
-        data:
-          type: object
-          additionalProperties: false
-          properties:
-            errors:
-              type: array
-              maxItems: 50
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  message:
-                    type: string
-                    description: Error Detail
-                    maxLength: 300
-                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
     QueryTransactionResponse:
       type: object
       additionalProperties: false
@@ -298,33 +281,6 @@ components:
                 wrapped: true
               items:
                 $ref: '#/components/schemas/TransactionQuery'
-    RS500:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.08.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 29
     TransactionQuery:
       type: object
       additionalProperties: false
@@ -422,6 +378,47 @@ components:
           maxLength: 36
           minLength: 1
           pattern: '[a-zA-Z0-9:.\s]{1,36}'
+    RSGenericResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.,\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 29
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    maxLength: 300
+                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
     RS401:
       type: object
       additionalProperties: false
@@ -460,6 +457,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-real-time-payments.yaml
-- novopayment-real-time-payments-openapi.yml

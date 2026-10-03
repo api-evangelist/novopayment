@@ -1,10 +1,10 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Payment Instruments API
+  description: The Alias Directory API enables a set of operations to store and manage users' information safely for sending funds between them.
   version: v1
+  title: Alias Directory Payment Instruments API
   contact:
     email: support@novopaymen.com
-  description: 'Operations tagged Payment Instruments across 2 of this provider''s published API definitions: novopayment-alias-directory.yaml, novopayment-alias-directory-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/aliasdirectory/v1
@@ -34,9 +34,6 @@ paths:
           $ref: '#/components/responses/RS500'
         default:
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/aliasdirectory/v1
   /alias/paymentinstruments/primary:
     put:
       tags:
@@ -60,9 +57,6 @@ paths:
           $ref: '#/components/responses/RS500'
         default:
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/aliasdirectory/v1
   /alias/paymentinstruments/status:
     put:
       tags:
@@ -83,9 +77,6 @@ paths:
           $ref: '#/components/responses/RS500'
         default:
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/aliasdirectory/v1
   /alias/{aliasId}/paymentinstruments/{paymentInstrumentId}:
     delete:
       tags:
@@ -118,305 +109,7 @@ paths:
           $ref: '#/components/responses/RS500'
         default:
           $ref: '#/components/responses/RS500'
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/aliasdirectory/v1
 components:
-  examples:
-    DeletionPrimaryPaymentInstrumentIsNoAllowed:
-      value:
-        code: 400.09.539
-        message: Deletion of the primary payment instrument is not allowed
-        datetime: '2020-01-03T16:05:56.517Z'
-    CardHasTheSameStatus:
-      value:
-        code: 400.09.393
-        message: The card has the status of the requested action.
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointSetPrimaryPaymentInstrumentAliasId:
-      value:
-        aliasId: 1ec407924bd24dc2863785b941fe6157
-        paymentInstrumentId: 8d24929d0981421395fc02b9591474c4
-    RQEndpointCreatePaymentInstrument:
-      value:
-        aliasId: 5d1bf399902e42f79681c5be8dfdcb02
-        paymentInstrument:
-          cardToken: VPEEIIsMLff5b+uwX2rwexWuS+vAtSWm4ZjlYNKeK84=
-          cvvNumber: i5eMuNnaVHqIjz4PFHj23w==
-          description: Visa Card
-          brandType: VISA
-          issuerName: Interbank
-          bankAccountNumber: '3542677745586'
-          issuerCountryCode: USA
-    InvalidParameters:
-      value:
-        code: 400.09.396
-        message: Invalid parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field aliasType: invalid alias type'
-    CardNotFound:
-      value:
-        code: 400.09.487
-        message: Card not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    CardNotAllowed:
-      value:
-        code: 400.09.101
-        message: Card not allowed
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTenantId:
-      value:
-        code: 400.09.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    AliasNotFound:
-      value:
-        code: 400.09.448
-        message: Alias not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    CardIsInvalid:
-      value:
-        code: 400.09.427
-        message: Card is invalid
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.09.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidCardStatus:
-      value:
-        code: 400.09.362
-        message: Invalid card status
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParametersDeletePI:
-      value:
-        code: 400.09.396
-        message: Invalid parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'paymentInstrumentId: must not be blank'
-    InternalServerError:
-      value:
-        code: 500.09.999
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    CardIsNotActive:
-      value:
-        code: 400.09.367
-        message: The card is not active
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.09.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.09.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointUpdatePaymentInstrumentStatus:
-      value:
-        alias: 519-990808
-        aliasType: MOBILE
-        paymentInstrumentId: 258aeef8fc7343a2a5b17c723c46185f
-        paymentInstrumentStatus: ACTIVE
-        detail:
-          method: TOKENIZATION
-          metadata:
-          - field: TOKEN
-            value: TK**4565341354125
-    AccessTokenNotApproved:
-      value:
-        code: 401.09.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.09.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    TenantNotFound:
-      value:
-        code: 400.09.357
-        message: Tenant not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-  responses:
-    RSSetPrimaryPaymentInstrument400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Card Is Invalid:
-              $ref: '#/components/examples/CardIsInvalid'
-            Card Is Not Active:
-              $ref: '#/components/examples/CardIsNotActive'
-    RSDeletePaymentInstrument200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeletePaymentInstrumentResponse'
-          examples:
-            Delete Payment Instrument:
-              value:
-                code: 200.09.000
-                datetime: '2023-02-13T21:31:38.252Z'
-                message: Process Ok
-                data:
-                  alias: 519-990808
-                  aliasType: MOBILE
-                  cardHolder:
-                    address:
-                      name: Home
-                      country: USA
-                      city: Austin
-                      line1: 801 Metro Center Blv
-                      line2: Provisioning Boulevard
-                      postalCode: '78759'
-                      state: TX
-                    documentNumber: '3146787'
-                    documentType:
-                      code: GOVERNMENT_ID
-                    email: adr@gmail.com
-                    firstName: Andres
-                    lastName: Rendon
-                  directoryCountry: USA
-                  paymentInstruments:
-                    bankAccountNumber: '35426789'
-                    brandType: VISA
-                    cardToken: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
-                    description: InterBanco
-    RSSetPrimaryPaymentInstrument200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSSetPrimaryPaymentInstrument200'
-          examples:
-            Set Primary Payment Instrument:
-              value:
-                code: 200.09.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
-                data:
-                  aliasId: 1ec407924bd24dc2863785b941fe6157
-                  paymentInstrumentId: df84dbd0894c491e8611b432709bced0
-    RSUpdatePaymentInstrumentStatus400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Card Is Invalid:
-              $ref: '#/components/examples/CardIsInvalid'
-            Card Has The Status Of The Requested aliasAction:
-              $ref: '#/components/examples/CardHasTheSameStatus'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Tenant Not Found:
-              $ref: '#/components/examples/TenantNotFound'
-            Invalid Card Status:
-              $ref: '#/components/examples/InvalidCardStatus'
-    RSDeletePaymentInstrument400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Card not found:
-              $ref: '#/components/examples/CardNotFound'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersDeletePI'
-            Invalid tenant id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Deletion of the primary payment instrument is not allowed:
-              $ref: '#/components/examples/DeletionPrimaryPaymentInstrumentIsNoAllowed'
-    RSAddPaymentInstrument400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Invalid Card Status:
-              $ref: '#/components/examples/InvalidCardStatus'
-            Alias Not Found:
-              $ref: '#/components/examples/AliasNotFound'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Card not allowed:
-              $ref: '#/components/examples/CardNotAllowed'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSAddPaymentInstrument200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAddPaymentInstrument200'
-          examples:
-            Get Alias By Payment Instrument:
-              value:
-                code: 201.09.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
-                data:
-                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
-                  paymentInstrumentId: 5900902eea614137b5ba00ae7e7a6f2f
-    RSUpdatePaymentInstrumentStatus200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUpdatePaymentInstrumentStatus200'
-          examples:
-            Update Payment Instrument Status:
-              value:
-                code: 200.09.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
-                data:
-                  paymentInstrumentStatus: ACTIVE
-                  paymentInstrumentId: 258aeef8fc7343a2a5b17c723c46185f
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
   schemas:
     RSAddPaymentInstrument200:
       type: object
@@ -448,26 +141,218 @@ components:
           maxLength: 24
         data:
           $ref: '#/components/schemas/CreatePaymentInstrumentResponse'
-    UpdateStatusPaymentInstrumentCoreResponse:
+    RSGeneric400:
       type: object
       additionalProperties: false
       required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
+    Address:
+      type: object
+      additionalProperties: false
+      required:
+      - country
+      - line1
+      - city
+      description: 'Address object
+
+        Conditional field when the configuration of the clients requires it.
+
+        '
+      properties:
+        name:
+          type: string
+          description: 'Name assigned to the registered address.
+
+            '
+          example: Home
+          maxLength: 20
+          minLength: 0
+          pattern: ^(?!\s*$).+
+        country:
+          type: string
+          description: 'Country code in ISO 3166 alpha-3 code or Country Code (numeric).
+
+            '
+          example: USA
+          minLength: 3
+          maxLength: 3
+          pattern: ^(?!\s)(?!.*\s$).{3,3}$
+        line1:
+          type: string
+          description: 'First line of the address. Usually for the complete address, this is Required for the US and Canada.
+
+            '
+          example: 801 Metro Center Blv
+          maxLength: 20
+          minLength: 1
+          pattern: ^(?!\s*$).+
+        line2:
+          type: string
+          description: 'Second line, usually corresponds to house, apartment, suite, etc.
+
+            '
+          example: Provisioning Boulevard
+          maxLength: 80
+          minLength: 0
+          pattern: ^(?!\s*$).+
+        city:
+          type: string
+          description: 'Name of the city.
+
+            '
+          example: Austin
+          maxLength: 20
+          minLength: 1
+          pattern: ^(?!\s*$).+
+        state:
+          type: string
+          description: 'State code in the country, is required if the country is from the USA or Canada.  This field must be valid for the respective country.
+
+            '
+          example: TX
+          maxLength: 3
+          minLength: 2
+          pattern: ^(?!\s*$).+
+        postalCode:
+          type: string
+          description: "Postal Code. \nThe postal code is required if the country is from the USA or Canada.\n"
+          example: '78759'
+          maxLength: 9
+          minLength: 5
+          pattern: ^\d{5,9}$
+    UpdateStatusPaymentInstrumentCoreRequest:
+      type: object
+      required:
+      - alias
+      - aliasType
       - paymentInstrumentId
       - paymentInstrumentStatus
+      - detail
+      additionalProperties: false
       properties:
+        alias:
+          type: string
+          description: 'Attribute that identifies the alias associated to the cardholder
+
+            If it is a number, it must be in an international format with the 1-3 digit country calling code.
+
+            Required If the alias id is not sent.
+
+            '
+          example: 519-990808
+          maxLength: 50
+          minLength: 1
+          pattern: ^(?!\s)(?!.*\s$).{1,50}$
+        aliasType:
+          type: string
+          description: "__Allowed values:__\n__MOBILE,__\n__EMAIL,__\n__IDENTIFICATION,__\n__IBAN,__\n__CUSTOM__\n This field is required if the aliasId is not sent.\n"
+          example: MOBILE
+          pattern: (\s)*|MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+          maxLength: 14
+          minLength: 4
         paymentInstrumentId:
           type: string
+          description: 'Payment instrument identificator.
+
+            '
           example: 258aeef8fc7343a2a5b17c723c46185f
-          description: Unique identifier for a Payment Instrument in NovoPayment.
           maxLength: 32
           minLength: 32
           pattern: ^[0-9a-fA-F]{32}$
         paymentInstrumentStatus:
           type: string
-          description: Payment Instrument Status, possible values ACTIVE, VAL_PENDING, FAILED
+          description: 'Record the payment instrument status.
+
+
+            __Possible values:__
+
+            __ACTIVE,__
+
+            __VAL_PENDING,__
+
+            __FAILED__
+
+            '
           example: ACTIVE
+          maxLength: 26
+          minLength: 6
           pattern: VAL_PENDING|ACTIVE|FAILED|(\\s)*
-          maxLength: 11
+        detail:
+          description: Detail about the validation method applied to the card
+          type: object
+          required:
+          - method
+          additionalProperties: false
+          properties:
+            method:
+              description: Card validation method
+              type: string
+              example: TOKENIZATION
+              minLength: 1
+              maxLength: 20
+              pattern: TOKENIZATION|MICRODEBIT
+            metadata:
+              description: Additional information for validation, it is required when the validation method is tokenization type
+              type: array
+              maxItems: 10
+              items:
+                type: object
+                required:
+                - field
+                - value
+                additionalProperties: false
+                properties:
+                  field:
+                    description: Field validation method
+                    type: string
+                    minLength: 1
+                    maxLength: 20
+                    example: TOKEN
+                    pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+                  value:
+                    description: Value validation method
+                    minLength: 1
+                    maxLength: 20
+                    type: string
+                    example: TK**4565341354125
+                    pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
     CardHolder:
       type: object
       additionalProperties: false
@@ -521,112 +406,6 @@ components:
           pattern: .+[@].+[\.].+
         address:
           $ref: '#/components/schemas/Address'
-    PaymentInstrumentPrimaryRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - aliasId
-      - paymentInstrumentId
-      properties:
-        aliasId:
-          type: string
-          description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
-
-            '
-          example: 1ec407924bd24dc2863785b941fe6157
-          maxLength: 32
-          minLength: 32
-          pattern: ^[0-9a-fA-F]{32}$
-        paymentInstrumentId:
-          type: string
-          description: 'Payment instrument identificator.
-
-            '
-          example: df84dbd0894c491e8611b432709bced0
-          maxLength: 32
-          minLength: 32
-          pattern: ^[0-9a-fA-F]{32}$
-    PaymentInstrument:
-      additionalProperties: false
-      type: object
-      required:
-      - cardToken
-      - cvvNumber
-      - brandType
-      - issuerCountryCode
-      description: 'Object Payment Instrument Contains information of the payment instrument to be stored, Conditional if not account is present
-
-        '
-      properties:
-        cardToken:
-          type: string
-          description: 'Card data encrypted with the AES256 algorithm.
-
-            __The cardToken attribute is composed of the following values:__
-
-            __PAN:__ Card’s primary account number or token
-
-            __Expiration Date:__ Card expiration date
-
-            __SALT:__ Random Value StringWith the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value.
-
-            When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant.
-
-            '
-          example: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
-          maxLength: 44
-          minLength: 44
-          pattern: \s*|[\w\d=/+]{44}
-        cvvNumber:
-          type: string
-          description: 'Encrypted form for static security code for a card using AES256 algorithm.
-
-            '
-          example: i5eMuNnaVHqIjz4PFHj23w==
-          maxLength: 24
-          minLength: 24
-          pattern: \s*|[\w\d=/+]{24}
-        description:
-          type: string
-          description: 'Payment instrument description.
-
-            '
-          example: Visa Card
-          maxLength: 20
-          minLength: 1
-          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-        brandType:
-          type: string
-          description: 'Name of the issuing network of the card.
-
-            '
-          example: VISA
-          maxLength: 10
-          minLength: 1
-        issuerName:
-          type: string
-          description: 'Consumer Card Issuer name.
-
-            '
-          example: Interbank
-          maxLength: 30
-          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-        bankAccountNumber:
-          type: string
-          description: 'User’s bank account number
-
-            '
-          example: '35426789'
-          maxLength: 30
-        issuerCountryCode:
-          type: string
-          description: 'Issuer country code in ISO 3166 alpha-3 code or Country Code (numeric) of payment instrument
-
-            '
-          example: USA
-          maxLength: 3
-          minLength: 3
-          pattern: ^[^\s]{3}$
     DeletePaymentInstrumentResponse:
       type: object
       additionalProperties: false
@@ -753,53 +532,53 @@ components:
                   description: Consumer Card Issuer.
                   example: VISA_CARD
                   maxLength: 30
-    CreatePaymentInstrumentResponse:
-      additionalProperties: false
-      type: object
-      description: Create Payment Instrument Response
-      required:
-      - aliasId
-      - paymentInstrumentId
-      properties:
-        aliasId:
-          type: string
-          description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
-
-            '
-          example: 5d1bf399902e42f79681c5be8dfdcb02
-          maxLength: 32
-          minLength: 32
-          pattern: ^[0-9a-fA-F]{32}$
-        paymentInstrumentId:
-          type: string
-          description: 'Unique identifier for a Payment Instrument in NovoPayment.
-
-            '
-          example: 5900902eea614137b5ba00ae7e7a6f2f
-          maxLength: 32
-          minLength: 32
-          pattern: ^[0-9a-fA-F]{32}$
-    DocumentType:
+    RS500:
       type: object
       additionalProperties: false
       required:
       - code
-      description: 'Document Type object.
-
-        Contains the document code
-
-        '
+      - message
+      - datetime
       properties:
         code:
           type: string
-          description: 'Type of identification
-
-            __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
-
-            '
-          example: GOVERNMENT_ID
-          maxLength: 25
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
           minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+    UpdateStatusPaymentInstrumentCoreResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - paymentInstrumentId
+      - paymentInstrumentStatus
+      properties:
+        paymentInstrumentId:
+          type: string
+          example: 258aeef8fc7343a2a5b17c723c46185f
+          description: Unique identifier for a Payment Instrument in NovoPayment.
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9a-fA-F]{32}$
+        paymentInstrumentStatus:
+          type: string
+          description: Payment Instrument Status, possible values ACTIVE, VAL_PENDING, FAILED
+          example: ACTIVE
+          pattern: VAL_PENDING|ACTIVE|FAILED|(\\s)*
+          maxLength: 11
     RSSetPrimaryPaymentInstrument200:
       type: object
       additionalProperties: false
@@ -854,192 +633,101 @@ components:
               maxLength: 32
               minLength: 32
               pattern: ^[0-9a-fA-F]{32}$
-    Address:
-      type: object
+    CreatePaymentInstrumentResponse:
       additionalProperties: false
-      required:
-      - country
-      - line1
-      - city
-      description: 'Address object
-
-        Conditional field when the configuration of the clients requires it.
-
-        '
-      properties:
-        name:
-          type: string
-          description: 'Name assigned to the registered address.
-
-            '
-          example: Home
-          maxLength: 20
-          minLength: 0
-          pattern: ^(?!\s*$).+
-        country:
-          type: string
-          description: 'Country code in ISO 3166 alpha-3 code or Country Code (numeric).
-
-            '
-          example: USA
-          minLength: 3
-          maxLength: 3
-          pattern: ^(?!\s)(?!.*\s$).{3,3}$
-        line1:
-          type: string
-          description: 'First line of the address. Usually for the complete address, this is Required for the US and Canada.
-
-            '
-          example: 801 Metro Center Blv
-          maxLength: 20
-          minLength: 1
-          pattern: ^(?!\s*$).+
-        line2:
-          type: string
-          description: 'Second line, usually corresponds to house, apartment, suite, etc.
-
-            '
-          example: Provisioning Boulevard
-          maxLength: 80
-          minLength: 0
-          pattern: ^(?!\s*$).+
-        city:
-          type: string
-          description: 'Name of the city.
-
-            '
-          example: Austin
-          maxLength: 20
-          minLength: 1
-          pattern: ^(?!\s*$).+
-        state:
-          type: string
-          description: 'State code in the country, is required if the country is from the USA or Canada.  This field must be valid for the respective country.
-
-            '
-          example: TX
-          maxLength: 3
-          minLength: 2
-          pattern: ^(?!\s*$).+
-        postalCode:
-          type: string
-          description: "Postal Code. \nThe postal code is required if the country is from the USA or Canada.\n"
-          example: '78759'
-          maxLength: 9
-          minLength: 5
-          pattern: ^\d{5,9}$
-    CreatePaymentInstrumentRequest:
       type: object
+      description: Create Payment Instrument Response
       required:
       - aliasId
-      - paymentInstrument
-      additionalProperties: false
+      - paymentInstrumentId
       properties:
         aliasId:
           type: string
-          description: Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+          description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+
+            '
           example: 5d1bf399902e42f79681c5be8dfdcb02
           maxLength: 32
           minLength: 32
           pattern: ^[0-9a-fA-F]{32}$
-        paymentInstrument:
-          $ref: '#/components/schemas/PaymentInstrument'
-    UpdateStatusPaymentInstrumentCoreRequest:
-      type: object
-      required:
-      - alias
-      - aliasType
-      - paymentInstrumentId
-      - paymentInstrumentStatus
-      - detail
-      additionalProperties: false
-      properties:
-        alias:
+        paymentInstrumentId:
           type: string
-          description: 'Attribute that identifies the alias associated to the cardholder
-
-            If it is a number, it must be in an international format with the 1-3 digit country calling code.
-
-            Required If the alias id is not sent.
+          description: 'Unique identifier for a Payment Instrument in NovoPayment.
 
             '
-          example: 519-990808
-          maxLength: 50
-          minLength: 1
-          pattern: ^(?!\s)(?!.*\s$).{1,50}$
-        aliasType:
+          example: 5900902eea614137b5ba00ae7e7a6f2f
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9a-fA-F]{32}$
+    RS401:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
           type: string
-          description: "__Allowed values:__\n__MOBILE,__\n__EMAIL,__\n__IDENTIFICATION,__\n__IBAN,__\n__CUSTOM__\n This field is required if the aliasId is not sent.\n"
-          example: MOBILE
-          pattern: (\s)*|MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
-          maxLength: 14
-          minLength: 4
+          example: 401.09.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+    DocumentType:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      description: 'Document Type object.
+
+        Contains the document code
+
+        '
+      properties:
+        code:
+          type: string
+          description: 'Type of identification
+
+            __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+
+            '
+          example: GOVERNMENT_ID
+          maxLength: 25
+          minLength: 1
+    PaymentInstrumentPrimaryRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - aliasId
+      - paymentInstrumentId
+      properties:
+        aliasId:
+          type: string
+          description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+
+            '
+          example: 1ec407924bd24dc2863785b941fe6157
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9a-fA-F]{32}$
         paymentInstrumentId:
           type: string
           description: 'Payment instrument identificator.
 
             '
-          example: 258aeef8fc7343a2a5b17c723c46185f
+          example: df84dbd0894c491e8611b432709bced0
           maxLength: 32
           minLength: 32
           pattern: ^[0-9a-fA-F]{32}$
-        paymentInstrumentStatus:
-          type: string
-          description: 'Record the payment instrument status.
-
-
-            __Possible values:__
-
-            __ACTIVE,__
-
-            __VAL_PENDING,__
-
-            __FAILED__
-
-            '
-          example: ACTIVE
-          maxLength: 26
-          minLength: 6
-          pattern: VAL_PENDING|ACTIVE|FAILED|(\\s)*
-        detail:
-          description: Detail about the validation method applied to the card
-          type: object
-          required:
-          - method
-          additionalProperties: false
-          properties:
-            method:
-              description: Card validation method
-              type: string
-              example: TOKENIZATION
-              minLength: 1
-              maxLength: 20
-              pattern: TOKENIZATION|MICRODEBIT
-            metadata:
-              description: Additional information for validation, it is required when the validation method is tokenization type
-              type: array
-              maxItems: 10
-              items:
-                type: object
-                required:
-                - field
-                - value
-                additionalProperties: false
-                properties:
-                  field:
-                    description: Field validation method
-                    type: string
-                    minLength: 1
-                    maxLength: 20
-                    example: TOKEN
-                    pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-                  value:
-                    description: Value validation method
-                    minLength: 1
-                    maxLength: 20
-                    type: string
-                    example: TK**4565341354125
-                    pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
     RSUpdatePaymentInstrumentStatus200:
       type: object
       additionalProperties: false
@@ -1071,98 +759,398 @@ components:
           maxLength: 24
         data:
           $ref: '#/components/schemas/UpdateStatusPaymentInstrumentCoreResponse'
-    RS500:
+    CreatePaymentInstrumentRequest:
       type: object
-      additionalProperties: false
       required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-    RS401:
-      type: object
+      - aliasId
+      - paymentInstrument
       additionalProperties: false
       properties:
-        code:
+        aliasId:
           type: string
-          example: 401.09.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-    RSGeneric400:
-      type: object
+          description: Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+          example: 5d1bf399902e42f79681c5be8dfdcb02
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9a-fA-F]{32}$
+        paymentInstrument:
+          $ref: '#/components/schemas/PaymentInstrument'
+    PaymentInstrument:
       additionalProperties: false
+      type: object
       required:
-      - code
-      - message
-      - datetime
+      - cardToken
+      - cvvNumber
+      - brandType
+      - issuerCountryCode
+      description: 'Object Payment Instrument Contains information of the payment instrument to be stored, Conditional if not account is present
+
+        '
       properties:
-        code:
+        cardToken:
           type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
+          description: 'Card data encrypted with the AES256 algorithm.
+
+            __The cardToken attribute is composed of the following values:__
+
+            __PAN:__ Card’s primary account number or token
+
+            __Expiration Date:__ Card expiration date
+
+            __SALT:__ Random Value StringWith the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value.
+
+            When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant.
+
+            '
+          example: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
+          maxLength: 44
+          minLength: 44
+          pattern: \s*|[\w\d=/+]{44}
+        cvvNumber:
           type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+          description: 'Encrypted form for static security code for a card using AES256 algorithm.
+
+            '
+          example: i5eMuNnaVHqIjz4PFHj23w==
           maxLength: 24
+          minLength: 24
+          pattern: \s*|[\w\d=/+]{24}
+        description:
+          type: string
+          description: 'Payment instrument description.
+
+            '
+          example: Visa Card
+          maxLength: 20
+          minLength: 1
+          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+        brandType:
+          type: string
+          description: 'Name of the issuing network of the card.
+
+            '
+          example: VISA
+          maxLength: 10
+          minLength: 1
+        issuerName:
+          type: string
+          description: 'Consumer Card Issuer name.
+
+            '
+          example: Interbank
+          maxLength: 30
+          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+        bankAccountNumber:
+          type: string
+          description: 'User’s bank account number
+
+            '
+          example: '35426789'
+          maxLength: 30
+        issuerCountryCode:
+          type: string
+          description: 'Issuer country code in ISO 3166 alpha-3 code or Country Code (numeric) of payment instrument
+
+            '
+          example: USA
+          maxLength: 3
+          minLength: 3
+          pattern: ^[^\s]{3}$
+  examples:
+    TenantNotFound:
+      value:
+        code: 400.09.357
+        message: Tenant not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointSetPrimaryPaymentInstrumentAliasId:
+      value:
+        aliasId: 1ec407924bd24dc2863785b941fe6157
+        paymentInstrumentId: 8d24929d0981421395fc02b9591474c4
+    AccessTokenNotApproved:
+      value:
+        code: 401.09.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.09.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParametersDeletePI:
+      value:
+        code: 400.09.396
+        message: Invalid parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
         data:
-          type: object
-          additionalProperties: false
-          properties:
-            errors:
-              type: array
-              maxItems: 50
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  message:
-                    type: string
-                    description: Error Detail
-                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
+          errors:
+          - message: 'paymentInstrumentId: must not be blank'
+    InvalidCardStatus:
+      value:
+        code: 400.09.362
+        message: Invalid card status
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNotAllowed:
+      value:
+        code: 400.09.101
+        message: Card not allowed
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.09.396
+        message: Invalid parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field aliasType: invalid alias type'
+    InvalidTenantId:
+      value:
+        code: 400.09.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNotFound:
+      value:
+        code: 400.09.487
+        message: Card not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.09.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AliasNotFound:
+      value:
+        code: 400.09.448
+        message: Alias not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardIsNotActive:
+      value:
+        code: 400.09.367
+        message: The card is not active
+        datetime: '2020-01-03T16:05:56.517Z'
+    DeletionPrimaryPaymentInstrumentIsNoAllowed:
+      value:
+        code: 400.09.539
+        message: Deletion of the primary payment instrument is not allowed
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointUpdatePaymentInstrumentStatus:
+      value:
+        alias: 519-990808
+        aliasType: MOBILE
+        paymentInstrumentId: 258aeef8fc7343a2a5b17c723c46185f
+        paymentInstrumentStatus: ACTIVE
+        detail:
+          method: TOKENIZATION
+          metadata:
+          - field: TOKEN
+            value: TK**4565341354125
+    InvalidAccessToken:
+      value:
+        code: 401.09.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointCreatePaymentInstrument:
+      value:
+        aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+        paymentInstrument:
+          cardToken: VPEEIIsMLff5b+uwX2rwexWuS+vAtSWm4ZjlYNKeK84=
+          cvvNumber: i5eMuNnaVHqIjz4PFHj23w==
+          description: Visa Card
+          brandType: VISA
+          issuerName: Interbank
+          bankAccountNumber: '3542677745586'
+          issuerCountryCode: USA
+    CardHasTheSameStatus:
+      value:
+        code: 400.09.393
+        message: The card has the status of the requested action.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.09.999
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.09.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardIsInvalid:
+      value:
+        code: 400.09.427
+        message: Card is invalid
+        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
+    RSDeletePaymentInstrument400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Card not found:
+              $ref: '#/components/examples/CardNotFound'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersDeletePI'
+            Invalid tenant id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Deletion of the primary payment instrument is not allowed:
+              $ref: '#/components/examples/DeletionPrimaryPaymentInstrumentIsNoAllowed'
+    RSDeletePaymentInstrument200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeletePaymentInstrumentResponse'
+          examples:
+            Delete Payment Instrument:
+              value:
+                code: 200.09.000
+                datetime: '2023-02-13T21:31:38.252Z'
+                message: Process Ok
+                data:
+                  alias: 519-990808
+                  aliasType: MOBILE
+                  cardHolder:
+                    address:
+                      name: Home
+                      country: USA
+                      city: Austin
+                      line1: 801 Metro Center Blv
+                      line2: Provisioning Boulevard
+                      postalCode: '78759'
+                      state: TX
+                    documentNumber: '3146787'
+                    documentType:
+                      code: GOVERNMENT_ID
+                    email: adr@gmail.com
+                    firstName: Andres
+                    lastName: Rendon
+                  directoryCountry: USA
+                  paymentInstruments:
+                    bankAccountNumber: '35426789'
+                    brandType: VISA
+                    cardToken: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
+                    description: InterBanco
+    RSSetPrimaryPaymentInstrument400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Card Is Invalid:
+              $ref: '#/components/examples/CardIsInvalid'
+            Card Is Not Active:
+              $ref: '#/components/examples/CardIsNotActive'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSAddPaymentInstrument200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAddPaymentInstrument200'
+          examples:
+            Get Alias By Payment Instrument:
+              value:
+                code: 201.09.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+                data:
+                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+                  paymentInstrumentId: 5900902eea614137b5ba00ae7e7a6f2f
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSUpdatePaymentInstrumentStatus200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUpdatePaymentInstrumentStatus200'
+          examples:
+            Update Payment Instrument Status:
+              value:
+                code: 200.09.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+                data:
+                  paymentInstrumentStatus: ACTIVE
+                  paymentInstrumentId: 258aeef8fc7343a2a5b17c723c46185f
+    RSSetPrimaryPaymentInstrument200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSSetPrimaryPaymentInstrument200'
+          examples:
+            Set Primary Payment Instrument:
+              value:
+                code: 200.09.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+                data:
+                  aliasId: 1ec407924bd24dc2863785b941fe6157
+                  paymentInstrumentId: df84dbd0894c491e8611b432709bced0
+    RSAddPaymentInstrument400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Invalid Card Status:
+              $ref: '#/components/examples/InvalidCardStatus'
+            Alias Not Found:
+              $ref: '#/components/examples/AliasNotFound'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Card not allowed:
+              $ref: '#/components/examples/CardNotAllowed'
+    RSUpdatePaymentInstrumentStatus400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Card Is Invalid:
+              $ref: '#/components/examples/CardIsInvalid'
+            Card Has The Status Of The Requested aliasAction:
+              $ref: '#/components/examples/CardHasTheSameStatus'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Tenant Not Found:
+              $ref: '#/components/examples/TenantNotFound'
+            Invalid Card Status:
+              $ref: '#/components/examples/InvalidCardStatus'
   parameters:
     paymentInstrumentId:
       name: paymentInstrumentId
@@ -1178,6 +1166,15 @@ components:
         pattern: ^[0-9a-fA-F]{32}$
       example: 8d24929d0981421395fc02b9591474c4
   requestBodies:
+    PaymentInstrumentPrimaryRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentInstrumentPrimaryRequest'
+          examples:
+            Set Primary Payment Instrument AliasId:
+              $ref: '#/components/examples/RQEndpointSetPrimaryPaymentInstrumentAliasId'
+      required: true
     UpdateStatusPaymentInstrumentCoreRequest:
       content:
         application/json:
@@ -1196,15 +1193,6 @@ components:
             Create Payment Instrument:
               $ref: '#/components/examples/RQEndpointCreatePaymentInstrument'
       required: true
-    PaymentInstrumentPrimaryRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentInstrumentPrimaryRequest'
-          examples:
-            Set Primary Payment Instrument AliasId:
-              $ref: '#/components/examples/RQEndpointSetPrimaryPaymentInstrumentAliasId'
-      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
@@ -1215,6 +1203,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-alias-directory.yaml
-- novopayment-alias-directory-openapi.yml

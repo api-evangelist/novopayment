@@ -1,8 +1,23 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Paymentreverse API
+  description: 'The Payment Authorizer API enables the authorization process of a transaction from a payment gateway. In addition, this API can retrieve the details of a transaction and execute the reversal and refund of purchase.
+
+
+    Below operations are available for this API:
+
+
+    - Payment Authorizer
+
+
+    - Payment Detail
+
+
+    - Payment Reverse
+
+
+    - Payment Refund'
   version: v1
-  description: 'Operations tagged Paymentreverse across 2 of this provider''s published API definitions: novopayment-payment-authorizer.yaml, novopayment-payment-authorizer-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Payment Authorizer Paymentreverse API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
@@ -30,9 +45,6 @@ paths:
       - Paymentreverse
       operationId: postPaymentreverse
       x-operation-id-source: derived
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/paymentauthorizer/v1
 components:
   examples:
     InvalidAccessToken:
@@ -40,15 +52,18 @@ components:
         code: 401.08.990
         message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
+    RequestParamsRequired:
       value:
-        code: 401.08.991
-        message: Access Token not approved
+        code: 400.08.001
+        message: Params Required
         datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+        - message: 'attributeOneCamelCase: Can not be null'
+    InternalServerError:
       value:
-        code: 401.08.992
-        message: Invalid signature
+        code: 500.08.001
+        message: Internal Server Error
         datetime: '2020-01-03T16:05:56.517Z'
     RQEndpointPaymentReverse:
       value:
@@ -59,29 +74,26 @@ components:
           cvalidation: zWNTka0/Pvl8MnFGqPhE5A==
         amount: 58080825.5
         localDateTime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
+    AccessTokenNotApproved:
       value:
-        code: 400.08.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
+        code: 401.08.991
+        message: Access Token not approved
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenExpired:
       value:
         code: 401.08.993
         message: Access token expired
         datetime: '2020-01-03T16:05:56.517Z'
-    RequestParamsRequired:
+    HeaderParamsRequired:
       value:
         code: 400.08.001
-        message: Params Required
+        message: Header Params Required
         datetime: '2020-01-03T16:05:56.517Z'
-        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
-        errors:
-        - message: 'attributeOneCamelCase: Can not be null'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
   requestBodies:
     RQPaymentReverse:
       content:
@@ -92,7 +104,76 @@ components:
             Payment Reverse:
               $ref: '#/components/examples/RQEndpointPaymentReverse'
       required: true
+  responses:
+    RSPaymentReverse200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentReverse200'
+          examples:
+            Payment Reverse:
+              value:
+                code: 200.12.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: 234
+                  transactionId: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSPaymentReverse400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentReverse400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
   schemas:
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RSPaymentReverse200:
       type: object
       required:
@@ -142,42 +223,6 @@ components:
               description: Unique payment identifier
               example: b3a7dbec3eb0d71798c4f19fec445795
               maxLength: 40
-    RS500:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.08.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS401:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 401.08.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RQPaymentReverse:
       type: object
       required:
@@ -268,57 +313,24 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-  responses:
     RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSPaymentReverse400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPaymentReverse400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-    RSPaymentReverse200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPaymentReverse200'
-          examples:
-            Payment Reverse:
-              value:
-                code: 200.12.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: 234
-                  transactionId: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
@@ -329,6 +341,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-payment-authorizer.yaml
-- novopayment-payment-authorizer-openapi.yml

@@ -1,8 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Token API
+  description: '"The OAuth 2.0 authorization framework allows a third-party application to gain limited access to an HTTP service, either on behalf of the resource owner by orchestrating an approval interaction between the resource owner and the HTTP service, or by allowing the third-party application to access it on its own behalf"
+
+
+    This means that you can allow certain users/apps to access your resources on a limited basis.'
   version: v1
-  description: 'Operations tagged Token across 2 of this provider''s published API definitions: novopayment-oauth2-data-encryption.yaml, novopayment-oauth2-data-encryption-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Security OAuth2 Token API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/oauth2/v1
@@ -31,11 +34,19 @@ paths:
       - Token
       operationId: postToken
       x-operation-id-source: derived
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/oauth2/v1
 components:
   responses:
+    RSOAuth2400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOAuth2400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
     RSOAuth2200:
       description: OK
       content:
@@ -52,17 +63,15 @@ components:
                 application_name: 9366151b-1bfe-4de7-b70a-e7ebb1a70ac3
                 expires_in: 1799
                 status: approved
-    RSOAuth2400:
-      description: Bad Request
+    RS500:
+      description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSOAuth2400'
+            $ref: '#/components/schemas/RS500'
           examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RS401:
       description: Unauthorized
       content:
@@ -78,98 +87,51 @@ components:
               $ref: '#/components/examples/InvalidSignature'
             Access Token Expired:
               $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
+  examples:
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointOAuth2:
+      value:
+        grant_type: client_credentials
+        client_id: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
+        client_secret: OpKzMzh0NQWZVdnQ
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestParamsRequired:
+      value:
+        code: 400.08.001
+        message: Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+        - message: 'attributeOneCamelCase: Can not be null'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
-    RQOAuth2:
-      type: object
-      required:
-      - grant_type
-      - client_id
-      - client_secret
-      properties:
-        grant_type:
-          type: string
-          description: 'Identifier of the type of authorization required.
-
-            '
-          example: client_credentials
-          maxLength: 18
-        client_id:
-          type: string
-          description: 'The client ID issued to the client during the registration process.
-
-            '
-          example: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
-          maxLength: 32
-        client_secret:
-          type: string
-          description: 'The client''s secret
-
-            '
-          example: OpKzMzh0NQWZVdnQ
-          maxLength: 16
-    RSOAuth2400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS500:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.08.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS401:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 401.08.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RSOAuth2200:
       type: object
       required:
@@ -216,50 +178,88 @@ components:
           example: approved
           description: Status of credentials
           maxLength: 8
-  examples:
-    RQEndpointOAuth2:
-      value:
-        grant_type: client_credentials
-        client_id: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
-        client_secret: OpKzMzh0NQWZVdnQ
-    AccessTokenExpired:
-      value:
-        code: 401.08.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.08.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.08.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.08.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.08.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestParamsRequired:
-      value:
-        code: 400.08.001
-        message: Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
-        errors:
-        - message: 'attributeOneCamelCase: Can not be null'
+    RQOAuth2:
+      type: object
+      required:
+      - grant_type
+      - client_id
+      - client_secret
+      properties:
+        grant_type:
+          type: string
+          description: 'Identifier of the type of authorization required.
+
+            '
+          example: client_credentials
+          maxLength: 18
+        client_id:
+          type: string
+          description: 'The client ID issued to the client during the registration process.
+
+            '
+          example: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
+          maxLength: 32
+        client_secret:
+          type: string
+          description: 'The client''s secret
+
+            '
+          example: OpKzMzh0NQWZVdnQ
+          maxLength: 16
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSOAuth2400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
   parameters:
     Accept:
       name: Accept
@@ -295,6 +295,3 @@ components:
             Customer Monitoring:
               $ref: '#/components/examples/RQEndpointOAuth2'
       required: true
-x-refined-from:
-- novopayment-oauth2-data-encryption.yaml
-- novopayment-oauth2-data-encryption-openapi.yml

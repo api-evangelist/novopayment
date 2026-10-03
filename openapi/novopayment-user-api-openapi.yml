@@ -1,8 +1,14 @@
 openapi: 3.2.0
 info:
-  title: Novopayment User API
+  description: 'Below operations are available for Profile API
+
+
+    **Get Customer Configuration Parameters**
+
+
+    This operation allows to consult the different configurations of a customer.'
   version: v1
-  description: 'Operations tagged User across 2 of this provider''s published API definitions: novopayment-profile.yaml, novopayment-profile-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Profile User API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/profiles/v1
@@ -31,25 +37,12 @@ paths:
           $ref: '#/components/responses/RS500'
       tags:
       - User
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/profiles/v1
 components:
   examples:
     InvalidAccessToken:
       value:
         code: 401.25.990
         message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.25.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestAcknowledgeFailure:
-      value:
-        code: 400.02.023
-        message: It was not possible to acknowledge the request, please try again.
         datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
@@ -61,24 +54,29 @@ components:
         code: 401.25.993
         message: Access token expired
         datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
     InvalidSignature:
       value:
         code: 401.25.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-  responses:
-    RSPasswordRecovery200:
-      description: OK
+    RequestAcknowledgeFailure:
+      value:
+        code: 400.02.023
+        message: It was not possible to acknowledge the request, please try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
+    RQPasswordRecovery:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSPasswordRecovery200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
+            $ref: '#/components/schemas/RQPasswordRecovery'
+      required: true
+  responses:
     RS401:
       description: Unauthorized
       content:
@@ -112,30 +110,19 @@ components:
           examples:
             Internal Server Error:
               $ref: '#/components/examples/InternalServerError'
+    RSPasswordRecovery200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPasswordRecovery200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
   schemas:
-    RSPasswordRecovery400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RS500:
       type: object
       required:
@@ -191,6 +178,29 @@ components:
           description: Email of the account to which you want to recover the password.
           example: johnDoe@example.com
           maxLength: 100
+    RSPasswordRecovery400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RS401:
       type: object
       required:
@@ -214,13 +224,6 @@ components:
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-  requestBodies:
-    RQPasswordRecovery:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQPasswordRecovery'
-      required: true
   parameters:
     customerId:
       name: customerId
@@ -241,6 +244,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-profile.yaml
-- novopayment-profile-openapi.yml

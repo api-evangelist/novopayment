@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Novopayment Decoderqr API
+  description: Merchant Presented QR is a Service that includes payment or transactions process with tokens.
   version: v1
-  description: 'Operations tagged Decoderqr across 2 of this provider''s published API definitions: novopayment-merchant-presented-qr.yaml, novopayment-merchant-presented-qr-openapi.yml. Each path carries the servers of the definition it was published in.'
+  title: Merchant Presented QR Decoderqr API
 servers:
 - description: Sandbox
   url: https://sandbox-api.novopayment.com/api/v1/mpqr
@@ -35,56 +35,160 @@ paths:
           $ref: '#/components/responses/RS500'
       tags:
       - Decoderqr
-    servers:
-    - description: Sandbox
-      url: https://sandbox-api.novopayment.com/api/v1/mpqr
 components:
-  responses:
-    RSGenerateQrCode400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGenerateQrCode400'
-          examples:
-            Params Required:
-              $ref: '#/components/examples/ParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Error General Services:
-              $ref: '#/components/examples/ErrorGeneralServices'
-    RSDecoderQR:
-      description: Decoder QR response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSDecoderQR'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
+  examples:
+    ParamsRequired:
+      value:
+        code: 400.22.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    ErrorGeneralServices:
+      value:
+        code: 400.22.350
+        message: Error General Services
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+  parameters:
+    createApiKey:
+      name: createApiKey
+      in: query
+      description: 'Whether to create a new API key for the client.
+
+
+        Note: do not set to true.
+
+        '
+      required: true
+      schema:
+        type: string
+        enum:
+        - false
+        - true
+    XTenantId:
+      name: X-tenant-id
+      in: header
+      description: 'It is necessary send all petitions for identified the client.
+
+        '
+      required: true
+      schema:
+        type: string
+    Accept:
+      name: Accept
+      in: header
+      description: 'Acceptable response format.
+
+
+        Format: Must include application/json
+
+        '
+      required: true
+      schema:
+        type: string
+    XRequestId:
+      name: x-request-id
+      in: header
+      description: 'Unique ID for the API request.
+
+
+        Format: Alphabetic, numeric, and hyphens ( - ), e.g. spaces are not allowed.
+
+        '
+      required: true
+      schema:
+        type: string
+        maxLength: 36
+    apikey:
+      name: apikey
+      in: query
+      description: Public API key, which is different from the shared secret.
+      required: true
+      schema:
+        type: string
+        maxLength: 49
+    XPayToken:
+      name: x-pay-token
+      in: header
+      description: 'A token identifying the transaction and its contents.
+
+
+        The token expires in 480 seconds (8 minutes) for all clients.
+
+        '
+      required: true
+      schema:
+        type: string
   schemas:
+    RSGenerateQrCode400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RQDecoderQrCode:
       type: object
       required:
@@ -94,6 +198,24 @@ components:
           type: string
           description: QR code in string format.
           example: 00020101021203114000000005752044111530315654062372005502015802CO5915Compania NOVO 36006BOGOTA62630102''0202''030412340402''0502''0603***0708A60086670802''0902ME6304EAAC
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RSDecoderQR:
       type: object
       required:
@@ -227,176 +349,51 @@ components:
 
                     '
                   example: ME
-    RSGenerateQrCode400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.22.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+  responses:
     RS500:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.22.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+    RSDecoderQR:
+      description: Decoder QR response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSDecoderQR'
+    RSGenerateQrCode400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenerateQrCode400'
+          examples:
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Error General Services:
+              $ref: '#/components/examples/ErrorGeneralServices'
     RS401:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 401.22.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-  examples:
-    ErrorGeneralServices:
-      value:
-        code: 400.22.350
-        message: Error General Services
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.22.396
-        message: Invalid Parameters
-        datetime: '2020-01-03T16:05:56.517Z'
-    ParamsRequired:
-      value:
-        code: 400.22.003
-        message: Params required
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTenantId:
-      value:
-        code: 400.22.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.22.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.22.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.22.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.22.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.22.089
-        message: Invalid Data
-        datetime: '2020-01-03T16:05:56.517Z'
-  parameters:
-    Accept:
-      name: Accept
-      in: header
-      description: 'Acceptable response format.
-
-
-        Format: Must include application/json
-
-        '
-      required: true
-      schema:
-        type: string
-    apikey:
-      name: apikey
-      in: query
-      description: Public API key, which is different from the shared secret.
-      required: true
-      schema:
-        type: string
-        maxLength: 49
-    XPayToken:
-      name: x-pay-token
-      in: header
-      description: 'A token identifying the transaction and its contents.
-
-
-        The token expires in 480 seconds (8 minutes) for all clients.
-
-        '
-      required: true
-      schema:
-        type: string
-    XRequestId:
-      name: x-request-id
-      in: header
-      description: 'Unique ID for the API request.
-
-
-        Format: Alphabetic, numeric, and hyphens ( - ), e.g. spaces are not allowed.
-
-        '
-      required: true
-      schema:
-        type: string
-        maxLength: 36
-    XTenantId:
-      name: X-tenant-id
-      in: header
-      description: 'It is necessary send all petitions for identified the client.
-
-        '
-      required: true
-      schema:
-        type: string
-    createApiKey:
-      name: createApiKey
-      in: query
-      description: 'Whether to create a new API key for the client.
-
-
-        Note: do not set to true.
-
-        '
-      required: true
-      schema:
-        type: string
-        enum:
-        - false
-        - true
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
   requestBodies:
     RQDecoderQrCode:
       content:
@@ -413,6 +410,3 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
-x-refined-from:
-- novopayment-merchant-presented-qr.yaml
-- novopayment-merchant-presented-qr-openapi.yml
