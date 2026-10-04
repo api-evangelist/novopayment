@@ -124,661 +124,235 @@ paths:
         default:
           $ref: '#/components/responses/RS500'
 components:
-  schemas:
-    RSGeneric400:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          additionalProperties: false
-          properties:
-            errors:
-              type: array
-              maxItems: 50
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  message:
-                    type: string
-                    description: Error Detail
-                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
-    Address:
-      type: object
-      additionalProperties: false
-      required:
-      - country
-      - line1
-      - city
-      description: 'Address object
-
-        Conditional field when the configuration of the clients requires it.
-
-        '
-      properties:
-        name:
-          type: string
-          description: 'Name assigned to the registered address.
-
-            '
-          example: Home
-          maxLength: 20
-          minLength: 0
-          pattern: ^(?!\s*$).+
-        country:
-          type: string
-          description: 'Country code in ISO 3166 alpha-3 code or Country Code (numeric).
-
-            '
-          example: USA
-          minLength: 3
-          maxLength: 3
-          pattern: ^(?!\s)(?!.*\s$).{3,3}$
-        line1:
-          type: string
-          description: 'First line of the address. Usually for the complete address, this is Required for the US and Canada.
-
-            '
-          example: 801 Metro Center Blv
-          maxLength: 20
-          minLength: 1
-          pattern: ^(?!\s*$).+
-        line2:
-          type: string
-          description: 'Second line, usually corresponds to house, apartment, suite, etc.
-
-            '
-          example: Provisioning Boulevard
-          maxLength: 80
-          minLength: 0
-          pattern: ^(?!\s*$).+
-        city:
-          type: string
-          description: 'Name of the city.
-
-            '
-          example: Austin
-          maxLength: 20
-          minLength: 1
-          pattern: ^(?!\s*$).+
-        state:
-          type: string
-          description: 'State code in the country, is required if the country is from the USA or Canada.  This field must be valid for the respective country.
-
-            '
-          example: TX
-          maxLength: 3
-          minLength: 2
-          pattern: ^(?!\s*$).+
-        postalCode:
-          type: string
-          description: "Postal Code. \nThe postal code is required if the country is from the USA or Canada.\n"
-          example: '78759'
-          maxLength: 9
-          minLength: 5
-          pattern: ^\d{5,9}$
-    RSDeleteAliasByAliasId200:
-      additionalProperties: false
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          additionalProperties: false
-          description: Customized data object.
-          required:
-          - aliasId
-          properties:
-            aliasId:
-              type: string
-              description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
-
-                '
-              example: d8d77f1f811540b5a875a856d2fb20ee
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-    PaymentInstrumentResponse:
-      type: object
-      required:
-      - cardToken
-      - brandType
-      description: 'Object Payment Instrument Contains information of the payment instrument to be stored
-
-        '
-      additionalProperties: false
-      properties:
-        cardToken:
-          type: string
-          description: 'Card data encrypted with the AES256 algorithm.
-
-            __The cardToken attribute is composed of the following values:__
-
-            __PAN:__ Card’s primary account number or token
-
-            __Expiration Date:__ Card expiration date
-
-            __SALT:__ Random Value StringWith the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value.
-
-            When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant.
-
-            '
-          example: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
-          maxLength: 44
-          minLength: 44
-        description:
-          type: string
-          description: 'Payment instrument description.
-
-            '
-          example: Visa Card
-          maxLength: 20
-          minLength: 1
-        maskedNumber:
-          type: string
-          description: 'Payment instrument mask.
-
-            '
-          example: '************0462'
-          maxLength: 16
-          minLength: 16
-        paymentInstrumentId:
-          type: string
-          example: 258aeef8fc7343a2a5b17c723c46185f
-          description: Unique identifier for a Payment Instrument in NovoPayment.
-          maxLength: 32
-          minLength: 32
-          pattern: ^[0-9a-fA-F]{32}$
-        brandType:
-          type: string
-          description: 'Brand type, Name of the issuing network of the card.
-
-            '
-          example: VISA
-          maxLength: 10
-          minLength: 1
-        issuerName:
-          type: string
-          description: 'Consumer Card Issuer name.
-
-            '
-          example: Interbank
-          maxLength: 30
-        bankAccountNumber:
-          type: string
-          description: 'User’s bank account number
-
-            '
-          example: '35426789'
-          maxLength: 30
-        status:
-          type: string
-          description: 'Status Payment Instrument.
-
-            '
-          example: ACTIVE
-          pattern: VAL_PENDING|ACTIVE|FAILED|(\\s)*
-          maxLength: 11
-        primary:
-          type: boolean
-          description: 'Indicates if PaymentInstrument is predetermined to receive money
-
-            '
-          example: false
-    CardHolderBasic:
-      type: object
-      required:
-      - firstName
-      - lastName
-      additionalProperties: false
-      properties:
-        firstName:
-          type: string
-          minLength: 1
-          maxLength: 35
-          description: First Name (may be obfuscated)
-          example: Adriana Santos
-        lastName:
-          type: string
-          minLength: 1
-          maxLength: 35
-          description: Last Name (may be obfuscated)
-          example: Adriana Santos
-    Filter:
-      description: Filter for search(Max 10)
-      minItems: 0
-      maxItems: 10
-      type: array
-      items:
-        $ref: '#/components/schemas/FilterDetail'
-      oneOf:
-      - minItems: 0
-        maxItems: 10
-    AccountType:
-      type: object
-      additionalProperties: false
-      required:
-      - title
-      description: 'Account Type object.
-
-        Contains the account title
-
-        '
-      properties:
-        title:
-          type: string
-          description: 'Type of account __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-accounttype)
-
-            '
-          example: SAVING
-          maxLength: 25
-          minLength: 1
-          pattern: (\s)*|SAVING|CHECKING|MAESTRA|VISA|LOAN|NRE
-        description:
-          type: string
-          description: acccount type description
-          example: The savings accounts can be opened by an individual with an aim to save money
-          minLength: 1
-        idCode:
-          type: string
-          description: acccount type identificator
-          example: '1'
-          minLength: 1
-    CreateAliasResponse:
-      additionalProperties: false
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          additionalProperties: false
-          description: Customized data object.
-          required:
-          - aliasId
-          properties:
-            aliasId:
-              type: string
-              description: Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
-              example: fbddb339295445d5b7469388e00b0ed0
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-            paymentInstrumentId:
-              type: string
-              description: Unique identifier for a Payment Instrument in NovoPayment.
-              example: 8803d27d5b5d478a85a9ee436cfee456
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-            accountsIds:
-              type: array
-              description: Unique identifier for a account in NovoPayment.
-              maxItems: 2
-              items:
-                type: string
-                example: 8803d27d5b5d478a85a9ee436cfee456
-                uniqueItems: true
-    CardHolder:
-      type: object
-      additionalProperties: false
-      required:
-      - firstName
-      - lastName
-      - documentType
-      - documentNumber
-      - address
-      description: 'Customized object cardHolder Contains personal information of the cardholder
-
-        '
-      properties:
-        firstName:
-          type: string
-          description: 'Cardholder’s First Name, who will be registered in the alias directory.
-
-            '
-          example: Andres
-          maxLength: 35
-          minLength: 1
-          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-        lastName:
-          type: string
-          description: 'Cardholder’s Last Name, who will be registered in the alias directory.
-
-            '
-          example: Rendon
-          maxLength: 35
-          minLength: 1
-          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-        documentType:
-          $ref: '#/components/schemas/DocumentType'
-        documentNumber:
-          type: string
-          description: 'Identification Number
-
-            '
-          example: '3346756'
-          maxLength: 35
-          minLength: 1
-          pattern: ^\d{1,35}$
-        email:
-          type: string
-          description: 'Cardholder''s Email
-
-            '
-          example: jane@client.com
-          maxLength: 50
-          minLength: 0
-          pattern: .+[@].+[\.].+
-        address:
-          $ref: '#/components/schemas/Address'
-    FindAliasRequest:
-      type: object
-      required:
-      - alias
-      additionalProperties: false
-      properties:
-        alias:
-          description: Alias values
-          minItems: 1
-          maxItems: 30
-          type: array
-          items:
-            type: string
-            example: juan@gmail.com
-            minLength: 1
-            maxLength: 50
-            pattern: ^(?!\s)(?!.*\s$).{1,50}$
-          example:
-          - juan@gmail.com
-          - '3102582546'
-          - '9146856'
-          - CUSTOM
-          oneOf:
-          - minItems: 1
-            maxItems: 100
-        filter:
-          $ref: '#/components/schemas/Filter'
-    RS500:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-    RSGetAliasByAliasId200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      additionalProperties: false
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-          pattern: ^[a-zA-Z0-9\s]{1,140}$
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          description: Customized Alias data object.
-          required:
-          - alias
-          - aliasType
-          - directoryCountry
-          - cardHolder
-          additionalProperties: false
-          properties:
-            alias:
-              type: string
-              description: Attribute that identifies the alias associated to the cardholder.
-              example: juan@email.com
-              maxLength: 50
-              minLength: 1
-              pattern: ^(?!\s)(?!.*\s$).{1,50}$
-            aliasType:
-              type: string
-              pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
-              description: '__Allowed values:__
-
-                __MOBILE,__
-
-                __EMAIL,__
-
-                __IDENTIFICATION,__
-
-                __IBAN,__
-
-                __CUSTOM__
-
-                '
-              example: EMAIL
-              maxLength: 15
-              minLength: 1
-            directoryCountry:
-              type: string
-              description: Consumer country in ISO 3166 alpha-3 code.
-              example: USA
-              maxLength: 3
-              minLength: 3
-              pattern: ^(?!\s)(?!.*\s$).{3,3}$
-            cardHolder:
-              $ref: '#/components/schemas/CardHolder'
-            paymentInstruments:
-              type: array
-              minItems: 1
-              maxItems: 15
-              description: Array payment Instruments.
-              items:
-                $ref: '#/components/schemas/PaymentInstrumentResponse'
-            accounts:
-              type: array
-              minItems: 1
-              maxItems: 10
-              description: Array accounts
-              items:
-                $ref: '#/components/schemas/Account'
-    RQUpdateAlias:
-      type: object
-      additionalProperties: false
-      required:
-      - alias
-      - aliasType
-      - directoryCountry
-      - cardHolder
-      properties:
-        alias:
-          type: string
-          description: 'Attribute that identifies the alias associated to the cardholder
-
-            If it is a number, it must be in an international format with the 1-3 digit country calling code.
-
-            Required If the alias id is not sent.
-
-            '
-          example: alias@email.com
-          maxLength: 50
-          minLength: 1
-          pattern: ^(?!\s)(?!.*\s$).{1,50}$
-        aliasType:
-          type: string
-          description: '__Allowed values:__
-
-            __MOBILE,__
-
-            __EMAIL,__
-
-            __IDENTIFICATION,__
-
-            __IBAN,__
-
-            __CUSTOM__
-
-            '
-          example: EMAIL
-          maxLength: 14
-          minLength: 4
-          pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
-        directoryCountry:
-          type: string
-          description: 'Consumer country in ISO 3166 alpha-3 code.
-
-            '
-          example: USA
-          maxLength: 3
-          minLength: 3
-          pattern: ^[A-Z]{3}$
+  examples:
+    InvalidTenantId:
+      value:
+        code: 400.09.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointCreateAlias:
+      value:
+        alias: 519-990808
+        aliasType: MOBILE
+        directoryCountry: USA
         cardHolder:
-          $ref: '#/components/schemas/CardHolder'
-    RS401:
-      type: object
-      additionalProperties: false
-      properties:
-        code:
-          type: string
-          example: 401.09.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-    DocumentType:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      description: 'Document Type object.
-
-        Contains the document code
-
-        '
-      properties:
-        code:
-          type: string
-          description: 'Type of identification
-
-            __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
-
-            '
-          example: GOVERNMENT_ID
-          maxLength: 25
-          minLength: 1
+          firstName: Andres
+          lastName: Rendon
+          documentType:
+            code: GOVERNMENT_ID
+          documentNumber: '3146787'
+          email: adr@gmail.com
+          address:
+            name: Home
+            country: USA
+            line1: 801 Metro Center Bl
+            line2: Provisioning Boulevard
+            city: Austin
+            state: TX
+            postalCode: '78759'
+        paymentInstrument:
+          cardToken: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
+          cvvNumber: i5eMuNnaVHqIjz4PFHj23w==
+          description: InterBanco
+          brandType: VISA
+          issuerName: VISA_CARD
+          bankAccountNumber: '35426789'
+          issuerCountryCode: USA
+    InvalidAccessToken:
+      value:
+        code: 401.09.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParametersDeleteAlias:
+      value:
+        code: 400.09.396
+        message: Invalid parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field aliasId: invalid value'
+    AccessTokenNotApproved:
+      value:
+        code: 401.09.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    UserAlreadyHasARegisteredAlias:
+      value:
+        code: 400.09.401
+        message: User already has a registered alias
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.09.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AliasNotFound:
+      value:
+        code: 400.09.448
+        message: Alias not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointCreateAliasAccount:
+      value:
+        alias: 519-990808
+        aliasType: MOBILE
+        directoryCountry: USA
+        cardHolder:
+          firstName: Andres
+          lastName: Rendon
+          documentType:
+            code: GOVERNMENT_ID
+          documentNumber: '3146787'
+          email: adr@gmail.com
+          address:
+            name: Home
+            country: USA
+            line1: 801 Metro Center Bl
+            line2: Provisioning Boulevard
+            city: Austin
+            state: TX
+            postalCode: '78759'
+        accounts:
+        - accountName: Account Mom
+          accountType:
+            title: SAVING
+          accountNumberEncrypt: VfogTyySFtvqCLb2L/zm7aT0P5M8GGYneWHGy5HQMVI=
+          accountInternalId: 0458a69b-e70d-49b3-86d2-81d6b7569979
+          accountIdentify: DEFAULT
+          countryCode: USA
+          currencyCode: USD
+    RQEndpointCreateAliasTotal:
+      value:
+        alias: 519-990808
+        aliasType: MOBILE
+        directoryCountry: USA
+        cardHolder:
+          firstName: Andres
+          lastName: Rendon
+          documentType:
+            code: GOVERNMENT_ID
+          documentNumber: '3146787'
+          email: adr@gmail.com
+          address:
+            name: Home
+            country: USA
+            line1: 801 Metro Center Bl
+            line2: Provisioning Boulevard
+            city: Austin
+            state: TX
+            postalCode: '78759'
+        paymentInstrument:
+          cardToken: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
+          cvvNumber: i5eMuNnaVHqIjz4PFHj23w==
+          description: InterBanco
+          brandType: VISA
+          issuerName: VISA_CARD
+          bankAccountNumber: '35426789'
+          issuerCountryCode: USA
+        accounts:
+        - accountName: Account Mom
+          accountType:
+            title: SAVING
+          accountNumberEncrypt: VfogTyySFtvqCLb2L/zm7aT0P5M8GGYneWHGy5HQMVI=
+          accountInternalId: 0458a69b-e70d-49b3-86d2-81d6b7569979
+          accountIdentify: DEFAULT
+          countryCode: USA
+          currencyCode: USD
+    InvalidEncryptedData:
+      value:
+        code: 400.09.320
+        message: Invalid Encrypted Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.09.396
+        message: Invalid parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field aliasType: invalid alias type'
+    ComplianceList:
+      value:
+        code: 400.09.431
+        message: User has hits in compliance lists
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.09.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidIdentityDocumentType:
+      value:
+        code: 400.09.554
+        message: Invalid identity document type
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointFindAlias:
+      value:
+        alias:
+        - juan@gmail.com
+        - '3102582546'
+        filter:
+        - field: BRAND_TYPE
+          value:
+          - VISA
+    UnableProcessRequest:
+      value:
+        code: 400.09.105
+        message: Unable process request
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.09.999
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    IssuerCountryNotSupported:
+      value:
+        code: 400.09.446
+        message: Issuer country not supported
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNotAllowed:
+      value:
+        code: 400.09.101
+        message: Card not allowed
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAlias:
+      value:
+        code: 400.09.102
+        message: Invalid alias
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointUpdateAlias:
+      value:
+        alias: email@gmail.com
+        aliasType: EMAIL
+        directoryCountry: USA
+        cardHolder:
+          firstName: Juan
+          lastName: Perez
+          documentType:
+            code: GOVERNANT_ID
+          documentNumber: '43526789'
+          email: juan@gmail.com
+          address:
+            name: Home
+            country: USA
+            line1: 10808 Research
+            line2: Provisioning Boulevard
+            city: Austin
+            state: TX
+            postalCode: '78759'
+    AliasAlreadyExist:
+      value:
+        code: 400.09.459
+        message: Alias already exists
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidFindAliasParameters:
+      value:
+        code: 400.09.396
+        message: Invalid parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field alias: is required'
+  schemas:
     PaymentInstrument:
       additionalProperties: false
       type: object
@@ -860,6 +434,383 @@ components:
           maxLength: 3
           minLength: 3
           pattern: ^[^\s]{3}$
+    FilterDetail:
+      type: object
+      required:
+      - field
+      - value
+      additionalProperties: false
+      properties:
+        field:
+          type: string
+          minLength: 1
+          maxLength: 17
+          example: BRAND_TYPE
+          pattern: BRAND_TYPE|ALIAS_TYPE|DIRECTORY_COUNTRY
+        value:
+          description: Filter values(Max 10)
+          minItems: 0
+          maxItems: 10
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 20
+            example: VISA
+            pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+          example:
+          - VISA
+          oneOf:
+          - minItems: 0
+            maxItems: 10
+    RS500:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+    RS401:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          example: 401.09.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+    RSUpdateAlias200:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+          minLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format. (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          required:
+          - aliasId
+          properties:
+            aliasId:
+              type: string
+              description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+
+                '
+              example: 5d1bf399902e42f79681c5be8dfdcb02
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
+    CardHolderBasic:
+      type: object
+      required:
+      - firstName
+      - lastName
+      additionalProperties: false
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 35
+          description: First Name (may be obfuscated)
+          example: Adriana Santos
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 35
+          description: Last Name (may be obfuscated)
+          example: Adriana Santos
+    CreateAliasResponse:
+      additionalProperties: false
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          description: Customized data object.
+          required:
+          - aliasId
+          properties:
+            aliasId:
+              type: string
+              description: Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+              example: fbddb339295445d5b7469388e00b0ed0
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
+            paymentInstrumentId:
+              type: string
+              description: Unique identifier for a Payment Instrument in NovoPayment.
+              example: 8803d27d5b5d478a85a9ee436cfee456
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
+            accountsIds:
+              type: array
+              description: Unique identifier for a account in NovoPayment.
+              maxItems: 2
+              items:
+                type: string
+                example: 8803d27d5b5d478a85a9ee436cfee456
+                uniqueItems: true
+    Address:
+      type: object
+      additionalProperties: false
+      required:
+      - country
+      - line1
+      - city
+      description: 'Address object
+
+        Conditional field when the configuration of the clients requires it.
+
+        '
+      properties:
+        name:
+          type: string
+          description: 'Name assigned to the registered address.
+
+            '
+          example: Home
+          maxLength: 20
+          minLength: 0
+          pattern: ^(?!\s*$).+
+        country:
+          type: string
+          description: 'Country code in ISO 3166 alpha-3 code or Country Code (numeric).
+
+            '
+          example: USA
+          minLength: 3
+          maxLength: 3
+          pattern: ^(?!\s)(?!.*\s$).{3,3}$
+        line1:
+          type: string
+          description: 'First line of the address. Usually for the complete address, this is Required for the US and Canada.
+
+            '
+          example: 801 Metro Center Blv
+          maxLength: 20
+          minLength: 1
+          pattern: ^(?!\s*$).+
+        line2:
+          type: string
+          description: 'Second line, usually corresponds to house, apartment, suite, etc.
+
+            '
+          example: Provisioning Boulevard
+          maxLength: 80
+          minLength: 0
+          pattern: ^(?!\s*$).+
+        city:
+          type: string
+          description: 'Name of the city.
+
+            '
+          example: Austin
+          maxLength: 20
+          minLength: 1
+          pattern: ^(?!\s*$).+
+        state:
+          type: string
+          description: 'State code in the country, is required if the country is from the USA or Canada.  This field must be valid for the respective country.
+
+            '
+          example: TX
+          maxLength: 3
+          minLength: 2
+          pattern: ^(?!\s*$).+
+        postalCode:
+          type: string
+          description: "Postal Code. \nThe postal code is required if the country is from the USA or Canada.\n"
+          example: '78759'
+          maxLength: 9
+          minLength: 5
+          pattern: ^\d{5,9}$
+    CardHolder:
+      type: object
+      additionalProperties: false
+      required:
+      - firstName
+      - lastName
+      - documentType
+      - documentNumber
+      - address
+      description: 'Customized object cardHolder Contains personal information of the cardholder
+
+        '
+      properties:
+        firstName:
+          type: string
+          description: 'Cardholder’s First Name, who will be registered in the alias directory.
+
+            '
+          example: Andres
+          maxLength: 35
+          minLength: 1
+          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+        lastName:
+          type: string
+          description: 'Cardholder’s Last Name, who will be registered in the alias directory.
+
+            '
+          example: Rendon
+          maxLength: 35
+          minLength: 1
+          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+        documentType:
+          $ref: '#/components/schemas/DocumentType'
+        documentNumber:
+          type: string
+          description: 'Identification Number
+
+            '
+          example: '3346756'
+          maxLength: 35
+          minLength: 1
+          pattern: ^\d{1,35}$
+        email:
+          type: string
+          description: 'Cardholder''s Email
+
+            '
+          example: jane@client.com
+          maxLength: 50
+          minLength: 0
+          pattern: .+[@].+[\.].+
+        address:
+          $ref: '#/components/schemas/Address'
+    CreateAliasInfoRequest:
+      type: object
+      required:
+      - alias
+      - aliasType
+      - directoryCountry
+      - cardHolder
+      additionalProperties: false
+      properties:
+        alias:
+          type: string
+          description: 'Attribute that identifies the alias associated to the cardholder. If it is a number, it must be in an international format with the 1-3 digit country calling code.
+
+            '
+          example: CUSTOM00051
+          maxLength: 50
+          pattern: ^(?!\s)(?!.*\s$).{1,50}$
+        aliasType:
+          type: string
+          description: '__Allowed values:__
+
+            __MOBILE,__
+
+            __EMAIL,__
+
+            __IDENTIFICATION,__
+
+            __IBAN,__
+
+            __CUSTOM__
+
+            '
+          example: CUSTOM
+          pattern: (\s)*|MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+          maxLength: 14
+          minLength: 4
+        directoryCountry:
+          type: string
+          description: 'Consumer country in ISO 3166 alpha-3 code
+
+            '
+          example: USA
+          maxLength: 3
+          minLength: 3
+          pattern: ^[A-Z]{3}$
+        cardHolder:
+          $ref: '#/components/schemas/CardHolder'
+        paymentInstrument:
+          $ref: '#/components/schemas/PaymentInstrument'
+        accounts:
+          $ref: '#/components/schemas/AccountsInput'
     Account:
       type: object
       description: Detailed account information, conditional if cards no present
@@ -949,30 +900,159 @@ components:
           maxLength: 70
           minLength: 1
           description: bank's name
-    Accounts:
+    PaymentInstrumentResponse:
+      type: object
+      required:
+      - cardToken
+      - brandType
+      description: 'Object Payment Instrument Contains information of the payment instrument to be stored
+
+        '
+      additionalProperties: false
+      properties:
+        cardToken:
+          type: string
+          description: 'Card data encrypted with the AES256 algorithm.
+
+            __The cardToken attribute is composed of the following values:__
+
+            __PAN:__ Card’s primary account number or token
+
+            __Expiration Date:__ Card expiration date
+
+            __SALT:__ Random Value StringWith the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value.
+
+            When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant.
+
+            '
+          example: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
+          maxLength: 44
+          minLength: 44
+        description:
+          type: string
+          description: 'Payment instrument description.
+
+            '
+          example: Visa Card
+          maxLength: 20
+          minLength: 1
+        maskedNumber:
+          type: string
+          description: 'Payment instrument mask.
+
+            '
+          example: '************0462'
+          maxLength: 16
+          minLength: 16
+        paymentInstrumentId:
+          type: string
+          example: 258aeef8fc7343a2a5b17c723c46185f
+          description: Unique identifier for a Payment Instrument in NovoPayment.
+          maxLength: 32
+          minLength: 32
+          pattern: ^[0-9a-fA-F]{32}$
+        brandType:
+          type: string
+          description: 'Brand type, Name of the issuing network of the card.
+
+            '
+          example: VISA
+          maxLength: 10
+          minLength: 1
+        issuerName:
+          type: string
+          description: 'Consumer Card Issuer name.
+
+            '
+          example: Interbank
+          maxLength: 30
+        bankAccountNumber:
+          type: string
+          description: 'User’s bank account number
+
+            '
+          example: '35426789'
+          maxLength: 30
+        status:
+          type: string
+          description: 'Status Payment Instrument.
+
+            '
+          example: ACTIVE
+          pattern: VAL_PENDING|ACTIVE|FAILED|(\\s)*
+          maxLength: 11
+        primary:
+          type: boolean
+          description: 'Indicates if PaymentInstrument is predetermined to receive money
+
+            '
+          example: false
+    AccountsInput:
       type: array
-      maxItems: 10
+      maxItems: 2
       xml:
         name: accounts
         wrapped: true
       items:
         $ref: '#/components/schemas/Account'
-    CreateAliasInfoRequest:
+    FindAliasRequest:
       type: object
+      required:
+      - alias
+      additionalProperties: false
+      properties:
+        alias:
+          description: Alias values
+          minItems: 1
+          maxItems: 30
+          type: array
+          items:
+            type: string
+            example: juan@gmail.com
+            minLength: 1
+            maxLength: 50
+            pattern: ^(?!\s)(?!.*\s$).{1,50}$
+          example:
+          - juan@gmail.com
+          - '3102582546'
+          - '9146856'
+          - CUSTOM
+          oneOf:
+          - minItems: 1
+            maxItems: 100
+        filter:
+          $ref: '#/components/schemas/Filter'
+    Filter:
+      description: Filter for search(Max 10)
+      minItems: 0
+      maxItems: 10
+      type: array
+      items:
+        $ref: '#/components/schemas/FilterDetail'
+      oneOf:
+      - minItems: 0
+        maxItems: 10
+    RQUpdateAlias:
+      type: object
+      additionalProperties: false
       required:
       - alias
       - aliasType
       - directoryCountry
       - cardHolder
-      additionalProperties: false
       properties:
         alias:
           type: string
-          description: 'Attribute that identifies the alias associated to the cardholder. If it is a number, it must be in an international format with the 1-3 digit country calling code.
+          description: 'Attribute that identifies the alias associated to the cardholder
+
+            If it is a number, it must be in an international format with the 1-3 digit country calling code.
+
+            Required If the alias id is not sent.
 
             '
-          example: CUSTOM00051
+          example: alias@email.com
           maxLength: 50
+          minLength: 1
           pattern: ^(?!\s)(?!.*\s$).{1,50}$
         aliasType:
           type: string
@@ -989,13 +1069,13 @@ components:
             __CUSTOM__
 
             '
-          example: CUSTOM
-          pattern: (\s)*|MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+          example: EMAIL
           maxLength: 14
           minLength: 4
+          pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
         directoryCountry:
           type: string
-          description: 'Consumer country in ISO 3166 alpha-3 code
+          description: 'Consumer country in ISO 3166 alpha-3 code.
 
             '
           example: USA
@@ -1004,10 +1084,152 @@ components:
           pattern: ^[A-Z]{3}$
         cardHolder:
           $ref: '#/components/schemas/CardHolder'
-        paymentInstrument:
-          $ref: '#/components/schemas/PaymentInstrument'
-        accounts:
-          $ref: '#/components/schemas/AccountsInput'
+    DocumentType:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      description: 'Document Type object.
+
+        Contains the document code
+
+        '
+      properties:
+        code:
+          type: string
+          description: 'Type of identification
+
+            __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+
+            '
+          example: GOVERNMENT_ID
+          maxLength: 25
+          minLength: 1
+    Accounts:
+      type: array
+      maxItems: 10
+      xml:
+        name: accounts
+        wrapped: true
+      items:
+        $ref: '#/components/schemas/Account'
+    AccountType:
+      type: object
+      additionalProperties: false
+      required:
+      - title
+      description: 'Account Type object.
+
+        Contains the account title
+
+        '
+      properties:
+        title:
+          type: string
+          description: 'Type of account __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-accounttype)
+
+            '
+          example: SAVING
+          maxLength: 25
+          minLength: 1
+          pattern: (\s)*|SAVING|CHECKING|MAESTRA|VISA|LOAN|NRE
+        description:
+          type: string
+          description: acccount type description
+          example: The savings accounts can be opened by an individual with an aim to save money
+          minLength: 1
+        idCode:
+          type: string
+          description: acccount type identificator
+          example: '1'
+          minLength: 1
+    RSGeneric400:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
+    RSDeleteAliasByAliasId200:
+      additionalProperties: false
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          description: Customized data object.
+          required:
+          - aliasId
+          properties:
+            aliasId:
+              type: string
+              description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+
+                '
+              example: d8d77f1f811540b5a875a856d2fb20ee
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
     FindAlias:
       type: object
       required:
@@ -1058,6 +1280,93 @@ components:
           example: e05bb59e-18a3-4191-80aa-0bc734379332
           maxLength: 36
           minLength: 32
+    RSGetAliasByAliasId200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          pattern: ^[a-zA-Z0-9\s]{1,140}$
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          description: Customized Alias data object.
+          required:
+          - alias
+          - aliasType
+          - directoryCountry
+          - cardHolder
+          additionalProperties: false
+          properties:
+            alias:
+              type: string
+              description: Attribute that identifies the alias associated to the cardholder.
+              example: juan@email.com
+              maxLength: 50
+              minLength: 1
+              pattern: ^(?!\s)(?!.*\s$).{1,50}$
+            aliasType:
+              type: string
+              pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+              description: '__Allowed values:__
+
+                __MOBILE,__
+
+                __EMAIL,__
+
+                __IDENTIFICATION,__
+
+                __IBAN,__
+
+                __CUSTOM__
+
+                '
+              example: EMAIL
+              maxLength: 15
+              minLength: 1
+            directoryCountry:
+              type: string
+              description: Consumer country in ISO 3166 alpha-3 code.
+              example: USA
+              maxLength: 3
+              minLength: 3
+              pattern: ^(?!\s)(?!.*\s$).{3,3}$
+            cardHolder:
+              $ref: '#/components/schemas/CardHolder'
+            paymentInstruments:
+              type: array
+              minItems: 1
+              maxItems: 15
+              description: Array payment Instruments.
+              items:
+                $ref: '#/components/schemas/PaymentInstrumentResponse'
+            accounts:
+              type: array
+              minItems: 1
+              maxItems: 10
+              description: Array accounts
+              items:
+                $ref: '#/components/schemas/Account'
     FindAliasResponse:
       additionalProperties: false
       type: object
@@ -1101,88 +1410,102 @@ components:
                 wrapped: true
               items:
                 $ref: '#/components/schemas/FindAlias'
-    FilterDetail:
-      type: object
-      required:
-      - field
-      - value
-      additionalProperties: false
-      properties:
-        field:
-          type: string
-          minLength: 1
-          maxLength: 17
-          example: BRAND_TYPE
-          pattern: BRAND_TYPE|ALIAS_TYPE|DIRECTORY_COUNTRY
-        value:
-          description: Filter values(Max 10)
-          minItems: 0
-          maxItems: 10
-          type: array
-          items:
-            type: string
-            minLength: 1
-            maxLength: 20
-            example: VISA
-            pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-          example:
-          - VISA
-          oneOf:
-          - minItems: 0
-            maxItems: 10
-    RSUpdateAlias200:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-          minLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format. (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          additionalProperties: false
-          required:
-          - aliasId
-          properties:
-            aliasId:
-              type: string
-              description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+  parameters:
+    aliasId:
+      name: aliasId
+      in: path
+      description: 'Unique identifier of an Alias in NovoPayment.
 
-                '
-              example: 5d1bf399902e42f79681c5be8dfdcb02
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-    AccountsInput:
-      type: array
-      maxItems: 2
-      xml:
-        name: accounts
-        wrapped: true
-      items:
-        $ref: '#/components/schemas/Account'
+        This field is required if the alias is not sent.  This data is for personal use, it is required for administration and management of your alias.
+
+        '
+      required: true
+      example: 0300a633fcbf48a38d225afbd9fd43fa
+      schema:
+        type: string
+        maxLength: 32
+        minLength: 32
+        pattern: ^[0-9a-fA-F]{32}$
   responses:
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSGetAliasByAliasId400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Alias not Found:
+              $ref: '#/components/examples/AliasNotFound'
+    RSUpdateAlias200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUpdateAlias200'
+          examples:
+            Update Alias:
+              value:
+                code: 200.09.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+                data:
+                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+    RS401UpdateAlias:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSCreateAlias200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAliasResponse'
+          examples:
+            Generate Card Token Ok:
+              value:
+                code: 200.09.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+                data:
+                  aliasId: fbddb339295445d5b7469388e00b0ed0
+                  paymentInstrumentId: 8803d27d5b5d478a85a9ee436cfee456
+                  accountsIds:
+                  - 8803d27d5b5d478a85a9ee436cfee456
     RSGetAliasByAliasId200:
       description: OK
       content:
@@ -1252,121 +1575,6 @@ components:
                     currencyCode: COP
                     accountName: John Doe
                     accountIdentify: DEFAULT
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSCreateAlias200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateAliasResponse'
-          examples:
-            Generate Card Token Ok:
-              value:
-                code: 200.09.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
-                data:
-                  aliasId: fbddb339295445d5b7469388e00b0ed0
-                  paymentInstrumentId: 8803d27d5b5d478a85a9ee436cfee456
-                  accountsIds:
-                  - 8803d27d5b5d478a85a9ee436cfee456
-    RSDeleteAliasByAliasId400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Alias Not Found:
-              $ref: '#/components/examples/AliasNotFound'
-            Unable Process request:
-              $ref: '#/components/examples/UnableProcessRequest'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersDeleteAlias'
-    RSFindAlias400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Invalid Params:
-              $ref: '#/components/examples/InvalidFindAliasParameters'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSUpdateAlias200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUpdateAlias200'
-          examples:
-            Update Alias:
-              value:
-                code: 200.09.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
-                data:
-                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
-    RSUpdateAlias400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Alias Not Found:
-              $ref: '#/components/examples/AliasNotFound'
-            Invalid Alias:
-              $ref: '#/components/examples/InvalidAlias'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-    RSDeleteAliasByAliasId200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSDeleteAliasByAliasId200'
-          examples:
-            Delete Alias By Alias Id:
-              value:
-                code: 200.09.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
-                data:
-                  aliasId: d8d77f1f811540b5a875a856d2fb20ee
-    RSGetAliasByAliasId400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Alias not Found:
-              $ref: '#/components/examples/AliasNotFound'
     RSFindAlias200:
       description: OK
       content:
@@ -1450,6 +1658,32 @@ components:
                       currencyCode: DOP
                     directoryCountry: USA
                     directoryId: e05bb59e-18a3-4191-80aa-0bc734379332
+    RSUpdateAlias400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Alias Not Found:
+              $ref: '#/components/examples/AliasNotFound'
+            Invalid Alias:
+              $ref: '#/components/examples/InvalidAlias'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+    RSDeleteAliasByAliasId400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Alias Not Found:
+              $ref: '#/components/examples/AliasNotFound'
+            Unable Process request:
+              $ref: '#/components/examples/UnableProcessRequest'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersDeleteAlias'
     RSCreateAlias400:
       description: Bad Request
       content:
@@ -1475,259 +1709,32 @@ components:
               $ref: '#/components/examples/InvalidIdentityDocumentType'
             Card not allowed:
               $ref: '#/components/examples/CardNotAllowed'
-    RS401UpdateAlias:
-      description: Unauthorized
+    RSDeleteAliasByAliasId200:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS401'
+            $ref: '#/components/schemas/RSDeleteAliasByAliasId200'
           examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-  examples:
-    AccessTokenNotApproved:
-      value:
-        code: 401.09.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.09.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    CardNotAllowed:
-      value:
-        code: 400.09.101
-        message: Card not allowed
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointCreateAlias:
-      value:
-        alias: 519-990808
-        aliasType: MOBILE
-        directoryCountry: USA
-        cardHolder:
-          firstName: Andres
-          lastName: Rendon
-          documentType:
-            code: GOVERNMENT_ID
-          documentNumber: '3146787'
-          email: adr@gmail.com
-          address:
-            name: Home
-            country: USA
-            line1: 801 Metro Center Bl
-            line2: Provisioning Boulevard
-            city: Austin
-            state: TX
-            postalCode: '78759'
-        paymentInstrument:
-          cardToken: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
-          cvvNumber: i5eMuNnaVHqIjz4PFHj23w==
-          description: InterBanco
-          brandType: VISA
-          issuerName: VISA_CARD
-          bankAccountNumber: '35426789'
-          issuerCountryCode: USA
-    RQEndpointCreateAliasTotal:
-      value:
-        alias: 519-990808
-        aliasType: MOBILE
-        directoryCountry: USA
-        cardHolder:
-          firstName: Andres
-          lastName: Rendon
-          documentType:
-            code: GOVERNMENT_ID
-          documentNumber: '3146787'
-          email: adr@gmail.com
-          address:
-            name: Home
-            country: USA
-            line1: 801 Metro Center Bl
-            line2: Provisioning Boulevard
-            city: Austin
-            state: TX
-            postalCode: '78759'
-        paymentInstrument:
-          cardToken: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
-          cvvNumber: i5eMuNnaVHqIjz4PFHj23w==
-          description: InterBanco
-          brandType: VISA
-          issuerName: VISA_CARD
-          bankAccountNumber: '35426789'
-          issuerCountryCode: USA
-        accounts:
-        - accountName: Account Mom
-          accountType:
-            title: SAVING
-          accountNumberEncrypt: VfogTyySFtvqCLb2L/zm7aT0P5M8GGYneWHGy5HQMVI=
-          accountInternalId: 0458a69b-e70d-49b3-86d2-81d6b7569979
-          accountIdentify: DEFAULT
-          countryCode: USA
-          currencyCode: USD
-    InvalidParameters:
-      value:
-        code: 400.09.396
-        message: Invalid parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field aliasType: invalid alias type'
-    InvalidTenantId:
-      value:
-        code: 400.09.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointCreateAliasAccount:
-      value:
-        alias: 519-990808
-        aliasType: MOBILE
-        directoryCountry: USA
-        cardHolder:
-          firstName: Andres
-          lastName: Rendon
-          documentType:
-            code: GOVERNMENT_ID
-          documentNumber: '3146787'
-          email: adr@gmail.com
-          address:
-            name: Home
-            country: USA
-            line1: 801 Metro Center Bl
-            line2: Provisioning Boulevard
-            city: Austin
-            state: TX
-            postalCode: '78759'
-        accounts:
-        - accountName: Account Mom
-          accountType:
-            title: SAVING
-          accountNumberEncrypt: VfogTyySFtvqCLb2L/zm7aT0P5M8GGYneWHGy5HQMVI=
-          accountInternalId: 0458a69b-e70d-49b3-86d2-81d6b7569979
-          accountIdentify: DEFAULT
-          countryCode: USA
-          currencyCode: USD
-    RQEndpointFindAlias:
-      value:
-        alias:
-        - juan@gmail.com
-        - '3102582546'
-        filter:
-        - field: BRAND_TYPE
-          value:
-          - VISA
-    UserAlreadyHasARegisteredAlias:
-      value:
-        code: 400.09.401
-        message: User already has a registered alias
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParametersDeleteAlias:
-      value:
-        code: 400.09.396
-        message: Invalid parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field aliasId: invalid value'
-    InvalidSignature:
-      value:
-        code: 401.09.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidEncryptedData:
-      value:
-        code: 400.09.320
-        message: Invalid Encrypted Data
-        datetime: '2020-01-03T16:05:56.517Z'
-    IssuerCountryNotSupported:
-      value:
-        code: 400.09.446
-        message: Issuer country not supported
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidIdentityDocumentType:
-      value:
-        code: 400.09.554
-        message: Invalid identity document type
-        datetime: '2020-01-03T16:05:56.517Z'
-    AliasNotFound:
-      value:
-        code: 400.09.448
-        message: Alias not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    ComplianceList:
-      value:
-        code: 400.09.431
-        message: User has hits in compliance lists
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidFindAliasParameters:
-      value:
-        code: 400.09.396
-        message: Invalid parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field alias: is required'
-    RQEndpointUpdateAlias:
-      value:
-        alias: email@gmail.com
-        aliasType: EMAIL
-        directoryCountry: USA
-        cardHolder:
-          firstName: Juan
-          lastName: Perez
-          documentType:
-            code: GOVERNANT_ID
-          documentNumber: '43526789'
-          email: juan@gmail.com
-          address:
-            name: Home
-            country: USA
-            line1: 10808 Research
-            line2: Provisioning Boulevard
-            city: Austin
-            state: TX
-            postalCode: '78759'
-    InvalidAccessToken:
-      value:
-        code: 401.09.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAlias:
-      value:
-        code: 400.09.102
-        message: Invalid alias
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.09.999
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    UnableProcessRequest:
-      value:
-        code: 400.09.105
-        message: Unable process request
-        datetime: '2020-01-03T16:05:56.517Z'
-    AliasAlreadyExist:
-      value:
-        code: 400.09.459
-        message: Alias already exists
-        datetime: '2020-01-03T16:05:56.517Z'
+            Delete Alias By Alias Id:
+              value:
+                code: 200.09.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+                data:
+                  aliasId: d8d77f1f811540b5a875a856d2fb20ee
+    RSFindAlias400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Invalid Params:
+              $ref: '#/components/examples/InvalidFindAliasParameters'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
   requestBodies:
-    RQUpdateAlias:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQUpdateAlias'
-          examples:
-            Update Alias:
-              $ref: '#/components/examples/RQEndpointUpdateAlias'
-      required: true
     FindAliasRequest:
       content:
         application/json:
@@ -1736,6 +1743,15 @@ components:
           examples:
             Find Alias:
               $ref: '#/components/examples/RQEndpointFindAlias'
+      required: true
+    RQUpdateAlias:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQUpdateAlias'
+          examples:
+            Update Alias:
+              $ref: '#/components/examples/RQEndpointUpdateAlias'
       required: true
     CreateAliasInfoRequest:
       content:
@@ -1750,22 +1766,6 @@ components:
             Generate Alias by Card and Account:
               $ref: '#/components/examples/RQEndpointCreateAliasTotal'
       required: true
-  parameters:
-    aliasId:
-      name: aliasId
-      in: path
-      description: 'Unique identifier of an Alias in NovoPayment.
-
-        This field is required if the alias is not sent.  This data is for personal use, it is required for administration and management of your alias.
-
-        '
-      required: true
-      example: 0300a633fcbf48a38d225afbd9fd43fa
-      schema:
-        type: string
-        maxLength: 32
-        minLength: 32
-        pattern: ^[0-9a-fA-F]{32}$
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

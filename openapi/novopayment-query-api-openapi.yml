@@ -77,10 +77,15 @@ paths:
           $ref: '#/components/responses/RS500'
 components:
   examples:
-    InvalidAccessToken:
+    InternalServerError:
       value:
-        code: 401.08.990
-        message: Invalid Access Token
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.08.004
+        message: Invalid Tenant ID
         datetime: '2020-01-03T16:05:56.517Z'
     ParamsRequired:
       value:
@@ -90,6 +95,16 @@ components:
         data:
           errors:
           - message: if you want to search by rrn, the field stan is mandatory
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
     InvalidParameters:
       value:
         code: 400.08.396
@@ -98,121 +113,21 @@ components:
         data:
           errors:
           - message: 'Field fielName: must not be blank'
-    InvalidTenantId:
-      value:
-        code: 400.08.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.08.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenExpired:
       value:
         code: 401.08.993
         message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    UnableProcessRequest:
-      value:
-        code: 400.08.105
-        message: Unable process request
         datetime: '2020-01-03T16:05:56.517Z'
     InvalidSignature:
       value:
         code: 401.08.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-  responses:
-    RS401:
-      description: Unauthorized (AP)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Internal Server Error (AP*)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSQuery400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGenericResponse'
-          examples:
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Params Required:
-              $ref: '#/components/examples/ParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Unable Process Request:
-              $ref: '#/components/examples/UnableProcessRequest'
-    RSQuery200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/QueryTransactionResponse'
-          examples:
-            Transaction Results:
-              value:
-                code: 200.08.000
-                datetime: '2022-09-23T20:52:14.861Z'
-                message: Process Ok
-                data:
-                  transactions:
-                  - actionCode: '00'
-                    approvalCode: 21324K
-                    responseCode: '5'
-                    retrievalReferenceNumber: '401010350420'
-                    statusCode: TP
-                    systemsTraceAuditNumber: '350420'
-                    transactionDate: 18-09-2023 00:01:25
-                    transactionIdentifier: '234234322342343'
-                    transactionType: AFT
-                    transactionReference: e681d7e-33b6-4ee4-ab61-0fbeb8662006
-                    transactionId: e1ac6dda-e819-4380-a0b0-2b03cc78207b
-                  - actionCode: '00'
-                    approvalCode: 21324K
-                    responseCode: '5'
-                    retrievalReferenceNumber: '401010350420'
-                    statusCode: TP
-                    systemsTraceAuditNumber: '350420'
-                    transactionDate: 18-09-2023 00:01:25
-                    transactionIdentifier: '234234322342343'
-                    transactionType: OCT
-                    transactionReference: e681d7e-33b6-4ee4-ab61-0fbeb8662006
-                    transactionId: e1ac6dda-e819-4380-a0b0-2b03cc78207b
-                  - statusCode: VALIDATION FAILED
-                    transactionDate: 18-09-2023 00:01:25
-                    transactionReference: 3481d7e-33b6-4ee4-ab61-0fbeb8662006
-                    transactionId: f1ac6dda-e819-4380-a0b0-2b03cc78207b
-            Transaction Not Found:
-              value:
-                code: 200.08.343
-                datetime: '2022-09-23T20:52:14.861Z'
-                message: Not search results found
+    UnableProcessRequest:
+      value:
+        code: 400.08.105
+        message: Unable process request
+        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
     RS500:
       type: object
@@ -241,6 +156,75 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
           maxLength: 29
+    RS401:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          minLength: 1
+          maxLength: 29
+    RSGenericResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.,\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 29
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    maxLength: 300
+                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
     QueryTransactionResponse:
       type: object
       additionalProperties: false
@@ -378,75 +362,91 @@ components:
           maxLength: 36
           minLength: 1
           pattern: '[a-zA-Z0-9:.\s]{1,36}'
-    RSGenericResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.,\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 29
-        data:
-          type: object
-          additionalProperties: false
-          properties:
-            errors:
-              type: array
-              maxItems: 50
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  message:
-                    type: string
-                    description: Error Detail
-                    maxLength: 300
-                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
+  responses:
+    RSQuery400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenericResponse'
+          examples:
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Unable Process Request:
+              $ref: '#/components/examples/UnableProcessRequest'
     RS401:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.08.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          minLength: 1
-          maxLength: 29
+      description: Unauthorized (AP)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSQuery200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QueryTransactionResponse'
+          examples:
+            Transaction Results:
+              value:
+                code: 200.08.000
+                datetime: '2022-09-23T20:52:14.861Z'
+                message: Process Ok
+                data:
+                  transactions:
+                  - actionCode: '00'
+                    approvalCode: 21324K
+                    responseCode: '5'
+                    retrievalReferenceNumber: '401010350420'
+                    statusCode: TP
+                    systemsTraceAuditNumber: '350420'
+                    transactionDate: 18-09-2023 00:01:25
+                    transactionIdentifier: '234234322342343'
+                    transactionType: AFT
+                    transactionReference: e681d7e-33b6-4ee4-ab61-0fbeb8662006
+                    transactionId: e1ac6dda-e819-4380-a0b0-2b03cc78207b
+                  - actionCode: '00'
+                    approvalCode: 21324K
+                    responseCode: '5'
+                    retrievalReferenceNumber: '401010350420'
+                    statusCode: TP
+                    systemsTraceAuditNumber: '350420'
+                    transactionDate: 18-09-2023 00:01:25
+                    transactionIdentifier: '234234322342343'
+                    transactionType: OCT
+                    transactionReference: e681d7e-33b6-4ee4-ab61-0fbeb8662006
+                    transactionId: e1ac6dda-e819-4380-a0b0-2b03cc78207b
+                  - statusCode: VALIDATION FAILED
+                    transactionDate: 18-09-2023 00:01:25
+                    transactionReference: 3481d7e-33b6-4ee4-ab61-0fbeb8662006
+                    transactionId: f1ac6dda-e819-4380-a0b0-2b03cc78207b
+            Transaction Not Found:
+              value:
+                code: 200.08.343
+                datetime: '2022-09-23T20:52:14.861Z'
+                message: Not search results found
+    RS500:
+      description: Internal Server Error (AP*)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

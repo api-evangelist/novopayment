@@ -334,84 +334,922 @@ paths:
     - description: Sandbox
       url: https://sandbox-api.novopayment.com/aliasdirectory/v1
 components:
-  schemas:
-    RSAdjustments400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+  responses:
+    RSTenantTransactions400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTenantTransactions400'
+          examples:
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSTransferDetails400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransferDetails400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Database Error:
+              $ref: '#/components/examples/DatabaseError'
+            General Error:
+              $ref: '#/components/examples/GeneralError'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Request Acknowledge Failure:
+              $ref: '#/components/examples/RequestAcknowledgeFailure'
+            Invalid Session Parameters:
+              $ref: '#/components/examples/InvalidSessionParameters'
+            Request Not Found:
+              $ref: '#/components/examples/RequestNotFound'
+            Linking Process Blocked:
+              $ref: '#/components/examples/LinkingProcessBlocked'
+            Customer Status Not Allowed:
+              $ref: '#/components/examples/CustomerStatusNotAllowed'
+            Personal Data Error:
+              $ref: '#/components/examples/PersonalDataError'
+            Main Id Document Not Found:
+              $ref: '#/components/examples/MainIdDocumentNotFound'
+            Phone Number Not Found:
+              $ref: '#/components/examples/PhoneNumberNotFound'
+            Email Not Found:
+              $ref: '#/components/examples/EmailNotFound'
+            Address Not Found:
+              $ref: '#/components/examples/AddressNotFound'
+            User Not Found:
+              $ref: '#/components/examples/UserNotFound'
+            Id Document Duplicated:
+              $ref: '#/components/examples/IdDocumentDuplicated'
+            OpenEscalationsExist:
+              $ref: '#/components/examples/OpenEscalationsExist'
+            Account Inactive Or Blocked:
+              $ref: '#/components/examples/AccountInactiveOrBlocked'
+            Destination Account Inactive Or Blocked:
+              $ref: '#/components/examples/DestinationAccountInactiveOrBlocked'
+            Daily Transactions Reached:
+              $ref: '#/components/examples/DailyTransactionsReached'
+            Weekly Transactions Reached:
+              $ref: '#/components/examples/WeeklyTransactionsReached'
+            Monthly Transactions Reached:
+              $ref: '#/components/examples/MonthlyTransactionsReached'
+            Exceeds Daily Operations Limit:
+              $ref: '#/components/examples/ExceedsDailyOperationsLimit'
+            Exceeds Weekly Operations Limit:
+              $ref: '#/components/examples/ExceedsWeeklyOperationsLimit'
+            Exceeds Monthly Operations Limit:
+              $ref: '#/components/examples/ExceedsMonthlyOperationsLimit'
+            Insufficient Funds:
+              $ref: '#/components/examples/InsufficientFunds'
+            Operation In Process:
+              $ref: '#/components/examples/OperationInProcess'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSCloseAccount200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCloseAccount200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSAccountTransactions400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountTransactions400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSAccountInformation404:
+      description: The requested resource could not be found. Please check your information and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountInformation404'
+          examples:
+            Requested Resource Could Not Found:
+              $ref: '#/components/examples/RequestedResourceCouldNotFound'
+    RSAccountCreation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountCreation400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Currency Not Match:
+              $ref: '#/components/examples/CurrencyNotMatch'
+            Amount Was Reached:
+              $ref: '#/components/examples/AmountWasReached'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+            OFAC Record Found:
+              $ref: '#/components/examples/OFACRecordFound'
+    RSAccountToAccountTransaction200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountToAccountTransaction200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: 723501
+    RSAccountBalance200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountBalance200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  balance:
+                    availableBalance: 0
+                    currentBalance: 0
+                    balanceBlocked: 0
     RSCloseAccount400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQAccountToAccountTransaction:
-      type: object
-      required:
-      - amount
-      - destinationAccountId
-      properties:
-        amount:
-          type: number
-          description: Transaction amount.
-          example: 10
-          maxLength: 38
-        fee:
-          type: number
-          description: Transaction fee.
-          example: 1
-          maxLength: 38
-        tax:
-          type: number
-          description: Transaction tax.
-          example: 1
-          maxLength: 38
-        destinationAccountId:
-          type: string
-          description: Destination account ID.
-          example: 1D9C6DFD1C4C4113F5D278BE0E0C4BB1A492C0D7
-          maxLength: 40
-        transactionPurposeId:
-          type: integer
-          description: Transaction purpose ID.
-          example: 2
-          maxLength: 5
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCloseAccount400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+            Account Not Exist:
+              $ref: '#/components/examples/AccountNotExist'
+            Account Is Closed:
+              $ref: '#/components/examples/AccountIsClosed'
+            Requested Product Not Exist:
+              $ref: '#/components/examples/RequestedProductNotExist'
+    RSAccountTransactions200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountTransactions200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  transactions:
+                  - transactionId: 70
+                    description: Utility bill payments
+                    sign: +
+                    creationDate: 2022/02/11 15:36:03
+                    amount: 10
+                    fee: 0
+                    tax: 0
+                    registrationDate: 2022/02/11 15:36:05
+                    internalRef: 321133122232
+                    authCode: 587456
+                    isPosted: true
+                    txNumber: 859
+                    transactionCatalog:
+                      id: 11
+                      description: ACH DEPOSIT DOMESTIC
+                    targetAccount:
+                      accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+                      accountNumber: 1DcRlnvg9no1CRHDbOes0Q==
+                    receivingAccount:
+                      accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+                      accountNumber: 1DcRlnvg9no1CRHDbOes0Q==
+    RSAccountInformation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountInformation200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+                  accountNumber: 8yiYsmu5kjpvjAK4/uIb6w==
+                  accountType:
+                    typeId: 1
+                    description: Savings
+                  accountStatus: 1
+                  accountStatusName: Active
+                  maskedNumber: '****************2716'
+                  currencyCode: USD
+                  createdDate: 2020/01/19 11:10:33
+                  accountProgram:
+                    accountProgramId: 1
+                    accountProgramName: Savings Account
+                    bin: 44240900
+    RSTenantTransactions200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTenantTransactions200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                - transferId: 895
+                  creationDate: 2020/10/10 19:46:21
+                  amount: 1
+                  fee: 0.03
+                  authCode: 184620
+                  originAccount:
+                    accountNumber: KEtfhHAV557rmv8J5LBg3gri5Qx/CgP3/QNFDlRwLag=
+                    customerNames: John
+                    customerSurnames: Doe
+                    customerId: EF441287C78A66F1
+                  receiverAccount:
+                    accountNumber: RyqPUkr9FYtGhOQ5FXRRF/TNV6v1DVhDOlZp1VvsLxk=
+                    customerNames: Robert
+                    customerSurnames: Anderson
+                    customerId: 38177D3643CC3A44
+                  statusName: Authorized
+                  currencyName: USD
+                  availableBalance: 100.55
+                  ledgerBalance: 50.55
+    RSAccountList400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountList400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSAdjustments400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAdjustments400'
+          examples:
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+            Account Is Closed:
+              $ref: '#/components/examples/AccountIsClosed'
+            Insufficient Funds:
+              $ref: '#/components/examples/InsufficientFunds'
+            Account Not Exist:
+              $ref: '#/components/examples/AccountNotExist'
+            Exceeds Limit Amount:
+              $ref: '#/components/examples/ExceedsLimitAmount'
+    RSTransferDetails200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransferDetails200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  feeAmount: 0.03
+                  fee:
+                    id: 76
+                    name: Silver Profile
+                    feeStatus: ACTIVE
+                    creationDate: 2020/05/18 15:36
+                    criteria:
+                      id: 55
+                      minRange: 0
+                      maxRange: 1000
+                      value: 0.03
+                      typeId: 1
+                      typeName: Amount
+    RSAccountList200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountList200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  accounts:
+                  - accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
+                    accountType:
+                      typeId: 1
+                      description: Savings
+                    accountStatus: 1
+                    maskedNumber: '************7891'
+                    createdDate: 2020/02/09 15:57:43
+                    cards:
+                      cardId: E4555088EE3BA858346A6E0359B803C38C43EEDE
+                      cardStatus: 1,
+                      maskedNumber: '************7735'
+                      expirationDate: dnUqHp23XcLPYjRPS8GseA==
+                      cardProgram:
+                        cardProgramId: 1
+                        cardBrand:
+                          brandId: 1
+                          name: Visa
+                    accountProgram:
+                      accountProgramId: 1
+                      accountProgramName: Savings Account
+                      currency:
+                        id: 114
+                        name: USD
+                        currencyNumber: 840
+                        description: US Dollar
+    RSUnblockAccount400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUnblockAccount400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Account Not Exist:
+              $ref: '#/components/examples/AccountNotExist'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSAdjustments200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAdjustments200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: 690135
+                  ledgerBalance: 10
+                  blockedBalance: 0
+                  availableBalance: 10
+                  transactionDateTime: 2022-01-13T11:11:17.222-0500
+                  systemTrace: 84
+    RSBlockAccount400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSBlockAccount400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Account Not Exist:
+              $ref: '#/components/examples/AccountNotExist'
+            Account Is Blocked:
+              $ref: '#/components/examples/AccountIsBlocked'
+            Account Is Closed:
+              $ref: '#/components/examples/AccountIsClosed'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSAccountCreation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountCreation200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  card:
+                    cardProgramId: 1
+                    cardDesignId: A1
+                    line1: null
+                    line2: null
+                    requestNumber: 64876
+                    reference: AS749
+                    address:
+                      street: Wall Street
+                      number: 1
+                      homeNumber: 789
+                      sector: sector
+                      city: New York
+                      state: Manhattan
+                  account:
+                    accountProgramId: 1
+    RSAccountInformation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountInformation400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSUnblockAccount200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUnblockAccount200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSAccountBalance400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountBalance400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Account Not Exist:
+              $ref: '#/components/examples/AccountNotExist'
+    RSBlockAccount200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSBlockAccount200'
+          examples:
+            Success:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSAccountToAccountTransaction400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountToAccountTransaction400'
+          examples:
+            Destination Account Inactive Or Blocked:
+              $ref: '#/components/examples/DestinationAccountInactiveOrBlocked'
+            Daily Transactions Reached:
+              $ref: '#/components/examples/DailyTransactionsReached'
+            Weekly Transactions Reached:
+              $ref: '#/components/examples/WeeklyTransactionsReached'
+            Monthly Transactions Reached:
+              $ref: '#/components/examples/MonthlyTransactionsReached'
+            Exceeds Daily Operations Limit:
+              $ref: '#/components/examples/ExceedsDailyOperationsLimit'
+            Exceeds Weekly Operations Limit:
+              $ref: '#/components/examples/ExceedsWeeklyOperationsLimit'
+            Exceeds Monthly Operations Limit:
+              $ref: '#/components/examples/ExceedsMonthlyOperationsLimit'
+            Insufficient Funds:
+              $ref: '#/components/examples/InsufficientFunds'
+    RSDeleteAccount200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteAccountResponse'
+          examples:
+            Delete Account:
+              value:
+                code: 200.09.000
+                datetime: '2023-02-13T21:31:38.252Z'
+                message: Process Ok
+                data:
+                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+                  accountId: 5900902eea614137b5ba01ae7e7a6f2f
+    RSDeleteAccount400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Invalid parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Invalid tenant id:
+              $ref: '#/components/examples/InvalidTenantId_2'
+            Alias not found:
+              $ref: '#/components/examples/AliasNotFound'
+            Account not found:
+              $ref: '#/components/examples/AccountNotFound'
+    RSCreateAccount200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAccountResponse'
+          examples:
+            Create Account:
+              value:
+                code: 200.09.000
+                datetime: '2023-02-13T21:31:38.252Z'
+                message: Process Ok
+                data:
+                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+                  accountId: 5900902eea614137b5ba01ae7e7a6f2f
+    RSCreateAccount400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGeneric400'
+          examples:
+            Invalid parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Invalid tenant id:
+              $ref: '#/components/examples/InvalidTenantId_2'
+            Alias not found:
+              $ref: '#/components/examples/AliasNotFound'
+            Invalid encrypted data:
+              $ref: '#/components/examples/InvalidEncryptedData'
+            Account already registered:
+              $ref: '#/components/examples/AccountRegistered'
+  examples:
+    ExceedsLimitAmount:
+      value:
+        code: 400.02.354
+        message: Exceeds the limit amount.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AddressNotFound:
+      value:
+        code: 400.02.032
+        message: Address not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    DestinationAccountInactiveOrBlocked:
+      value:
+        code: 400.02.037
+        message: Inactive or blocked destination account.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountInactiveOrBlocked:
+      value:
+        code: 400.02.036
+        message: Account to be debited is inactive or blocked.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CurrencyNotMatch:
+      value:
+        code: 400.02.490
+        message: Currency not match
+        datetime: '2020-01-03T16:05:56.517Z'
+    UserNotFound:
+      value:
+        code: 400.02.033
+        message: User not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    OFACRecordFound:
+      value:
+        code: 400.02.108
+        message: OFAC record found
+        datetime: '2020-01-03T16:05:56.517Z'
+    ExceedsWeeklyOperationsLimit:
+      value:
+        code: 400.02.042
+        message: Exceeds weekly operations limit.
+        datetime: '2020-01-03T16:05:56.517Z'
+    ProcessNotCompleted:
+      value:
+        code: 400.02.019
+        message: The process could not be completed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParameterFormatError:
+      value:
+        code: 400.02.081
+        message: Parameter format error
+        datetime: '2020-01-03T16:05:56.517Z'
+    WeeklyTransactionsReached:
+      value:
+        code: 400.02.039
+        message: Number of weekly transactions for this account is reached.
+        datetime: '2020-01-03T16:05:56.517Z'
+    GeneralError:
+      value:
+        code: 400.02.021
+        message: Something unexpected has happened, please try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+    OpenEscalationsExist:
+      value:
+        code: 400.02.035
+        message: Open escalations exist.
+        datetime: '2020-01-03T16:05:56.517Z'
+    EmailNotFound:
+      value:
+        code: 400.02.031
+        message: Email not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestedResourceNotFound:
+      value:
+        code: 400.02.022
+        message: The requested resource was not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.02.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestedProductNotExist:
+      value:
+        code: 400.02.068
+        message: It is not possible to obtain information about the requested product.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.02.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountIsClosed:
+      value:
+        code: 400.02.410
+        message: Account is closed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountNotExist:
+      value:
+        code: 400.02.070
+        message: The requested account does not exist or does not belong to the customer. Please verify your information and try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestAcknowledgeFailure:
+      value:
+        code: 400.02.023
+        message: Request acknowledge failure, please try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.02.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InsufficientFunds:
+      value:
+        code: 400.02.044
+        message: Insufficient funds.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CustomerNotFound:
+      value:
+        code: 400.02.382
+        message: Customer not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.02.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSessionParameters:
+      value:
+        code: 400.02.024
+        message: Invalid session parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+    PhoneNumberNotFound:
+      value:
+        code: 400.02.030
+        message: Phone number not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    IdDocumentDuplicated:
+      value:
+        code: 400.02.034
+        message: ID document is duplicated.
+        datetime: '2020-01-03T16:05:56.517Z'
+    DatabaseError:
+      value:
+        code: 400.02.020
+        message: Database result was ok, but it was not possible recognize data base response.
+        datetime: '2020-01-03T16:05:56.517Z'
+    ExceedsMonthlyOperationsLimit:
+      value:
+        code: 400.02.043
+        message: Exceeds monthly operations limit.
+        datetime: '2020-01-03T16:05:56.517Z'
+    OperationInProcess:
+      value:
+        code: 400.02.045
+        message: Operation is already in process.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.02.999
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountIsBlocked:
+      value:
+        code: 400.02.406
+        message: Account is blocked.
+        datetime: '2020-01-03T16:05:56.517Z'
+    CustomerStatusNotAllowed:
+      value:
+        code: 400.02.027
+        message: Customer status is not allowed for this action.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.02.004
+        message: Invalid tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    PersonalDataError:
+      value:
+        code: 400.02.028
+        message: Personal data was not registered correctly.
+        datetime: '2020-01-03T16:05:56.517Z'
+    MonthlyTransactionsReached:
+      value:
+        code: 400.02.040
+        message: Number of monthly transactions for this account reached.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AmountWasReached:
+      value:
+        code: 400.02.503
+        message: The maximum amount of accounts per account program was reached
+        datetime: '2020-01-03T16:05:56.517Z'
+    MainIdDocumentNotFound:
+      value:
+        code: 400.02.029
+        message: Main ID document not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestedResourceCouldNotFound:
+      value:
+        code: 400.02.022
+        message: The requested resource could not be found. Please check your information and try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestNotFound:
+      value:
+        code: 400.02.025
+        message: We can not find what youre looking for.
+        datetime: '2020-01-03T16:05:56.517Z'
+    DailyTransactionsReached:
+      value:
+        code: 400.02.038
+        message: Number of daily transactions for this account is reached.
+        datetime: '2020-01-03T16:05:56.517Z'
+    ExceedsDailyOperationsLimit:
+      value:
+        code: 400.02.041
+        message: Exceeds daily operations limit.
+        datetime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.02.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    LinkingProcessBlocked:
+      value:
+        code: 400.02.026
+        message: Your linking process has been blocked.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.02.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId_2:
+      value:
+        code: 400.09.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken_2:
+      value:
+        code: 401.09.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature_2:
+      value:
+        code: 401.09.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AliasNotFound:
+      value:
+        code: 400.09.448
+        message: Alias not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountRegistered:
+      value:
+        code: 400.09.015
+        message: Account is already registered
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointCreateAccount:
+      value:
+        aliasId: 5d1bf399902e42f79681c5be8dfdcb02
+        account:
+          accountType:
+            title: SAVING
+          accountNumberEncrypt: bXgZyYJ5OmRjEuJq9BWSxwpxwBappGeW6N+PHky5UhM=
+          accountInternalId: 0458a69b-e70d-49b3-86d2-81d6b7569979
+          countryCode: USA
+          currencyCode: USD
+          accountName: John Doe
+          accountIdentify: DEFAULT
+    InvalidEncryptedData:
+      value:
+        code: 400.09.320
+        message: Invalid Encrypted Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.09.396
+        message: Invalid parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field aliasType: invalid alias type'
+    AccountNotFound:
+      value:
+        code: 400.09.448
+        message: The requested account does not belong to the customer. Please verify your information and try again.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError_2:
+      value:
+        code: 500.09.999
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired_2:
+      value:
+        code: 401.09.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved_2:
+      value:
+        code: 401.09.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+  schemas:
     RSAccountList200:
       type: object
       required:
@@ -644,52 +1482,7 @@ components:
                               '
                             example: US Dollar
                             maxLength: 50
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSBlockAccount200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.02.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSAdjustments200:
+    RSAccountBalance200:
       type: object
       required:
       - code
@@ -714,52 +1507,27 @@ components:
           format: date-time
         data:
           type: object
-          description: 'Data Object
-
-
-            __Contains the credit or debit adjustment result of the account.__
-
-            '
           required:
-          - authCode
-          - ledgerBalance
-          - blockedBalance
           - availableBalance
-          - transactionDateTime
-          - systemTrace
+          - currentBalance
+          - balanceBlocked
           properties:
-            authCode:
-              type: string
-              description: Transaction authorization code.
-              example: 35814
-              maxLength: 6
-            ledgerBalance:
-              type: number
-              description: Current accounting balance of the affected account.
-              example: 184
-              maxLength: 38
-            blockedBalance:
-              type: number
-              description: Blocked balance for clearance.
-              example: 0
-              maxLength: 38
             availableBalance:
               type: number
-              description: Account available balance.
-              example: 184
+              description: Available balance in the account.
+              example: 100
               maxLength: 38
-            transactionDateTime:
-              type: string
-              description: Transaction Date in the following.
-              example: '2022-01-13T11:17:53.221Z'
-              minLength: 24
-              maxLength: 24
-            systemTrace:
-              type: string
-              description: Transaction operation identifier.
-              example: 3307
-              maxLength: 6
-    RSAccountTransactions400:
+            currentBalance:
+              type: number
+              description: Current balance in the account.
+              example: 150
+              maxLength: 38
+            balanceBlocked:
+              type: number
+              description: Balance blocked for clearance.
+              example: 50
+              maxLength: 38
+    RSAccountList400:
       type: object
       required:
       - code
@@ -782,7 +1550,7 @@ components:
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSAccountCreation400:
+    RS401:
       type: object
       required:
       - code
@@ -791,13 +1559,13 @@ components:
       properties:
         code:
           type: string
-          example: 400.02.003
+          example: 401.01.990
           description: Operation response code
           minLength: 10
           maxLength: 10
         message:
           type: string
-          example: Params required
+          example: Invalid Access Token
           description: Response code description
           maxLength: 140
         datetime:
@@ -805,12 +1573,13 @@ components:
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSCloseAccount200:
+    RSTransferDetails200:
       type: object
       required:
       - code
       - message
       - datetime
+      - data
       properties:
         code:
           type: string
@@ -827,29 +1596,97 @@ components:
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSAccountToAccountTransaction400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+        data:
+          type: object
+          required:
+          - feeAmount
+          - fee
+          properties:
+            feeAmount:
+              type: string
+              description: 'Transaction commission in the format: 000.00
+
+                '
+              example: 0.03
+              maxLength: 1
+            fee:
+              type: object
+              required:
+              - id
+              - name
+              - feeStatus
+              - creationDate
+              - criteria
+              properties:
+                id:
+                  type: integer
+                  description: Commission profile identification associated to an operation and account product.
+                  example: 76
+                  maxLength: 1
+                name:
+                  type: string
+                  description: Profile name.
+                  example: plata profile
+                  maxLength: 1
+                feeStatus:
+                  type: string
+                  description: Profile status.
+                  example: ACTIVE
+                creationDate:
+                  type: string
+                  description: 'Profile creation date in the following format: YYYY/MM/DD H24:MI
+
+                    '
+                  example: 2020/05/18 15:36
+                  maxLength: 1
+                criteria:
+                  type: object
+                  required:
+                  - id
+                  - minRange
+                  - maxRange
+                  - value
+                  - typeId
+                  - typeName
+                  properties:
+                    id:
+                      type: integer
+                      description: Commission calculation criteria identification.
+                      example: 55
+                      maxLength: 1
+                    minRange:
+                      type: number
+                      description: Minimum amount range to apply the criteria.
+                      example: 0
+                      maxLength: 1
+                    maxRange:
+                      type: number
+                      description: Maximum amount range to apply the criteria.
+                      example: 1000
+                      maxLength: 1
+                    value:
+                      type: number
+                      description: Commission value to be applied depending on the criteria type (typeId).
+                      example: 0.03
+                      maxLength: 1
+                    typeId:
+                      type: integer
+                      description: 'Criteria type ID [1: Amount, 2:Percentage].
+
+                        '
+                      enum:
+                      - 1
+                      - 2
+                      maxLength: 1
+                    typeName:
+                      type: integer
+                      description: 'Criteria type Name [1: Amount, 2:Percentage].
+
+                        '
+                      enum:
+                      - 1
+                      - 2
+                      maxLength: 1
     RSAccountTransactions200:
       type: object
       required:
@@ -1105,6 +1942,249 @@ components:
                         description: Account number encrypted in AES-256.
                         example: cLGsb6ag90umlxMxO8OEtntq9JQFdhxQV
                         maxLength: 40
+    RSCloseAccount400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQAccountToAccountTransaction:
+      type: object
+      required:
+      - amount
+      - destinationAccountId
+      properties:
+        amount:
+          type: number
+          description: Transaction amount.
+          example: 10
+          maxLength: 38
+        fee:
+          type: number
+          description: Transaction fee.
+          example: 1
+          maxLength: 38
+        tax:
+          type: number
+          description: Transaction tax.
+          example: 1
+          maxLength: 38
+        destinationAccountId:
+          type: string
+          description: Destination account ID.
+          example: 1D9C6DFD1C4C4113F5D278BE0E0C4BB1A492C0D7
+          maxLength: 40
+        transactionPurposeId:
+          type: integer
+          description: Transaction purpose ID.
+          example: 2
+          maxLength: 5
+    RSTransferDetails400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQAdjustments:
+      type: object
+      required:
+      - amount
+      - description
+      - sign
+      properties:
+        accountId:
+          type: string
+          description: 'Unique account identifier.
+
+
+            __* Required if accountNumber is not sent.__
+
+            '
+          example: EC2A4253F0CAE3BC7DAB5846FC2EC5E843E06488
+          maxLength: 40
+        accountNumber:
+          type: string
+          description: 'Account number encrypted with AES256 algorithm.
+
+
+            __*required if accountId is not sent.__
+
+            '
+          example: EC2A4253F0CAE3BC7DAB5846FC2EC5E843E06488
+          maxLength: 40
+        amount:
+          type: number
+          description: Transaction amount.
+          example: 10
+          maxLength: 38
+        fee:
+          type: number
+          description: Transaction fee.
+          example: 0
+          maxLength: 38
+        tax:
+          type: number
+          description: Transaction tax.
+          example: 0
+          maxLength: 38
+        description:
+          type: string
+          description: Transaction description.
+          example: This is a credit adjustment
+          maxLength: 200
+        sign:
+          type: string
+          description: 'Transaction type.
+
+
+            **Possible values:**
+
+
+            (+) for a credit transaction
+
+
+            (-) for a debit transaction
+
+            '
+          enum:
+          - +
+          - '-'
+          maxLength: 1
+        reasonId:
+          type: string
+          description: 'Reason ID.
+
+
+            **Refer to:** [Block Reason](https://developer.novopayment.com/api/request-and-response-codes#item-blockreason)
+
+            '
+          example: 1
+          maxLength: 5
+    RSAccountInformation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSTenantTransactions400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSUnblockAccount200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSAccountToAccountTransaction400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RSAccountToAccountTransaction200:
       type: object
       required:
@@ -1138,7 +2218,122 @@ components:
               description: Authorization code as result of a successful transaction.
               example: 723501
               minLength: 6
-    RSTransferDetails200:
+    RSAccountCreation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSAccountInformation404:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSUnblockAccount400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSAccountBalance400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSBlockAccount400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSAdjustments200:
       type: object
       required:
       - code
@@ -1163,95 +2358,106 @@ components:
           format: date-time
         data:
           type: object
+          description: 'Data Object
+
+
+            __Contains the credit or debit adjustment result of the account.__
+
+            '
           required:
-          - feeAmount
-          - fee
+          - authCode
+          - ledgerBalance
+          - blockedBalance
+          - availableBalance
+          - transactionDateTime
+          - systemTrace
           properties:
-            feeAmount:
+            authCode:
               type: string
-              description: 'Transaction commission in the format: 000.00
-
-                '
-              example: 0.03
-              maxLength: 1
-            fee:
-              type: object
-              required:
-              - id
-              - name
-              - feeStatus
-              - creationDate
-              - criteria
-              properties:
-                id:
-                  type: integer
-                  description: Commission profile identification associated to an operation and account product.
-                  example: 76
-                  maxLength: 1
-                name:
-                  type: string
-                  description: Profile name.
-                  example: plata profile
-                  maxLength: 1
-                feeStatus:
-                  type: string
-                  description: Profile status.
-                  example: ACTIVE
-                creationDate:
-                  type: string
-                  description: 'Profile creation date in the following format: YYYY/MM/DD H24:MI
-
-                    '
-                  example: 2020/05/18 15:36
-                  maxLength: 1
-                criteria:
-                  type: object
-                  required:
-                  - id
-                  - minRange
-                  - maxRange
-                  - value
-                  - typeId
-                  - typeName
-                  properties:
-                    id:
-                      type: integer
-                      description: Commission calculation criteria identification.
-                      example: 55
-                      maxLength: 1
-                    minRange:
-                      type: number
-                      description: Minimum amount range to apply the criteria.
-                      example: 0
-                      maxLength: 1
-                    maxRange:
-                      type: number
-                      description: Maximum amount range to apply the criteria.
-                      example: 1000
-                      maxLength: 1
-                    value:
-                      type: number
-                      description: Commission value to be applied depending on the criteria type (typeId).
-                      example: 0.03
-                      maxLength: 1
-                    typeId:
-                      type: integer
-                      description: 'Criteria type ID [1: Amount, 2:Percentage].
-
-                        '
-                      enum:
-                      - 1
-                      - 2
-                      maxLength: 1
-                    typeName:
-                      type: integer
-                      description: 'Criteria type Name [1: Amount, 2:Percentage].
-
-                        '
-                      enum:
-                      - 1
-                      - 2
-                      maxLength: 1
+              description: Transaction authorization code.
+              example: 35814
+              maxLength: 6
+            ledgerBalance:
+              type: number
+              description: Current accounting balance of the affected account.
+              example: 184
+              maxLength: 38
+            blockedBalance:
+              type: number
+              description: Blocked balance for clearance.
+              example: 0
+              maxLength: 38
+            availableBalance:
+              type: number
+              description: Account available balance.
+              example: 184
+              maxLength: 38
+            transactionDateTime:
+              type: string
+              description: Transaction Date in the following.
+              example: '2022-01-13T11:17:53.221Z'
+              minLength: 24
+              maxLength: 24
+            systemTrace:
+              type: string
+              description: Transaction operation identifier.
+              example: 3307
+              maxLength: 6
+    RSCloseAccount200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.02.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSAdjustments400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQUnblockAccount:
+      type: object
+      required:
+      - observations
+      properties:
+        observations:
+          type: string
+          description: Observation the unblocking the account.
+          example: Account required again
+          maxLength: 140
     RQCloseAccount:
       type: object
       required:
@@ -1272,27 +2478,30 @@ components:
           description: Additional observations related to the account close action.
           example: Lost card
           maxLength: 4000
-    RQBlockAccount:
+    RS500:
       type: object
       required:
-      - reasonId
+      - code
+      - message
+      - datetime
       properties:
-        reasonId:
+        code:
           type: string
-          description: 'Blockage reason ID.
-
-
-            **Refer to:** [Block Reason](https://developer.novopayment.com/api/request-and-response-codes#item-blockreason)
-
-            '
-          example: 1
-          maxLength: 5
-        observations:
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
           type: string
-          description: Additional observations related to the account blocking action.
-          example: Account holder lost card
-          maxLength: 4000
-    RSUnblockAccount200:
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Timestamp
+          format: date-time
+    RSBlockAccount200:
       type: object
       required:
       - code
@@ -1308,6 +2517,135 @@ components:
           type: string
           description: Response code description
           example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQAccountCreation:
+      type: object
+      required:
+      - account
+      properties:
+        card:
+          type: object
+          required:
+          - cardProgramId
+          description: 'Customized object Contains the card information.
+
+
+            __* This parameter should not be sent if only needs to create an account without a card.__
+
+            '
+          properties:
+            cardProgramId:
+              type: string
+              description: Card program identification.
+              example: 1
+              maxLength: 10
+            cardDesignId:
+              type: string
+              description: Card design ID.
+              example: A1
+              maxLength: 20
+            line1:
+              type: string
+              description: Cardholder name of the card.
+              example: JOHN DOE
+              maxLength: 20
+            line2:
+              type: string
+              description: 'Cardholder company name of the card.
+
+
+                __*Applies when it is a corporate card.__
+
+                '
+              example: NOVOPAYMENT
+              maxLength: 20
+            requestNumber:
+              type: string
+              description: Embossing request number.
+              example: 64876
+              maxLength: 40
+            reference:
+              type: string
+              description: Application reference.
+              example: AS749
+              maxLength: 40
+            address:
+              type: object
+              description: Customized object that contains the card delivery information.
+              properties:
+                street:
+                  type: string
+                  description: Address line 1.
+                  example: calle
+                  maxLength: 100
+                number:
+                  type: string
+                  description: Building number.
+                  example: 1
+                  maxLength: 100
+                homeNumber:
+                  type: string
+                  description: Home or apartment number.
+                  example: 789
+                  maxLength: 50
+                sector:
+                  type: string
+                  description: Address sector name.
+                  example: sector
+                  maxLength: 40
+                city:
+                  type: string
+                  description: Name of the city of residence.
+                  example: Bogotá
+                  maxLength: 100
+                state:
+                  type: string
+                  description: Name of the state of residence.
+                  example: Bogotá D.C
+                  maxLength: 100
+        account:
+          type: object
+          required:
+          - accountProgramId
+          description: Customized object. Contains the card information.
+          properties:
+            accountProgramId:
+              type: string
+              description: Account program identification
+              example: 1
+              maxLength: 10
+            accountNumber:
+              type: string
+              description: 'Encrypted account number in AES-256.
+
+
+                __* Applies when the tenant manages the accounts numbers.__
+
+                '
+              example: cLGsb6ag90umlxMxO8OEtntq9JQFdhxQV+bfyxbGI3A=
+              maxLength: 22
+    RSAccountTransactions400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
           maxLength: 140
         datetime:
           type: string
@@ -1443,62 +2781,26 @@ components:
                   description: Bank identification number (BIN), which identifies the financial institution that has issued the card.
                   example: 44240900
                   maxLength: 30
-    RQUnblockAccount:
+    RQBlockAccount:
       type: object
       required:
-      - observations
+      - reasonId
       properties:
+        reasonId:
+          type: string
+          description: 'Blockage reason ID.
+
+
+            **Refer to:** [Block Reason](https://developer.novopayment.com/api/request-and-response-codes#item-blockreason)
+
+            '
+          example: 1
+          maxLength: 5
         observations:
           type: string
-          description: Observation the unblocking the account.
-          example: Account required again
-          maxLength: 140
-    RSTransferDetails400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSTenantTransactions400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+          description: Additional observations related to the account blocking action.
+          example: Account holder lost card
+          maxLength: 4000
     RSAccountCreation200:
       type: object
       required:
@@ -1589,324 +2891,6 @@ components:
                       description: Unique program ID for cards.
                       example: 1
                       maxLength: 40
-    RSAccountBalance400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSAccountBalance200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.02.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-        data:
-          type: object
-          required:
-          - availableBalance
-          - currentBalance
-          - balanceBlocked
-          properties:
-            availableBalance:
-              type: number
-              description: Available balance in the account.
-              example: 100
-              maxLength: 38
-            currentBalance:
-              type: number
-              description: Current balance in the account.
-              example: 150
-              maxLength: 38
-            balanceBlocked:
-              type: number
-              description: Balance blocked for clearance.
-              example: 50
-              maxLength: 38
-    RSUnblockAccount400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Timestamp
-          format: date-time
-    RQAdjustments:
-      type: object
-      required:
-      - amount
-      - description
-      - sign
-      properties:
-        accountId:
-          type: string
-          description: 'Unique account identifier.
-
-
-            __* Required if accountNumber is not sent.__
-
-            '
-          example: EC2A4253F0CAE3BC7DAB5846FC2EC5E843E06488
-          maxLength: 40
-        accountNumber:
-          type: string
-          description: 'Account number encrypted with AES256 algorithm.
-
-
-            __*required if accountId is not sent.__
-
-            '
-          example: EC2A4253F0CAE3BC7DAB5846FC2EC5E843E06488
-          maxLength: 40
-        amount:
-          type: number
-          description: Transaction amount.
-          example: 10
-          maxLength: 38
-        fee:
-          type: number
-          description: Transaction fee.
-          example: 0
-          maxLength: 38
-        tax:
-          type: number
-          description: Transaction tax.
-          example: 0
-          maxLength: 38
-        description:
-          type: string
-          description: Transaction description.
-          example: This is a credit adjustment
-          maxLength: 200
-        sign:
-          type: string
-          description: 'Transaction type.
-
-
-            **Possible values:**
-
-
-            (+) for a credit transaction
-
-
-            (-) for a debit transaction
-
-            '
-          enum:
-          - +
-          - '-'
-          maxLength: 1
-        reasonId:
-          type: string
-          description: 'Reason ID.
-
-
-            **Refer to:** [Block Reason](https://developer.novopayment.com/api/request-and-response-codes#item-blockreason)
-
-            '
-          example: 1
-          maxLength: 5
-    RQAccountCreation:
-      type: object
-      required:
-      - account
-      properties:
-        card:
-          type: object
-          required:
-          - cardProgramId
-          description: 'Customized object Contains the card information.
-
-
-            __* This parameter should not be sent if only needs to create an account without a card.__
-
-            '
-          properties:
-            cardProgramId:
-              type: string
-              description: Card program identification.
-              example: 1
-              maxLength: 10
-            cardDesignId:
-              type: string
-              description: Card design ID.
-              example: A1
-              maxLength: 20
-            line1:
-              type: string
-              description: Cardholder name of the card.
-              example: JOHN DOE
-              maxLength: 20
-            line2:
-              type: string
-              description: 'Cardholder company name of the card.
-
-
-                __*Applies when it is a corporate card.__
-
-                '
-              example: NOVOPAYMENT
-              maxLength: 20
-            requestNumber:
-              type: string
-              description: Embossing request number.
-              example: 64876
-              maxLength: 40
-            reference:
-              type: string
-              description: Application reference.
-              example: AS749
-              maxLength: 40
-            address:
-              type: object
-              description: Customized object that contains the card delivery information.
-              properties:
-                street:
-                  type: string
-                  description: Address line 1.
-                  example: calle
-                  maxLength: 100
-                number:
-                  type: string
-                  description: Building number.
-                  example: 1
-                  maxLength: 100
-                homeNumber:
-                  type: string
-                  description: Home or apartment number.
-                  example: 789
-                  maxLength: 50
-                sector:
-                  type: string
-                  description: Address sector name.
-                  example: sector
-                  maxLength: 40
-                city:
-                  type: string
-                  description: Name of the city of residence.
-                  example: Bogotá
-                  maxLength: 100
-                state:
-                  type: string
-                  description: Name of the state of residence.
-                  example: Bogotá D.C
-                  maxLength: 100
-        account:
-          type: object
-          required:
-          - accountProgramId
-          description: Customized object. Contains the card information.
-          properties:
-            accountProgramId:
-              type: string
-              description: Account program identification
-              example: 1
-              maxLength: 10
-            accountNumber:
-              type: string
-              description: 'Encrypted account number in AES-256.
-
-
-                __* Applies when the tenant manages the accounts numbers.__
-
-                '
-              example: cLGsb6ag90umlxMxO8OEtntq9JQFdhxQV+bfyxbGI3A=
-              maxLength: 22
-    RSBlockAccount400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RSTenantTransactions200:
       type: object
       required:
@@ -2048,117 +3032,6 @@ components:
               description: Ledger/current balance in the account.
               example: 50.55
               maxLength: 1
-    RSAccountInformation404:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSAccountInformation400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSAccountList400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSGeneric400:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          additionalProperties: false
-          properties:
-            errors:
-              type: array
-              maxItems: 50
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  message:
-                    type: string
-                    description: Error Detail
-                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
     CreateAccountResponse:
       additionalProperties: false
       type: object
@@ -2214,36 +3087,6 @@ components:
               maxLength: 32
               minLength: 32
               pattern: ^[0-9a-fA-F]{32}$
-    AccountType:
-      type: object
-      additionalProperties: false
-      required:
-      - title
-      description: 'Account Type object.
-
-        Contains the account title
-
-        '
-      properties:
-        title:
-          type: string
-          description: 'Type of account __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-accounttype)
-
-            '
-          example: SAVING
-          maxLength: 25
-          minLength: 1
-          pattern: (\s)*|SAVING|CHECKING|MAESTRA|VISA|LOAN|NRE
-        description:
-          type: string
-          description: acccount type description
-          example: The savings accounts can be opened by an individual with an aim to save money
-          minLength: 1
-        idCode:
-          type: string
-          description: acccount type identificator
-          example: '1'
-          minLength: 1
     RS500_2:
       type: object
       additionalProperties: false
@@ -2294,6 +3137,75 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
           maxLength: 24
+    DeleteAccountResponse:
+      additionalProperties: false
+      type: object
+      description: Delete Account Response
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          description: Customized data object.
+          required:
+          - aliasId
+          - accountId
+          properties:
+            aliasId:
+              type: string
+              description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+
+                '
+              example: 5d1bf399902e42f79681c5be8dfdcb02
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
+            accountId:
+              type: string
+              description: 'Unique identifier for an account in NovoPayment.
+
+                '
+              example: 5900902eea614137b5ba00ae7e7a6f2f
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
+    CreateAccountRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - aliasId
+      - account
+      properties:
+        aliasId:
+          type: string
+          description: Unique identifier of an Alias in NovoPayment. This data is for personal use, it is required for administration and management of your alias.
+          example: 5d1bf399902e42f79681c5be8dfdcb02
+          pattern: ^[0-9a-fA-F]{32}$
+        account:
+          $ref: '#/components/schemas/Account'
     Account:
       type: object
       description: Detailed account information, conditional if cards no present
@@ -2383,10 +3295,39 @@ components:
           maxLength: 70
           minLength: 1
           description: bank's name
-    DeleteAccountResponse:
-      additionalProperties: false
+    AccountType:
       type: object
-      description: Delete Account Response
+      additionalProperties: false
+      required:
+      - title
+      description: 'Account Type object.
+
+        Contains the account title
+
+        '
+      properties:
+        title:
+          type: string
+          description: 'Type of account __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-accounttype)
+
+            '
+          example: SAVING
+          maxLength: 25
+          minLength: 1
+          pattern: (\s)*|SAVING|CHECKING|MAESTRA|VISA|LOAN|NRE
+        description:
+          type: string
+          description: acccount type description
+          example: The savings accounts can be opened by an individual with an aim to save money
+          minLength: 1
+        idCode:
+          type: string
+          description: acccount type identificator
+          example: '1'
+          minLength: 1
+    RSGeneric400:
+      type: object
+      additionalProperties: false
       required:
       - code
       - message
@@ -2394,14 +3335,14 @@ components:
       properties:
         code:
           type: string
-          example: 200.01.000
+          example: 400.08.003
           description: Operation response code
           minLength: 10
           maxLength: 10
           pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
         message:
           type: string
-          example: Process Ok
+          example: Params required
           description: Response code description
           maxLength: 140
           minLength: 1
@@ -2409,988 +3350,29 @@ components:
         datetime:
           type: string
           example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
           format: date-time
           maxLength: 24
         data:
           type: object
           additionalProperties: false
-          description: Customized data object.
-          required:
-          - aliasId
-          - accountId
           properties:
-            aliasId:
-              type: string
-              description: 'Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
-
-                '
-              example: 5d1bf399902e42f79681c5be8dfdcb02
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-            accountId:
-              type: string
-              description: 'Unique identifier for an account in NovoPayment.
-
-                '
-              example: 5900902eea614137b5ba00ae7e7a6f2f
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-    CreateAccountRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - aliasId
-      - account
-      properties:
-        aliasId:
-          type: string
-          description: Unique identifier of an Alias in NovoPayment. This data is for personal use, it is required for administration and management of your alias.
-          example: 5d1bf399902e42f79681c5be8dfdcb02
-          pattern: ^[0-9a-fA-F]{32}$
-        account:
-          $ref: '#/components/schemas/Account'
-  examples:
-    PersonalDataError:
-      value:
-        code: 400.02.028
-        message: Personal data was not registered correctly.
-        datetime: '2020-01-03T16:05:56.517Z'
-    ExceedsLimitAmount:
-      value:
-        code: 400.02.354
-        message: Exceeds the limit amount.
-        datetime: '2020-01-03T16:05:56.517Z'
-    IdDocumentDuplicated:
-      value:
-        code: 400.02.034
-        message: ID document is duplicated.
-        datetime: '2020-01-03T16:05:56.517Z'
-    MainIdDocumentNotFound:
-      value:
-        code: 400.02.029
-        message: Main ID document not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    PhoneNumberNotFound:
-      value:
-        code: 400.02.030
-        message: Phone number not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    OperationInProcess:
-      value:
-        code: 400.02.045
-        message: Operation is already in process.
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestedProductNotExist:
-      value:
-        code: 400.02.068
-        message: It is not possible to obtain information about the requested product.
-        datetime: '2020-01-03T16:05:56.517Z'
-    OpenEscalationsExist:
-      value:
-        code: 400.02.035
-        message: Open escalations exist.
-        datetime: '2020-01-03T16:05:56.517Z'
-    CustomerStatusNotAllowed:
-      value:
-        code: 400.02.027
-        message: Customer status is not allowed for this action.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountIsBlocked:
-      value:
-        code: 400.02.406
-        message: Account is blocked.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSessionParameters:
-      value:
-        code: 400.02.024
-        message: Invalid session parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-    UserNotFound:
-      value:
-        code: 400.02.033
-        message: User not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestAcknowledgeFailure:
-      value:
-        code: 400.02.023
-        message: Request acknowledge failure, please try again.
-        datetime: '2020-01-03T16:05:56.517Z'
-    WeeklyTransactionsReached:
-      value:
-        code: 400.02.039
-        message: Number of weekly transactions for this account is reached.
-        datetime: '2020-01-03T16:05:56.517Z'
-    ExceedsMonthlyOperationsLimit:
-      value:
-        code: 400.02.043
-        message: Exceeds monthly operations limit.
-        datetime: '2020-01-03T16:05:56.517Z'
-    MonthlyTransactionsReached:
-      value:
-        code: 400.02.040
-        message: Number of monthly transactions for this account reached.
-        datetime: '2020-01-03T16:05:56.517Z'
-    DailyTransactionsReached:
-      value:
-        code: 400.02.038
-        message: Number of daily transactions for this account is reached.
-        datetime: '2020-01-03T16:05:56.517Z'
-    CustomerNotFound:
-      value:
-        code: 400.02.382
-        message: Customer not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountInactiveOrBlocked:
-      value:
-        code: 400.02.036
-        message: Account to be debited is inactive or blocked.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AmountWasReached:
-      value:
-        code: 400.02.503
-        message: The maximum amount of accounts per account program was reached
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.02.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    DestinationAccountInactiveOrBlocked:
-      value:
-        code: 400.02.037
-        message: Inactive or blocked destination account.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.02.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestedResourceCouldNotFound:
-      value:
-        code: 400.02.022
-        message: The requested resource could not be found. Please check your information and try again.
-        datetime: '2020-01-03T16:05:56.517Z'
-    OFACRecordFound:
-      value:
-        code: 400.02.108
-        message: OFAC record found
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTenantId:
-      value:
-        code: 400.02.004
-        message: Invalid tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    ProcessNotCompleted:
-      value:
-        code: 400.02.019
-        message: The process could not be completed.
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestNotFound:
-      value:
-        code: 400.02.025
-        message: We can not find what youre looking for.
-        datetime: '2020-01-03T16:05:56.517Z'
-    ParameterFormatError:
-      value:
-        code: 400.02.081
-        message: Parameter format error
-        datetime: '2020-01-03T16:05:56.517Z'
-    AddressNotFound:
-      value:
-        code: 400.02.032
-        message: Address not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InsufficientFunds:
-      value:
-        code: 400.02.044
-        message: Insufficient funds.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountIsClosed:
-      value:
-        code: 400.02.410
-        message: Account is closed.
-        datetime: '2020-01-03T16:05:56.517Z'
-    DatabaseError:
-      value:
-        code: 400.02.020
-        message: Database result was ok, but it was not possible recognize data base response.
-        datetime: '2020-01-03T16:05:56.517Z'
-    ExceedsDailyOperationsLimit:
-      value:
-        code: 400.02.041
-        message: Exceeds daily operations limit.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.02.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountNotExist:
-      value:
-        code: 400.02.070
-        message: The requested account does not exist or does not belong to the customer. Please verify your information and try again.
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestedResourceNotFound:
-      value:
-        code: 400.02.022
-        message: The requested resource was not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.02.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.02.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
-    CurrencyNotMatch:
-      value:
-        code: 400.02.490
-        message: Currency not match
-        datetime: '2020-01-03T16:05:56.517Z'
-    ExceedsWeeklyOperationsLimit:
-      value:
-        code: 400.02.042
-        message: Exceeds weekly operations limit.
-        datetime: '2020-01-03T16:05:56.517Z'
-    EmailNotFound:
-      value:
-        code: 400.02.031
-        message: Email not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    LinkingProcessBlocked:
-      value:
-        code: 400.02.026
-        message: Your linking process has been blocked.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.02.999
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.02.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    GeneralError:
-      value:
-        code: 400.02.021
-        message: Something unexpected has happened, please try again.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountRegistered:
-      value:
-        code: 400.09.015
-        message: Account is already registered
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved_2:
-      value:
-        code: 401.09.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired_2:
-      value:
-        code: 401.09.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.09.396
-        message: Invalid parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field aliasType: invalid alias type'
-    InvalidTenantId_2:
-      value:
-        code: 400.09.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature_2:
-      value:
-        code: 401.09.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidEncryptedData:
-      value:
-        code: 400.09.320
-        message: Invalid Encrypted Data
-        datetime: '2020-01-03T16:05:56.517Z'
-    AliasNotFound:
-      value:
-        code: 400.09.448
-        message: Alias not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken_2:
-      value:
-        code: 401.09.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointCreateAccount:
-      value:
-        aliasId: 5d1bf399902e42f79681c5be8dfdcb02
-        account:
-          accountType:
-            title: SAVING
-          accountNumberEncrypt: bXgZyYJ5OmRjEuJq9BWSxwpxwBappGeW6N+PHky5UhM=
-          accountInternalId: 0458a69b-e70d-49b3-86d2-81d6b7569979
-          countryCode: USA
-          currencyCode: USD
-          accountName: John Doe
-          accountIdentify: DEFAULT
-    InternalServerError_2:
-      value:
-        code: 500.09.999
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountNotFound:
-      value:
-        code: 400.09.448
-        message: The requested account does not belong to the customer. Please verify your information and try again.
-        datetime: '2020-01-03T16:05:56.517Z'
-  responses:
-    RSCloseAccount400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCloseAccount400'
-          examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-            Account Not Exist:
-              $ref: '#/components/examples/AccountNotExist'
-            Account Is Closed:
-              $ref: '#/components/examples/AccountIsClosed'
-            Requested Product Not Exist:
-              $ref: '#/components/examples/RequestedProductNotExist'
-    RSUnblockAccount200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUnblockAccount200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSTenantTransactions200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTenantTransactions200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                - transferId: 895
-                  creationDate: 2020/10/10 19:46:21
-                  amount: 1
-                  fee: 0.03
-                  authCode: 184620
-                  originAccount:
-                    accountNumber: KEtfhHAV557rmv8J5LBg3gri5Qx/CgP3/QNFDlRwLag=
-                    customerNames: John
-                    customerSurnames: Doe
-                    customerId: EF441287C78A66F1
-                  receiverAccount:
-                    accountNumber: RyqPUkr9FYtGhOQ5FXRRF/TNV6v1DVhDOlZp1VvsLxk=
-                    customerNames: Robert
-                    customerSurnames: Anderson
-                    customerId: 38177D3643CC3A44
-                  statusName: Authorized
-                  currencyName: USD
-                  availableBalance: 100.55
-                  ledgerBalance: 50.55
-    RSAccountList400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountList400'
-          examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Requested Resource Not Found:
-              $ref: '#/components/examples/RequestedResourceNotFound'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RSAccountInformation404:
-      description: The requested resource could not be found. Please check your information and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountInformation404'
-          examples:
-            Requested Resource Could Not Found:
-              $ref: '#/components/examples/RequestedResourceCouldNotFound'
-    RSAccountToAccountTransaction200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountToAccountTransaction200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: 723501
-    RSAccountTransactions400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountTransactions400'
-          examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSAccountTransactions200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountTransactions200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  transactions:
-                  - transactionId: 70
-                    description: Utility bill payments
-                    sign: +
-                    creationDate: 2022/02/11 15:36:03
-                    amount: 10
-                    fee: 0
-                    tax: 0
-                    registrationDate: 2022/02/11 15:36:05
-                    internalRef: 321133122232
-                    authCode: 587456
-                    isPosted: true
-                    txNumber: 859
-                    transactionCatalog:
-                      id: 11
-                      description: ACH DEPOSIT DOMESTIC
-                    targetAccount:
-                      accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
-                      accountNumber: 1DcRlnvg9no1CRHDbOes0Q==
-                    receivingAccount:
-                      accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
-                      accountNumber: 1DcRlnvg9no1CRHDbOes0Q==
-    RSAdjustments200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAdjustments200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: 690135
-                  ledgerBalance: 10
-                  blockedBalance: 0
-                  availableBalance: 10
-                  transactionDateTime: 2022-01-13T11:11:17.222-0500
-                  systemTrace: 84
-    RSAccountCreation200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountCreation200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  card:
-                    cardProgramId: 1
-                    cardDesignId: A1
-                    line1: null
-                    line2: null
-                    requestNumber: 64876
-                    reference: AS749
-                    address:
-                      street: Wall Street
-                      number: 1
-                      homeNumber: 789
-                      sector: sector
-                      city: New York
-                      state: Manhattan
-                  account:
-                    accountProgramId: 1
-    RSAdjustments400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAdjustments400'
-          examples:
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-            Account Is Closed:
-              $ref: '#/components/examples/AccountIsClosed'
-            Insufficient Funds:
-              $ref: '#/components/examples/InsufficientFunds'
-            Account Not Exist:
-              $ref: '#/components/examples/AccountNotExist'
-            Exceeds Limit Amount:
-              $ref: '#/components/examples/ExceedsLimitAmount'
-    RSTransferDetails200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransferDetails200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  feeAmount: 0.03
-                  fee:
-                    id: 76
-                    name: Silver Profile
-                    feeStatus: ACTIVE
-                    creationDate: 2020/05/18 15:36
-                    criteria:
-                      id: 55
-                      minRange: 0
-                      maxRange: 1000
-                      value: 0.03
-                      typeId: 1
-                      typeName: Amount
-    RSAccountBalance200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountBalance200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  balance:
-                    availableBalance: 0
-                    currentBalance: 0
-                    balanceBlocked: 0
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSUnblockAccount400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUnblockAccount400'
-          examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-            Account Not Exist:
-              $ref: '#/components/examples/AccountNotExist'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RSCloseAccount200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCloseAccount200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSAccountInformation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountInformation400'
-          examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Requested Resource Not Found:
-              $ref: '#/components/examples/RequestedResourceNotFound'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RSBlockAccount400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSBlockAccount400'
-          examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Requested Resource Not Found:
-              $ref: '#/components/examples/RequestedResourceNotFound'
-            Account Not Exist:
-              $ref: '#/components/examples/AccountNotExist'
-            Account Is Blocked:
-              $ref: '#/components/examples/AccountIsBlocked'
-            Account Is Closed:
-              $ref: '#/components/examples/AccountIsClosed'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RSAccountList200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountList200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  accounts:
-                  - accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
-                    accountType:
-                      typeId: 1
-                      description: Savings
-                    accountStatus: 1
-                    maskedNumber: '************7891'
-                    createdDate: 2020/02/09 15:57:43
-                    cards:
-                      cardId: E4555088EE3BA858346A6E0359B803C38C43EEDE
-                      cardStatus: 1,
-                      maskedNumber: '************7735'
-                      expirationDate: dnUqHp23XcLPYjRPS8GseA==
-                      cardProgram:
-                        cardProgramId: 1
-                        cardBrand:
-                          brandId: 1
-                          name: Visa
-                    accountProgram:
-                      accountProgramId: 1
-                      accountProgramName: Savings Account
-                      currency:
-                        id: 114
-                        name: USD
-                        currencyNumber: 840
-                        description: US Dollar
-    RSTenantTransactions400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTenantTransactions400'
-          examples:
-            Requested Resource Not Found:
-              $ref: '#/components/examples/RequestedResourceNotFound'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RSAccountInformation200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountInformation200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  accountId: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
-                  accountNumber: 8yiYsmu5kjpvjAK4/uIb6w==
-                  accountType:
-                    typeId: 1
-                    description: Savings
-                  accountStatus: 1
-                  accountStatusName: Active
-                  maskedNumber: '****************2716'
-                  currencyCode: USD
-                  createdDate: 2020/01/19 11:10:33
-                  accountProgram:
-                    accountProgramId: 1
-                    accountProgramName: Savings Account
-                    bin: 44240900
-    RSTransferDetails400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransferDetails400'
-          examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-            Database Error:
-              $ref: '#/components/examples/DatabaseError'
-            General Error:
-              $ref: '#/components/examples/GeneralError'
-            Requested Resource Not Found:
-              $ref: '#/components/examples/RequestedResourceNotFound'
-            Request Acknowledge Failure:
-              $ref: '#/components/examples/RequestAcknowledgeFailure'
-            Invalid Session Parameters:
-              $ref: '#/components/examples/InvalidSessionParameters'
-            Request Not Found:
-              $ref: '#/components/examples/RequestNotFound'
-            Linking Process Blocked:
-              $ref: '#/components/examples/LinkingProcessBlocked'
-            Customer Status Not Allowed:
-              $ref: '#/components/examples/CustomerStatusNotAllowed'
-            Personal Data Error:
-              $ref: '#/components/examples/PersonalDataError'
-            Main Id Document Not Found:
-              $ref: '#/components/examples/MainIdDocumentNotFound'
-            Phone Number Not Found:
-              $ref: '#/components/examples/PhoneNumberNotFound'
-            Email Not Found:
-              $ref: '#/components/examples/EmailNotFound'
-            Address Not Found:
-              $ref: '#/components/examples/AddressNotFound'
-            User Not Found:
-              $ref: '#/components/examples/UserNotFound'
-            Id Document Duplicated:
-              $ref: '#/components/examples/IdDocumentDuplicated'
-            OpenEscalationsExist:
-              $ref: '#/components/examples/OpenEscalationsExist'
-            Account Inactive Or Blocked:
-              $ref: '#/components/examples/AccountInactiveOrBlocked'
-            Destination Account Inactive Or Blocked:
-              $ref: '#/components/examples/DestinationAccountInactiveOrBlocked'
-            Daily Transactions Reached:
-              $ref: '#/components/examples/DailyTransactionsReached'
-            Weekly Transactions Reached:
-              $ref: '#/components/examples/WeeklyTransactionsReached'
-            Monthly Transactions Reached:
-              $ref: '#/components/examples/MonthlyTransactionsReached'
-            Exceeds Daily Operations Limit:
-              $ref: '#/components/examples/ExceedsDailyOperationsLimit'
-            Exceeds Weekly Operations Limit:
-              $ref: '#/components/examples/ExceedsWeeklyOperationsLimit'
-            Exceeds Monthly Operations Limit:
-              $ref: '#/components/examples/ExceedsMonthlyOperationsLimit'
-            Insufficient Funds:
-              $ref: '#/components/examples/InsufficientFunds'
-            Operation In Process:
-              $ref: '#/components/examples/OperationInProcess'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-    RSAccountCreation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountCreation400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Currency Not Match:
-              $ref: '#/components/examples/CurrencyNotMatch'
-            Amount Was Reached:
-              $ref: '#/components/examples/AmountWasReached'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-            OFAC Record Found:
-              $ref: '#/components/examples/OFACRecordFound'
-    RSAccountBalance400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountBalance400'
-          examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-            Account Not Exist:
-              $ref: '#/components/examples/AccountNotExist'
-    RSBlockAccount200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSBlockAccount200'
-          examples:
-            Success:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSAccountToAccountTransaction400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountToAccountTransaction400'
-          examples:
-            Destination Account Inactive Or Blocked:
-              $ref: '#/components/examples/DestinationAccountInactiveOrBlocked'
-            Daily Transactions Reached:
-              $ref: '#/components/examples/DailyTransactionsReached'
-            Weekly Transactions Reached:
-              $ref: '#/components/examples/WeeklyTransactionsReached'
-            Monthly Transactions Reached:
-              $ref: '#/components/examples/MonthlyTransactionsReached'
-            Exceeds Daily Operations Limit:
-              $ref: '#/components/examples/ExceedsDailyOperationsLimit'
-            Exceeds Weekly Operations Limit:
-              $ref: '#/components/examples/ExceedsWeeklyOperationsLimit'
-            Exceeds Monthly Operations Limit:
-              $ref: '#/components/examples/ExceedsMonthlyOperationsLimit'
-            Insufficient Funds:
-              $ref: '#/components/examples/InsufficientFunds'
-    RSCreateAccount400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Invalid parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Invalid tenant id:
-              $ref: '#/components/examples/InvalidTenantId_2'
-            Alias not found:
-              $ref: '#/components/examples/AliasNotFound'
-            Invalid encrypted data:
-              $ref: '#/components/examples/InvalidEncryptedData'
-            Account already registered:
-              $ref: '#/components/examples/AccountRegistered'
-    RSDeleteAccount200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteAccountResponse'
-          examples:
-            Delete Account:
-              value:
-                code: 200.09.000
-                datetime: '2023-02-13T21:31:38.252Z'
-                message: Process Ok
-                data:
-                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
-                  accountId: 5900902eea614137b5ba01ae7e7a6f2f
-    RSDeleteAccount400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Invalid parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Invalid tenant id:
-              $ref: '#/components/examples/InvalidTenantId_2'
-            Alias not found:
-              $ref: '#/components/examples/AliasNotFound'
-            Account not found:
-              $ref: '#/components/examples/AccountNotFound'
-    RSCreateAccount200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateAccountResponse'
-          examples:
-            Create Account:
-              value:
-                code: 200.09.000
-                datetime: '2023-02-13T21:31:38.252Z'
-                message: Process Ok
-                data:
-                  aliasId: 5d1bf399902e42f79681c5be8dfdcb02
-                  accountId: 5900902eea614137b5ba01ae7e7a6f2f
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
   requestBodies:
-    RQUnblockAccount:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQUnblockAccount'
-      required: true
-    RQBlockAccount:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQBlockAccount'
-      required: true
     RQAdjustments:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RQAdjustments'
-      required: true
-    RQCloseAccount:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCloseAccount'
       required: true
     RQAccountCreation:
       content:
@@ -3398,11 +3380,29 @@ components:
           schema:
             $ref: '#/components/schemas/RQAccountCreation'
       required: true
+    RQCloseAccount:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCloseAccount'
+      required: true
+    RQBlockAccount:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQBlockAccount'
+      required: true
     RQAccountToAccountTransaction:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RQAccountToAccountTransaction'
+      required: true
+    RQUnblockAccount:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQUnblockAccount'
       required: true
     CreateAccountRequest:
       content:
@@ -3422,13 +3422,6 @@ components:
         type: string
         example: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
         maxLength: 40
-    transferId:
-      name: transferId
-      in: path
-      required: true
-      schema:
-        type: string
-        example: 4L2J4BKK6J4
     customerId:
       name: customerId
       in: path
@@ -3438,6 +3431,13 @@ components:
         type: string
         example: 69E2DBE6B18C7ACD
         maxLength: 40
+    transferId:
+      name: transferId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: 4L2J4BKK6J4
     accountId_2:
       name: accountId
       in: path

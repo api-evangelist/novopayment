@@ -355,271 +355,6 @@ paths:
       url: https://[URLIssuer]/v2
 components:
   schemas:
-    ObjCardHolderInfo_PANExpiryDate:
-      type: object
-      description: 'Object that contains the related information to the customer cards.
-
-        '
-      required:
-      - primaryAccountNumber
-      - expirationDate
-      properties:
-        primaryAccountNumber:
-          type: string
-          description: 'Card number.
-
-            '
-          maxLength: 19
-          example: XX25XX25XX25XX25
-        expirationDate:
-          type: object
-          properties:
-            month:
-              type: string
-              example: 08
-            year:
-              type: string
-              example: '2028'
-    RSCardholderVerificationMethods200:
-      type: object
-      required:
-      - stepUpMethods
-      properties:
-        stepUpMethods:
-          type: array
-          $ref: '#/components/schemas/ObjStepUpMethods'
-        responseCode:
-          type: string
-          description: 'This field is present when the field otpReason is:
-
-            TOKEN_DEVICE_BINDING, CARDHOLDER_STEPUP o TRUSTED_LISTING_ENROLLMENT
-
-
-            Allowed values:
-
-            - APPROVED
-
-            - STEPUP
-
-            - DECLINED
-
-            '
-          enum:
-          - APPROVED
-          - STEPUP
-          - DECLINED
-          example: APPROVED
-    ObjTermsAndConditions:
-      type: object
-      properties:
-        id:
-          type: string
-          maxLength: 36
-          description: 'ID for Terms and Conditions that were accepted by the consumer.
-
-            It is not returned for Card on File.
-
-            '
-          example: 13c5e2ba-eb5c-432d-a027-97ddaf109af1
-        date:
-          type: string
-          description: 'Timestamp when Terms and Conditions are acted upon by consumer.
-
-            It is not returned for Card on File.
-
-            UTC Format in epoch seconds The UNIX_UTC_timestamp is a UNIX Epoch
-
-            timestamp. The value is in seconds
-
-            '
-          example: 111115
-    RS500Tk:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.22.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2022-04-25T23:19:12.000Z'
-          minLength: 24
-          maxLength: 24
-    RSCardInfo200:
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.00.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: 'Operation Time Stamp in ISO 8601 format
-
-
-            date-time - the date-time notation as defined by
-
-            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
-
-            for example, 2017-07-21T17:32:28Z
-
-            '
-          example: '2022-04-25T23:19:12.000Z'
-          minLength: 24
-          maxLength: 24
-        data:
-          $ref: '#/components/schemas/ObjCardInfoRSData'
-    RSApproveProvision200:
-      type: object
-      properties:
-        actionCode:
-          type: string
-          description: "Action code to indicate Visa for which flow it should go.\nIn case the provisioning of the token is approved, the values are:\n\n- 00 - Green path, indicates that the token is provisioned and\n  automatically activated for payments.\n- 85 - Yellow path, indicates that the token is provisioned and the\n  client must be authenticated to activate the token. In case the\n  provisioning is not approved, the code must be within the following.\n- N7 - incorrect CVV2\n- 14 - Invalid card number\n- 54 - Invalid expiration date\n- 05 - Generic rejection\n- 96 - Internal system error\n"
-          enum:
-          - '00'
-          - '85'
-          - N7
-          - '14'
-          - '54'
-          - '05'
-          - '96'
-          example: '00'
-        addressVerificationResultCode:
-          type: string
-          description: 'Code that describes the result of an address verification.
-
-            '
-          maxLength: 1
-        cvv2ResultsCode:
-          type: string
-          description: "CVV2 verification from Visa\n\n- M - Visa verified the CVV2 enter by the user in the wallet.\n- N - Visa couldn’t verified the CVV2 enter by the user in the wallet,\n  meaning the CVV2 enter is incorrect.\n- P - Visa didn’t verify the CVV2. Is null when cvv is optional\n"
-          enum:
-          - M
-          - N
-          - P
-          maxLength: 1
-        issuerSpecialConditionCodes:
-          type: string
-          description: "Supported for issuers participating in 0100 TAR.The issuer can send\nvalues for this element in the 0100 TAR response.\n- If the issuer sends a value in the 0100 TAR, it will be sent in\n  this element of the Get CVM.\n- If no value is sent in 0100 TAR or if the issuer does not\n  participate in TAR, this element will not be present.\n"
-          maxLength: 100
-        issuerDiscretionaryData:
-          $ref: '#/components/schemas/ObjApproveProvisionIssuerDiscretionaryData'
-    ObjMerchantInfo:
-      type: object
-      properties:
-        merchantID:
-          type: number
-          description: 'Unique merchant identifiers.
-
-
-            Required for trusted listing enrollment.
-
-            '
-          maxLength: 8
-          example: Novo InApp
-        merchantName:
-          type: string
-          description: 'Merchant’s name
-
-            '
-          maxLength: 256
-          example: 10808 Research Boulevard
-    ObjStepUpMethods:
-      type: object
-      required:
-      - type
-      - value
-      - identifier
-      properties:
-        type:
-          type: string
-          description: 'It is required when the authentication method of the cardholder is
-
-            returned.
-
-
-            Allowed values:
-
-            - OTPSMS
-
-            - OTPEMAIL
-
-            - APP_TO_APP
-
-            - CUSTOMERSERVICE
-
-            - OUTBOUNDCALL
-
-            '
-          enum:
-          - OTPSMS
-          - OTPEMAIL
-          - APP_TO_APP
-          - CUSTOMERSERVICE
-          - OUTBOUNDCALL
-          maxLength: 32
-          example: OTPSMS
-        value:
-          type: string
-          description: 'Value of the identification method of the cardholder.
-
-            '
-          maxLength: 64
-        identifier:
-          type: string
-          description: 'Identifier of the identification method of the cardholder that can
-
-            be used for future calls to send the OTP.
-
-            '
-          maxLength: 32
-        sourceAddress:
-          type: string
-          description: 'Indicates the source address from which the OTP is sent.
-
-            '
-          maxLength: 64
-        otpMethodPlatform:
-          type: string
-          description: 'Used with the APP_TO_APP type, this field contains the appropriate
-
-            OS platform for the associated issuer mobile banking application.
-
-
-            Authorized values:
-
-            - IOS
-
-            - ANDROID
-
-            - WINDOWS
-
-            - WEB
-
-            '
-          enum:
-          - IOS
-          - ANDROID
-          - WINDOWS
-          - WEB
-          maxLength: 64
     ObjGroupResp:
       type: object
       properties:
@@ -666,6 +401,79 @@ components:
 
             '
           example: ERROR DETAIL
+    RQCheckEligibility:
+      type: object
+      required:
+      - tokenRequestorID
+      - tokenReferenceID
+      - panReferenceID
+      - panSource
+      - deviceInfo
+      - encryptedData
+      properties:
+        tokenRequestorID:
+          type: integer
+          description: 'Unique ID assigned to the client requesting the token. This value is
+
+            assigned by Visa when creating the VTS project.
+
+            '
+          example: 40022358888
+        tokenReferenceID:
+          type: string
+          description: 'Unique ID associating a token with a card. This ID can be used in
+
+            future calls to make operations related to the token in the I-TSP.
+
+            '
+          example: DNITHE30194726875288888
+        panReferenceID:
+          type: string
+          description: 'Unique ID representing a card. This ID can be used in future calls
+
+            referred to the card in the Tokenization flow.
+
+            '
+          example: V-3019231458906209630635
+        panSource:
+          type: string
+          description: 'Origin of the information of the PAN.
+
+
+            Allowed values:
+
+            - KEY_ENTERED
+
+            - ON_FILE
+
+            - MOBILE_BANKING_APP
+
+            - TOKEN
+
+            - CHIP_DIP
+
+            - CONTACTLESS_TAP
+
+            '
+          enum:
+          - KEY_ENTERED
+          - ON_FILE
+          - MOBILE_BANKING_APP
+          - TOKEN
+          - CHIP_DIP
+          - CONTACTLESS_TAP
+          example: MOBILE_BANKING_APP
+        deviceInfo:
+          description: 'When the token is for an specific device, The object must have deviceID and deviceLanguageCode.
+
+            '
+          $ref: '#/components/schemas/ObjDeviceInformationEligibility'
+        encryptedData:
+          type: object
+          description: Represents the encrypted payload
+          properties:
+            cardholderInfo:
+              $ref: '#/components/schemas/ObjCardHolderInfo_PANExpiryDate'
     ObjTokenUserInfo:
       type: object
       required:
@@ -712,319 +520,6 @@ components:
           - VOICE_APP
           - BIOMETRIC_APP
           example: MOBILE_WEB
-    RSDeviceTokenBinding200:
-      type: object
-      required:
-      - actionCode
-      properties:
-        actionCode:
-          type: string
-          description: "Action code to indicate Visa for which flow it should go.\nIn case the provisioning of the token is approved, the values are:\n\n- 00 - Green path, indicates that the token is provisioned and\n  automatically activated for payments.\n- 85 - Yellow path, indicates that the token is provisioned and the\n  client must be authenticated to activate the token. In case the\n  provisioning is not approved, the code must be within the following.\n- N7 - incorrect CVV2\n- 14 - Invalid card number\n- 54 - Invalid expiration date\n- 05 - Generic rejection\n- 96 - Internal system error\n"
-          enum:
-          - '00'
-          - '85'
-          - N7
-          - '14'
-          - '54'
-          - '05'
-          - '96'
-          example: '00'
-    ObjRiskInfo:
-      type: object
-      description: 'Structure with risk information.
-
-
-        This object can be sent when messageReasonCode is equal to TOKEN_CREATED
-
-        '
-      properties:
-        walletProviderRiskAssessment:
-          type: string
-          maxLength: 1
-          description: 'Risk rating of the wallet, it can be one of the following values:
-
-            - 0: Unconditionally approved.
-
-            - 1: Conditionally approved with further consumer verification.
-
-            - 2: Not approved
-
-            '
-          enum:
-          - 0
-          - 1
-          - 2
-        walletProviderRiskAssessmentVersion:
-          type: string
-          maxLength: 10
-          description: 'Information for the Issuer related to the security level of the wallet
-
-            '
-        walletProviderAccountScore:
-          type: string
-          maxLength: 2
-          description: 'The wallet provider account score. Score value is between 1 and 5,
-
-            indicating the confidence level of the account, where 5 indicates
-
-            the most confidence on the account.
-
-            '
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-        walletProviderDeviceScore:
-          type: string
-          maxLength: 2
-          description: The wallet provider device score. Score value is between 1 and 5, indicating the confidence level of the device, where 5 indicates the most confidence.
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-        walletProviderReasonCodes:
-          type: string
-          maxLength: 100
-          description: Wallet provider reason codes, in a comma-separated format.
-        deviceBluetoothMac:
-          type: string
-          maxLength: 24
-          description: MAC address for Bluetooth.
-        deviceIMEI:
-          type: string
-          maxLength: 24
-          description: Hardware ID of the device.
-        deviceSerialNumber:
-          type: string
-          maxLength: 24
-          description: Serial number of the mobile device.
-        deviceTimeZone:
-          type: string
-          maxLength: 5
-          description: Time-zone abbreviation.
-        deviceTimeZoneSetting:
-          type: string
-          description: 'Device time-zone setting.
-
-            Available Values:
-
-            - NETWORK_SET
-
-            - CONSUMER_SET
-
-            '
-          enum:
-          - NETWORK_SET
-          - CONSUMER_SET
-        osID:
-          type: string
-          maxLength: 24
-          description: OS ID to allow building velocity and risk rules.
-        simSerialNumber:
-          type: string
-          maxLength: 24
-          description: SIM serial number of the mobile device
-        deviceLostMode:
-          type: string
-          maxLength: 4
-          description: Number of days. Values are up to 9999 number of days.
-        daysSinceConsumerDataLastAccountChange:
-          type: string
-          maxLength: 4
-          description: 'Number of days since account settings were changed (in case of a
-
-            password update). If the number of days exceeds 9999, it will stay
-
-            at 9999.
-
-            '
-        accountHolderName:
-          type: string
-          maxLength: 64
-          description: Account-holder’s name.
-        walletProviderPANAge:
-          type: string
-          maxLength: 4
-          description: 'Length of time (in days) that a PAN has been on file for
-
-            a user.
-
-            '
-        walletAccountHolderCardNameMatch:
-          type: string
-          maxLength: 4
-          description: 'Name of the accountholder and name of cardholder matched.
-
-            Available Values:
-
-            - Y: Indicates the two names match.
-
-            - N: Indicates the two names do not match.
-
-            '
-          enum:
-          - Y
-          - N
-        accountToDeviceBindingAge:
-          type: string
-          maxLength: 4
-          description: 'Number of days this device has been used by this account.
-
-            If the number of days exceeds 9999, it will stay at 9999.
-
-
-            Example: 9999
-
-            '
-        userAccountAge:
-          type: string
-          maxLength: 4
-          description: 'Number of days since an account for this user has existed.
-
-            Values are 0 through 9999.
-
-
-            Example: 9999
-
-            '
-        walletAccountAge:
-          type: string
-          description: 'Number of days since the user created a wallet account or started
-
-            using a wallet. If the number of days exceeds 256, it will stay at 256.
-
-            '
-        provisioningAttemptsOnDeviceIn24Hours:
-          type: string
-          maxLength: 2
-          description: 'Number of provisioning attempts on this device in the past 24 hours.
-
-            If the number of attempts exceeds 99, it will stay at 99.
-
-            '
-          example: 99
-        distinctCardholderNames:
-          type: string
-          maxLength: 2
-          description: 'Number of distinct cardholder names used in provisioning from this
-
-            device.
-
-            '
-          example: 99
-        deviceCountry:
-          type: string
-          maxLength: 2
-          description: 'Country of device at time of provisioning. ISO 3166-1, alpha-2
-
-            '
-          example: US
-        walletAccountCountry:
-          type: string
-          maxLength: 2
-          description: Country of accountholder. ISO 3166-1, alpha-2
-          example: US
-        suspendedCardsInAccount:
-          type: string
-          maxLength: 2
-          description: 'Number of cards suspended in the account.
-
-            If the number of days exceeds 99, it will stay at 99.
-
-            '
-          example: 99
-        daysSinceLastAccountActivity:
-          type: string
-          maxLength: 4
-          description: 'Number of days since the last activity on account.
-
-            If the number of days exceeds 9999, it will stay at 9999.
-
-            '
-          example: 9999
-        numberOfTransactionsInLast12months:
-          type: string
-          maxLength: 4
-          description: 'Number of transactions on this account in the last 12 months.
-
-            If the number of transactions exceeds 9999, it will stay at 9999.
-
-            '
-          example: 9999
-        numberOfActiveTokens:
-          type: string
-          maxLength: 2
-          description: 'Number of active tokens on this account.
-
-            If the number of tokens exceeds 99, it will stay at 99.
-
-            '
-          example: 99
-        deviceWithActiveTokens:
-          type: string
-          maxLength: 2
-          description: 'Number of devices for this user with the same token.
-
-            If the number of tokens exceeds 99, it will stay at 99.
-
-            '
-          example: 99
-        activeTokensOnAllDeviceForAccount:
-          type: string
-          maxLength: 4
-          description: 'Number of active tokens for this user, across all devices.
-
-            If the number of tokens exceeds 9999, it will stay at 9999.
-
-            '
-          example: 9999
-        visaTokenScore:
-          type: string
-          maxLength: 2
-          description: 'Value indicating the degree of risk associated with the token.
-
-            Numeric value is 01 through 99.
-
-            '
-        visaTokenDecisioning:
-          type: number
-          maxLength: 2
-          description: "Results from the token provisioning service.\n\nAvailable values:\n- 00: Provision and activate\n- 05: Do not provision\n- 85: Provision in inactive state (requires further consumer\n  authentication prior to activation - Yellow Flow)\n"
-          enum:
-          - '00'
-          - '05'
-          - '85'
-        riskAssessmentScore:
-          type: string
-          maxLength: 2
-          description: 'Values are 0 through 99. A higher value indicates a higher risk.
-
-            This is calculated by the AA Risk Engine, based on the PAN’s
-
-            transaction pattern (long term and short term).
-
-            '
-        issuerSpecialConditionCodes:
-          type: string
-          maxLength: 100
-          description: 'Supported for issuers participating in 0100 TAR. The issuer can send
-
-            values for this element in the 0100 TAR response.
-
-
-            If the issuer sends a value in the 0100 TAR, it will be sent in this
-
-            element of the Get CVM.
-
-            If no value is sent in 0100 TAR or if the issuer does not participate
-
-            in TAR, this element will not be present.
-
-            '
     RQNotification:
       type: object
       required:
@@ -1535,64 +1030,6 @@ components:
             '
           maxLength: 40
           example: 5DA...27
-    RQDeviceTokenBinding:
-      type: object
-      required:
-      - tokenRequestorID
-      - tokenReferenceID
-      - panReferenceID
-      - walletAccountEmailAddressHash
-      - clientWalletAccountID
-      - deviceInfo
-      properties:
-        tokenRequestorID:
-          type: integer
-          description: 'Unique ID assigned to the client requesting the token. This value is
-
-            assigned by Visa when creating the VTS project.
-
-            '
-          example: 40022358888
-        tokenReferenceID:
-          type: string
-          description: 'Unique ID associating a token with a card. This ID can be used in
-
-            future calls to make operations related to the token in the I-TSP.
-
-            '
-          example: DNITHE30194726875288888
-        panReferenceID:
-          type: string
-          description: 'Unique ID representing a card. This ID can be used in future calls
-
-            referred to the card in the Tokenization flow.
-
-            '
-          example: V-3019231458906209630635
-        walletAccountEmailAddressHash:
-          type: string
-          description: 'Hash of the email from which the account is opened in the wallet
-
-            that sends the request.
-
-            '
-          maxLength: 64
-        clientWalletAccountID:
-          type: string
-          description: 'Identifier of the wallet that sends the request.
-
-            Client provided consumer ID that identifies the wallet account
-
-            holder entity
-
-            '
-          maxLength: 32
-        deviceInfo:
-          $ref: '#/components/schemas/ObjDeviceInformation_ForBinding'
-        tokenUserInfo:
-          $ref: '#/components/schemas/ObjTokenUserInfo'
-        merchantInfo:
-          $ref: '#/components/schemas/ObjMerchantInfo'
     ObjTokenInfo:
       type: object
       description: 'Structure with token information, the content available could be different in each API service.
@@ -1835,148 +1272,45 @@ components:
 
             '
           example: false
-    RSCheckEligibility200:
-      type: object
-      properties:
-        cardMetadataInfo:
-          description: 'This object could be empty if VISA is going to provide the metadata detail.
-
-            '
-          $ref: '#/components/schemas/ObjCheckEligibilityCardMetadataInfo'
-    ObjNotificationEncryptedData:
-      type: object
-      description: 'Encrypted payload data. When this value is decrypted the fields are
-
-        conditional to the type of the notification consider the
-
-        messageReasonCode to be secure about what values could be contained.
-
-        When eventType is TOKEN_CREATED the encrypted payload can contain
-
-        Cardholder Information Token Information Risk Information.
-
-        When eventType is TOKEN_STATUS_UPDATED can contain a Risk
-
-        Information Structure.
-
-        Not present on evenType PAN_UPDATED or CARD_METADATA_UPDATED.
-
-        '
-      maxLength: 7000
-      properties:
-        cardholderInfo:
-          $ref: '#/components/schemas/ObjCardHolderInfo'
-        tokenInfo:
-          $ref: '#/components/schemas/ObjTokenInfo'
-        deviceInfo:
-          $ref: '#/components/schemas/ObjDeviceInformation'
-        riskInfo:
-          $ref: '#/components/schemas/ObjRiskInfo'
-    ObjSendPasscodeCardHolderInfo:
-      type: object
-      description: 'PrimaryAccountNumber will be provided in cardholderInfo.
-
-        And Otp Destiny when the Issuer have this param active on service
-
-        configuration.
-
-        '
+    RSCardInfo200:
       required:
-      - primaryAccountNumber
+      - code
+      - message
+      - datetime
+      - data
       properties:
-        primaryAccountNumber:
+        code:
           type: string
-          description: 'Card number to be tokenized.
-
-            See the conditionals use cases for this field.
-
-            '
-          maxLength: 19
-          example: '0000000000000000'
-        otpDestiny:
+          description: Operation response code
+          example: 200.00.000
+          maxLength: 10
+        message:
           type: string
-          description: 'Phone number or email address to send the OTP value, only If the
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: 'Operation Time Stamp in ISO 8601 format
 
-            Issuer’s configuration have this param available and the Issuer’s
 
-            Wallet sent the values in the enroll device and Enroll PAN process
+            date-time - the date-time notation as defined by
 
-            with our SDK.
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
 
-            '
-          example: '57300800800'
-          maxLength: 50
-    RQCardInfo:
-      type: object
-      required:
-      - cardIdList
-      properties:
-        cardIdList:
-          type: array
-          description: 'List of card ids. Each id corresponds to a card whose information is requested.
+            for example, 2017-07-21T17:32:28Z
 
             '
-          example:
-          - 866f4af6-69a8-4c51-9940-95bdd05124c6
-          - f18eaabb-bdce-43eb-b17a-e5560f36687c
-    RSErrorCode400:
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
+        data:
+          $ref: '#/components/schemas/ObjCardInfoRSData'
+    ObjCardHolderInfo_PANExpiryDate:
       type: object
-      description: 'Error message code only if the HTTP status is different from 200.
-
-        This field shows the I-TSP if an error was generated in the request.
+      description: 'Object that contains the related information to the customer cards.
 
         '
-      properties:
-        errorCode:
-          type: string
-          description: 'Error response Codes:
-
-            - ISE40000: ISS_ERROR_REQUIRED_DATA_MISSING
-
-            - ISE40005: ISS_ERROR_INVALID_FIELD_LENGTH
-
-            - ISE40006: ISS_ERROR_INVALID_FIELD_TYPE
-
-            - ISE40010: ISS_ERROR_CRYPTOGRAPHY_ERROR
-
-            - ISE40013: ISS_ERROR_INVALID_EXP_DATE
-
-            - ISE40001: ISS_ERROR_PAN_INELIGIBLE
-
-            '
-          enum:
-          - ISE40000
-          - ISE40005
-          - ISE40006
-          - ISE40010
-          - ISE40013
-          - ISE40001
-    ObjCheckEligibilityContactInfo:
-      type: object
-      properties:
-        contactWebsite:
-          type: string
-          description: Customer Service website of the issuing bank
-          maxLength: 128
-          example: https://issuer.com
-        contactEmail:
-          type: string
-          description: Customer Service email address of the issuing bank
-          maxLength: 32
-          example: user@issuer.com
-        contactNumber:
-          type: string
-          description: Customer service phone number of the issuing bank
-          maxLength: 32
-          example: 800-000-0000
-        contactName:
-          type: string
-          description: Name of the issuing bank
-          maxLength: 32
-          example: Issuer
-    ObjCardHolderInfo_Provisioning:
-      type: object
-      description: "Object that contains the related information to the customer cards, only PAN and Expiry Date are required; \nin some cases CVV is present, please, follow the applicable cases.\n"
       required:
       - primaryAccountNumber
       - expirationDate
@@ -1997,314 +1331,6 @@ components:
             year:
               type: string
               example: '2028'
-        cvv2:
-          type: string
-          description: 'CVV2 value associated to the card.
-
-            This field could contain value when the PAN Source is KEY_ENTERED
-
-            '
-          maxLength: 4
-          example: '808'
-    RQSendPasscode:
-      type: object
-      required:
-      - tokenRequestorID
-      - lifeCycleTraceID
-      - encryptedData
-      properties:
-        tokenRequestorID:
-          type: integer
-          description: 'Unique ID assigned to the client requesting the token. This value is
-
-            assigned by Visa when creating the VTS project.
-
-            '
-          example: 40022358888
-        tokenReferenceID:
-          type: string
-          description: 'Unique ID associating a token with a card. This ID can be used in
-
-            future calls to make operations related to the token in the I-TSP.
-
-            '
-          example: DNITHE30194726875288888
-        panReferenceID:
-          type: string
-          description: 'Unique ID representing a card. This ID can be used in future calls
-
-            referred to the card in the Tokenization flow.
-
-            '
-          example: V-3019231458906209630635
-        clientWalletAccountID:
-          type: string
-          description: 'Identifier of the wallet that sends the request.
-
-            Client provided consumer ID that identifies the wallet account holder entity
-
-            '
-          maxLength: 32
-        otpMaxReached:
-          type: boolean
-          description: "\tIf this field is active, it means the user with the referenced\n  token has exceeded the number of requests for authentication\n  methods or OTP requests, thus, the response must not include the\n  value when requesting them again.\n"
-        otpMethodIdentifier:
-          type: string
-          description: 'Unique ID that allows to associate an OTP action to the cardholder.
-
-            This value is delivered by the issuer when the I-TSP calls the
-
-            endpoint Cardholder Verification Methods.
-
-            '
-          maxLength: 32
-        otpValue:
-          type: string
-          description: 'OTP Value
-
-            '
-          maxLength: 8
-        OtpReason:
-          type: string
-          description: 'OTP reason The descriptions may vary in agreement with the issuer.
-
-
-            Allowed values:
-
-            - PROVISIONING
-
-            - FPAN_NOTIFICATIONS
-
-            - PAYMENT
-
-            - TOKEN_DEVICE_BINDING
-
-            - CARDHOLDER_STEPUP
-
-            - TRUSTED_LISTING_ENROLLMENT
-
-            '
-          enum:
-          - PROVISIONING
-          - FPAN_NOTIFICATIONS
-          - PAYMENT
-          - TOKEN_DEVICE_BINDING
-          - CARDHOLDER_STEPUP
-          - TRUSTED_LISTING_ENROLLMENT
-        otpExpirationDate:
-          type: string
-          description: 'Token expiration date
-
-
-            Format: yyyy-MM-ddTHH:mm:ss.SSSZ
-
-            '
-        deviceInfo:
-          $ref: '#/components/schemas/ObjDeviceInformation'
-        encryptedData:
-          type: object
-          description: 'Encrypted payload data Only primaryAccountNumber needs to be
-
-            provided in cardholderInfo.
-
-            '
-          properties:
-            cardholderInfo:
-              $ref: '#/components/schemas/ObjSendPasscodeCardHolderInfo'
-        tokenInfo:
-          $ref: '#/components/schemas/ObjTokenInfo'
-    RQApproveProvision:
-      type: object
-      required:
-      - tokenRequestorID
-      - tokenReferenceID
-      - panReferenceID
-      - panSource
-      - walletAccountEmailAddress
-      - clientWalletAccountID
-      - tokenInfo
-      - encryptedData
-      properties:
-        tokenRequestorID:
-          type: integer
-          description: 'Unique ID assigned to the client requesting the token.
-
-            '
-          example: 40022358888
-        tokenReferenceID:
-          type: string
-          description: 'Unique ID associating a token with a card. This ID can be used in
-
-            future calls to make operations related to the token in the I-TSP.
-
-            '
-          example: DNITHE30194726875288888
-        panReferenceID:
-          type: string
-          description: 'Unique ID representing a card. This ID can be used in future calls
-
-            referred to the card in the Tokenization flow.
-
-            '
-          example: V-3019231458906209630635
-        panSource:
-          type: string
-          description: 'Origin of the information of the PAN.
-
-
-            Allowed values:
-
-            - KEY_ENTERED
-
-            - ON_FILE
-
-            - MOBILE_BANKING_APP
-
-            - TOKEN
-
-            - CHIP_DIP
-
-            - CONTACTLESS_TAP
-
-            '
-          enum:
-          - KEY_ENTERED
-          - ON_FILE
-          - MOBILE_BANKING_APP
-          - TOKEN
-          - CHIP_DIP
-          - CONTACTLESS_TAP
-          example: KEY_ENTERED
-        cvv2ResultsCode:
-          type: string
-          description: "Result code of the validation of CVV2 made by VISA.\nAvailable Values:\n- M: The CVV2 is match.\n- N: The CVV2 enter by the user is incorrect.\n- P: The CVV2 was not validate.\n- S: Indicates that V.I.P. or the issuer was unable to perform CVV2\n  verification.\n\n- U: Issuer was not available does not participate in the CVV2\n  Service or that STIP has responded to an issuer-unavailable\n  response.\n\n-  NULL: When the provisioning process occured without CVV\n"
-          enum:
-          - M
-          - N
-          - P
-          - S
-          - U
-          - null
-          maxLength: 1
-          example: M
-        walletAccountEmailAddress:
-          type: string
-          description: 'Hash of the email account from which the account is opened in the
-
-            wallet that sends the request.
-
-            '
-          maxLength: 64
-          example: 5DA...27
-        clientWalletAccountID:
-          type: string
-          description: 'Identifier of the wallet that sends the request.
-
-            Client provided consumer ID that identifies the wallet account holder
-
-            entity.
-
-            '
-          maxLength: 32
-          example: 5DA...D8
-        addressVerificationResultCode:
-          type: string
-          description: 'Code that describes the result of an address verification.
-
-            '
-          maxLength: 1
-          example: 5DA...D8
-        ConsumerEntryMode:
-          type: string
-          description: 'Method of consumer entry.
-
-
-            Available values:
-
-            - KEY_ENTERED
-
-            - CAMERA_CAPTURED
-
-            - UNKNOWN
-
-            '
-          enum:
-          - KEY_ENTERED
-          - CAMERA_CAPTURED
-          - UNKNOWN
-          example: KEY_ENTERED
-        locale:
-          type: string
-          description: 'The language for the app,if need a country code should be separated
-
-            using a “_“.
-
-
-            Example: en_US
-
-
-            Format: String; ISO language ISO 639-1 and alpha-2 country code
-
-            ISO 3166-1 alpha-2
-
-            '
-          maxLength: 5
-          example: en_US
-        deviceInfo:
-          $ref: '#/components/schemas/ObjDeviceInformation'
-        tokenInfo:
-          $ref: '#/components/schemas/ObjTokenInfo'
-        encryptedData:
-          type: object
-          description: 'Represents the encrypted payload, contains Cardholder Information and Risk Information with the applicable information.
-
-            '
-          properties:
-            cardholderInfo:
-              $ref: '#/components/schemas/ObjCardHolderInfo_Provisioning'
-            riskInfo:
-              $ref: '#/components/schemas/ObjRiskInfo'
-    ObjReplaceEnrollment:
-      type: object
-      properties:
-        responseStatus:
-          type: string
-          description: 'Response status value.
-
-            Available values:
-
-            - S
-
-            - W
-
-            - F
-
-            '
-          enum:
-          - S
-          - W
-          - F
-        rejectCode:
-          type: string
-          maxLength: 2
-          description: 'Contains the Reject Code for the failure. Present only when the Response Status = F.
-
-            '
-          example: ER
-        rejectDesc:
-          type: string
-          maxLength: 100
-          description: 'Contains the Reject Reason for the failure. Present only when the Response Status = F.
-
-            '
-          example: ERROR DETAIL
-    ObjCardInfoRSData:
-      type: object
-      required:
-      - cardInfoList
-      properties:
-        cardInfoList:
-          $ref: '#/components/schemas/ObjCardInfoList'
     ObjCheckEligibilityCardMetadataInfo:
       type: object
       required:
@@ -2430,169 +1456,54 @@ components:
           maxLength: 128
           description: "URL pointing to the issuing bank’s terms and conditions \nfor a card. This value is not applicable for Check Eligibility; only \navailable for Update Card Metadata.\n"
           example: https://issuer.com/termsAndConditionsURL
-    RQCheckEligibility:
+    ObjCardInfoRSData:
       type: object
       required:
-      - tokenRequestorID
-      - tokenReferenceID
-      - panReferenceID
-      - panSource
-      - deviceInfo
-      - encryptedData
+      - cardInfoList
       properties:
-        tokenRequestorID:
-          type: integer
-          description: 'Unique ID assigned to the client requesting the token. This value is
-
-            assigned by Visa when creating the VTS project.
-
-            '
-          example: 40022358888
-        tokenReferenceID:
-          type: string
-          description: 'Unique ID associating a token with a card. This ID can be used in
-
-            future calls to make operations related to the token in the I-TSP.
-
-            '
-          example: DNITHE30194726875288888
-        panReferenceID:
-          type: string
-          description: 'Unique ID representing a card. This ID can be used in future calls
-
-            referred to the card in the Tokenization flow.
-
-            '
-          example: V-3019231458906209630635
-        panSource:
-          type: string
-          description: 'Origin of the information of the PAN.
-
-
-            Allowed values:
-
-            - KEY_ENTERED
-
-            - ON_FILE
-
-            - MOBILE_BANKING_APP
-
-            - TOKEN
-
-            - CHIP_DIP
-
-            - CONTACTLESS_TAP
-
-            '
-          enum:
-          - KEY_ENTERED
-          - ON_FILE
-          - MOBILE_BANKING_APP
-          - TOKEN
-          - CHIP_DIP
-          - CONTACTLESS_TAP
-          example: MOBILE_BANKING_APP
-        deviceInfo:
-          description: 'When the token is for an specific device, The object must have deviceID and deviceLanguageCode.
-
-            '
-          $ref: '#/components/schemas/ObjDeviceInformationEligibility'
-        encryptedData:
-          type: object
-          description: Represents the encrypted payload
-          properties:
-            cardholderInfo:
-              $ref: '#/components/schemas/ObjCardHolderInfo_PANExpiryDate'
-    ObjCardInfoList:
+        cardInfoList:
+          $ref: '#/components/schemas/ObjCardInfoList'
+    ObjSendPasscodeCardHolderInfo:
       type: object
+      description: 'PrimaryAccountNumber will be provided in cardholderInfo.
+
+        And Otp Destiny when the Issuer have this param active on service
+
+        configuration.
+
+        '
       required:
-      - cardId
-      - cardProduct
-      - cardProductId
-      - cardStatus
-      - cardStatusId
-      - cardType
-      - cardTypeId
-      - customerName
-      - expirationDate
-      - maskedNumber
-      - pan
+      - primaryAccountNumber
       properties:
-        cardId:
+        primaryAccountNumber:
           type: string
-          description: 'Card Id assocated to card
+          description: 'Card number to be tokenized.
+
+            See the conditionals use cases for this field.
 
             '
-          example: 866f4af6-69a8-4c51-9940-95bdd05124c6
-        cardProduct:
+          maxLength: 19
+          example: '0000000000000000'
+        otpDestiny:
           type: string
-          description: 'Product of card
+          description: 'Phone number or email address to send the OTP value, only If the
+
+            Issuer’s configuration have this param available and the Issuer’s
+
+            Wallet sent the values in the enroll device and Enroll PAN process
+
+            with our SDK.
 
             '
-          example: Lynk Visa Debit
-        cardProductId:
-          type: string
-          description: 'Product Id of card
-
-            '
-          example: '2'
-        cardStatus:
-          type: string
-          description: 'Status of card
-
-            '
-          example: Active
-        cardStatusId:
-          type: string
-          description: 'Status Id of card
-
-            '
-          example: '1'
-        cardType:
-          type: string
-          description: 'Type of card
-
-            '
-          example: Debit
-        cardTypeId:
-          type: string
-          description: 'Type Id of card
-
-            '
-          example: 1"
-        customerName:
-          type: string
-          description: 'Name of customer
-
-            '
-          example: Gen Lynk
-        expirationDate:
-          type: string
-          description: 'Expiration date of card
-
-            '
-          example: '2810'
-        maskedNumber:
-          type: string
-          description: 'Masked PAN
-
-            '
-          example: '************8603'
-        pan:
-          type: string
-          description: 'PAN of card
-
-            '
-          example: '4537850008998603'
-    ObjAccountLevelInfoResp:
+          example: '57300800800'
+          maxLength: 50
+    ObjCheckEligibilityCardArtRefID:
       type: object
       properties:
-        rpinEnrollment:
-          $ref: '#/components/schemas/ObjRpinEnrollment'
-        replaceEnrollment:
-          $ref: '#/components/schemas/ObjReplaceEnrollment'
-        linkEnrollment:
-          $ref: '#/components/schemas/ObjLinkEnrollment'
+        cardArtRefID:
+          type: string
+          description: "\tGUID-based file names for the Cart Art Image file used by the issuer\n when uploading the image to VCMM. Required by the DWP field.\n It is optional in this API because the issuer can pre-configure this\n value through VCMM.\n"
+          maxLength: 32
     ObjDeviceInformation:
       type: object
       description: 'Object that contain the Device Information, the values that coould be present depends on the Token Type and the Device Type.
@@ -2843,37 +1754,14 @@ components:
           description: "Device type from the original provision. \nThis field is populated only when performing token-for-token provisioning and can be used only in the following APIs: \n- Approve Provisioning\n- Approve Provisioning Stand-In Notification\n- Token Create Notification.\n"
           maxLength: 48
           example: '...'
-    ObjRpinEnrollment:
+    RSCheckEligibility200:
       type: object
       properties:
-        responseStatus:
-          type: string
-          description: 'RPIN enrollment response status.
-
-            Available values:
-
-            - S
-
-            - F
+        cardMetadataInfo:
+          description: 'This object could be empty if VISA is going to provide the metadata detail.
 
             '
-          enum:
-          - S
-          - F
-        rejectCode:
-          type: string
-          maxLength: 2
-          description: 'Contains the Reject Code for the failure. Present only when the Response Status = F.
-
-            '
-          example: ER
-        rejectDesc:
-          type: string
-          maxLength: 100
-          description: 'Contains the Reject Reason for the failure. Present only when the Response Status = F.
-
-            '
-          example: ERROR DETAIL
+          $ref: '#/components/schemas/ObjCheckEligibilityCardMetadataInfo'
     ObjDeviceInformationEligibility:
       type: object
       description: 'Object that contain the Device Information, the values that coould be present depends on the Token Type and the Device Type.
@@ -3102,198 +1990,26 @@ components:
           - CLOUD
           maxLength: 40
           example: CLOUD
-    ObjApproveProvisionIssuerDiscretionaryData:
+    ObjMerchantInfo:
       type: object
       properties:
-        fileControlInformation:
-          type: string
-          description: 'File control information.
+        merchantID:
+          type: number
+          description: 'Unique merchant identifiers.
 
 
-            hexBinary, hex characters must be uppercase; max length of 128 bytes.
-
-            '
-        issuerApplicationDiscretionaryData:
-          type: string
-          description: 'Discretionary data
+            Required for trusted listing enrollment.
 
             '
-    ObjCheckEligibilityApplicationInfo:
-      type: object
-      properties:
-        supportsTokenNotifications:
-          type: boolean
-          description: 'Indicates whether the card supports token claims for transactions
-
-            originated from the device.
-
-            '
-          enum:
-          - true
-          - false
-        supportsFPANNotifications:
-          type: boolean
-          description: 'Indicates if the card supports FPAN Notifications for all transactions
-
-            that point to the FPAN.
-
-            '
-          enum:
-          - true
-          - false
-        transactionServiceURL:
-          type: string
-          description: 'Transaction history URL (TransactionDetails) of the issuer''s web
-
-            service.
-
-            '
-          maxLength: 128
-        messageServiceURL:
-          type: string
-          description: 'URL of the message/web service offer. It conforms to the API as
-
-            described in the SOPs and Issuers in the Card Notification Services
-
-            API Specification.
-
-            '
-          maxLength: 32
-        transactionPushTopic:
-          type: string
-          description: The issuer notifies the device of new available transactions.
-          maxLength: 128
-        messagePushTopic:
-          type: string
-          description: 'The notification push provider notifies the device of new
-
-            available messages.
-
-            '
-          maxLength: 128
-        appLaunchURL:
-          type: string
-          description: 'URL given to the issuer associated with the mobile application upon
-
-            launch. If this key is present, the AssociatedStoreIdentifiers key
-
-            must also be present.
-
-            '
-          maxLength: 128
-        appLaunchURLScheme:
-          type: string
-          description: 'Registered app URL scheme, in order to deep link from transaction
-
-            notifications and display all transaction notifications.
-
-            App ID must be included in the associated ApplicationIdentifiers
-
-            matrix and the application itself must register for the URL scheme
-
-            specified in this key.
-
-            '
-          maxLength: 32
-        associatedStoreIdentifiers:
-          type: array
-          description: 'A list of mobile app store items identifiers for the partner issuer''s
-
-            mobile banking app. The format is specific to a mobile store/phone
-
-            platform. Only one item from the list is used.
-
-            '
-          items:
-            type: string
-            maxLength: 20
-        associatedApplicationIdentifiers:
-          type: array
-          description: 'An array of associated application identifiers. Similar to
-
-            AssociatedStoreIdentifiers, but with explicit application IDs
-
-            (only applicable to SE DWP).
-
-            '
-          items:
-            type: integer
-    ObjBillingAddress:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Physical address or shipping address.
-          maxLength: 100
+          maxLength: 8
           example: Novo InApp
-        line1:
+        merchantName:
           type: string
-          description: 'First line of the address. Usually for the complete address,
-
-            this is Required for the US and Canada.
+          description: 'Merchant’s name
 
             '
           maxLength: 256
           example: 10808 Research Boulevard
-        line2:
-          type: string
-          description: 'Second line, usually corresponds to house, apartment,
-
-            suite, etc.
-
-            '
-          maxLength: 256
-          example: Provisioning Boulevard
-        city:
-          type: string
-          description: Name of the city.
-          maxLength: 100
-          example: Austin
-        state:
-          type: string
-          description: 'State or province in the country.This field must be valid
-
-            for the respective country.The country will be related to the
-
-            country of the bank.
-
-            '
-          example: TX
-        postalCode:
-          type: string
-          description: 'Postal Code.
-
-
-            Condition: If address is provided this field has the following
-
-            characteristics.
-
-            '
-          maxLength: 40
-          example: 78759
-    ObjExpirationDate:
-      type: object
-      required:
-      - month
-      - year
-      properties:
-        month:
-          type: string
-          description: Month of expiration date
-          maxLength: 2
-          example: 7
-        year:
-          type: string
-          description: Year  of expiration date
-          maxLength: 4
-          example: 2016
-    ObjCheckEligibilityCardArtRefID:
-      type: object
-      properties:
-        cardArtRefID:
-          type: string
-          description: "\tGUID-based file names for the Cart Art Image file used by the issuer\n when uploading the image to VCMM. Required by the DWP field.\n It is optional in this API because the issuer can pre-configure this\n value through VCMM.\n"
-          maxLength: 32
     ObjCardHolderInfo:
       type: object
       description: 'Object that contains the required information to make the decision
@@ -3479,6 +2195,111 @@ components:
             '
           maxLength: 40
           example: 5DA...27
+    RQDeviceTokenBinding:
+      type: object
+      required:
+      - tokenRequestorID
+      - tokenReferenceID
+      - panReferenceID
+      - walletAccountEmailAddressHash
+      - clientWalletAccountID
+      - deviceInfo
+      properties:
+        tokenRequestorID:
+          type: integer
+          description: 'Unique ID assigned to the client requesting the token. This value is
+
+            assigned by Visa when creating the VTS project.
+
+            '
+          example: 40022358888
+        tokenReferenceID:
+          type: string
+          description: 'Unique ID associating a token with a card. This ID can be used in
+
+            future calls to make operations related to the token in the I-TSP.
+
+            '
+          example: DNITHE30194726875288888
+        panReferenceID:
+          type: string
+          description: 'Unique ID representing a card. This ID can be used in future calls
+
+            referred to the card in the Tokenization flow.
+
+            '
+          example: V-3019231458906209630635
+        walletAccountEmailAddressHash:
+          type: string
+          description: 'Hash of the email from which the account is opened in the wallet
+
+            that sends the request.
+
+            '
+          maxLength: 64
+        clientWalletAccountID:
+          type: string
+          description: 'Identifier of the wallet that sends the request.
+
+            Client provided consumer ID that identifies the wallet account
+
+            holder entity
+
+            '
+          maxLength: 32
+        deviceInfo:
+          $ref: '#/components/schemas/ObjDeviceInformation_ForBinding'
+        tokenUserInfo:
+          $ref: '#/components/schemas/ObjTokenUserInfo'
+        merchantInfo:
+          $ref: '#/components/schemas/ObjMerchantInfo'
+    ObjCheckEligibilityContactInfo:
+      type: object
+      properties:
+        contactWebsite:
+          type: string
+          description: Customer Service website of the issuing bank
+          maxLength: 128
+          example: https://issuer.com
+        contactEmail:
+          type: string
+          description: Customer Service email address of the issuing bank
+          maxLength: 32
+          example: user@issuer.com
+        contactNumber:
+          type: string
+          description: Customer service phone number of the issuing bank
+          maxLength: 32
+          example: 800-000-0000
+        contactName:
+          type: string
+          description: Name of the issuing bank
+          maxLength: 32
+          example: Issuer
+    ObjTermsAndConditions:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 36
+          description: 'ID for Terms and Conditions that were accepted by the consumer.
+
+            It is not returned for Card on File.
+
+            '
+          example: 13c5e2ba-eb5c-432d-a027-97ddaf109af1
+        date:
+          type: string
+          description: 'Timestamp when Terms and Conditions are acted upon by consumer.
+
+            It is not returned for Card on File.
+
+            UTC Format in epoch seconds The UNIX_UTC_timestamp is a UNIX Epoch
+
+            timestamp. The value is in seconds
+
+            '
+          example: 111115
     RS400Tk:
       type: object
       properties:
@@ -3501,6 +2322,494 @@ components:
             '
           minLength: 24
           maxLength: 24
+    RQCardInfo:
+      type: object
+      required:
+      - cardIdList
+      properties:
+        cardIdList:
+          type: array
+          description: 'List of card ids. Each id corresponds to a card whose information is requested.
+
+            '
+          example:
+          - 866f4af6-69a8-4c51-9940-95bdd05124c6
+          - f18eaabb-bdce-43eb-b17a-e5560f36687c
+    ObjExpirationDate:
+      type: object
+      required:
+      - month
+      - year
+      properties:
+        month:
+          type: string
+          description: Month of expiration date
+          maxLength: 2
+          example: 7
+        year:
+          type: string
+          description: Year  of expiration date
+          maxLength: 4
+          example: 2016
+    ObjCardInfoList:
+      type: object
+      required:
+      - cardId
+      - cardProduct
+      - cardProductId
+      - cardStatus
+      - cardStatusId
+      - cardType
+      - cardTypeId
+      - customerName
+      - expirationDate
+      - maskedNumber
+      - pan
+      properties:
+        cardId:
+          type: string
+          description: 'Card Id assocated to card
+
+            '
+          example: 866f4af6-69a8-4c51-9940-95bdd05124c6
+        cardProduct:
+          type: string
+          description: 'Product of card
+
+            '
+          example: Lynk Visa Debit
+        cardProductId:
+          type: string
+          description: 'Product Id of card
+
+            '
+          example: '2'
+        cardStatus:
+          type: string
+          description: 'Status of card
+
+            '
+          example: Active
+        cardStatusId:
+          type: string
+          description: 'Status Id of card
+
+            '
+          example: '1'
+        cardType:
+          type: string
+          description: 'Type of card
+
+            '
+          example: Debit
+        cardTypeId:
+          type: string
+          description: 'Type Id of card
+
+            '
+          example: 1"
+        customerName:
+          type: string
+          description: 'Name of customer
+
+            '
+          example: Gen Lynk
+        expirationDate:
+          type: string
+          description: 'Expiration date of card
+
+            '
+          example: '2810'
+        maskedNumber:
+          type: string
+          description: 'Masked PAN
+
+            '
+          example: '************8603'
+        pan:
+          type: string
+          description: 'PAN of card
+
+            '
+          example: '4537850008998603'
+    RSApproveProvision200:
+      type: object
+      properties:
+        actionCode:
+          type: string
+          description: "Action code to indicate Visa for which flow it should go.\nIn case the provisioning of the token is approved, the values are:\n\n- 00 - Green path, indicates that the token is provisioned and\n  automatically activated for payments.\n- 85 - Yellow path, indicates that the token is provisioned and the\n  client must be authenticated to activate the token. In case the\n  provisioning is not approved, the code must be within the following.\n- N7 - incorrect CVV2\n- 14 - Invalid card number\n- 54 - Invalid expiration date\n- 05 - Generic rejection\n- 96 - Internal system error\n"
+          enum:
+          - '00'
+          - '85'
+          - N7
+          - '14'
+          - '54'
+          - '05'
+          - '96'
+          example: '00'
+        addressVerificationResultCode:
+          type: string
+          description: 'Code that describes the result of an address verification.
+
+            '
+          maxLength: 1
+        cvv2ResultsCode:
+          type: string
+          description: "CVV2 verification from Visa\n\n- M - Visa verified the CVV2 enter by the user in the wallet.\n- N - Visa couldn’t verified the CVV2 enter by the user in the wallet,\n  meaning the CVV2 enter is incorrect.\n- P - Visa didn’t verify the CVV2. Is null when cvv is optional\n"
+          enum:
+          - M
+          - N
+          - P
+          maxLength: 1
+        issuerSpecialConditionCodes:
+          type: string
+          description: "Supported for issuers participating in 0100 TAR.The issuer can send\nvalues for this element in the 0100 TAR response.\n- If the issuer sends a value in the 0100 TAR, it will be sent in\n  this element of the Get CVM.\n- If no value is sent in 0100 TAR or if the issuer does not\n  participate in TAR, this element will not be present.\n"
+          maxLength: 100
+        issuerDiscretionaryData:
+          $ref: '#/components/schemas/ObjApproveProvisionIssuerDiscretionaryData'
+    RSCardholderVerificationMethods200:
+      type: object
+      required:
+      - stepUpMethods
+      properties:
+        stepUpMethods:
+          type: array
+          $ref: '#/components/schemas/ObjStepUpMethods'
+        responseCode:
+          type: string
+          description: 'This field is present when the field otpReason is:
+
+            TOKEN_DEVICE_BINDING, CARDHOLDER_STEPUP o TRUSTED_LISTING_ENROLLMENT
+
+
+            Allowed values:
+
+            - APPROVED
+
+            - STEPUP
+
+            - DECLINED
+
+            '
+          enum:
+          - APPROVED
+          - STEPUP
+          - DECLINED
+          example: APPROVED
+    RS500Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
+    ObjRpinEnrollment:
+      type: object
+      properties:
+        responseStatus:
+          type: string
+          description: 'RPIN enrollment response status.
+
+            Available values:
+
+            - S
+
+            - F
+
+            '
+          enum:
+          - S
+          - F
+        rejectCode:
+          type: string
+          maxLength: 2
+          description: 'Contains the Reject Code for the failure. Present only when the Response Status = F.
+
+            '
+          example: ER
+        rejectDesc:
+          type: string
+          maxLength: 100
+          description: 'Contains the Reject Reason for the failure. Present only when the Response Status = F.
+
+            '
+          example: ERROR DETAIL
+    RQSendPasscode:
+      type: object
+      required:
+      - tokenRequestorID
+      - lifeCycleTraceID
+      - encryptedData
+      properties:
+        tokenRequestorID:
+          type: integer
+          description: 'Unique ID assigned to the client requesting the token. This value is
+
+            assigned by Visa when creating the VTS project.
+
+            '
+          example: 40022358888
+        tokenReferenceID:
+          type: string
+          description: 'Unique ID associating a token with a card. This ID can be used in
+
+            future calls to make operations related to the token in the I-TSP.
+
+            '
+          example: DNITHE30194726875288888
+        panReferenceID:
+          type: string
+          description: 'Unique ID representing a card. This ID can be used in future calls
+
+            referred to the card in the Tokenization flow.
+
+            '
+          example: V-3019231458906209630635
+        clientWalletAccountID:
+          type: string
+          description: 'Identifier of the wallet that sends the request.
+
+            Client provided consumer ID that identifies the wallet account holder entity
+
+            '
+          maxLength: 32
+        otpMaxReached:
+          type: boolean
+          description: "\tIf this field is active, it means the user with the referenced\n  token has exceeded the number of requests for authentication\n  methods or OTP requests, thus, the response must not include the\n  value when requesting them again.\n"
+        otpMethodIdentifier:
+          type: string
+          description: 'Unique ID that allows to associate an OTP action to the cardholder.
+
+            This value is delivered by the issuer when the I-TSP calls the
+
+            endpoint Cardholder Verification Methods.
+
+            '
+          maxLength: 32
+        otpValue:
+          type: string
+          description: 'OTP Value
+
+            '
+          maxLength: 8
+        OtpReason:
+          type: string
+          description: 'OTP reason The descriptions may vary in agreement with the issuer.
+
+
+            Allowed values:
+
+            - PROVISIONING
+
+            - FPAN_NOTIFICATIONS
+
+            - PAYMENT
+
+            - TOKEN_DEVICE_BINDING
+
+            - CARDHOLDER_STEPUP
+
+            - TRUSTED_LISTING_ENROLLMENT
+
+            '
+          enum:
+          - PROVISIONING
+          - FPAN_NOTIFICATIONS
+          - PAYMENT
+          - TOKEN_DEVICE_BINDING
+          - CARDHOLDER_STEPUP
+          - TRUSTED_LISTING_ENROLLMENT
+        otpExpirationDate:
+          type: string
+          description: 'Token expiration date
+
+
+            Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+
+            '
+        deviceInfo:
+          $ref: '#/components/schemas/ObjDeviceInformation'
+        encryptedData:
+          type: object
+          description: 'Encrypted payload data Only primaryAccountNumber needs to be
+
+            provided in cardholderInfo.
+
+            '
+          properties:
+            cardholderInfo:
+              $ref: '#/components/schemas/ObjSendPasscodeCardHolderInfo'
+        tokenInfo:
+          $ref: '#/components/schemas/ObjTokenInfo'
+    RSDeviceTokenBinding200:
+      type: object
+      required:
+      - actionCode
+      properties:
+        actionCode:
+          type: string
+          description: "Action code to indicate Visa for which flow it should go.\nIn case the provisioning of the token is approved, the values are:\n\n- 00 - Green path, indicates that the token is provisioned and\n  automatically activated for payments.\n- 85 - Yellow path, indicates that the token is provisioned and the\n  client must be authenticated to activate the token. In case the\n  provisioning is not approved, the code must be within the following.\n- N7 - incorrect CVV2\n- 14 - Invalid card number\n- 54 - Invalid expiration date\n- 05 - Generic rejection\n- 96 - Internal system error\n"
+          enum:
+          - '00'
+          - '85'
+          - N7
+          - '14'
+          - '54'
+          - '05'
+          - '96'
+          example: '00'
+    ObjStepUpMethods:
+      type: object
+      required:
+      - type
+      - value
+      - identifier
+      properties:
+        type:
+          type: string
+          description: 'It is required when the authentication method of the cardholder is
+
+            returned.
+
+
+            Allowed values:
+
+            - OTPSMS
+
+            - OTPEMAIL
+
+            - APP_TO_APP
+
+            - CUSTOMERSERVICE
+
+            - OUTBOUNDCALL
+
+            '
+          enum:
+          - OTPSMS
+          - OTPEMAIL
+          - APP_TO_APP
+          - CUSTOMERSERVICE
+          - OUTBOUNDCALL
+          maxLength: 32
+          example: OTPSMS
+        value:
+          type: string
+          description: 'Value of the identification method of the cardholder.
+
+            '
+          maxLength: 64
+        identifier:
+          type: string
+          description: 'Identifier of the identification method of the cardholder that can
+
+            be used for future calls to send the OTP.
+
+            '
+          maxLength: 32
+        sourceAddress:
+          type: string
+          description: 'Indicates the source address from which the OTP is sent.
+
+            '
+          maxLength: 64
+        otpMethodPlatform:
+          type: string
+          description: 'Used with the APP_TO_APP type, this field contains the appropriate
+
+            OS platform for the associated issuer mobile banking application.
+
+
+            Authorized values:
+
+            - IOS
+
+            - ANDROID
+
+            - WINDOWS
+
+            - WEB
+
+            '
+          enum:
+          - IOS
+          - ANDROID
+          - WINDOWS
+          - WEB
+          maxLength: 64
+    ObjCardHolderInfo_Provisioning:
+      type: object
+      description: "Object that contains the related information to the customer cards, only PAN and Expiry Date are required; \nin some cases CVV is present, please, follow the applicable cases.\n"
+      required:
+      - primaryAccountNumber
+      - expirationDate
+      properties:
+        primaryAccountNumber:
+          type: string
+          description: 'Card number.
+
+            '
+          maxLength: 19
+          example: XX25XX25XX25XX25
+        expirationDate:
+          type: object
+          properties:
+            month:
+              type: string
+              example: 08
+            year:
+              type: string
+              example: '2028'
+        cvv2:
+          type: string
+          description: 'CVV2 value associated to the card.
+
+            This field could contain value when the PAN Source is KEY_ENTERED
+
+            '
+          maxLength: 4
+          example: '808'
+    ObjNotificationEncryptedData:
+      type: object
+      description: 'Encrypted payload data. When this value is decrypted the fields are
+
+        conditional to the type of the notification consider the
+
+        messageReasonCode to be secure about what values could be contained.
+
+        When eventType is TOKEN_CREATED the encrypted payload can contain
+
+        Cardholder Information Token Information Risk Information.
+
+        When eventType is TOKEN_STATUS_UPDATED can contain a Risk
+
+        Information Structure.
+
+        Not present on evenType PAN_UPDATED or CARD_METADATA_UPDATED.
+
+        '
+      maxLength: 7000
+      properties:
+        cardholderInfo:
+          $ref: '#/components/schemas/ObjCardHolderInfo'
+        tokenInfo:
+          $ref: '#/components/schemas/ObjTokenInfo'
+        deviceInfo:
+          $ref: '#/components/schemas/ObjDeviceInformation'
+        riskInfo:
+          $ref: '#/components/schemas/ObjRiskInfo'
     ObjDeviceInformation_ForBinding:
       type: object
       description: 'Device Information containing the device model.
@@ -3757,110 +3066,702 @@ components:
           - CLOUD
           maxLength: 3
           example: SOFTWARE
+    ObjReplaceEnrollment:
+      type: object
+      properties:
+        responseStatus:
+          type: string
+          description: 'Response status value.
+
+            Available values:
+
+            - S
+
+            - W
+
+            - F
+
+            '
+          enum:
+          - S
+          - W
+          - F
+        rejectCode:
+          type: string
+          maxLength: 2
+          description: 'Contains the Reject Code for the failure. Present only when the Response Status = F.
+
+            '
+          example: ER
+        rejectDesc:
+          type: string
+          maxLength: 100
+          description: 'Contains the Reject Reason for the failure. Present only when the Response Status = F.
+
+            '
+          example: ERROR DETAIL
+    ObjAccountLevelInfoResp:
+      type: object
+      properties:
+        rpinEnrollment:
+          $ref: '#/components/schemas/ObjRpinEnrollment'
+        replaceEnrollment:
+          $ref: '#/components/schemas/ObjReplaceEnrollment'
+        linkEnrollment:
+          $ref: '#/components/schemas/ObjLinkEnrollment'
+    RQApproveProvision:
+      type: object
+      required:
+      - tokenRequestorID
+      - tokenReferenceID
+      - panReferenceID
+      - panSource
+      - walletAccountEmailAddress
+      - clientWalletAccountID
+      - tokenInfo
+      - encryptedData
+      properties:
+        tokenRequestorID:
+          type: integer
+          description: 'Unique ID assigned to the client requesting the token.
+
+            '
+          example: 40022358888
+        tokenReferenceID:
+          type: string
+          description: 'Unique ID associating a token with a card. This ID can be used in
+
+            future calls to make operations related to the token in the I-TSP.
+
+            '
+          example: DNITHE30194726875288888
+        panReferenceID:
+          type: string
+          description: 'Unique ID representing a card. This ID can be used in future calls
+
+            referred to the card in the Tokenization flow.
+
+            '
+          example: V-3019231458906209630635
+        panSource:
+          type: string
+          description: 'Origin of the information of the PAN.
+
+
+            Allowed values:
+
+            - KEY_ENTERED
+
+            - ON_FILE
+
+            - MOBILE_BANKING_APP
+
+            - TOKEN
+
+            - CHIP_DIP
+
+            - CONTACTLESS_TAP
+
+            '
+          enum:
+          - KEY_ENTERED
+          - ON_FILE
+          - MOBILE_BANKING_APP
+          - TOKEN
+          - CHIP_DIP
+          - CONTACTLESS_TAP
+          example: KEY_ENTERED
+        cvv2ResultsCode:
+          type: string
+          description: "Result code of the validation of CVV2 made by VISA.\nAvailable Values:\n- M: The CVV2 is match.\n- N: The CVV2 enter by the user is incorrect.\n- P: The CVV2 was not validate.\n- S: Indicates that V.I.P. or the issuer was unable to perform CVV2\n  verification.\n\n- U: Issuer was not available does not participate in the CVV2\n  Service or that STIP has responded to an issuer-unavailable\n  response.\n\n-  NULL: When the provisioning process occured without CVV\n"
+          enum:
+          - M
+          - N
+          - P
+          - S
+          - U
+          - null
+          maxLength: 1
+          example: M
+        walletAccountEmailAddress:
+          type: string
+          description: 'Hash of the email account from which the account is opened in the
+
+            wallet that sends the request.
+
+            '
+          maxLength: 64
+          example: 5DA...27
+        clientWalletAccountID:
+          type: string
+          description: 'Identifier of the wallet that sends the request.
+
+            Client provided consumer ID that identifies the wallet account holder
+
+            entity.
+
+            '
+          maxLength: 32
+          example: 5DA...D8
+        addressVerificationResultCode:
+          type: string
+          description: 'Code that describes the result of an address verification.
+
+            '
+          maxLength: 1
+          example: 5DA...D8
+        ConsumerEntryMode:
+          type: string
+          description: 'Method of consumer entry.
+
+
+            Available values:
+
+            - KEY_ENTERED
+
+            - CAMERA_CAPTURED
+
+            - UNKNOWN
+
+            '
+          enum:
+          - KEY_ENTERED
+          - CAMERA_CAPTURED
+          - UNKNOWN
+          example: KEY_ENTERED
+        locale:
+          type: string
+          description: 'The language for the app,if need a country code should be separated
+
+            using a “_“.
+
+
+            Example: en_US
+
+
+            Format: String; ISO language ISO 639-1 and alpha-2 country code
+
+            ISO 3166-1 alpha-2
+
+            '
+          maxLength: 5
+          example: en_US
+        deviceInfo:
+          $ref: '#/components/schemas/ObjDeviceInformation'
+        tokenInfo:
+          $ref: '#/components/schemas/ObjTokenInfo'
+        encryptedData:
+          type: object
+          description: 'Represents the encrypted payload, contains Cardholder Information and Risk Information with the applicable information.
+
+            '
+          properties:
+            cardholderInfo:
+              $ref: '#/components/schemas/ObjCardHolderInfo_Provisioning'
+            riskInfo:
+              $ref: '#/components/schemas/ObjRiskInfo'
+    ObjBillingAddress:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Physical address or shipping address.
+          maxLength: 100
+          example: Novo InApp
+        line1:
+          type: string
+          description: 'First line of the address. Usually for the complete address,
+
+            this is Required for the US and Canada.
+
+            '
+          maxLength: 256
+          example: 10808 Research Boulevard
+        line2:
+          type: string
+          description: 'Second line, usually corresponds to house, apartment,
+
+            suite, etc.
+
+            '
+          maxLength: 256
+          example: Provisioning Boulevard
+        city:
+          type: string
+          description: Name of the city.
+          maxLength: 100
+          example: Austin
+        state:
+          type: string
+          description: 'State or province in the country.This field must be valid
+
+            for the respective country.The country will be related to the
+
+            country of the bank.
+
+            '
+          example: TX
+        postalCode:
+          type: string
+          description: 'Postal Code.
+
+
+            Condition: If address is provided this field has the following
+
+            characteristics.
+
+            '
+          maxLength: 40
+          example: 78759
+    ObjRiskInfo:
+      type: object
+      description: 'Structure with risk information.
+
+
+        This object can be sent when messageReasonCode is equal to TOKEN_CREATED
+
+        '
+      properties:
+        walletProviderRiskAssessment:
+          type: string
+          maxLength: 1
+          description: 'Risk rating of the wallet, it can be one of the following values:
+
+            - 0: Unconditionally approved.
+
+            - 1: Conditionally approved with further consumer verification.
+
+            - 2: Not approved
+
+            '
+          enum:
+          - 0
+          - 1
+          - 2
+        walletProviderRiskAssessmentVersion:
+          type: string
+          maxLength: 10
+          description: 'Information for the Issuer related to the security level of the wallet
+
+            '
+        walletProviderAccountScore:
+          type: string
+          maxLength: 2
+          description: 'The wallet provider account score. Score value is between 1 and 5,
+
+            indicating the confidence level of the account, where 5 indicates
+
+            the most confidence on the account.
+
+            '
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        walletProviderDeviceScore:
+          type: string
+          maxLength: 2
+          description: The wallet provider device score. Score value is between 1 and 5, indicating the confidence level of the device, where 5 indicates the most confidence.
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+        walletProviderReasonCodes:
+          type: string
+          maxLength: 100
+          description: Wallet provider reason codes, in a comma-separated format.
+        deviceBluetoothMac:
+          type: string
+          maxLength: 24
+          description: MAC address for Bluetooth.
+        deviceIMEI:
+          type: string
+          maxLength: 24
+          description: Hardware ID of the device.
+        deviceSerialNumber:
+          type: string
+          maxLength: 24
+          description: Serial number of the mobile device.
+        deviceTimeZone:
+          type: string
+          maxLength: 5
+          description: Time-zone abbreviation.
+        deviceTimeZoneSetting:
+          type: string
+          description: 'Device time-zone setting.
+
+            Available Values:
+
+            - NETWORK_SET
+
+            - CONSUMER_SET
+
+            '
+          enum:
+          - NETWORK_SET
+          - CONSUMER_SET
+        osID:
+          type: string
+          maxLength: 24
+          description: OS ID to allow building velocity and risk rules.
+        simSerialNumber:
+          type: string
+          maxLength: 24
+          description: SIM serial number of the mobile device
+        deviceLostMode:
+          type: string
+          maxLength: 4
+          description: Number of days. Values are up to 9999 number of days.
+        daysSinceConsumerDataLastAccountChange:
+          type: string
+          maxLength: 4
+          description: 'Number of days since account settings were changed (in case of a
+
+            password update). If the number of days exceeds 9999, it will stay
+
+            at 9999.
+
+            '
+        accountHolderName:
+          type: string
+          maxLength: 64
+          description: Account-holder’s name.
+        walletProviderPANAge:
+          type: string
+          maxLength: 4
+          description: 'Length of time (in days) that a PAN has been on file for
+
+            a user.
+
+            '
+        walletAccountHolderCardNameMatch:
+          type: string
+          maxLength: 4
+          description: 'Name of the accountholder and name of cardholder matched.
+
+            Available Values:
+
+            - Y: Indicates the two names match.
+
+            - N: Indicates the two names do not match.
+
+            '
+          enum:
+          - Y
+          - N
+        accountToDeviceBindingAge:
+          type: string
+          maxLength: 4
+          description: 'Number of days this device has been used by this account.
+
+            If the number of days exceeds 9999, it will stay at 9999.
+
+
+            Example: 9999
+
+            '
+        userAccountAge:
+          type: string
+          maxLength: 4
+          description: 'Number of days since an account for this user has existed.
+
+            Values are 0 through 9999.
+
+
+            Example: 9999
+
+            '
+        walletAccountAge:
+          type: string
+          description: 'Number of days since the user created a wallet account or started
+
+            using a wallet. If the number of days exceeds 256, it will stay at 256.
+
+            '
+        provisioningAttemptsOnDeviceIn24Hours:
+          type: string
+          maxLength: 2
+          description: 'Number of provisioning attempts on this device in the past 24 hours.
+
+            If the number of attempts exceeds 99, it will stay at 99.
+
+            '
+          example: 99
+        distinctCardholderNames:
+          type: string
+          maxLength: 2
+          description: 'Number of distinct cardholder names used in provisioning from this
+
+            device.
+
+            '
+          example: 99
+        deviceCountry:
+          type: string
+          maxLength: 2
+          description: 'Country of device at time of provisioning. ISO 3166-1, alpha-2
+
+            '
+          example: US
+        walletAccountCountry:
+          type: string
+          maxLength: 2
+          description: Country of accountholder. ISO 3166-1, alpha-2
+          example: US
+        suspendedCardsInAccount:
+          type: string
+          maxLength: 2
+          description: 'Number of cards suspended in the account.
+
+            If the number of days exceeds 99, it will stay at 99.
+
+            '
+          example: 99
+        daysSinceLastAccountActivity:
+          type: string
+          maxLength: 4
+          description: 'Number of days since the last activity on account.
+
+            If the number of days exceeds 9999, it will stay at 9999.
+
+            '
+          example: 9999
+        numberOfTransactionsInLast12months:
+          type: string
+          maxLength: 4
+          description: 'Number of transactions on this account in the last 12 months.
+
+            If the number of transactions exceeds 9999, it will stay at 9999.
+
+            '
+          example: 9999
+        numberOfActiveTokens:
+          type: string
+          maxLength: 2
+          description: 'Number of active tokens on this account.
+
+            If the number of tokens exceeds 99, it will stay at 99.
+
+            '
+          example: 99
+        deviceWithActiveTokens:
+          type: string
+          maxLength: 2
+          description: 'Number of devices for this user with the same token.
+
+            If the number of tokens exceeds 99, it will stay at 99.
+
+            '
+          example: 99
+        activeTokensOnAllDeviceForAccount:
+          type: string
+          maxLength: 4
+          description: 'Number of active tokens for this user, across all devices.
+
+            If the number of tokens exceeds 9999, it will stay at 9999.
+
+            '
+          example: 9999
+        visaTokenScore:
+          type: string
+          maxLength: 2
+          description: 'Value indicating the degree of risk associated with the token.
+
+            Numeric value is 01 through 99.
+
+            '
+        visaTokenDecisioning:
+          type: number
+          maxLength: 2
+          description: "Results from the token provisioning service.\n\nAvailable values:\n- 00: Provision and activate\n- 05: Do not provision\n- 85: Provision in inactive state (requires further consumer\n  authentication prior to activation - Yellow Flow)\n"
+          enum:
+          - '00'
+          - '05'
+          - '85'
+        riskAssessmentScore:
+          type: string
+          maxLength: 2
+          description: 'Values are 0 through 99. A higher value indicates a higher risk.
+
+            This is calculated by the AA Risk Engine, based on the PAN’s
+
+            transaction pattern (long term and short term).
+
+            '
+        issuerSpecialConditionCodes:
+          type: string
+          maxLength: 100
+          description: 'Supported for issuers participating in 0100 TAR. The issuer can send
+
+            values for this element in the 0100 TAR response.
+
+
+            If the issuer sends a value in the 0100 TAR, it will be sent in this
+
+            element of the Get CVM.
+
+            If no value is sent in 0100 TAR or if the issuer does not participate
+
+            in TAR, this element will not be present.
+
+            '
+    ObjApproveProvisionIssuerDiscretionaryData:
+      type: object
+      properties:
+        fileControlInformation:
+          type: string
+          description: 'File control information.
+
+
+            hexBinary, hex characters must be uppercase; max length of 128 bytes.
+
+            '
+        issuerApplicationDiscretionaryData:
+          type: string
+          description: 'Discretionary data
+
+            '
+    RSErrorCode400:
+      type: object
+      description: 'Error message code only if the HTTP status is different from 200.
+
+        This field shows the I-TSP if an error was generated in the request.
+
+        '
+      properties:
+        errorCode:
+          type: string
+          description: 'Error response Codes:
+
+            - ISE40000: ISS_ERROR_REQUIRED_DATA_MISSING
+
+            - ISE40005: ISS_ERROR_INVALID_FIELD_LENGTH
+
+            - ISE40006: ISS_ERROR_INVALID_FIELD_TYPE
+
+            - ISE40010: ISS_ERROR_CRYPTOGRAPHY_ERROR
+
+            - ISE40013: ISS_ERROR_INVALID_EXP_DATE
+
+            - ISE40001: ISS_ERROR_PAN_INELIGIBLE
+
+            '
+          enum:
+          - ISE40000
+          - ISE40005
+          - ISE40006
+          - ISE40010
+          - ISE40013
+          - ISE40001
+    ObjCheckEligibilityApplicationInfo:
+      type: object
+      properties:
+        supportsTokenNotifications:
+          type: boolean
+          description: 'Indicates whether the card supports token claims for transactions
+
+            originated from the device.
+
+            '
+          enum:
+          - true
+          - false
+        supportsFPANNotifications:
+          type: boolean
+          description: 'Indicates if the card supports FPAN Notifications for all transactions
+
+            that point to the FPAN.
+
+            '
+          enum:
+          - true
+          - false
+        transactionServiceURL:
+          type: string
+          description: 'Transaction history URL (TransactionDetails) of the issuer''s web
+
+            service.
+
+            '
+          maxLength: 128
+        messageServiceURL:
+          type: string
+          description: 'URL of the message/web service offer. It conforms to the API as
+
+            described in the SOPs and Issuers in the Card Notification Services
+
+            API Specification.
+
+            '
+          maxLength: 32
+        transactionPushTopic:
+          type: string
+          description: The issuer notifies the device of new available transactions.
+          maxLength: 128
+        messagePushTopic:
+          type: string
+          description: 'The notification push provider notifies the device of new
+
+            available messages.
+
+            '
+          maxLength: 128
+        appLaunchURL:
+          type: string
+          description: 'URL given to the issuer associated with the mobile application upon
+
+            launch. If this key is present, the AssociatedStoreIdentifiers key
+
+            must also be present.
+
+            '
+          maxLength: 128
+        appLaunchURLScheme:
+          type: string
+          description: 'Registered app URL scheme, in order to deep link from transaction
+
+            notifications and display all transaction notifications.
+
+            App ID must be included in the associated ApplicationIdentifiers
+
+            matrix and the application itself must register for the URL scheme
+
+            specified in this key.
+
+            '
+          maxLength: 32
+        associatedStoreIdentifiers:
+          type: array
+          description: 'A list of mobile app store items identifiers for the partner issuer''s
+
+            mobile banking app. The format is specific to a mobile store/phone
+
+            platform. Only one item from the list is used.
+
+            '
+          items:
+            type: string
+            maxLength: 20
+        associatedApplicationIdentifiers:
+          type: array
+          description: 'An array of associated application identifiers. Similar to
+
+            AssociatedStoreIdentifiers, but with explicit application IDs
+
+            (only applicable to SE DWP).
+
+            '
+          items:
+            type: integer
     ObjLinkEnrollment:
       type: object
       properties:
         groupResp:
           $ref: '#/components/schemas/ObjGroupResp'
-    ObjFinancialAccountData:
-      required:
-      - countryCode
-      - financialAccountId
-      - interbankCardAssociationId
-      type: object
-      properties:
-        financialAccountId:
-          type: string
-          description: The identifier of the financial account being tokenized.  This could be a bank account number or other types of financial accounts.
-          minLength: 9
-          maxLength: 64
-          example: '5123456789012345'
-        interbankCardAssociationId:
-          type: string
-          description: The id assigned by Mastercard to the financial institution.
-          minLength: 3
-          maxLength: 11
-          example: '1234'
-        countryCode:
-          type: string
-          description: The country of the financial account. Expressed as a 3-letter (alpha-3) country code as defined in ISO 3166-1.
-          minLength: 3
-          maxLength: 3
-          example: GBR
-      description: The financial account information for the account that is being tokenized. – Required if there is a bank account or other type of financial account being tokenized. Only applicable for MasterCard.
-    prm_sequenceNumber:
-      type: string
-      description: Sequence number of the Token. Conditional – required in AuthorizeServiceResponseData. Optional otherwise.
-      minLength: 2
-      maxLength: 2
-      example: '01'
-    ObjAccountHolderAddress:
-      type: object
-      properties:
-        line1:
-          type: string
-          description: First line of the billing address.
-          minLength: 1
-          maxLength: 64
-          example: 100 1st Street
-        line2:
-          type: string
-          description: Second line of the billing address.
-          minLength: 1
-          maxLength: 64
-          example: Apt. 4B
-        city:
-          type: string
-          description: The city of the billing address.
-          minLength: 1
-          maxLength: 32
-          example: St. Louis
-        countrySubdivision:
-          type: string
-          description: The country subdivision (for example, the state in the U.S.) of the billing address.
-          minLength: 1
-          maxLength: 12
-          example: MO
-        postalCode:
-          type: string
-          description: The postal code (for example, zipcode in the U.S.) of the billing address.
-          minLength: 1
-          maxLength: 16
-          example: '61000'
-        country:
-          type: string
-          description: The country of the billing address. Expressed as a 3-letter (alpha-3) country code as defined in ISO 3166-1.
-          minLength: 3
-          maxLength: 3
-          example: USA
-      description: The address for the account holder. Verified as part of reaching the digitization decision. Max length - Not applicable.
-    prm_decisionMadeBy:
-      type: string
-      description: "Related to how the decision was taken, aply for MasterCard; \nfor VISA the content is goint to be UNDEFINED.\n"
-      enum:
-      - ELIGIBILITY_REQUEST
-      - AUTHORIZATION_REQUEST
-      - RULES
-      - UNDEFINED
-      example: RULES
-      maxLength: 14
-    prm_status:
-      type: string
-      description: "The current status of token.  Available Values: INACTIVE - Token has not yet been activated ACTIVE - Token is active and ready to transact SUSPENDED - Token is suspended and unable to transact DEACTIVATED - Token has been permanently deactivated.  Present only if reasonCode = \"STATUS_UPDATE\". \n"
-      minLength: 1
-      maxLength: 32
-      example: ACTIVE
-    prm_tokenAssuranceLevel:
-      type: integer
-      description: The assurance level of the token. Between 0 and 99.
-      minLength: 1
-      maxLength: 2
-    prm_tokenRequestorID:
-      type: integer
-      description: 'Unique ID assigned to the entity that is requesting the token.
-
-        '
-      example: 40022358888
     ObjActivationMethod:
       type: object
       required:
@@ -3883,43 +3784,85 @@ components:
           type: string
           description: "Unique ID that allows to associate an OTP action to the cardholder. \nThis value is delivered by the issuer when the I-TSP calls the \nendpoint Cardholder Verification Methods. Only available for VISA.\n"
           maxLength: 32
-    RSInternalServerError:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.22.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2022-04-25T23:19:12.000Z'
-          minLength: 24
-          maxLength: 24
-    ObjcardAccountData:
+    prm_tokenUniqueReference:
+      type: string
+      description: "Unique ID associating a token with a card. \nThis ID can be used in future calls to make operations related to the token in the I-TSP, \nfor example events related to the management of the life cycle.\n"
+      example: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+      maxLength: 64
+    ObjencryptedPayload_StatusUpdate:
       required:
-      - accountNumber
+      - panUniqueReference
       type: object
       properties:
-        accountNumber:
+        panUniqueReference:
           type: string
-          $ref: '#/components/schemas/prm_accountNumber'
-        expiryMonth:
+          $ref: '#/components/schemas/prm_panUniqueReference'
+        source:
           type: string
-          $ref: '#/components/schemas/prm_CardExpiryMonth'
-        expiryYear:
+          $ref: '#/components/schemas/prm_source'
+        dataValidUntilTimestamp:
           type: string
-          $ref: '#/components/schemas/prm_CardExpiryYear'
-        securityCode:
+          description: "The date/time after which this encrypted object is considered invalid. If present, all systems must reject this encrypted object after this time and treat it as invalid data. Must be expressed in ISO 8601 extended format as one of the following:\n  - YYYY-MM-DDThh:mm:ss[.sss]Z\n  - YYYY-MM-DDThh:mm:ss[.sss]±hh:mm\n\nWhere [.sss] is optional and can be 1 to 3 digits. Must be a value no more than 30 days in the future. Mastercard recommends using a value of (Current Time + 30 minutes).\n"
+          minLength: 20
+          maxLength: 29
+          example: 2015-07-04 12:09:56.123000-07:00
+        cardAccountData:
+          $ref: '#/components/schemas/ObjcardAccountData'
+          description: Required if reasonCode is "FUNDING_ACCOUNT_UPDATE".
+        tokenData:
+          $ref: '#/components/schemas/ObjTokenData'
+          description: Required if reasonCode is "REDIGITIZATION_COMPLETE" or "FUNDING_ACCOUNT_UPDATE".
+        paymentAccountReference:
           type: string
-          $ref: '#/components/schemas/prm_CardSecurityCode'
-      description: The card information for the account that is being tokenized.
+          description: The unique account reference assigned to the PAN.
+          minLength: 29
+          maxLength: 29
+          example: 512381d9f8e0629211e3949a08002
+        financialAccountData:
+          $ref: '#/components/schemas/ObjFinancialAccountData'
+    prm_decision:
+      type: string
+      description: 'Status of the token.
+
+        '
+      enum:
+      - APPROVED
+      - REQUIRE_ADDITIONAL_AUTHENTICATION
+      - DECLINED
+      example: APPROVED
+      maxLength: 14
+    RQNotServiceActivated:
+      type: object
+      required:
+      - requestId
+      - reasonCode
+      - dateTime
+      - notificationBody
+      properties:
+        requestId:
+          type: string
+          $ref: '#/components/schemas/prm_requestId'
+        reasonCode:
+          type: string
+          description: 'SERVICE_ACTIVATED
+
+            '
+          example: SERVICE_ACTIVATED
+        dateTime:
+          type: string
+          description: 'dateTime. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+
+            '
+          example: 2026-07-04 19:08:56.123000+00:00
+        notificationBody:
+          type: object
+          $ref: '#/components/schemas/ObjBodyServiceActivated'
+    prm_panUniqueReference:
+      type: string
+      description: Reference to the PAN that is unique per Token Requestor.
+      minLength: 1
+      maxLength: 64
+      example: FWSPMC000000000159f71f703d2141efaf04dd26803f922b
     ObjAccountHolderData:
       type: object
       properties:
@@ -3958,87 +3901,72 @@ components:
           maxLength: 88
           example: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e93452c1b24f24a24b
       description: Information related to the account holder, such as name, address, etc.
-    RQSendVerifyCode:
-      type: object
-      required:
-      - correlationId
-      - requestId
-      - activationCode
-      - codeExpiration
-      - activationMethod
-      properties:
-        correlationId:
-          type: string
-          description: "Identification of the Tokenization Process. This value linked \nboth processes.\n"
-          example: D98765432104
-          maxLength: 14
-        requestId:
-          type: string
-          $ref: '#/components/schemas/prm_requestId'
-        tokenRequestorID:
-          type: integer
-          description: 'Unique ID assigned to the entity that is requesting the token.
-
-            '
-          example: 40022358888
-        tokenRequestorName:
-          type: string
-          description: 'Name of the token requestor.
-
-            '
-          example: My Merchant
-        tokenUniqueReference:
-          type: string
-          description: "Unique ID associating a token with a card. This ID can be used in \nfuture calls to make operations related to the token in the I-TSP, \nfor example events related to the management of the life cycle.\n"
-          example: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
-          maxLength: 64
-        panUniqueID:
-          type: string
-          description: "Unique ID representing a card. This ID can be used instead of the \nPAN number for tokenization calls.\n"
-          example: V-3019231458906209630635
-        cardId:
-          type: string
-          description: "Unique Identification for the card in NovoPayment Issuance Services.\nThis value only exists for Issuers that are clients of NovoPayment \nIssuance Services.\n"
-          maxLength: 40
-        clientWalletAccountID:
-          type: string
-          description: "Identifier of the wallet that sends the request. Client provided \nconsumer ID that identifies the wallet account holder entity. \nOnly available for VISA.\n"
-          maxLength: 32
-        otpMaxReached:
-          type: boolean
-          description: "If this field is active, it means the user with the referenced token \nhas exceeded the number of requests for authentication methods or OTP \nrequests, thus, the response must not include the value when requesting \nthem again. Only available for VISA.\n"
-        activationCode:
-          type: string
-          description: 'The value that the cardholder needs to validate his/her identity.
-
-            '
-          example: A1B2C3D4
-          maxLength: 8
-        reasonCodes:
-          type: array
-          description: "Array of OTP reason codes.\nAllowed values: \n- ADD_CARD: The account holder is being authenticated after adding \nthe card to the token requestor.\n- VERIFY_ACCOUNT: The account holder is being authenticated to verify \naccount ownership.\n- OTHER: The account holder is being authenticated for a reason not \nenumerated in this list. Conditional - Only present for Consent Service\n"
-          example:
-          - ADD_CARD
-        codeExpiration:
-          type: string
-          description: 'Token expiration date. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
-
-            '
-          example: 2026-07-04 19:08:56.123000+00:00
-        activationMethod:
-          $ref: '#/components/schemas/ObjActivationMethod'
-    prm_TokenExpiryYear:
-      type: string
-      description: The year of the expiration date. (Numeric)
-      minLength: 2
-      maxLength: 2
-      example: '15'
     prm_accountNumber:
       type: string
       description: The Primary Account Number of the card (PAN).
       minLength: 9
       maxLength: 19
       example: '5808123456789808'
+    ObjPhoneNumber:
+      type: object
+      properties:
+        countryDialInCode:
+          type: string
+          description: The country code for the phone number. E.g. 1 for US or 44 for UK.
+          minLength: 1
+          maxLength: 4
+          example: '1'
+        phoneNumber:
+          type: string
+          description: The phone number, may contain country code along with phone number when countryDialInCode is not present.
+          minLength: 1
+          maxLength: 20
+          example: '4692392391'
+      description: The mobile phone number of the account holder. Not required.
+    prm_services:
+      type: array
+      description: Array of services that are being requested for the account. Must be one of ; DIGITIZATION = Provision the Funding Account to a device. Max length - Not applicable. Type - Array [String].
+      items:
+        type: string
+        example: DIGITIZATION
+    prm_tokenAssuranceLevel:
+      type: integer
+      description: The assurance level of the token. Between 0 and 99.
+      minLength: 1
+      maxLength: 2
+    ObjcardAccountData:
+      required:
+      - accountNumber
+      type: object
+      properties:
+        accountNumber:
+          type: string
+          $ref: '#/components/schemas/prm_accountNumber'
+        expiryMonth:
+          type: string
+          $ref: '#/components/schemas/prm_CardExpiryMonth'
+        expiryYear:
+          type: string
+          $ref: '#/components/schemas/prm_CardExpiryYear'
+        securityCode:
+          type: string
+          $ref: '#/components/schemas/prm_CardSecurityCode'
+      description: The card information for the account that is being tokenized.
+    prm_requestId:
+      type: string
+      description: "Unique ID assigned to the request. Use this identification in \ncase you need to report issues.\n"
+      example: '123456'
+      maxLength: 64
+    ObjBodyTokenUpdated:
+      type: object
+      required:
+      - tokens
+      properties:
+        tokens:
+          type: array
+          description: Arrary that contains the Tokens which were updated.
+          items:
+            $ref: '#/components/schemas/ObjToken_StatusUpdate'
     prm_tokenActivatedDateTime:
       type: string
       description: 'Time Stamp in ISO 8601 format for example, 2017-07-21T17:32:28Z
@@ -4047,77 +3975,39 @@ components:
       example: '2022-04-25T23:19:12.000Z'
       minLength: 24
       maxLength: 24
-    ObjencryptedPayload_ServiceActivated:
-      required:
-      - cardAccountData
-      type: object
-      properties:
-        source:
-          type: string
-          $ref: '#/components/schemas/prm_source'
-        dataValidUntilTimestamp:
-          type: string
-          description: "The date/time after which this encrypted object is considered invalid. If present, all systems must reject this encrypted object after this time and treat it as invalid data. Must be expressed in ISO 8601 extended format as one of the following:\n  - YYYY-MM-DDThh:mm:ss[.sss]Z\n  - YYYY-MM-DDThh:mm:ss[.sss]±hh:mm\n\nWhere [.sss] is optional and can be 1 to 3 digits. Must be a value no more than 30 days in the future. Mastercard recommends using a value of (Current Time + 30 minutes).\n"
-          minLength: 20
-          maxLength: 29
-          example: 2015-07-04 12:09:56.123000-07:00
-        cardAccountData:
-          $ref: '#/components/schemas/ObjcardAccountData'
-        financialAccountData:
-          $ref: '#/components/schemas/ObjFinancialAccountData'
-        tokenData:
-          $ref: '#/components/schemas/ObjTokenData'
-          description: The token information.
-        paymentAccountReference:
-          type: string
-          description: The unique account reference assigned to the PAN.
-          minLength: 29
-          maxLength: 29
-          example: 512381d9f8e0629211e3949a08002
-        accountHolderData:
-          $ref: '#/components/schemas/ObjAccountHolderData'
-    ObjBodyServiceActivated:
+    RSIssuer_InvalidSignature:
       type: object
       required:
-      - services
-      - correlationId
-      - decision
-      - tokenInformation
-      - decisionMadeBy
-      - tokenActivatedDateTime
+      - code
+      - message
+      - datetime
       properties:
-        services:
-          type: array
-          $ref: '#/components/schemas/prm_services'
-        correlationId:
+        code:
           type: string
-          description: "Identification of the Tokenization Process. This value linked \nboth processes.\n"
-          example: D98765432104
-          maxLength: 14
-        decision:
+          description: "Presented when error codes in business logic.\nAvailable Value\n401.22.992\tInvalid signature\n"
+          enum:
+          - 401.22.992
+          maxLength: 10
+          example: VSE40007
+        message:
           type: string
-          $ref: '#/components/schemas/prm_decision'
-        decisionMadeBy:
+          description: Response code description
+          example: Invalid signature
+          maxLength: 140
+        datetime:
           type: string
-          $ref: '#/components/schemas/prm_decisionMadeBy'
-        tokenActivatedDateTime:
-          $ref: '#/components/schemas/prm_tokenActivatedDateTime'
-        numberOfActivationAttempts:
-          $ref: '#/components/schemas/prm_decisionMadeBy'
-        numberOfActiveTokens:
-          $ref: '#/components/schemas/prm_numberOfActivationAttempts'
-        tokenAssuranceLevel:
-          $ref: '#/components/schemas/prm_tokenAssuranceLevel'
-        tokenInformation:
-          type: object
-          $ref: '#/components/schemas/ObjTokenInformation_ActSer'
-    prm_cardId:
-      type: string
-      description: 'Unique Card Identifier at NovoPayment’s Issuance Service, of Original Card.
+          example: '2022-04-25T23:19:12.000Z'
+          description: 'Operation Time Stamp in ISO 8601 format<br>date-time - the date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
 
-        '
-      maxLength: 40
-      example: 5DA...27
+            '
+          minLength: 24
+          maxLength: 24
+    prm_CardExpiryYear:
+      type: string
+      description: The year of the expiration date of the card to be digitized. Note that the expiry date may not be in the past. May be omitted if the card does not have an expiry date. (Numeric).
+      minLength: 2
+      maxLength: 2
+      example: '15'
     ObjTokenInformation_ActSer:
       type: object
       required:
@@ -4207,12 +4097,332 @@ components:
           type: string
           $ref: '#/components/schemas/ObjencryptedPayload_ServiceActivated'
           description: Payload Encrypted, contains information detailed about Card, Account Cardholder and Token Details
-    prm_tokenRequestorName:
+    ObjAccountHolderAddress:
+      type: object
+      properties:
+        line1:
+          type: string
+          description: First line of the billing address.
+          minLength: 1
+          maxLength: 64
+          example: 100 1st Street
+        line2:
+          type: string
+          description: Second line of the billing address.
+          minLength: 1
+          maxLength: 64
+          example: Apt. 4B
+        city:
+          type: string
+          description: The city of the billing address.
+          minLength: 1
+          maxLength: 32
+          example: St. Louis
+        countrySubdivision:
+          type: string
+          description: The country subdivision (for example, the state in the U.S.) of the billing address.
+          minLength: 1
+          maxLength: 12
+          example: MO
+        postalCode:
+          type: string
+          description: The postal code (for example, zipcode in the U.S.) of the billing address.
+          minLength: 1
+          maxLength: 16
+          example: '61000'
+        country:
+          type: string
+          description: The country of the billing address. Expressed as a 3-letter (alpha-3) country code as defined in ISO 3166-1.
+          minLength: 3
+          maxLength: 3
+          example: USA
+      description: The address for the account holder. Verified as part of reaching the digitization decision. Max length - Not applicable.
+    prm_tokenType:
       type: string
-      description: 'Name of the token requestor.
+      description: The type of token requested for this digitization. Valid values are - SE Token is a Secure Element, this kind of token is for Wallets. - HCE Token is used for contactless payments with NFC Chip. - COF Card on File Token, normally is used for recurrent payments. - ECOM Token is used for online payments, or payments started by the end-user. - QRC Token is used for QR Payments, only applicable for VISA.
+      enum:
+      - SE
+      - HCE
+      - COF
+      - ECOM
+      - QRC
+      minLength: 1
+      maxLength: 16
+      example: ECOM
+    prm_numberOfActivationAttempts:
+      type: integer
+      description: Number of intents with the OTP.
+      minLength: 1
+      maxLength: 1
+    prm_source:
+      type: string
+      description: 'Origin of the card information.
+
+
+        Available values:
+
+        - ON_FILE
+
+        - ADDED_MANUALLY
+
+        - ADDED_VIA_APPLICATION
+
+        - ADDED_VIA_BROWSER
+
+        - EXISTING_TOKEN_CREDENTIAL
+
+        - ADDED_VIA_CHIP_DATA
 
         '
-      example: My Merchant
+      enum:
+      - ON_FILE
+      - ADDED_MANUALLY
+      - ADDED_VIA_APPLICATION
+      - ADDED_VIA_BROWSER
+      - EXISTING_TOKEN_CREDENTIAL
+      - ADDED_VIA_CHIP_DATA
+      maxLength: 32
+      example: ON_FILE
+    ObjFinancialAccountData:
+      required:
+      - countryCode
+      - financialAccountId
+      - interbankCardAssociationId
+      type: object
+      properties:
+        financialAccountId:
+          type: string
+          description: The identifier of the financial account being tokenized.  This could be a bank account number or other types of financial accounts.
+          minLength: 9
+          maxLength: 64
+          example: '5123456789012345'
+        interbankCardAssociationId:
+          type: string
+          description: The id assigned by Mastercard to the financial institution.
+          minLength: 3
+          maxLength: 11
+          example: '1234'
+        countryCode:
+          type: string
+          description: The country of the financial account. Expressed as a 3-letter (alpha-3) country code as defined in ISO 3166-1.
+          minLength: 3
+          maxLength: 3
+          example: GBR
+      description: The financial account information for the account that is being tokenized. – Required if there is a bank account or other type of financial account being tokenized. Only applicable for MasterCard.
+    prm_cardId:
+      type: string
+      description: 'Unique Card Identifier at NovoPayment’s Issuance Service, of Original Card.
+
+        '
+      maxLength: 40
+      example: 5DA...27
+    prm_TokenExpiryYear:
+      type: string
+      description: The year of the expiration date. (Numeric)
+      minLength: 2
+      maxLength: 2
+      example: '15'
+    ObjBodyServiceActivated:
+      type: object
+      required:
+      - services
+      - correlationId
+      - decision
+      - tokenInformation
+      - decisionMadeBy
+      - tokenActivatedDateTime
+      properties:
+        services:
+          type: array
+          $ref: '#/components/schemas/prm_services'
+        correlationId:
+          type: string
+          description: "Identification of the Tokenization Process. This value linked \nboth processes.\n"
+          example: D98765432104
+          maxLength: 14
+        decision:
+          type: string
+          $ref: '#/components/schemas/prm_decision'
+        decisionMadeBy:
+          type: string
+          $ref: '#/components/schemas/prm_decisionMadeBy'
+        tokenActivatedDateTime:
+          $ref: '#/components/schemas/prm_tokenActivatedDateTime'
+        numberOfActivationAttempts:
+          $ref: '#/components/schemas/prm_decisionMadeBy'
+        numberOfActiveTokens:
+          $ref: '#/components/schemas/prm_numberOfActivationAttempts'
+        tokenAssuranceLevel:
+          $ref: '#/components/schemas/prm_tokenAssuranceLevel'
+        tokenInformation:
+          type: object
+          $ref: '#/components/schemas/ObjTokenInformation_ActSer'
+    ObjBodyNotSuspiciousEv:
+      required:
+      - tokenUniqueReference
+      - events
+      type: object
+      properties:
+        tokenUniqueReference:
+          type: string
+          $ref: '#/components/schemas/prm_tokenUniqueReference'
+        tokenRequestorId:
+          type: string
+          $ref: '#/components/schemas/prm_tokenRequestorID'
+        tokenRequestorName:
+          type: string
+          $ref: '#/components/schemas/prm_tokenRequestorName'
+        cardId:
+          type: string
+          $ref: '#/components/schemas/prm_cardId'
+        status:
+          type: string
+          description: "The current status of token.  Available Values: INACTIVE - Token has not yet been activated ACTIVE - Token is active and ready to transact SUSPENDED - Token is suspended and unable to transact DEACTIVATED - Token has been permanently deactivated.  Present only if reasonCode = \"STATUS_UPDATE\". \n"
+          minLength: 1
+          maxLength: 32
+          example: ACTIVE
+        paymentAppInstanceId:
+          type: string
+          description: The identifier of the Payment App instance within a device that will be provisioned with a token. Only present when supplied by a Wallet Provider.
+          minLength: 1
+          maxLength: 48
+          example: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e
+        events:
+          $ref: '#/components/schemas/SuspiciousEvent'
+    prm_tokenRequestorID:
+      type: integer
+      description: 'Unique ID assigned to the entity that is requesting the token.
+
+        '
+      example: 40022358888
+    prm_sequenceNumber:
+      type: string
+      description: Sequence number of the Token. Conditional – required in AuthorizeServiceResponseData. Optional otherwise.
+      minLength: 2
+      maxLength: 2
+      example: '01'
+    RS200:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.22.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: 'Operation Time Stamp in ISO 8601 format date-time - the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
+
+            '
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
+    RQSendVerifyCode:
+      type: object
+      required:
+      - correlationId
+      - requestId
+      - activationCode
+      - codeExpiration
+      - activationMethod
+      properties:
+        correlationId:
+          type: string
+          description: "Identification of the Tokenization Process. This value linked \nboth processes.\n"
+          example: D98765432104
+          maxLength: 14
+        requestId:
+          type: string
+          $ref: '#/components/schemas/prm_requestId'
+        tokenRequestorID:
+          type: integer
+          description: 'Unique ID assigned to the entity that is requesting the token.
+
+            '
+          example: 40022358888
+        tokenRequestorName:
+          type: string
+          description: 'Name of the token requestor.
+
+            '
+          example: My Merchant
+        tokenUniqueReference:
+          type: string
+          description: "Unique ID associating a token with a card. This ID can be used in \nfuture calls to make operations related to the token in the I-TSP, \nfor example events related to the management of the life cycle.\n"
+          example: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+          maxLength: 64
+        panUniqueID:
+          type: string
+          description: "Unique ID representing a card. This ID can be used instead of the \nPAN number for tokenization calls.\n"
+          example: V-3019231458906209630635
+        cardId:
+          type: string
+          description: "Unique Identification for the card in NovoPayment Issuance Services.\nThis value only exists for Issuers that are clients of NovoPayment \nIssuance Services.\n"
+          maxLength: 40
+        clientWalletAccountID:
+          type: string
+          description: "Identifier of the wallet that sends the request. Client provided \nconsumer ID that identifies the wallet account holder entity. \nOnly available for VISA.\n"
+          maxLength: 32
+        otpMaxReached:
+          type: boolean
+          description: "If this field is active, it means the user with the referenced token \nhas exceeded the number of requests for authentication methods or OTP \nrequests, thus, the response must not include the value when requesting \nthem again. Only available for VISA.\n"
+        activationCode:
+          type: string
+          description: 'The value that the cardholder needs to validate his/her identity.
+
+            '
+          example: A1B2C3D4
+          maxLength: 8
+        reasonCodes:
+          type: array
+          description: "Array of OTP reason codes.\nAllowed values: \n- ADD_CARD: The account holder is being authenticated after adding \nthe card to the token requestor.\n- VERIFY_ACCOUNT: The account holder is being authenticated to verify \naccount ownership.\n- OTHER: The account holder is being authenticated for a reason not \nenumerated in this list. Conditional - Only present for Consent Service\n"
+          example:
+          - ADD_CARD
+        codeExpiration:
+          type: string
+          description: 'Token expiration date. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+
+            '
+          example: 2026-07-04 19:08:56.123000+00:00
+        activationMethod:
+          $ref: '#/components/schemas/ObjActivationMethod'
+    ObjTokenData:
+      required:
+      - expiryMonth
+      - expiryYear
+      - token
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token issued for this service request.
+          minLength: 12
+          maxLength: 19
+          example: '5345678901234521'
+        expiryMonth:
+          type: string
+          $ref: '#/components/schemas/prm_TokenExpiryMonth'
+        expiryYear:
+          type: string
+          $ref: '#/components/schemas/prm_TokenExpiryYear'
+        sequenceNumber:
+          type: string
+          $ref: '#/components/schemas/prm_sequenceNumber'
+          description: Only present if reason code is Redigitization, not present otherwise.
+      description: Detailed information of the token.
+    prm_CardExpiryMonth:
+      type: string
+      description: The month of the expiration date of the card to be digitized. Note that the expiry date may not be in the past. May be omitted if the card does not have an expiry date. (Numeric).
+      minLength: 2
+      maxLength: 2
+      example: '12'
     RQNotTokenUpdated:
       type: object
       required:
@@ -4243,21 +4453,189 @@ components:
           example: 2026-07-04 19:08:56.123000+00:00
         notificationBody:
           $ref: '#/components/schemas/ObjBodyTokenUpdated'
-    ObjBodyTokenUpdated:
+    prm_CardSecurityCode:
+      type: string
+      description: The CVC2 for the card to be digitized, as entered by the Cardholder. Verified as part of reaching the digitization decision.
+      minLength: 3
+      maxLength: 3
+      example: '123'
+    SuspiciousEvent:
+      required:
+      - eventName
+      type: object
+      properties:
+        eventName:
+          type: string
+          description: The name of the suspicious event. Must be one of; REPLENISH - There were suspicious ATC values reporting during Replenish
+          minLength: 1
+          maxLength: 32
+          example: REPLENISH
+        walletAtcStatus:
+          $ref: '#/components/schemas/WalletAtcStatus'
+          description: The ATCs statuses are reported by the wallet. Required if EventName is REPLENISH.
+        systemAtcStatus:
+          $ref: '#/components/schemas/SystemAtcStatus'
+          description: The ATCs statuses as reported by authorization network. Required if EventName is REPLENISH
+    prm_TokenExpiryMonth:
+      type: string
+      description: The month of the expiration date.(Numeric)
+      minLength: 2
+      maxLength: 2
+      example: '12'
+    RSInternalServerError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
+    RQNotSuspiciousEvents:
       type: object
       required:
-      - tokens
+      - requestId
+      - reasonCode
+      - dateTime
+      - notificationBody
       properties:
-        tokens:
+        requestId:
+          type: string
+          $ref: '#/components/schemas/prm_requestId'
+        reasonCode:
+          type: string
+          description: 'SUSPICIOUS_EVENTS
+
+            '
+          enum:
+          - SUSPICIOUS_EVENTS
+          example: SUSPICIOUS_EVENTS
+        dateTime:
+          type: string
+          description: 'dateTime. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
+
+            '
+          example: 2026-07-04 19:08:56.123000+00:00
+        notificationBody:
+          $ref: '#/components/schemas/ObjBodyNotSuspiciousEv'
+    WalletAtcStatus:
+      type: object
+      properties:
+        unusedDiscarded:
           type: array
-          description: Arrary that contains the Tokens which were updated.
+          description: The ATCs reported by the wallet that are unused discarded. Max length - Not applicable. Type - Array[String].
           items:
-            $ref: '#/components/schemas/ObjToken_StatusUpdate'
-    prm_tokenUniqueReference:
+            type: string
+            example: '1234'
+        usedForContactless:
+          type: array
+          description: The ATCs reported by the wallet that are used for contactless transaction. Max length - Not applicable. Type - Array[String].
+          items:
+            type: string
+            example: '1234'
+        usedForDsrp:
+          type: array
+          description: The ATCs reported by the wallet that are used for DSRP transaction. Max length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: '1234'
+        unusedActive:
+          type: array
+          description: The ATCs reported by the wallet that are unused active. Max length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: '1234'
+      description: The ATCs statuses are reported by the wallet. Conditional – required if EventName is REPLENISH
+    RSFromIssuer_BadRequest:
+      type: object
+      required:
+      - code
+      - data
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: "Presented when error codes in business logic.\nAvailable Values\n400.22.002\tJWE invalid format\n400.22.003\tParams Required\n400.22.009\tInvalid Card ID\n"
+          enum:
+          - 400.22.002
+          - 400.22.003
+          - 400.22.009
+          maxLength: 10
+          example: 400.22.009
+        data:
+          type: object
+          description: Required when Error Code is Params Required, include the list.
+          maxLength: 2
+          example:
+          - fieldName
+        message:
+          type: string
+          description: Response code description
+          example: Params required
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
+          description: 'Operation Time Stamp in ISO 8601 format<br>date-time - the date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
+
+            '
+          minLength: 24
+          maxLength: 24
+    prm_decisionMadeBy:
       type: string
-      description: "Unique ID associating a token with a card. \nThis ID can be used in future calls to make operations related to the token in the I-TSP, \nfor example events related to the management of the life cycle.\n"
-      example: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
-      maxLength: 64
+      description: "Related to how the decision was taken, aply for MasterCard; \nfor VISA the content is goint to be UNDEFINED.\n"
+      enum:
+      - ELIGIBILITY_REQUEST
+      - AUTHORIZATION_REQUEST
+      - RULES
+      - UNDEFINED
+      example: RULES
+      maxLength: 14
+    SystemAtcStatus:
+      type: object
+      properties:
+        atcNotFound:
+          type: array
+          description: The ATCs reported by the authorization network as not found. Max length - Not applicable. Type - Array[String].
+          items:
+            type: string
+            example: '1234'
+        atcAlreadyProcessed:
+          type: array
+          description: The ATCs reported by the authorization network as processed for a transaction. Max length - Not applicable. Type - Array[String].
+          items:
+            type: string
+            example: '1234'
+        atcReportedUsedByWallet:
+          type: array
+          description: The ATCs prviously reported by the wallet as processed or discarded. Max length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: '1234'
+        unusedActive:
+          type: array
+          description: The ATCs reported by the wallet that are unused active. Max length - Not applicable. Type - Array[String]
+          items:
+            type: string
+            example: '1234'
+      description: The ATCs statuses as reported by authorization network. Conditional – required if EventName is REPLENISH
+    prm_status:
+      type: string
+      description: "The current status of token.  Available Values: INACTIVE - Token has not yet been activated ACTIVE - Token is active and ready to transact SUSPENDED - Token is suspended and unable to transact DEACTIVATED - Token has been permanently deactivated.  Present only if reasonCode = \"STATUS_UPDATE\". \n"
+      minLength: 1
+      maxLength: 32
+      example: ACTIVE
     ObjToken_StatusUpdate:
       type: object
       required:
@@ -4301,291 +4679,11 @@ components:
         encryptedPayload:
           type: object
           $ref: '#/components/schemas/ObjencryptedPayload_StatusUpdate'
-    prm_CardSecurityCode:
-      type: string
-      description: The CVC2 for the card to be digitized, as entered by the Cardholder. Verified as part of reaching the digitization decision.
-      minLength: 3
-      maxLength: 3
-      example: '123'
-    RS200:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.22.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: 'Operation Time Stamp in ISO 8601 format date-time - the date-time notation as defined by
-
-            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
-
-            '
-          example: '2022-04-25T23:19:12.000Z'
-          minLength: 24
-          maxLength: 24
-    RSIssuer_InvalidSignature:
-      type: object
+    ObjencryptedPayload_ServiceActivated:
       required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: "Presented when error codes in business logic.\nAvailable Value\n401.22.992\tInvalid signature\n"
-          enum:
-          - 401.22.992
-          maxLength: 10
-          example: VSE40007
-        message:
-          type: string
-          description: Response code description
-          example: Invalid signature
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2022-04-25T23:19:12.000Z'
-          description: 'Operation Time Stamp in ISO 8601 format<br>date-time - the date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
-
-            '
-          minLength: 24
-          maxLength: 24
-    RSFromIssuer_BadRequest:
-      type: object
-      required:
-      - code
-      - data
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: "Presented when error codes in business logic.\nAvailable Values\n400.22.002\tJWE invalid format\n400.22.003\tParams Required\n400.22.009\tInvalid Card ID\n"
-          enum:
-          - 400.22.002
-          - 400.22.003
-          - 400.22.009
-          maxLength: 10
-          example: 400.22.009
-        data:
-          type: object
-          description: Required when Error Code is Params Required, include the list.
-          maxLength: 2
-          example:
-          - fieldName
-        message:
-          type: string
-          description: Response code description
-          example: Params required
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2022-04-25T23:19:12.000Z'
-          description: 'Operation Time Stamp in ISO 8601 format<br>date-time - the date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
-
-            '
-          minLength: 24
-          maxLength: 24
-    SuspiciousEvent:
-      required:
-      - eventName
+      - cardAccountData
       type: object
       properties:
-        eventName:
-          type: string
-          description: The name of the suspicious event. Must be one of; REPLENISH - There were suspicious ATC values reporting during Replenish
-          minLength: 1
-          maxLength: 32
-          example: REPLENISH
-        walletAtcStatus:
-          $ref: '#/components/schemas/WalletAtcStatus'
-          description: The ATCs statuses are reported by the wallet. Required if EventName is REPLENISH.
-        systemAtcStatus:
-          $ref: '#/components/schemas/SystemAtcStatus'
-          description: The ATCs statuses as reported by authorization network. Required if EventName is REPLENISH
-    SystemAtcStatus:
-      type: object
-      properties:
-        atcNotFound:
-          type: array
-          description: The ATCs reported by the authorization network as not found. Max length - Not applicable. Type - Array[String].
-          items:
-            type: string
-            example: '1234'
-        atcAlreadyProcessed:
-          type: array
-          description: The ATCs reported by the authorization network as processed for a transaction. Max length - Not applicable. Type - Array[String].
-          items:
-            type: string
-            example: '1234'
-        atcReportedUsedByWallet:
-          type: array
-          description: The ATCs prviously reported by the wallet as processed or discarded. Max length - Not applicable. Type - Array[String]
-          items:
-            type: string
-            example: '1234'
-        unusedActive:
-          type: array
-          description: The ATCs reported by the wallet that are unused active. Max length - Not applicable. Type - Array[String]
-          items:
-            type: string
-            example: '1234'
-      description: The ATCs statuses as reported by authorization network. Conditional – required if EventName is REPLENISH
-    prm_source:
-      type: string
-      description: 'Origin of the card information.
-
-
-        Available values:
-
-        - ON_FILE
-
-        - ADDED_MANUALLY
-
-        - ADDED_VIA_APPLICATION
-
-        - ADDED_VIA_BROWSER
-
-        - EXISTING_TOKEN_CREDENTIAL
-
-        - ADDED_VIA_CHIP_DATA
-
-        '
-      enum:
-      - ON_FILE
-      - ADDED_MANUALLY
-      - ADDED_VIA_APPLICATION
-      - ADDED_VIA_BROWSER
-      - EXISTING_TOKEN_CREDENTIAL
-      - ADDED_VIA_CHIP_DATA
-      maxLength: 32
-      example: ON_FILE
-    prm_services:
-      type: array
-      description: Array of services that are being requested for the account. Must be one of ; DIGITIZATION = Provision the Funding Account to a device. Max length - Not applicable. Type - Array [String].
-      items:
-        type: string
-        example: DIGITIZATION
-    WalletAtcStatus:
-      type: object
-      properties:
-        unusedDiscarded:
-          type: array
-          description: The ATCs reported by the wallet that are unused discarded. Max length - Not applicable. Type - Array[String].
-          items:
-            type: string
-            example: '1234'
-        usedForContactless:
-          type: array
-          description: The ATCs reported by the wallet that are used for contactless transaction. Max length - Not applicable. Type - Array[String].
-          items:
-            type: string
-            example: '1234'
-        usedForDsrp:
-          type: array
-          description: The ATCs reported by the wallet that are used for DSRP transaction. Max length - Not applicable. Type - Array[String]
-          items:
-            type: string
-            example: '1234'
-        unusedActive:
-          type: array
-          description: The ATCs reported by the wallet that are unused active. Max length - Not applicable. Type - Array[String]
-          items:
-            type: string
-            example: '1234'
-      description: The ATCs statuses are reported by the wallet. Conditional – required if EventName is REPLENISH
-    prm_numberOfActivationAttempts:
-      type: integer
-      description: Number of intents with the OTP.
-      minLength: 1
-      maxLength: 1
-    prm_CardExpiryMonth:
-      type: string
-      description: The month of the expiration date of the card to be digitized. Note that the expiry date may not be in the past. May be omitted if the card does not have an expiry date. (Numeric).
-      minLength: 2
-      maxLength: 2
-      example: '12'
-    RQNotServiceActivated:
-      type: object
-      required:
-      - requestId
-      - reasonCode
-      - dateTime
-      - notificationBody
-      properties:
-        requestId:
-          type: string
-          $ref: '#/components/schemas/prm_requestId'
-        reasonCode:
-          type: string
-          description: 'SERVICE_ACTIVATED
-
-            '
-          example: SERVICE_ACTIVATED
-        dateTime:
-          type: string
-          description: 'dateTime. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
-
-            '
-          example: 2026-07-04 19:08:56.123000+00:00
-        notificationBody:
-          type: object
-          $ref: '#/components/schemas/ObjBodyServiceActivated'
-    prm_CardExpiryYear:
-      type: string
-      description: The year of the expiration date of the card to be digitized. Note that the expiry date may not be in the past. May be omitted if the card does not have an expiry date. (Numeric).
-      minLength: 2
-      maxLength: 2
-      example: '15'
-    prm_requestId:
-      type: string
-      description: "Unique ID assigned to the request. Use this identification in \ncase you need to report issues.\n"
-      example: '123456'
-      maxLength: 64
-    prm_tokenType:
-      type: string
-      description: The type of token requested for this digitization. Valid values are - SE Token is a Secure Element, this kind of token is for Wallets. - HCE Token is used for contactless payments with NFC Chip. - COF Card on File Token, normally is used for recurrent payments. - ECOM Token is used for online payments, or payments started by the end-user. - QRC Token is used for QR Payments, only applicable for VISA.
-      enum:
-      - SE
-      - HCE
-      - COF
-      - ECOM
-      - QRC
-      minLength: 1
-      maxLength: 16
-      example: ECOM
-    prm_panUniqueReference:
-      type: string
-      description: Reference to the PAN that is unique per Token Requestor.
-      minLength: 1
-      maxLength: 64
-      example: FWSPMC000000000159f71f703d2141efaf04dd26803f922b
-    prm_decision:
-      type: string
-      description: 'Status of the token.
-
-        '
-      enum:
-      - APPROVED
-      - REQUIRE_ADDITIONAL_AUTHENTICATION
-      - DECLINED
-      example: APPROVED
-      maxLength: 14
-    ObjencryptedPayload_StatusUpdate:
-      required:
-      - panUniqueReference
-      type: object
-      properties:
-        panUniqueReference:
-          type: string
-          $ref: '#/components/schemas/prm_panUniqueReference'
         source:
           type: string
           $ref: '#/components/schemas/prm_source'
@@ -4597,147 +4695,151 @@ components:
           example: 2015-07-04 12:09:56.123000-07:00
         cardAccountData:
           $ref: '#/components/schemas/ObjcardAccountData'
-          description: Required if reasonCode is "FUNDING_ACCOUNT_UPDATE".
+        financialAccountData:
+          $ref: '#/components/schemas/ObjFinancialAccountData'
         tokenData:
           $ref: '#/components/schemas/ObjTokenData'
-          description: Required if reasonCode is "REDIGITIZATION_COMPLETE" or "FUNDING_ACCOUNT_UPDATE".
+          description: The token information.
         paymentAccountReference:
           type: string
           description: The unique account reference assigned to the PAN.
           minLength: 29
           maxLength: 29
           example: 512381d9f8e0629211e3949a08002
-        financialAccountData:
-          $ref: '#/components/schemas/ObjFinancialAccountData'
-    ObjTokenData:
-      required:
-      - expiryMonth
-      - expiryYear
-      - token
-      type: object
-      properties:
-        token:
-          type: string
-          description: The token issued for this service request.
-          minLength: 12
-          maxLength: 19
-          example: '5345678901234521'
-        expiryMonth:
-          type: string
-          $ref: '#/components/schemas/prm_TokenExpiryMonth'
-        expiryYear:
-          type: string
-          $ref: '#/components/schemas/prm_TokenExpiryYear'
-        sequenceNumber:
-          type: string
-          $ref: '#/components/schemas/prm_sequenceNumber'
-          description: Only present if reason code is Redigitization, not present otherwise.
-      description: Detailed information of the token.
-    RQNotSuspiciousEvents:
-      type: object
-      required:
-      - requestId
-      - reasonCode
-      - dateTime
-      - notificationBody
-      properties:
-        requestId:
-          type: string
-          $ref: '#/components/schemas/prm_requestId'
-        reasonCode:
-          type: string
-          description: 'SUSPICIOUS_EVENTS
-
-            '
-          enum:
-          - SUSPICIOUS_EVENTS
-          example: SUSPICIOUS_EVENTS
-        dateTime:
-          type: string
-          description: 'dateTime. Format: yyyy-MM-ddTHH:mm:ss.SSSZ
-
-            '
-          example: 2026-07-04 19:08:56.123000+00:00
-        notificationBody:
-          $ref: '#/components/schemas/ObjBodyNotSuspiciousEv'
-    prm_TokenExpiryMonth:
+        accountHolderData:
+          $ref: '#/components/schemas/ObjAccountHolderData'
+    prm_tokenRequestorName:
       type: string
-      description: The month of the expiration date.(Numeric)
-      minLength: 2
-      maxLength: 2
-      example: '12'
-    ObjBodyNotSuspiciousEv:
-      required:
-      - tokenUniqueReference
-      - events
-      type: object
-      properties:
-        tokenUniqueReference:
-          type: string
-          $ref: '#/components/schemas/prm_tokenUniqueReference'
-        tokenRequestorId:
-          type: string
-          $ref: '#/components/schemas/prm_tokenRequestorID'
-        tokenRequestorName:
-          type: string
-          $ref: '#/components/schemas/prm_tokenRequestorName'
-        cardId:
-          type: string
-          $ref: '#/components/schemas/prm_cardId'
-        status:
-          type: string
-          description: "The current status of token.  Available Values: INACTIVE - Token has not yet been activated ACTIVE - Token is active and ready to transact SUSPENDED - Token is suspended and unable to transact DEACTIVATED - Token has been permanently deactivated.  Present only if reasonCode = \"STATUS_UPDATE\". \n"
-          minLength: 1
-          maxLength: 32
-          example: ACTIVE
-        paymentAppInstanceId:
-          type: string
-          description: The identifier of the Payment App instance within a device that will be provisioned with a token. Only present when supplied by a Wallet Provider.
-          minLength: 1
-          maxLength: 48
-          example: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e
-        events:
-          $ref: '#/components/schemas/SuspiciousEvent'
-    ObjPhoneNumber:
-      type: object
-      properties:
-        countryDialInCode:
-          type: string
-          description: The country code for the phone number. E.g. 1 for US or 44 for UK.
-          minLength: 1
-          maxLength: 4
-          example: '1'
-        phoneNumber:
-          type: string
-          description: The phone number, may contain country code along with phone number when countryDialInCode is not present.
-          minLength: 1
-          maxLength: 20
-          example: '4692392391'
-      description: The mobile phone number of the account holder. Not required.
+      description: 'Name of the token requestor.
+
+        '
+      example: My Merchant
+  requestBodies:
+    RQCardInfo:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardInfo'
+    RQCheckEligibility:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCheckEligibility'
+    RQNotification:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQNotification'
+          examples:
+            TOKEN_CREATED:
+              $ref: '#/components/examples/RQNotificationTokenCreated'
+            TOKEN_ACTIVATION_STIP:
+              $ref: '#/components/examples/RQNotificationTokenActivationSTIP'
+            TOKEN_STATUS_UPDATE:
+              $ref: '#/components/examples/RQNotificationTokenStatusUpdate'
+            PAN_UPDATE:
+              $ref: '#/components/examples/RQNotificationPanUpdate'
+            CARD_METADATA_UPDATED:
+              $ref: '#/components/examples/RQNotificationCardMetadataUpdate'
+    RQApproveProvision:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQApproveProvision'
+    RQSendPasscode:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQSendPasscode'
+    RQCardholderVerificationMethods:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardholderVerificationMethods'
+    RQDeviceTokenBinding:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQDeviceTokenBinding'
+    RQNotSuspiciousEvents:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQNotSuspiciousEvents'
+          examples:
+            SUSPICIOUS_EVENTS:
+              $ref: '#/components/examples/RQNotificationSuspiciousEvents'
+    RQNotTokenUpdated:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQNotTokenUpdated'
+          examples:
+            REDIGITIZATION_COMPLETE:
+              $ref: '#/components/examples/RQNotificationRedigitizationComplete'
+            DELETED_FROM_CONSUMER_APP:
+              $ref: '#/components/examples/RQNotificationSU_DeletedFromApp'
+            SUSPENDED:
+              $ref: '#/components/examples/RQNotificationSU_Suspend'
+            ACTIVATED:
+              $ref: '#/components/examples/RQNotificationSU_Activated'
+            TOKEN_EXPIRY:
+              $ref: '#/components/examples/RQNotificationSU_TokenExpiry'
+            PAN_SAME_RANGE:
+              $ref: '#/components/examples/RQNotificationSU_PANSameRange'
+            AUTHENTICATION_PERFORMED:
+              $ref: '#/components/examples/RQNotificationSU_AuthenticationPerf'
+    RQSendVerifyCode:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQSendVerifyCode'
+    RQNotServiceActivated:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQNotServiceActivated'
+          examples:
+            SERVICE_ACTIVATED:
+              $ref: '#/components/examples/RQNotServiceActivated'
   examples:
-    RSErrorCode400-ISE40006:
-      description: ISS_ERROR_INVALID_FIELD_TYPE
-      value:
-        errorCode: ISE40006
     InvalidParams:
       value:
         code: 400.22.396
         message: Invalid parameters.
         datetime: '2024-07-17T00:57:36.360Z'
+    RQNotificationPanUpdate:
+      value:
+        eventType: PAN_UPDATED
+        panReferenceID: V-3021084701796922123456
+        messageReason: Account updated OK
+        messageReasonCode: ACCOUNT_UPDATE
+        dateTimeOfEvent: '2022-04-25T23:19:12.000Z'
+        accountLevelInfoResp: null
+    RSErrorCode400-ISE40006:
+      description: ISS_ERROR_INVALID_FIELD_TYPE
+      value:
+        errorCode: ISE40006
     ErrorGeneralService:
       value:
         code: 400.22.350
         message: Error General Service.
         datetime: '2022-04-25T23:19:12.000Z'
-    RQNotificationCardMetadataUpdate:
+    RSErrorCode400-ISE40000:
+      description: ISS_ERROR_REQUIRED_DATA_MISSING
       value:
-        eventType: CARD_METADATA_UPDATED
-        tokenReferenceID: DNITHE302213059337966526
-        tokenRequestorID: 40010021347
-        messageReasonCode: CARD_METADATA_UPDATED
-        taskID: ed39279e-2fc7-43f6-b89d-756420564c91
-        statusCode: FAILURE
-        errorCode: VSE40001
+        errorCode: ISE40000
     RQNotificationTokenCreated:
       value:
         eventType: TOKEN_CREATED
@@ -4774,65 +4876,30 @@ components:
           tokenRequestorTspID: 40000000055
           walletAccountEmailAddressHash: A9C49C43A63249115F6DD9CD72C6A8AC58F5D44E35EDC6D36CFF999BAC3B228E
           addressVerificationResultCode: A
-    RSErrorCode400-ISE40013:
-      description: ISS_ERROR_INVALID_EXP_DATE
+    RQNotificationCardMetadataUpdate:
       value:
-        errorCode: ISE40013
-    RSErrorCode400-ISE40005:
-      description: ISS_ERROR_INVALID_FIELD_LENGTH
-      value:
-        errorCode: ISE40005
-    RQNotificationTokenActivationSTIP:
-      value:
-        eventType: TOKEN_ACTIVATION_STIP
-        panReferenceID: V-3021084701796922123456
-        tokenReferenceID: DNITHE30161617843905731102000000
-        tokenRequestorID: 40000000055
-        messageReasonCode: TOKEN_ACTIVATION_STIP
-        dateTimeOfEvent: 2021-03-30 19:50:15+00:00
-        deviceInfo:
-          deviceID: WIRO202110
-          deviceLanguageCode: eng
-          deviceType: MOBILE_PHONE
-          deviceName: MyXvv73vv73vv70.
-          deviceNumber: 7868671470
-          osType: ANDROID
-          osVersion: 4.4.4
-          osBuildID: KTU84M
-          deviceIDType: TEE
-          deviceManufacturer: Samsung
-          deviceBrand: Android Brand
-          deviceModel: ANDROID-999
-          tokenProtectionMethod: SOFTWARE
-        encryptedData: ZXlKMGVYQWlPaUpLV...qdHgzd2dod1pJbkN2d3Qtdy1jRTJ1cGVDekZnN3o0Zk5wRFRFOV...enUxME1nWkJTQXVEQ3ZfVzlZaVZUdEx1TGli...NOWFphSWxtN1ZfY0pZOUpEdFZFTWROWjNy...WaGdGT3ZRQWx5O
-        actionCode: N7
-        lifeCycleTraceID: 302291744095994
-        clientWalletAccountID: 7f7e9cef-1234
-        panSource: KEY_ENTERED
-        cvv2ResultsCode: N
-        consumerEntryMode: UNKNOWN
-        locale: en_US
-        stipReasonCode: 9020
-        tokenRequestorTspID: 40000000055
-        walletAccountEmailAddressHash: A9C49C43A63249115F6DD9CD72C6A8AC58F5D44E35EDC6D36CFF999BAC3B228E
-        addressVerificationResultCode: X
-    RSErrorCode400-ISE40000:
-      description: ISS_ERROR_REQUIRED_DATA_MISSING
-      value:
-        errorCode: ISE40000
-    RSErrorCode400-ISE40010:
-      description: ISS_ERROR_CRYPTOGRAPHY_ERROR
-      value:
-        errorCode: ISE40010
-    RSErrorCode400-ISE40001:
-      description: ISS_ERROR_PAN_INELIGIBLE
-      value:
-        errorCode: ISE40001
+        eventType: CARD_METADATA_UPDATED
+        tokenReferenceID: DNITHE302213059337966526
+        tokenRequestorID: 40010021347
+        messageReasonCode: CARD_METADATA_UPDATED
+        taskID: ed39279e-2fc7-43f6-b89d-756420564c91
+        statusCode: FAILURE
+        errorCode: VSE40001
     CardNotFound:
       value:
         code: 400.22.487
         message: Card not found
         datetime: '2024-08-13T00:18:05.183Z'
+    ComponentConfigurationNotFound:
+      value:
+        code: 400.22.356
+        message: Component configuration not found.
+        datetime: '2024-07-17T00:57:36.360Z'
+    InternalServerError:
+      value:
+        code: 500.22.001
+        message: Internal Server Error
+        datetime: '2022-04-25T23:19:12.000Z'
     RQNotificationTokenStatusUpdate:
       value:
         eventType: TOKEN_STATUS_UPDATED
@@ -4882,63 +4949,66 @@ components:
           merchantID: 421
           merchantName: Mi comercio
         tokenUserInfo: null
-    RQNotificationPanUpdate:
+    RSErrorCode400-ISE40005:
+      description: ISS_ERROR_INVALID_FIELD_LENGTH
       value:
-        eventType: PAN_UPDATED
+        errorCode: ISE40005
+    RQNotificationTokenActivationSTIP:
+      value:
+        eventType: TOKEN_ACTIVATION_STIP
         panReferenceID: V-3021084701796922123456
-        messageReason: Account updated OK
-        messageReasonCode: ACCOUNT_UPDATE
-        dateTimeOfEvent: '2022-04-25T23:19:12.000Z'
-        accountLevelInfoResp: null
-    ComponentConfigurationNotFound:
+        tokenReferenceID: DNITHE30161617843905731102000000
+        tokenRequestorID: 40000000055
+        messageReasonCode: TOKEN_ACTIVATION_STIP
+        dateTimeOfEvent: 2021-03-30 19:50:15+00:00
+        deviceInfo:
+          deviceID: WIRO202110
+          deviceLanguageCode: eng
+          deviceType: MOBILE_PHONE
+          deviceName: MyXvv73vv73vv70.
+          deviceNumber: 7868671470
+          osType: ANDROID
+          osVersion: 4.4.4
+          osBuildID: KTU84M
+          deviceIDType: TEE
+          deviceManufacturer: Samsung
+          deviceBrand: Android Brand
+          deviceModel: ANDROID-999
+          tokenProtectionMethod: SOFTWARE
+        encryptedData: ZXlKMGVYQWlPaUpLV...qdHgzd2dod1pJbkN2d3Qtdy1jRTJ1cGVDekZnN3o0Zk5wRFRFOV...enUxME1nWkJTQXVEQ3ZfVzlZaVZUdEx1TGli...NOWFphSWxtN1ZfY0pZOUpEdFZFTWROWjNy...WaGdGT3ZRQWx5O
+        actionCode: N7
+        lifeCycleTraceID: 302291744095994
+        clientWalletAccountID: 7f7e9cef-1234
+        panSource: KEY_ENTERED
+        cvv2ResultsCode: N
+        consumerEntryMode: UNKNOWN
+        locale: en_US
+        stipReasonCode: 9020
+        tokenRequestorTspID: 40000000055
+        walletAccountEmailAddressHash: A9C49C43A63249115F6DD9CD72C6A8AC58F5D44E35EDC6D36CFF999BAC3B228E
+        addressVerificationResultCode: X
+    RSErrorCode400-ISE40010:
+      description: ISS_ERROR_CRYPTOGRAPHY_ERROR
       value:
-        code: 400.22.356
-        message: Component configuration not found.
-        datetime: '2024-07-17T00:57:36.360Z'
-    InternalServerError:
+        errorCode: ISE40010
+    RSErrorCode400-ISE40001:
+      description: ISS_ERROR_PAN_INELIGIBLE
       value:
-        code: 500.22.001
-        message: Internal Server Error
-        datetime: '2022-04-25T23:19:12.000Z'
+        errorCode: ISE40001
+    RSErrorCode400-ISE40013:
+      description: ISS_ERROR_INVALID_EXP_DATE
+      value:
+        errorCode: ISE40013
     HeaderParamsRequired:
       value:
         code: 400.22.001
         message: Header Params Required
         datetime: '2022-04-25T23:19:12.000Z'
-    ParamsRequired:
+    InvalidadCardId:
       value:
-        code: 400.22.324
-        message: We were unable to process your request
+        code: 400.22.009
+        message: Invalid Card Id
         datetime: '2022-04-25T23:19:12.000Z'
-        data: "\"fieldName\":\n [\n  \"reasonCodes\",\n  \"tokenUniqueReference\"\n ]\n"
-    RQNotificationSU_Suspend:
-      value:
-        requestId: 808808080808
-        reasonCode: STATUS_UPDATE
-        dateTime: 2026-07-04 19:08:56.123000+00:00
-        notificationBody:
-          tokens:
-            tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
-            tokenRequestorId: 40022358888
-            tokenRequestorName: My Merchant
-            cardId: 5DA...27
-            status: SUSPENDED
-            suspendedBy: '[ISSUER]
-
-              '
-            tokenExpiry: 465
-    RQNotificationSU_AuthenticationPerf:
-      value:
-        requestId: 808808080808
-        reasonCode: AUTHENTICATION_PERFORMED
-        dateTime: 2026-07-04 19:08:56.123000+00:00
-        notificationBody:
-          tokens:
-            tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
-            tokenRequestorId: 40022358888
-            tokenRequestorName: My Merchant
-            cardId: 5DA...27
-            tokenExpiry: 465
     RQNotificationSuspiciousEvents:
       value:
         requestId: 808808080808
@@ -4968,10 +5038,10 @@ components:
         code: 401.22.992
         message: Invalid signature
         datetime: '2022-04-25T23:19:12.000Z'
-    RQNotificationSU_Activated:
+    RQNotificationSU_DeletedFromApp:
       value:
         requestId: 808808080808
-        reasonCode: STATUS_UPDATE
+        reasonCode: DELETED_FROM_CONSUMER_APP
         dateTime: 2026-07-04 19:08:56.123000+00:00
         notificationBody:
           tokens:
@@ -4979,37 +5049,6 @@ components:
             tokenRequestorId: 40022358888
             tokenRequestorName: My Merchant
             cardId: 5DA...27
-            status: ACTIVE
-            tokenExpiry: 465
-    RQNotificationSU_PANSameRange:
-      value:
-        requestId: 808808080808
-        reasonCode: REDIGITIZATION_COMPLETE
-        dateTime: 2026-07-04 19:08:56.123000+00:00
-        notificationBody:
-          tokens:
-            tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
-            tokenRequestorId: 40022358888
-            tokenRequestorName: My Merchant
-            cardId: 5DA...27
-            tokenExpiry: 465
-            encryptedPayload:
-              dataValidUntilTimestamp: 2015-07-04 12:09:56.123000-07:00
-              cardAccountData:
-                accountNumber: 5808123456789808
-                expiryMonth: 12
-                expiryYear: 15
-                securityCode: 123
-              tokenData:
-                token: 5345678901234521
-                expiryMonth: 12
-                expiryYear: 15
-                sequenceNumber: 1
-    InvalidadCardId:
-      value:
-        code: 400.22.009
-        message: Invalid Card Id
-        datetime: '2022-04-25T23:19:12.000Z'
     RQNotServiceActivated:
       value:
         requestId: 808808080808
@@ -5076,6 +5115,65 @@ components:
                 sourceIp: 127.0.0.1
                 deviceLocation: 38.63/-90.2
                 consumerIdentifier: 1b24f24a24ba98e27d43e345b532a245e4723d7a9c4f624e93452c1b24f24a24b
+    ParamsRequired:
+      value:
+        code: 400.22.324
+        message: We were unable to process your request
+        datetime: '2022-04-25T23:19:12.000Z'
+        data: "\"fieldName\":\n [\n  \"reasonCodes\",\n  \"tokenUniqueReference\"\n ]\n"
+    RQNotificationSU_PANSameRange:
+      value:
+        requestId: 808808080808
+        reasonCode: REDIGITIZATION_COMPLETE
+        dateTime: 2026-07-04 19:08:56.123000+00:00
+        notificationBody:
+          tokens:
+            tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+            tokenRequestorId: 40022358888
+            tokenRequestorName: My Merchant
+            cardId: 5DA...27
+            tokenExpiry: 465
+            encryptedPayload:
+              dataValidUntilTimestamp: 2015-07-04 12:09:56.123000-07:00
+              cardAccountData:
+                accountNumber: 5808123456789808
+                expiryMonth: 12
+                expiryYear: 15
+                securityCode: 123
+              tokenData:
+                token: 5345678901234521
+                expiryMonth: 12
+                expiryYear: 15
+                sequenceNumber: 1
+    RQNotificationSU_TokenExpiry:
+      value:
+        requestId: 808808080808
+        reasonCode: REDIGITIZATION_COMPLETE
+        dateTime: 2026-07-04 19:08:56.123000+00:00
+        notificationBody:
+          tokens:
+            tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+            tokenRequestorId: 40022358888
+            tokenRequestorName: My Merchant
+            cardId: 5DA...27
+            tokenExpiry: 465
+            encryptedPayload:
+              dataValidUntilTimestamp: 2015-07-04 12:09:56.123000-07:00
+              tokenData:
+                token: 5345678901234521
+                expiryMonth: 12
+                expiryYear: 15
+                sequenceNumber: 1
+    InternalServerError_2:
+      value:
+        code: 500.22.999
+        message: Internal Server Error
+        datetime: '2022-04-25T23:19:12.000Z'
+    JWEInvalidFormat:
+      value:
+        code: 400.22.002
+        message: JWE Invalid format
+        datetime: '2022-04-25T23:19:12.000Z'
     RQNotificationRedigitizationComplete:
       value:
         requestId: 808808080808
@@ -5107,10 +5205,23 @@ components:
                 expiryYear: 15
                 sequenceNumber: 1
               paymentAccountReference: 512381d9f8e0629211e3949a08002
-    RQNotificationSU_TokenExpiry:
+    RQNotificationSU_Activated:
       value:
         requestId: 808808080808
-        reasonCode: REDIGITIZATION_COMPLETE
+        reasonCode: STATUS_UPDATE
+        dateTime: 2026-07-04 19:08:56.123000+00:00
+        notificationBody:
+          tokens:
+            tokenUniqueReference: DWSPMC000000000132d72d4fcb2f4136a0532d3093ff1a45
+            tokenRequestorId: 40022358888
+            tokenRequestorName: My Merchant
+            cardId: 5DA...27
+            status: ACTIVE
+            tokenExpiry: 465
+    RQNotificationSU_AuthenticationPerf:
+      value:
+        requestId: 808808080808
+        reasonCode: AUTHENTICATION_PERFORMED
         dateTime: 2026-07-04 19:08:56.123000+00:00
         notificationBody:
           tokens:
@@ -5119,27 +5230,10 @@ components:
             tokenRequestorName: My Merchant
             cardId: 5DA...27
             tokenExpiry: 465
-            encryptedPayload:
-              dataValidUntilTimestamp: 2015-07-04 12:09:56.123000-07:00
-              tokenData:
-                token: 5345678901234521
-                expiryMonth: 12
-                expiryYear: 15
-                sequenceNumber: 1
-    JWEInvalidFormat:
-      value:
-        code: 400.22.002
-        message: JWE Invalid format
-        datetime: '2022-04-25T23:19:12.000Z'
-    InternalServerError_2:
-      value:
-        code: 500.22.999
-        message: Internal Server Error
-        datetime: '2022-04-25T23:19:12.000Z'
-    RQNotificationSU_DeletedFromApp:
+    RQNotificationSU_Suspend:
       value:
         requestId: 808808080808
-        reasonCode: DELETED_FROM_CONSUMER_APP
+        reasonCode: STATUS_UPDATE
         dateTime: 2026-07-04 19:08:56.123000+00:00
         notificationBody:
           tokens:
@@ -5147,111 +5241,28 @@ components:
             tokenRequestorId: 40022358888
             tokenRequestorName: My Merchant
             cardId: 5DA...27
+            status: SUSPENDED
+            suspendedBy: '[ISSUER]
+
+              '
+            tokenExpiry: 465
   responses:
-    RSErrorCode400:
-      description: Error Codes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSErrorCode400'
-          examples:
-            ISE40000:
-              $ref: '#/components/examples/RSErrorCode400-ISE40000'
-            ISE40005:
-              $ref: '#/components/examples/RSErrorCode400-ISE40005'
-            ISE40006:
-              $ref: '#/components/examples/RSErrorCode400-ISE40006'
-            ISE40010:
-              $ref: '#/components/examples/RSErrorCode400-ISE40010'
-            ISE40013:
-              $ref: '#/components/examples/RSErrorCode400-ISE40013'
-            ISE40001:
-              $ref: '#/components/examples/RSErrorCode400-ISE40001'
-    RSCheckEligibility200:
+    RS500:
+      description: 'Internal Server Error. Visa must send request again or contact the
+
+        issuer support.---
+
+        '
+    RSDeviceTokenBinding200:
       description: Successful Operation response code
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCheckEligibility200'
+            $ref: '#/components/schemas/RSDeviceTokenBinding200'
           examples:
             Default:
               value:
-                cardMetadataInfo:
-                  cardIssuer: string
-                  foregroundColor: '255122235'
-                  backgroundColor: '255122235'
-                  labelColor: '255122235'
-                  shortDescription: The Bank Card
-                  longDescription: The Bank Card
-                  profileID: The Bank Card
-                  cardArtData:
-                    cardArtRefID: string
-                  termsAndConditionsID: The Bank Card
-                  contactInfo:
-                    contactWebsite: https://issuer.com
-                    contactEmail: user@issuer.com
-                    contactNumber: 800-000-0000
-                    contactName: Issuer
-                  applicationInfo:
-                    supportsTokenNotifications: true
-                    supportsFPANNotifications: true
-                    transactionServiceURL: string
-                    messageServiceURL: string
-                    transactionPushTopic: string
-                    messagePushTopic: string
-                    appLaunchURL: string
-                    appLaunchURLScheme: string
-                    associatedStoreIdentifiers:
-                    - string
-                    associatedApplicationIdentifiers:
-                    - 0
-                  privacyPolicyURL: https://issuer.com/privacyPolicyURL
-                  termsAndConditionsURL: https://issuer.com/termsAndConditionsURL
-    RS400:
-      description: 'Bad Request: The request could not be understood by the server due to
-
-        malformed syntax.
-
-        The client should not complete the request until it is corrected.
-
-        '
-    RSCardInfo500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500Tk'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSCardholderVerificationMethods200:
-      description: Successful Operation response code
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardholderVerificationMethods200'
-          examples:
-            Default:
-              value:
-                responseCode: STEPUP
-                stepUpMethods:
-                - value: '****-4422'
-                  type: OTPSMS
-                  identifier: 66a031837fe947569f4f6c9953f57293
-                  sourceAddress: email
-                  otpMethodPlatform: IOS
-                - value: an*************@gmail.com
-                  type: OTPEMAIL
-                  identifier: mar43cb1f23b4cdbbd9b5b7a6ec41vcg
-                  sourceAddress: 382-2
-                  otpMethodPlatform: IOS
-                - value: 1-800-227-8431
-                  type: OUTBOUNDCALL
-                  identifier: ba6031837fe947569f4f6c9953f57abd
-    RS401:
-      description: 'Unauthorized: Invalid or missing authentication credentials.
-
-        '
+                actionCode: '00'
     RSCardInfo200:
       description: Successful Operation response code
       content:
@@ -5304,6 +5315,82 @@ components:
                   issuerDiscretionaryData: ''
                   fileControlInformation: ''
                   issuerApplicationDiscretionaryData: ''
+    RSCardholderVerificationMethods200:
+      description: Successful Operation response code
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardholderVerificationMethods200'
+          examples:
+            Default:
+              value:
+                responseCode: STEPUP
+                stepUpMethods:
+                - value: '****-4422'
+                  type: OTPSMS
+                  identifier: 66a031837fe947569f4f6c9953f57293
+                  sourceAddress: email
+                  otpMethodPlatform: IOS
+                - value: an*************@gmail.com
+                  type: OTPEMAIL
+                  identifier: mar43cb1f23b4cdbbd9b5b7a6ec41vcg
+                  sourceAddress: 382-2
+                  otpMethodPlatform: IOS
+                - value: 1-800-227-8431
+                  type: OUTBOUNDCALL
+                  identifier: ba6031837fe947569f4f6c9953f57abd
+    RSCheckEligibility200:
+      description: Successful Operation response code
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCheckEligibility200'
+          examples:
+            Default:
+              value:
+                cardMetadataInfo:
+                  cardIssuer: string
+                  foregroundColor: '255122235'
+                  backgroundColor: '255122235'
+                  labelColor: '255122235'
+                  shortDescription: The Bank Card
+                  longDescription: The Bank Card
+                  profileID: The Bank Card
+                  cardArtData:
+                    cardArtRefID: string
+                  termsAndConditionsID: The Bank Card
+                  contactInfo:
+                    contactWebsite: https://issuer.com
+                    contactEmail: user@issuer.com
+                    contactNumber: 800-000-0000
+                    contactName: Issuer
+                  applicationInfo:
+                    supportsTokenNotifications: true
+                    supportsFPANNotifications: true
+                    transactionServiceURL: string
+                    messageServiceURL: string
+                    transactionPushTopic: string
+                    messagePushTopic: string
+                    appLaunchURL: string
+                    appLaunchURLScheme: string
+                    associatedStoreIdentifiers:
+                    - string
+                    associatedApplicationIdentifiers:
+                    - 0
+                  privacyPolicyURL: https://issuer.com/privacyPolicyURL
+                  termsAndConditionsURL: https://issuer.com/termsAndConditionsURL
+    RS401:
+      description: 'Unauthorized: Invalid or missing authentication credentials.
+
+        '
+    RS400:
+      description: 'Bad Request: The request could not be understood by the server due to
+
+        malformed syntax.
+
+        The client should not complete the request until it is corrected.
+
+        '
     RSCardInfo400:
       description: Bad Request
       content:
@@ -5321,26 +5408,38 @@ components:
               $ref: '#/components/examples/ComponentConfigurationNotFound'
             Card not found:
               $ref: '#/components/examples/CardNotFound'
-    RS500:
-      description: 'Internal Server Error. Visa must send request again or contact the
-
-        issuer support.---
-
-        '
-    RSDeviceTokenBinding200:
-      description: Successful Operation response code
+    RSCardInfo500:
+      description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSDeviceTokenBinding200'
+            $ref: '#/components/schemas/RS500Tk'
           examples:
-            Default:
-              value:
-                actionCode: '00'
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RS200:
       description: 'Success
 
         '
+    RSErrorCode400:
+      description: Error Codes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSErrorCode400'
+          examples:
+            ISE40000:
+              $ref: '#/components/examples/RSErrorCode400-ISE40000'
+            ISE40005:
+              $ref: '#/components/examples/RSErrorCode400-ISE40005'
+            ISE40006:
+              $ref: '#/components/examples/RSErrorCode400-ISE40006'
+            ISE40010:
+              $ref: '#/components/examples/RSErrorCode400-ISE40010'
+            ISE40013:
+              $ref: '#/components/examples/RSErrorCode400-ISE40013'
+            ISE40001:
+              $ref: '#/components/examples/RSErrorCode400-ISE40001'
     RSInvalidSignature:
       description: Invalid Signature
       content:
@@ -5362,6 +5461,15 @@ components:
                 code: 200.22.000
                 message: Process Ok
                 datetime: '2022-04-25T23:19:12.000Z'
+    RSInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSInternalServerError'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError_2'
     RSFromIssuer_400:
       description: Bad Request
       content:
@@ -5375,15 +5483,6 @@ components:
               $ref: '#/components/examples/InvalidadCardId'
             Params Required:
               $ref: '#/components/examples/ParamsRequired'
-    RSInternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSInternalServerError'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError_2'
   parameters:
     ContentType:
       name: Content-Type
@@ -5400,105 +5499,6 @@ components:
         '
       schema:
         type: string
-  requestBodies:
-    RQDeviceTokenBinding:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQDeviceTokenBinding'
-    RQSendPasscode:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQSendPasscode'
-    RQNotification:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQNotification'
-          examples:
-            TOKEN_CREATED:
-              $ref: '#/components/examples/RQNotificationTokenCreated'
-            TOKEN_ACTIVATION_STIP:
-              $ref: '#/components/examples/RQNotificationTokenActivationSTIP'
-            TOKEN_STATUS_UPDATE:
-              $ref: '#/components/examples/RQNotificationTokenStatusUpdate'
-            PAN_UPDATE:
-              $ref: '#/components/examples/RQNotificationPanUpdate'
-            CARD_METADATA_UPDATED:
-              $ref: '#/components/examples/RQNotificationCardMetadataUpdate'
-    RQCardholderVerificationMethods:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCardholderVerificationMethods'
-    RQApproveProvision:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQApproveProvision'
-    RQCardInfo:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCardInfo'
-    RQCheckEligibility:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCheckEligibility'
-    RQNotServiceActivated:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQNotServiceActivated'
-          examples:
-            SERVICE_ACTIVATED:
-              $ref: '#/components/examples/RQNotServiceActivated'
-    RQSendVerifyCode:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQSendVerifyCode'
-    RQNotSuspiciousEvents:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQNotSuspiciousEvents'
-          examples:
-            SUSPICIOUS_EVENTS:
-              $ref: '#/components/examples/RQNotificationSuspiciousEvents'
-    RQNotTokenUpdated:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQNotTokenUpdated'
-          examples:
-            REDIGITIZATION_COMPLETE:
-              $ref: '#/components/examples/RQNotificationRedigitizationComplete'
-            DELETED_FROM_CONSUMER_APP:
-              $ref: '#/components/examples/RQNotificationSU_DeletedFromApp'
-            SUSPENDED:
-              $ref: '#/components/examples/RQNotificationSU_Suspend'
-            ACTIVATED:
-              $ref: '#/components/examples/RQNotificationSU_Activated'
-            TOKEN_EXPIRY:
-              $ref: '#/components/examples/RQNotificationSU_TokenExpiry'
-            PAN_SAME_RANGE:
-              $ref: '#/components/examples/RQNotificationSU_PANSameRange'
-            AUTHENTICATION_PERFORMED:
-              $ref: '#/components/examples/RQNotificationSU_AuthenticationPerf'
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

@@ -85,171 +85,6 @@ paths:
       operationId: patchPaymentsByTransactionId
       x-operation-id-source: derived
 components:
-  examples:
-    AccessTokenNotApproved:
-      value:
-        code: 401.08.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.08.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointPaymentRefund:
-      value:
-        referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-    RQEndpointTokenizedCardTransactionsExample:
-      value:
-        cardToken: b3a7dbec3eb0d71798c4f19fec445795
-        merchant:
-          merchantId: K213JA45
-          terminalId: VKJ23H
-          categoryId: 5699
-          name: Sportswear
-          description: Clothing Stores
-          countryCode: CO
-          city: Bogota
-          address: Cra. 141-23
-          acquirerIdCode: H3K123BMM12
-        transaction:
-          order:
-            description: Buying baseball shoes
-            notifyUrl: https://webhook.com/notification
-            buyer:
-              fullname: Joshua Washington
-              emailAddress: username@mail.com
-              contactPhone: 14153214567
-              documentType: CE
-              documentNumber: 8081023876
-              billingAddress:
-                street1: Cra 86
-                street2: null
-                city: Bogota
-                state: Cundinamarca
-                country: Colombia
-                postalCode: 33133
-                phone: 14153214567
-          metadata:
-            INSTALLMENTS_NUMBER: 1
-          paymentMethod: CLOSELOOP
-          paymentCountry: CO
-          paymentCurrency: 170
-          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-          amount: 58080825.5
-          commissionFee: 808.5
-          localDateTime: '2020-04-20T20:40:52Z'
-    InvalidSignature:
-      value:
-        code: 401.08.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.08.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestParamsRequired:
-      value:
-        code: 400.08.001
-        message: Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
-        errors:
-        - message: 'attributeOneCamelCase: Can not be null'
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.08.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointNotTokenizedCardTransactionsExample:
-      value:
-        merchant:
-          merchantId: K213JA45
-          terminalId: VKJ23H
-          categoryId: 5699
-          name: Sportswear
-          description: Clothing Stores
-          countryCode: CO
-          city: Bogota
-          address: Cra. 141-23
-          acquirerIdCode: H3K123BMM12
-        transaction:
-          order:
-            description: Buying baseball shoes
-            notifyUrl: https://webhook.com/notification
-            buyer:
-              fullname: Joshua Washington
-              emailAddress: username@mail.com
-              contactPhone: 14153214567
-              documentType: CE
-              documentNumber: 8081023876
-              billingAddress:
-                street1: Cra 86
-                street2: null
-                city: Bogota
-                state: Cundinamarca
-                country: Colombia
-                postalCode: 33133
-                phone: 14153214567
-          card:
-            nameOnCard: Joshua Washington
-            cardId: ulEIrV9g/zlqoKgjIrPGqfGGS0dX6d+q
-            cvalidation: zWNTka0/Pvl8MnFGqPhE5A==
-          metadata:
-            INSTALLMENTS_NUMBER: 1
-          paymentMethod: CLOSELOOP
-          paymentCountry: CO
-          paymentCurrency: 170
-          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-          amount: 58080825.5
-          commissionFee: 808.5
-          localDateTime: '2020-04-20T20:40:52Z'
-  parameters:
-    referenceCode:
-      name: referenceCode
-      in: path
-      description: 'Unique transaction identifier.
-
-        '
-      required: true
-      schema:
-        type: string
-    transactionId:
-      name: transactionId
-      in: path
-      description: 'Transaction reference code. This is value must be unique.
-
-        '
-      required: true
-      schema:
-        type: string
-  requestBodies:
-    RQPaymentAuthorizer:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQPaymentAuthorizer'
-          examples:
-            Tokenized Card Transactions Example:
-              $ref: '#/components/examples/RQEndpointTokenizedCardTransactionsExample'
-            Not Tokenized Card Transactions Example:
-              $ref: '#/components/examples/RQEndpointNotTokenizedCardTransactionsExample'
-      required: true
-    RQPaymentRefund:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQPaymentRefund'
-          examples:
-            Payment Refund:
-              $ref: '#/components/examples/RQEndpointPaymentRefund'
-      required: true
   schemas:
     RSPaymentRefund200:
       type: object
@@ -295,6 +130,24 @@ components:
               description: Unique payment identifier
               example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
               maxLength: 40
+    RSGetPaymentDetail400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RS500:
       type: object
       properties:
@@ -331,6 +184,24 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RSPaymentAuthorizer400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RSPaymentRefund400:
       type: object
       properties:
@@ -349,6 +220,481 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RSGetPaymentDetail200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Describes the meaning of the response code
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Date and time of the transaction according to ISO 8601 standards.
+          format: date-time
+        data:
+          type: object
+          description: 'Object containing the attributes of the response related to the request.
+
+            '
+          required:
+          - status
+          - merchant
+          - transaction
+          properties:
+            status:
+              type: string
+              description: 'Transaction status.
+
+
+                __Allowed values:__ AUTHORIZED - DECLINED
+
+                '
+              example: AUTHORIZED
+              maxLength: 10
+            codeDeclined:
+              type: string
+              description: 'Detail of the result or the statusRequired if the transaction is declined.
+
+
+                __Allowed values:__ See the list Transaction response codes
+
+                '
+              example: null
+              maxLength: 5
+            cardToken:
+              type: string
+              description: 'This field is required for tokenized card transactions
+
+                __Allowed characters:__ Alphanumeric.
+
+                '
+              example: null
+              maxLength: 32
+            merchant:
+              type: object
+              description: 'Object containing the attributes of the merchant.
+
+                '
+              required:
+              - merchantId
+              - terminalId
+              - categoryId
+              - name
+              - countryCode
+              - city
+              properties:
+                merchantId:
+                  type: string
+                  description: 'Unique identifier merchant or unique code of commerce
+
+                    '
+                  example: K213JA45
+                  maxLength: 8
+                terminalId:
+                  type: string
+                  description: 'Unique identifier of the payment terminal
+
+                    '
+                  example: VKJ23H
+                  maxLength: 6
+                categoryId:
+                  type: string
+                  description: 'Merchant category
+
+                    '
+                  example: 5699
+                  maxLength: 4
+                name:
+                  type: string
+                  description: 'Merchant name
+
+                    '
+                  example: Sportswear
+                  maxLength: 40
+                description:
+                  type: string
+                  description: 'Merchant description.
+
+                    '
+                  example: Clothing Stores
+                  maxLength: 100
+                countryCode:
+                  type: string
+                  description: 'Country where the merchant is stablished according to ISO 3166-1 standard. Alpha-2 Code.
+
+                    '
+                  example: CO
+                  maxLength: 2
+                city:
+                  type: string
+                  description: 'City where the merchant is stablished.
+
+                    '
+                  example: Bogota
+                  maxLength: 20
+                address:
+                  type: string
+                  description: 'Merchant address.
+
+                    '
+                  example: Cra. 141-23
+                  maxLength: 100
+                acquirerIdCode:
+                  type: string
+                  description: 'Acquiring institution identification code.
+
+                    '
+                  example: H3K123BMM12
+                  maxLength: 11
+            transaction:
+              type: object
+              description: 'Object containing the attributes of the transaction.
+
+                '
+              required:
+              - order
+              - paymentMethod
+              - paymentCountry
+              - paymentCurrency
+              - referenceCode
+              - amount
+              - localDateTime
+              properties:
+                order:
+                  type: object
+                  description: 'Object containing the attributes of the order
+
+                    '
+                  required:
+                  - buyer
+                  properties:
+                    description:
+                      type: string
+                      description: 'Order description
+
+                        '
+                      example: Buying baseball shoes
+                      maxLength: 40
+                    notifyUrl:
+                      type: string
+                      description: 'Service address to receive information of the request (webhook).
+
+                        '
+                      example: https://webhook.com/notification
+                      maxLength: 100
+                    buyer:
+                      type: object
+                      description: 'Object containing the payer attributes.
+
+                        '
+                      required:
+                      - fullName
+                      - documentType
+                      - documentNumber
+                      properties:
+                        fullName:
+                          type: string
+                          description: 'Full buyer’s Name, no special characters.
+
+                            '
+                          example: Joshua Washington
+                          maxLength: 100
+                        emailAddress:
+                          type: string
+                          description: "\tBuyers email address.\n"
+                          example: username@mail.com
+                          maxLength: 100
+                        contactPhone:
+                          type: string
+                          description: 'Buyers contact phone, string must be in an international format, the + symbol and the 1-3 digit country calling code
+
+                            '
+                          example: 14153214567
+                          maxLength: 50
+                        documentType:
+                          type: string
+                          description: 'Identity Document type. These values may vary depending on the country.
+
+
+                            __Allowed values for Colombia:__ CCCEPPNITNUIPSample: CE
+
+                            '
+                          example: 5415668464654
+                          maxLength: 5
+                        documentNumber:
+                          type: string
+                          description: 'Buyer’s Identity document number
+
+                            '
+                          example: 8081023876
+                          maxLength: 15
+                        billingAddress:
+                          type: object
+                          description: 'Object containing the attributes of the billing address.
+
+                            '
+                          properties:
+                            street1:
+                              type: string
+                              description: 'Billing address line 1.
+
+                                '
+                              example: Cra 86
+                              maxLength: 50
+                            street2:
+                              type: string
+                              description: 'Billing address line 2
+
+                                '
+                              example: null
+                              maxLength: 50
+                            city:
+                              type: string
+                              description: 'Billing address city
+
+                                '
+                              example: Bogota
+                              maxLength: 20
+                            state:
+                              type: string
+                              description: "\tBilling address state\n"
+                              example: Cundinamarca
+                              maxLength: 20
+                            country:
+                              type: string
+                              description: 'Billing address country
+
+                                '
+                              example: Colombia
+                              maxLength: 20
+                            postalCode:
+                              type: string
+                              description: 'Billing address postal code
+
+                                '
+                              example: 33133
+                              maxLength: 20
+                            phone:
+                              type: string
+                              description: 'Billing address phone, string must be in an international format, the + symbol and the 1-3 digit country calling code
+
+                                '
+                              example: 14153214567
+                              maxLength: 50
+                card:
+                  type: object
+                  description: 'Object containing the attributes of the payment instrument.
+
+                    '
+                  required:
+                  - nameOnCard
+                  - cardId
+                  - cvalidation
+                  properties:
+                    nameOnCard:
+                      type: string
+                      description: 'Name printed on card, no special characters.
+
+                        '
+                      example: Joshua Washington
+                      maxLength: 100
+                    cardId:
+                      type: string
+                      description: 'Unique card identifier encrypted with AES256.
+
+                        The cardId attribute is composed of the following values: - pan: Card’s primary account number String(16) - expiration: Card expiration date String(4) - SALT: Random Value String(3)
+
+
+                        __Allowed characters:__ Alphanumeric and special characters.
+
+                        '
+                      example: ulEIrV9g/zlqoKgjIrPGqfGGS0dX6d+q
+                      maxLength: 32
+                    cvalidation:
+                      type: string
+                      description: 'Card verification value (CVV) encrypted with AES256.
+
+                        '
+                      example: zWNTka0/Pvl8MnFGqPhE5A==
+                      maxLength: 32
+                metadata:
+                  type: string
+                  description: 'Object arrangements containing the additional values that need to be added to the request.
+
+                    '
+                  example: 1
+                  maxLength: 1
+                paymentMethod:
+                  type: string
+                  description: 'Card scheme
+
+
+                    __Allowed values:__ CLOSELOOP
+
+                    '
+                  example: CLOSELOOP
+                  maxLength: 10
+                paymentCountry:
+                  type: string
+                  description: 'Country code where the request of payment is made according to ISO 3166-1 standard. Alpha-2 Code.
+
+                    '
+                  example: CO
+                  maxLength: 2
+                paymentCurrency:
+                  type: number
+                  description: 'Currency code of the transaction according to ISO 4217 standard.
+
+                    '
+                  example: 170
+                  multipleOf: 3
+                referenceCode:
+                  type: string
+                  description: 'Transaction reference code. This is value must be unique.
+
+                    '
+                  example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+                  maxLength: 32
+                amount:
+                  type: number
+                  description: "\tTransaction amount, use dot sign for decimal, without thousands separator.\n"
+                  example: 58080825.5
+                  multipleOf: 10.2
+                commissionFee:
+                  type: number
+                  description: 'Transaction fee amount that applies to the transaction.Note: use dot sign for decimal, without thousands separator.
+
+                    '
+                  example: 808.5
+                  multipleOf: 8.2
+                localDateTime:
+                  type: string
+                  example: '2020-04-20T20:40:52Z'
+                  description: Date and time of the transaction according to ISO 8601 standards.
+                  format: date-time
+            relatedTransaction:
+              type: object
+              description: 'Object containing the attributes of the related transaction.
+
+                '
+              required:
+              - refereceCode
+              - amount
+              - localDateTime
+              - type
+              properties:
+                refereceCode:
+                  type: string
+                  description: 'Transaction reference code. This is value must be unique.
+
+                    '
+                  example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+                  maxLength: 40
+                amount:
+                  type: number
+                  description: 'Transaction amount, use dot sign for decimal, without thousands separator.
+
+                    '
+                  example: 58080825.5
+                  multipleOf: 10.2
+                localDateTime:
+                  type: string
+                  example: '2020-04-20T20:40:52Z'
+                  description: Date and time of the transaction according to ISO 8601 standards.
+                  format: date-time
+                type:
+                  type: string
+                  description: 'Type of related transaction. Allowed values: REVERSE, REFUND.
+
+                    '
+                  example: REFUND
+                  maxLength: 7
+    RSPaymentAuthorizer200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Describes the meaning of the response code
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Date and time of the transaction according to ISO 8601 standards.
+          format: date-time
+        data:
+          type: object
+          description: 'Object containing the attributes of the response.
+
+            '
+          required:
+          - authCode
+          - transactionId
+          - referenceCode
+          - status
+          properties:
+            authCode:
+              type: string
+              description: Authorization number
+              example: 234
+              maxLength: 6
+            transactionId:
+              type: string
+              description: Unique payment identifier
+              example: b3a7dbec3eb0d71798c4f19fec445795
+              maxLength: 40
+            referenceCode:
+              type: string
+              description: Reference code sent in the request.
+              example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+              maxLength: 40
+            status:
+              type: string
+              description: Transaction status.
+              example: AUTHORIZED
+              maxLength: 10
+            codeDeclined:
+              type: string
+              description: 'Detail of the result or the status. Required if the transaction is declined.
+
+
+                __Allowed values:__ __Refer to:__ [Transaction Response Code](https://developer.novopayment.com/api/request-and-response-codes#item-transactionresponsecodes%22_blank%22)
+
+                '
+              example: null
+              maxLength: 5
+    RQPaymentRefund:
+      type: object
+      required:
+      - referenceCode
+      properties:
+        referenceCode:
+          type: string
+          description: 'Reference code sent in the request.
+
+            '
+          example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+          maxLength: 40
     RQPaymentAuthorizer:
       type: object
       required:
@@ -752,518 +1098,96 @@ components:
               example: '2020-04-20T20:40:52Z'
               description: Date and time of the transaction according to ISO 8601 standards.
               format: date-time
-    RSGetPaymentDetail200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Describes the meaning of the response code
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Date and time of the transaction according to ISO 8601 standards.
-          format: date-time
-        data:
-          type: object
-          description: 'Object containing the attributes of the response related to the request.
-
-            '
-          required:
-          - status
-          - merchant
-          - transaction
-          properties:
-            status:
-              type: string
-              description: 'Transaction status.
-
-
-                __Allowed values:__ AUTHORIZED - DECLINED
-
-                '
-              example: AUTHORIZED
-              maxLength: 10
-            codeDeclined:
-              type: string
-              description: 'Detail of the result or the statusRequired if the transaction is declined.
-
-
-                __Allowed values:__ See the list Transaction response codes
-
-                '
-              example: null
-              maxLength: 5
-            cardToken:
-              type: string
-              description: 'This field is required for tokenized card transactions
-
-                __Allowed characters:__ Alphanumeric.
-
-                '
-              example: null
-              maxLength: 32
-            merchant:
-              type: object
-              description: 'Object containing the attributes of the merchant.
-
-                '
-              required:
-              - merchantId
-              - terminalId
-              - categoryId
-              - name
-              - countryCode
-              - city
-              properties:
-                merchantId:
-                  type: string
-                  description: 'Unique identifier merchant or unique code of commerce
-
-                    '
-                  example: K213JA45
-                  maxLength: 8
-                terminalId:
-                  type: string
-                  description: 'Unique identifier of the payment terminal
-
-                    '
-                  example: VKJ23H
-                  maxLength: 6
-                categoryId:
-                  type: string
-                  description: 'Merchant category
-
-                    '
-                  example: 5699
-                  maxLength: 4
-                name:
-                  type: string
-                  description: 'Merchant name
-
-                    '
-                  example: Sportswear
-                  maxLength: 40
-                description:
-                  type: string
-                  description: 'Merchant description.
-
-                    '
-                  example: Clothing Stores
-                  maxLength: 100
-                countryCode:
-                  type: string
-                  description: 'Country where the merchant is stablished according to ISO 3166-1 standard. Alpha-2 Code.
-
-                    '
-                  example: CO
-                  maxLength: 2
-                city:
-                  type: string
-                  description: 'City where the merchant is stablished.
-
-                    '
-                  example: Bogota
-                  maxLength: 20
-                address:
-                  type: string
-                  description: 'Merchant address.
-
-                    '
-                  example: Cra. 141-23
-                  maxLength: 100
-                acquirerIdCode:
-                  type: string
-                  description: 'Acquiring institution identification code.
-
-                    '
-                  example: H3K123BMM12
-                  maxLength: 11
-            transaction:
-              type: object
-              description: 'Object containing the attributes of the transaction.
-
-                '
-              required:
-              - order
-              - paymentMethod
-              - paymentCountry
-              - paymentCurrency
-              - referenceCode
-              - amount
-              - localDateTime
-              properties:
-                order:
-                  type: object
-                  description: 'Object containing the attributes of the order
-
-                    '
-                  required:
-                  - buyer
-                  properties:
-                    description:
-                      type: string
-                      description: 'Order description
-
-                        '
-                      example: Buying baseball shoes
-                      maxLength: 40
-                    notifyUrl:
-                      type: string
-                      description: 'Service address to receive information of the request (webhook).
-
-                        '
-                      example: https://webhook.com/notification
-                      maxLength: 100
-                    buyer:
-                      type: object
-                      description: 'Object containing the payer attributes.
-
-                        '
-                      required:
-                      - fullName
-                      - documentType
-                      - documentNumber
-                      properties:
-                        fullName:
-                          type: string
-                          description: 'Full buyer’s Name, no special characters.
-
-                            '
-                          example: Joshua Washington
-                          maxLength: 100
-                        emailAddress:
-                          type: string
-                          description: "\tBuyers email address.\n"
-                          example: username@mail.com
-                          maxLength: 100
-                        contactPhone:
-                          type: string
-                          description: 'Buyers contact phone, string must be in an international format, the + symbol and the 1-3 digit country calling code
-
-                            '
-                          example: 14153214567
-                          maxLength: 50
-                        documentType:
-                          type: string
-                          description: 'Identity Document type. These values may vary depending on the country.
-
-
-                            __Allowed values for Colombia:__ CCCEPPNITNUIPSample: CE
-
-                            '
-                          example: 5415668464654
-                          maxLength: 5
-                        documentNumber:
-                          type: string
-                          description: 'Buyer’s Identity document number
-
-                            '
-                          example: 8081023876
-                          maxLength: 15
-                        billingAddress:
-                          type: object
-                          description: 'Object containing the attributes of the billing address.
-
-                            '
-                          properties:
-                            street1:
-                              type: string
-                              description: 'Billing address line 1.
-
-                                '
-                              example: Cra 86
-                              maxLength: 50
-                            street2:
-                              type: string
-                              description: 'Billing address line 2
-
-                                '
-                              example: null
-                              maxLength: 50
-                            city:
-                              type: string
-                              description: 'Billing address city
-
-                                '
-                              example: Bogota
-                              maxLength: 20
-                            state:
-                              type: string
-                              description: "\tBilling address state\n"
-                              example: Cundinamarca
-                              maxLength: 20
-                            country:
-                              type: string
-                              description: 'Billing address country
-
-                                '
-                              example: Colombia
-                              maxLength: 20
-                            postalCode:
-                              type: string
-                              description: 'Billing address postal code
-
-                                '
-                              example: 33133
-                              maxLength: 20
-                            phone:
-                              type: string
-                              description: 'Billing address phone, string must be in an international format, the + symbol and the 1-3 digit country calling code
-
-                                '
-                              example: 14153214567
-                              maxLength: 50
-                card:
-                  type: object
-                  description: 'Object containing the attributes of the payment instrument.
-
-                    '
-                  required:
-                  - nameOnCard
-                  - cardId
-                  - cvalidation
-                  properties:
-                    nameOnCard:
-                      type: string
-                      description: 'Name printed on card, no special characters.
-
-                        '
-                      example: Joshua Washington
-                      maxLength: 100
-                    cardId:
-                      type: string
-                      description: 'Unique card identifier encrypted with AES256.
-
-                        The cardId attribute is composed of the following values: - pan: Card’s primary account number String(16) - expiration: Card expiration date String(4) - SALT: Random Value String(3)
-
-
-                        __Allowed characters:__ Alphanumeric and special characters.
-
-                        '
-                      example: ulEIrV9g/zlqoKgjIrPGqfGGS0dX6d+q
-                      maxLength: 32
-                    cvalidation:
-                      type: string
-                      description: 'Card verification value (CVV) encrypted with AES256.
-
-                        '
-                      example: zWNTka0/Pvl8MnFGqPhE5A==
-                      maxLength: 32
-                metadata:
-                  type: string
-                  description: 'Object arrangements containing the additional values that need to be added to the request.
-
-                    '
-                  example: 1
-                  maxLength: 1
-                paymentMethod:
-                  type: string
-                  description: 'Card scheme
-
-
-                    __Allowed values:__ CLOSELOOP
-
-                    '
-                  example: CLOSELOOP
-                  maxLength: 10
-                paymentCountry:
-                  type: string
-                  description: 'Country code where the request of payment is made according to ISO 3166-1 standard. Alpha-2 Code.
-
-                    '
-                  example: CO
-                  maxLength: 2
-                paymentCurrency:
-                  type: number
-                  description: 'Currency code of the transaction according to ISO 4217 standard.
-
-                    '
-                  example: 170
-                  multipleOf: 3
-                referenceCode:
-                  type: string
-                  description: 'Transaction reference code. This is value must be unique.
-
-                    '
-                  example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-                  maxLength: 32
-                amount:
-                  type: number
-                  description: "\tTransaction amount, use dot sign for decimal, without thousands separator.\n"
-                  example: 58080825.5
-                  multipleOf: 10.2
-                commissionFee:
-                  type: number
-                  description: 'Transaction fee amount that applies to the transaction.Note: use dot sign for decimal, without thousands separator.
-
-                    '
-                  example: 808.5
-                  multipleOf: 8.2
-                localDateTime:
-                  type: string
-                  example: '2020-04-20T20:40:52Z'
-                  description: Date and time of the transaction according to ISO 8601 standards.
-                  format: date-time
-            relatedTransaction:
-              type: object
-              description: 'Object containing the attributes of the related transaction.
-
-                '
-              required:
-              - refereceCode
-              - amount
-              - localDateTime
-              - type
-              properties:
-                refereceCode:
-                  type: string
-                  description: 'Transaction reference code. This is value must be unique.
-
-                    '
-                  example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-                  maxLength: 40
-                amount:
-                  type: number
-                  description: 'Transaction amount, use dot sign for decimal, without thousands separator.
-
-                    '
-                  example: 58080825.5
-                  multipleOf: 10.2
-                localDateTime:
-                  type: string
-                  example: '2020-04-20T20:40:52Z'
-                  description: Date and time of the transaction according to ISO 8601 standards.
-                  format: date-time
-                type:
-                  type: string
-                  description: 'Type of related transaction. Allowed values: REVERSE, REFUND.
-
-                    '
-                  example: REFUND
-                  maxLength: 7
-    RSPaymentAuthorizer400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQPaymentRefund:
-      type: object
-      required:
-      - referenceCode
-      properties:
-        referenceCode:
-          type: string
-          description: 'Reference code sent in the request.
-
-            '
-          example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-          maxLength: 40
-    RSPaymentAuthorizer200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Describes the meaning of the response code
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Date and time of the transaction according to ISO 8601 standards.
-          format: date-time
-        data:
-          type: object
-          description: 'Object containing the attributes of the response.
-
-            '
-          required:
-          - authCode
-          - transactionId
-          - referenceCode
-          - status
-          properties:
-            authCode:
-              type: string
-              description: Authorization number
-              example: 234
-              maxLength: 6
-            transactionId:
-              type: string
-              description: Unique payment identifier
-              example: b3a7dbec3eb0d71798c4f19fec445795
-              maxLength: 40
-            referenceCode:
-              type: string
-              description: Reference code sent in the request.
-              example: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-              maxLength: 40
-            status:
-              type: string
-              description: Transaction status.
-              example: AUTHORIZED
-              maxLength: 10
-            codeDeclined:
-              type: string
-              description: 'Detail of the result or the status. Required if the transaction is declined.
-
-
-                __Allowed values:__ __Refer to:__ [Transaction Response Code](https://developer.novopayment.com/api/request-and-response-codes#item-transactionresponsecodes%22_blank%22)
-
-                '
-              example: null
-              maxLength: 5
-    RSGetPaymentDetail400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
   responses:
+    RSGetPaymentDetail400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetPaymentDetail400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSPaymentAuthorizer200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentAuthorizer200'
+          examples:
+            Payment Authorizer:
+              value:
+                code: 200.12.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: 234
+                  transactionId: b3a7dbec3eb0d71798c4f19fec445795
+                  referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+                  status: AUTHORIZED
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSPaymentAuthorizer400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentAuthorizer400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+    RSPaymentRefund400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentRefund400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+    RSPaymentRefund200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPaymentRefund200'
+          examples:
+            Payment Authorizer:
+              value:
+                code: 200.12.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: 234
+                  transactionId: 1f900a5e-2f3f-11eb-adc1-0242ac120002
     RSGetPaymentDetail200:
       description: OK
       content:
@@ -1325,95 +1249,171 @@ components:
                     amount: 58080825.50,
                     localDateTime: '2020-04-20T20:40:52Z'
                     type: REFUND
-    RSPaymentAuthorizer400:
-      description: Bad Request
+  requestBodies:
+    RQPaymentRefund:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSPaymentAuthorizer400'
+            $ref: '#/components/schemas/RQPaymentRefund'
           examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-    RS500:
-      description: Internal Server Error
+            Payment Refund:
+              $ref: '#/components/examples/RQEndpointPaymentRefund'
+      required: true
+    RQPaymentAuthorizer:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS500'
+            $ref: '#/components/schemas/RQPaymentAuthorizer'
           examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSPaymentRefund400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPaymentRefund400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-    RSPaymentRefund200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPaymentRefund200'
-          examples:
-            Payment Authorizer:
-              value:
-                code: 200.12.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: 234
-                  transactionId: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-    RSGetPaymentDetail400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGetPaymentDetail400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-    RSPaymentAuthorizer200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPaymentAuthorizer200'
-          examples:
-            Payment Authorizer:
-              value:
-                code: 200.12.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: 234
-                  transactionId: b3a7dbec3eb0d71798c4f19fec445795
-                  referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
-                  status: AUTHORIZED
+            Tokenized Card Transactions Example:
+              $ref: '#/components/examples/RQEndpointTokenizedCardTransactionsExample'
+            Not Tokenized Card Transactions Example:
+              $ref: '#/components/examples/RQEndpointNotTokenizedCardTransactionsExample'
+      required: true
+  examples:
+    RequestParamsRequired:
+      value:
+        code: 400.08.001
+        message: Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+        - message: 'attributeOneCamelCase: Can not be null'
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointPaymentRefund:
+      value:
+        referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+    RQEndpointTokenizedCardTransactionsExample:
+      value:
+        cardToken: b3a7dbec3eb0d71798c4f19fec445795
+        merchant:
+          merchantId: K213JA45
+          terminalId: VKJ23H
+          categoryId: 5699
+          name: Sportswear
+          description: Clothing Stores
+          countryCode: CO
+          city: Bogota
+          address: Cra. 141-23
+          acquirerIdCode: H3K123BMM12
+        transaction:
+          order:
+            description: Buying baseball shoes
+            notifyUrl: https://webhook.com/notification
+            buyer:
+              fullname: Joshua Washington
+              emailAddress: username@mail.com
+              contactPhone: 14153214567
+              documentType: CE
+              documentNumber: 8081023876
+              billingAddress:
+                street1: Cra 86
+                street2: null
+                city: Bogota
+                state: Cundinamarca
+                country: Colombia
+                postalCode: 33133
+                phone: 14153214567
+          metadata:
+            INSTALLMENTS_NUMBER: 1
+          paymentMethod: CLOSELOOP
+          paymentCountry: CO
+          paymentCurrency: 170
+          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+          amount: 58080825.5
+          commissionFee: 808.5
+          localDateTime: '2020-04-20T20:40:52Z'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointNotTokenizedCardTransactionsExample:
+      value:
+        merchant:
+          merchantId: K213JA45
+          terminalId: VKJ23H
+          categoryId: 5699
+          name: Sportswear
+          description: Clothing Stores
+          countryCode: CO
+          city: Bogota
+          address: Cra. 141-23
+          acquirerIdCode: H3K123BMM12
+        transaction:
+          order:
+            description: Buying baseball shoes
+            notifyUrl: https://webhook.com/notification
+            buyer:
+              fullname: Joshua Washington
+              emailAddress: username@mail.com
+              contactPhone: 14153214567
+              documentType: CE
+              documentNumber: 8081023876
+              billingAddress:
+                street1: Cra 86
+                street2: null
+                city: Bogota
+                state: Cundinamarca
+                country: Colombia
+                postalCode: 33133
+                phone: 14153214567
+          card:
+            nameOnCard: Joshua Washington
+            cardId: ulEIrV9g/zlqoKgjIrPGqfGGS0dX6d+q
+            cvalidation: zWNTka0/Pvl8MnFGqPhE5A==
+          metadata:
+            INSTALLMENTS_NUMBER: 1
+          paymentMethod: CLOSELOOP
+          paymentCountry: CO
+          paymentCurrency: 170
+          referenceCode: 1f900a5e-2f3f-11eb-adc1-0242ac120002
+          amount: 58080825.5
+          commissionFee: 808.5
+          localDateTime: '2020-04-20T20:40:52Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+  parameters:
+    referenceCode:
+      name: referenceCode
+      in: path
+      description: 'Unique transaction identifier.
+
+        '
+      required: true
+      schema:
+        type: string
+    transactionId:
+      name: transactionId
+      in: path
+      description: 'Transaction reference code. This is value must be unique.
+
+        '
+      required: true
+      schema:
+        type: string
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

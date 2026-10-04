@@ -30,29 +30,38 @@ paths:
       tags:
       - Regulatoryassessment
 components:
+  examples:
+    InternalServerError:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
-    RSRegulatoryQuestions200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RS500:
       type: object
       required:
@@ -75,6 +84,29 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RSRegulatoryQuestions400:
       type: object
@@ -132,7 +164,7 @@ components:
                       enum:
                       - 'yes'
                       - 'no'
-    RS401:
+    RSRegulatoryQuestions200:
       type: object
       required:
       - code
@@ -141,52 +173,57 @@ components:
       properties:
         code:
           type: string
-          example: 401.01.990
           description: Operation response code
-          minLength: 10
+          example: 200.25.000
           maxLength: 10
         message:
           type: string
-          example: Invalid Access Token
           description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-  examples:
-    InvalidAccessToken:
-      value:
-        code: 401.25.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.25.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.25.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.25.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.25.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
+    RQRegulatoryQuestions:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQRegulatoryQuestions'
+      required: true
   responses:
+    RSRegulatoryQuestions400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSRegulatoryQuestions400'
+          examples:
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RSRegulatoryQuestions200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSRegulatoryQuestions200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RS401:
       description: Unauthorized
       content:
@@ -202,43 +239,6 @@ components:
               $ref: '#/components/examples/InvalidSignature'
             Access Token Expired:
               $ref: '#/components/examples/AccessTokenExpired'
-    RSRegulatoryQuestions400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSRegulatoryQuestions400'
-          examples:
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSRegulatoryQuestions200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSRegulatoryQuestions200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-  requestBodies:
-    RQRegulatoryQuestions:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQRegulatoryQuestions'
-      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

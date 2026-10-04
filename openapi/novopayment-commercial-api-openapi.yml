@@ -31,15 +31,20 @@ paths:
       - Commercial
 components:
   examples:
-    InvalidAccessToken:
-      value:
-        code: 401.18.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
         code: 500.18.001
         message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParameterFormatError:
+      value:
+        code: 400.18.081
+        message: Parameter format error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.18.990
+        message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenNotApproved:
       value:
@@ -56,67 +61,40 @@ components:
         code: 401.18.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-    ParameterFormatError:
-      value:
-        code: 400.18.081
-        message: Parameter format error
-        datetime: '2020-01-03T16:05:56.517Z'
-  requestBodies:
-    RQCreateCommercialCustomers:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCreateCommercialCustomers'
-      required: true
-  responses:
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSCreateCommercialCustomers200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCreateCommercialCustomers200'
-          examples:
-            Success:
-              value:
-                code: 200.18.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  customerId: 49BCD622C6A07726594D63AAB2F436D366782AD1
-    RSCreateCommercialCustomers400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCreateCommercialCustomers400'
-          examples:
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
   schemas:
+    RSCreateCommercialCustomers200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.18.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - customerId
+          properties:
+            customerId:
+              type: string
+              description: Unique customer identifier.
+              example: 49BCD622C6A07726594D63AAB2F436D366782AD1
+              maxLength: 40
     RS500:
       type: object
       required:
@@ -139,6 +117,52 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCreateCommercialCustomers400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RQCreateCommercialCustomers:
       type: object
@@ -321,85 +345,61 @@ components:
                 description: Country in ISO code 2 digits.
                 example: US
                 maxLength: 2
-    RSCreateCommercialCustomers200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.18.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-        data:
-          type: object
-          required:
-          - customerId
-          properties:
-            customerId:
-              type: string
-              description: Unique customer identifier.
-              example: 49BCD622C6A07726594D63AAB2F436D366782AD1
-              maxLength: 40
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+  responses:
     RSCreateCommercialCustomers400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.18.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreateCommercialCustomers400'
+          examples:
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
+    RSCreateCommercialCustomers200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreateCommercialCustomers200'
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  customerId: 49BCD622C6A07726594D63AAB2F436D366782AD1
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+  requestBodies:
+    RQCreateCommercialCustomers:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCreateCommercialCustomers'
+      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

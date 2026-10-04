@@ -36,52 +36,6 @@ paths:
       tags:
       - Decoderqr
 components:
-  examples:
-    ParamsRequired:
-      value:
-        code: 400.22.003
-        message: Params required
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.22.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.22.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.22.396
-        message: Invalid Parameters
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTenantId:
-      value:
-        code: 400.22.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.22.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    ErrorGeneralServices:
-      value:
-        code: 400.22.350
-        message: Error General Services
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.22.089
-        message: Invalid Data
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.22.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
   parameters:
     createApiKey:
       name: createApiKey
@@ -98,6 +52,14 @@ components:
         enum:
         - false
         - true
+    apikey:
+      name: apikey
+      in: query
+      description: Public API key, which is different from the shared secret.
+      required: true
+      schema:
+        type: string
+        maxLength: 49
     XTenantId:
       name: X-tenant-id
       in: header
@@ -119,6 +81,18 @@ components:
       required: true
       schema:
         type: string
+    XPayToken:
+      name: x-pay-token
+      in: header
+      description: 'A token identifying the transaction and its contents.
+
+
+        The token expires in 480 seconds (8 minutes) for all clients.
+
+        '
+      required: true
+      schema:
+        type: string
     XRequestId:
       name: x-request-id
       in: header
@@ -132,26 +106,6 @@ components:
       schema:
         type: string
         maxLength: 36
-    apikey:
-      name: apikey
-      in: query
-      description: Public API key, which is different from the shared secret.
-      required: true
-      schema:
-        type: string
-        maxLength: 49
-    XPayToken:
-      name: x-pay-token
-      in: header
-      description: 'A token identifying the transaction and its contents.
-
-
-        The token expires in 480 seconds (8 minutes) for all clients.
-
-        '
-      required: true
-      schema:
-        type: string
   schemas:
     RSGenerateQrCode400:
       type: object
@@ -189,15 +143,6 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RQDecoderQrCode:
-      type: object
-      required:
-      - qrEncodeData
-      properties:
-        qrEncodeData:
-          type: string
-          description: QR code in string format.
-          example: 00020101021203114000000005752044111530315654062372005502015802CO5915Compania NOVO 36006BOGOTA62630102''0202''030412340402''0502''0603***0708A60086670802''0902ME6304EAAC
     RS401:
       type: object
       properties:
@@ -216,6 +161,15 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RQDecoderQrCode:
+      type: object
+      required:
+      - qrEncodeData
+      properties:
+        qrEncodeData:
+          type: string
+          description: QR code in string format.
+          example: 00020101021203114000000005752044111530315654062372005502015802CO5915Compania NOVO 36006BOGOTA62630102''0202''030412340402''0502''0603***0708A60086670802''0902ME6304EAAC
     RSDecoderQR:
       type: object
       required:
@@ -349,19 +303,53 @@ components:
 
                     '
                   example: ME
+  examples:
+    InvalidTenantId:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParamsRequired:
+      value:
+        code: 400.22.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+    ErrorGeneralServices:
+      value:
+        code: 400.22.350
+        message: Error General Services
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
   responses:
-    RS500:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-    RSDecoderQR:
-      description: Decoder QR response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSDecoderQR'
     RSGenerateQrCode400:
       description: Bad Request
       content:
@@ -394,6 +382,18 @@ components:
               $ref: '#/components/examples/InvalidSignature'
             Access Token Expired:
               $ref: '#/components/examples/AccessTokenExpired'
+    RSDecoderQR:
+      description: Decoder QR response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSDecoderQR'
+    RS500:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
   requestBodies:
     RQDecoderQrCode:
       content:

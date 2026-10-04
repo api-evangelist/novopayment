@@ -61,24 +61,6 @@ components:
                 code: 200.25.000
                 message: Process Ok
                 datetime: '2020-01-03T16:05:56.517Z'
-    RSOtherTypeOfOccupation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOtherTypeOfOccupation400'
-          examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
     RS401:
       description: Unauthorized
       content:
@@ -94,6 +76,15 @@ components:
               $ref: '#/components/examples/InvalidSignature'
             Access Token Expired:
               $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RSOtherTypeOfOccupation200:
       description: OK
       content:
@@ -106,6 +97,15 @@ components:
                 code: 200.25.000
                 message: Process Ok
                 datetime: '2020-01-03T16:05:56.517Z'
+    RSOtherTypeOfOccupation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOtherTypeOfOccupation400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
     RSOccupation400:
       description: Bad Request
       content:
@@ -115,57 +115,8 @@ components:
           examples:
             Invalid Data:
               $ref: '#/components/examples/InvalidData'
-  examples:
-    AccessTokenNotApproved:
-      value:
-        code: 401.25.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.25.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    ProcessNotCompleted:
-      value:
-        code: 400.25.019
-        message: The process could not be completed.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.25.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.25.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.25.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-  requestBodies:
-    RQOtherTypeOfOccupation:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQOtherTypeOfOccupation'
-      required: true
-    RQOccupation:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQOccupation'
-      required: true
   schemas:
-    RSOccupation400:
+    RSOtherTypeOfOccupation400:
       type: object
       required:
       - code
@@ -182,6 +133,28 @@ components:
           type: string
           example: Params required
           description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSOccupation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -234,7 +207,7 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSOtherTypeOfOccupation200:
+    RSOccupation400:
       type: object
       required:
       - code
@@ -243,13 +216,14 @@ components:
       properties:
         code:
           type: string
+          example: 400.25.003
           description: Operation response code
-          example: 200.25.000
+          minLength: 10
           maxLength: 10
         message:
           type: string
+          example: Params required
           description: Response code description
-          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -341,7 +315,7 @@ components:
                       description: Address city identifier.
                       example: 918537
                       maxLength: 38
-    RSOccupation200:
+    RSOtherTypeOfOccupation200:
       type: object
       required:
       - code
@@ -378,29 +352,55 @@ components:
           - student
           - self employed
           - other
-    RSOtherTypeOfOccupation400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+  requestBodies:
+    RQOtherTypeOfOccupation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQOtherTypeOfOccupation'
+      required: true
+    RQOccupation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQOccupation'
+      required: true
+  examples:
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    ProcessNotCompleted:
+      value:
+        code: 400.25.019
+        message: The process could not be completed.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

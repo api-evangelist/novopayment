@@ -31,35 +31,35 @@ paths:
       - Income
 components:
   examples:
-    InvalidAccessToken:
-      value:
-        code: 401.25.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
         code: 500.25.001
         message: Internal Server Error
         datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
+    InvalidData:
       value:
-        code: 401.25.993
-        message: Access token expired
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenNotApproved:
       value:
         code: 401.25.991
         message: Access Token not approved
         datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
     InvalidSignature:
       value:
         code: 401.25.992
         message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
         datetime: '2020-01-03T16:05:56.517Z'
   schemas:
     RSIncomeSource400:
@@ -79,6 +79,74 @@ components:
           type: string
           example: Params required
           description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Opertion Timestamp
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSIncomeSource200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -113,74 +181,13 @@ components:
           description: Total annual income.
           example: 98.650.000,00
           maxLength: 38
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Opertion Timestamp
-          format: date-time
-    RSIncomeSource200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+  requestBodies:
+    RQIncomeSource:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQIncomeSource'
+      required: true
   responses:
     RS401:
       description: Unauthorized
@@ -197,6 +204,15 @@ components:
               $ref: '#/components/examples/InvalidSignature'
             Access Token Expired:
               $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RSIncomeSource200:
       description: OK
       content:
@@ -218,22 +234,6 @@ components:
           examples:
             Invalid Data:
               $ref: '#/components/examples/InvalidData'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-  requestBodies:
-    RQIncomeSource:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQIncomeSource'
-      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

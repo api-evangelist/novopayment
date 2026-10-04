@@ -173,17 +173,72 @@ paths:
     - description: Sandbox
       url: https://sandbox-api.novopayment.com/profiles/v1
 components:
+  requestBodies:
+    RQUpdateTransactionRules:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQUpdateTransactionRules'
+    RQCustomizeOperationLimits:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCustomizeOperationLimits'
+    RQCreateTransactionRules:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCreateTransactionRules'
+    RQCustomerConfigurationUpdate:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCustomerConfigurationUpdate'
+      required: true
   examples:
-    AccessTokenNotApproved:
+    InvalidCardId:
       value:
-        code: 401.01.991
-        message: Access Token not approved
+        code: 400.01.009
+        message: Invalid Card ID
         datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenExpired:
+    InvalidTenantId:
       value:
-        code: 401.01.993
-        message: Access token expired
+        code: 400.01.004
+        message: Invalid tenant ID
         datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    ClientAlreadyRegisteredInThisProgram:
+      value:
+        code: 400.01.005
+        message: Client already registered in this program
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsNotActive:
+      value:
+        code: 400.01.367
+        message: The card is not active
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsBlocked:
+      value:
+        code: 400.01.008
+        message: Card is blocked
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardNotFound:
+      value:
+        code: 400.01.487
+        message: Card not found
+        datetime: 2025-01-31 22:39:11.547000+00:00
     InvalidParametersRules:
       value:
         code: 400.01.396
@@ -204,80 +259,40 @@ components:
         - message: 'Field subject: must not be blank'
         - message: 'Field subject: must not be null'
         datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidTenantId:
-      value:
-        code: 400.01.004
-        message: Invalid tenant ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsBlocked:
-      value:
-        code: 400.01.008
-        message: Card is blocked
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidSignature:
-      value:
-        code: 401.01.992
-        message: Invalid signature
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TheCardIsNotActive:
-      value:
-        code: 400.01.367
-        message: The card is not active
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    ClientAlreadyRegisteredInThisProgram:
-      value:
-        code: 400.01.005
-        message: Client already registered in this program
-        datetime: 2020-01-03 16:05:56.517000+00:00
     UserNotFound:
       value:
         code: 400.01.033
         message: User not found
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsInactive:
-      value:
-        code: 400.01.456
-        message: Card is inactive
-        datetime: 2025-01-03 16:05:56.517000+00:00
-    InvalidAccessToken:
-      value:
-        code: 401.01.990
-        message: Invalid Access Token
         datetime: 2020-01-03 16:05:56.517000+00:00
     InternalServerError:
       value:
         code: 500.01.999
         message: Internal Server Error
         datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsInactive:
+      value:
+        code: 400.01.456
+        message: Card is inactive
+        datetime: 2025-01-03 16:05:56.517000+00:00
     HeaderParamsRequired:
       value:
         code: 400.01.001
         message: Header Params Required
         datetime: 2020-01-03 16:05:56.517000+00:00
-    CardNotFound:
+    AccessTokenExpired:
       value:
-        code: 400.01.487
-        message: Card not found
-        datetime: 2025-01-31 22:39:11.547000+00:00
-    InvalidCardId:
-      value:
-        code: 400.01.009
-        message: Invalid Card ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenNotApproved_2:
-      value:
-        code: 401.25.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired_2:
-      value:
-        code: 401.25.993
+        code: 401.01.993
         message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    ProcessNotCompleted:
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenNotApproved:
       value:
-        code: 400.25.019
-        message: The process could not be completed.
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken_2:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
     CustomerNotFound:
       value:
@@ -289,66 +304,27 @@ components:
         code: 401.25.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken_2:
+    ProcessNotCompleted:
       value:
-        code: 401.25.990
-        message: Invalid Access Token
+        code: 400.25.019
+        message: The process could not be completed.
         datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError_2:
       value:
         code: 500.25.001
         message: Internal Server Error
         datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired_2:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved_2:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
-    RSCardHolderCreate400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          minLength: 10
-          maxLength: 10
-          description: Operation response code
-        message:
-          type: string
-          maxLength: 140
-          description: Response code description
-        datetime:
-          type: string
-          format: date-time
-          minLength: 24
-          maxLength: 24
-          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
-    RQCreateTransactionRules:
-      type: array
-      items:
-        $ref: '#/components/schemas/ObjCreateTransactionRules'
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
     RSListTransactionRules200:
       type: object
       required:
@@ -385,35 +361,6 @@ components:
         data:
           type: array
           $ref: '#/components/schemas/ObjListTransactionRules'
-    ObjListTransactionRules:
-      type: object
-      required:
-      - transactionRule
-      - status
-      properties:
-        transactionRule:
-          type: string
-          minLength: 3
-          maxLength: 10
-          description: 'Transaction rule name
-
-            '
-          enum:
-          - ecommerce
-          - atm
-          - pos
-          example: ecommerce
-        status:
-          type: string
-          minLength: 6
-          maxLength: 10
-          description: 'Rule status. Indicates whether the transaction is enabled or disabled
-
-            '
-          enum:
-          - active
-          - inactive
-          example: active
     ObjCreateTransactionRules:
       type: object
       required:
@@ -431,6 +378,65 @@ components:
           - atm
           - pos
           example: ecommerce
+    RQCustomizeOperationLimits:
+      type: object
+      required:
+      - operations
+      properties:
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjCustomizeOperationLimitsOperations'
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RQCreateTransactionRules:
+      type: array
+      items:
+        $ref: '#/components/schemas/ObjCreateTransactionRules'
     RSTransactionRules400:
       type: object
       required:
@@ -476,29 +482,6 @@ components:
           $ref: '#/components/schemas/ObjCustomizeOperationLimitsAmountLimit'
         countLimit:
           $ref: '#/components/schemas/ObjCustomizeOperationLimitsCountLimit'
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
     RS200:
       type: object
       required:
@@ -531,15 +514,6 @@ components:
 
             '
           example: 2020-01-03 16:05:56.517000+00:00
-    RQCustomizeOperationLimits:
-      type: object
-      required:
-      - operations
-      properties:
-        operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ObjCustomizeOperationLimitsOperations'
     ObjCustomizeOperationLimitsAmountLimit:
       type: object
       properties:
@@ -582,6 +556,32 @@ components:
 
             '
           example: 30016.55
+    RSCardHolderCreate400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
+    RQUpdateTransactionRules:
+      type: array
+      items:
+        $ref: '#/components/schemas/ObjListTransactionRules'
     ObjCustomizeOperationLimitsCountLimit:
       type: object
       properties:
@@ -606,32 +606,35 @@ components:
           maximum: 9999
           description: Monthly count amount.
           example: 112
-    RQUpdateTransactionRules:
-      type: array
-      items:
-        $ref: '#/components/schemas/ObjListTransactionRules'
-    RSCustomerConfigurationUpdate200:
+    ObjListTransactionRules:
       type: object
       required:
-      - code
-      - message
-      - datetime
+      - transactionRule
+      - status
       properties:
-        code:
+        transactionRule:
           type: string
-          description: Operation response code
-          example: 200.25.000
+          minLength: 3
           maxLength: 10
-        message:
+          description: 'Transaction rule name
+
+            '
+          enum:
+          - ecommerce
+          - atm
+          - pos
+          example: ecommerce
+        status:
           type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+          minLength: 6
+          maxLength: 10
+          description: 'Rule status. Indicates whether the transaction is enabled or disabled
+
+            '
+          enum:
+          - active
+          - inactive
+          example: active
     RSCustomerConfigurationUpdate400:
       type: object
       required:
@@ -655,6 +658,107 @@ components:
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RSCustomerConfigurationUpdate200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500_2:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Timestamp
+          format: date-time
+    RS401_2:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSGetCustomerConfigurationParameters400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQCustomerConfigurationUpdate:
+      type: object
+      required:
+      - value
+      properties:
+        value:
+          type: string
+          description: Value to update.
+          example: true
+          maxLength: 50
     RSGetCustomerConfigurationParameters200:
       type: object
       required:
@@ -761,155 +865,7 @@ components:
                               description: Configuration type name.
                               example: boolean
                               maxLength: 20
-    RS500_2:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Timestamp
-          format: date-time
-    RS401_2:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSGetCustomerConfigurationParameters400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQCustomerConfigurationUpdate:
-      type: object
-      required:
-      - value
-      properties:
-        value:
-          type: string
-          description: Value to update.
-          example: true
-          maxLength: 50
-  requestBodies:
-    RQUpdateTransactionRules:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQUpdateTransactionRules'
-    RQCustomizeOperationLimits:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCustomizeOperationLimits'
-    RQCreateTransactionRules:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCreateTransactionRules'
-    RQCustomerConfigurationUpdate:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCustomerConfigurationUpdate'
-      required: true
   responses:
-    RSListTransactionRules400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransactionRules400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            The Card Is Not Active:
-              $ref: '#/components/examples/TheCardIsNotActive'
-            Invalid CardId:
-              $ref: '#/components/examples/InvalidCardId'
-            Card Not Found:
-              $ref: '#/components/examples/CardNotFound'
-            Card Is Inactive:
-              $ref: '#/components/examples/CardIsInactive'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Client Already Registered In This Program:
-              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
-    RS200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS200'
-          examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
     RS401:
       description: Unauthorized
       content:
@@ -940,31 +896,15 @@ components:
               $ref: '#/components/examples/InvalidParameters'
             User Not Found:
               $ref: '#/components/examples/UserNotFound'
-    RSEnableDisableTransactionalRules400:
-      description: Bad Request
+    RS500:
+      description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSTransactionRules400'
+            $ref: '#/components/schemas/RS500'
           examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersRules'
-            The Card Is Not Active:
-              $ref: '#/components/examples/TheCardIsNotActive'
-            Invalid CardId:
-              $ref: '#/components/examples/InvalidCardId'
-            Card Not Found:
-              $ref: '#/components/examples/CardNotFound'
-            Card Is Inactive:
-              $ref: '#/components/examples/CardIsInactive'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Client Already Registered In This Program:
-              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RSTransactionRules400:
       description: Bad Request
       content:
@@ -1005,24 +945,66 @@ components:
                   status: active
                 - transactionRule: atm
                   status: inactive
-    RSGetCustomerConfigurationParameters400:
+    RS200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSEnableDisableTransactionalRules400:
       description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSGetCustomerConfigurationParameters400'
+            $ref: '#/components/schemas/RSTransactionRules400'
           examples:
-            Customer Not Found:
-              $ref: '#/components/examples/CustomerNotFound'
-    RSCustomerConfigurationUpdate400:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersRules'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
+            Card Not Found:
+              $ref: '#/components/examples/CardNotFound'
+            Card Is Inactive:
+              $ref: '#/components/examples/CardIsInactive'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Client Already Registered In This Program:
+              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
+    RSListTransactionRules400:
       description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCustomerConfigurationUpdate400'
+            $ref: '#/components/schemas/RSTransactionRules400'
           examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
+            Card Not Found:
+              $ref: '#/components/examples/CardNotFound'
+            Card Is Inactive:
+              $ref: '#/components/examples/CardIsInactive'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Client Already Registered In This Program:
+              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
     RSCustomerConfigurationUpdate200:
       description: OK
       content:
@@ -1035,6 +1017,24 @@ components:
                 code: 200.25.000
                 message: Process Ok
                 datetime: '2020-01-03T16:05:56.517Z'
+    RSCustomerConfigurationUpdate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCustomerConfigurationUpdate400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+    RSGetCustomerConfigurationParameters400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetCustomerConfigurationParameters400'
+          examples:
+            Customer Not Found:
+              $ref: '#/components/examples/CustomerNotFound'
     RSGetCustomerConfigurationParameters200:
       description: OK
       content:

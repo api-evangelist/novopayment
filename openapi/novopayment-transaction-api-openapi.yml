@@ -36,52 +36,6 @@ paths:
       tags:
       - Transaction
 components:
-  examples:
-    ParamsRequired:
-      value:
-        code: 400.22.003
-        message: Params required
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.22.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.22.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.22.396
-        message: Invalid Parameters
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTenantId:
-      value:
-        code: 400.22.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.22.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    ErrorGeneralServices:
-      value:
-        code: 400.22.350
-        message: Error General Services
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.22.089
-        message: Invalid Data
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.22.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
   parameters:
     createApiKey:
       name: createApiKey
@@ -98,6 +52,14 @@ components:
         enum:
         - false
         - true
+    apikey:
+      name: apikey
+      in: query
+      description: Public API key, which is different from the shared secret.
+      required: true
+      schema:
+        type: string
+        maxLength: 49
     XTenantId:
       name: X-tenant-id
       in: header
@@ -119,6 +81,18 @@ components:
       required: true
       schema:
         type: string
+    XPayToken:
+      name: x-pay-token
+      in: header
+      description: 'A token identifying the transaction and its contents.
+
+
+        The token expires in 480 seconds (8 minutes) for all clients.
+
+        '
+      required: true
+      schema:
+        type: string
     XRequestId:
       name: x-request-id
       in: header
@@ -132,101 +106,7 @@ components:
       schema:
         type: string
         maxLength: 36
-    apikey:
-      name: apikey
-      in: query
-      description: Public API key, which is different from the shared secret.
-      required: true
-      schema:
-        type: string
-        maxLength: 49
-    XPayToken:
-      name: x-pay-token
-      in: header
-      description: 'A token identifying the transaction and its contents.
-
-
-        The token expires in 480 seconds (8 minutes) for all clients.
-
-        '
-      required: true
-      schema:
-        type: string
-  responses:
-    RSMakePayment:
-      description: Make Payment response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSMakePayment'
-    RS500:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-    RSGenerateQrCode400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGenerateQrCode400'
-          examples:
-            Params Required:
-              $ref: '#/components/examples/ParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Error General Services:
-              $ref: '#/components/examples/ErrorGeneralServices'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
   schemas:
-    ObjTerminalData:
-      type: object
-      properties:
-        initiationMethod:
-          type: string
-          description: Method of iniciation on terminal.
-          example: method1
-        posEntryMode:
-          type: string
-          description: Mode of entry on POS.
-          example: mode1
-    RSGenerateQrCode400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.22.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     ObjtransactionAmount:
       type: object
       required:
@@ -249,35 +129,57 @@ components:
           example:
           - “additionalAmountType”: “TIP”
             “additionalAmountValue”: “3”
-    RS500:
+    ObjTerminalData:
+      type: object
+      properties:
+        initiationMethod:
+          type: string
+          description: Method of iniciation on terminal.
+          example: method1
+        posEntryMode:
+          type: string
+          description: Mode of entry on POS.
+          example: mode1
+    RSMakePayment:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+    RSGenerateQrCode400:
       type: object
       properties:
         code:
           type: string
-          example: 500.22.999
+          example: 400.22.003
           description: Operation response code
           minLength: 10
           maxLength: 10
         message:
           type: string
-          example: Internal Server Error
+          example: Params required
           description: Response code description
           maxLength: 140
         datetime:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    ObjDpaPhoneNumber:
-      type: object
-      properties:
-        countryCode:
-          type: string
-          description: Country code.
-          example: 1
-        phoneNumber:
-          type: string
-          description: Phone number
-          example: 3025874589
     ObjDpaTransactionOptions:
       type: object
       required:
@@ -411,6 +313,53 @@ components:
               type: string
               description: Contains indications that the mobile application is to provide the requested information in order to complete the transaction. The information requested should be provided by the mobile application in the authorization without unnecessarily prompting the consumer. For example, the Additional Consumer Data Request may indicate that the consumer mobile number is required to complete the transaction, in which case the mobile application should be able to provide this number (that the mobile application has previously stored) without unnecessarily prompting the consumer.
               example: ME
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    ObjDpaPhoneNumber:
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: Country code.
+          example: 1
+        phoneNumber:
+          type: string
+          description: Phone number
+          example: 3025874589
     ObjDpaAddress:
       type: object
       properties:
@@ -458,46 +407,6 @@ components:
           type: string
           description: Last time used
           example: 21-12-2022
-    RS401:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 401.22.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSMakePayment:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.22.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
     ObjDpaData:
       type: object
       properties:
@@ -577,6 +486,97 @@ components:
         dpaTransactionOptions:
           type: object
           $ref: '#/components/schemas/ObjDpaTransactionOptions'
+  responses:
+    RSMakePayment:
+      description: Make Payment response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSMakePayment'
+    RSGenerateQrCode400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenerateQrCode400'
+          examples:
+            Params Required:
+              $ref: '#/components/examples/ParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Error General Services:
+              $ref: '#/components/examples/ErrorGeneralServices'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+  examples:
+    InvalidTenantId:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParamsRequired:
+      value:
+        code: 400.22.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+    ErrorGeneralServices:
+      value:
+        code: 400.22.350
+        message: Error General Services
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
   requestBodies:
     RQMakePayment:
       content:

@@ -162,148 +162,135 @@ paths:
         '500':
           $ref: '#/components/responses/RS500'
 components:
-  examples:
-    TransactionAlreadyCancelled:
-      value:
-        code: 400.01.340
-        message: Transaction already cancelled
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TheTransactionHasNotBeenProcessedDueToProblemsInTheValidationOfTheBusiness:
-      value:
-        code: 400.01.801
-        message: The transaction has not been processed due to problems in the validation of the business
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    MaximumNumberOfTransactionsReached:
-      value:
-        code: 400.01.051
-        message: Maximum number of transactions reached
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenNotApproved:
-      value:
-        code: 401.01.991
-        message: Access Token not approved
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenExpired:
-      value:
-        code: 401.01.993
-        message: Access token expired
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    ExceedsWithdrawalFrequencyLimit:
-      value:
-        code: 400.01.522
-        message: Exceeds withdrawal frequency limit
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidParametersCashInAndCashOutReverse:
-      value:
-        code: 400.01.396
-        message: Invalid parameters
-        datetime: 2020-01-03 16:05:56.517000+00:00
-        data:
-        - message: 'Field transactionIdentifier: transactionIdentifier is required'
-        - message: 'Field transactionIdentifier: transactionIdentifier length is invalid'
-        - message: 'Field transactionIdentifier: Invalid characters in transactionId'
-    InvalidTenantId:
-      value:
-        code: 400.01.004
-        message: Invalid tenant ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    DuplicateOperation:
-      value:
-        code: 400.01.109
-        message: Duplicate operation
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsBlocked:
-      value:
-        code: 400.01.008
-        message: Card is blocked
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    ExceedsTheLimitAmount:
-      value:
-        code: 400.01.354
-        message: Exceeds the limit amount
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TransactionNotFound:
-      value:
-        code: 400.01.110
-        message: Transaction not found
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidSignature:
-      value:
-        code: 401.01.992
-        message: Invalid signature
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsExpired:
-      value:
-        code: 400.01.407
-        message: Card is expired
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    SendMoneyExample:
-      value:
-        sender:
-          cardId: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
-        receiver:
-          cardId: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
-        amount: 100
-        fee: 10
-        tax: 1.05
-        description: Invoice payment
-        source: Bank transfer
-        externalId: b3779728-90a6-11eb-a8b3-0242ac130003
-    TheCardIsNotActive:
-      value:
-        code: 400.01.367
-        message: The card is not active
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidTransactionCode:
-      value:
-        code: 400.01.338
-        message: Invalid transaction code
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidAccessToken:
-      value:
-        code: 401.01.990
-        message: Invalid Access Token
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InsufficientFunds:
-      value:
-        code: 400.01.044
-        message: Insufficient funds
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InternalServerError:
-      value:
-        code: 500.01.999
-        message: Internal Server Error
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    UnableToProcessTransaction:
-      value:
-        code: 400.01.437
-        message: Unable to process transaction
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidParametersCashInAndCashOut:
-      value:
-        code: 400.01.396
-        message: Invalid parameters
-        datetime: 2020-01-03 16:05:56.517000+00:00
-        data:
-        - message: 'Field fee: exceeded character limit (10)'
-        - message: 'Field amount: Amount cannot be a negative'
-        - message: 'Field description: Invalid characters in description'
-    TransactionRejected:
-      value:
-        code: 400.01.050
-        message: Transaction rejected
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    HeaderParamsRequired:
-      value:
-        code: 400.01.001
-        message: Header Params Required
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidCardId:
-      value:
-        code: 400.01.009
-        message: Invalid Card ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
   schemas:
+    RSCashInReverse400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RQCashOut:
+      type: object
+      required:
+      - amount
+      properties:
+        amount:
+          type: number
+          description: 'Field that indicates amount
+
+            '
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        fee:
+          type: number
+          description: 'Fee for the transaction
+
+            '
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        tax:
+          type: number
+          description: 'Amount of tax for the operation, this field should have at least one digit and maximum 10 digits.
+
+            '
+          maxLength: 10
+          example: 99999999.99
+          format: double
+        description:
+          type: string
+          description: 'Field that indicates description.
+
+
+            **Valid characters:**
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            (space)
+
+            . (period)
+
+            , (comma)
+
+            / (forward slash)
+
+            - (hyphen)
+
+            &amp; (ampersand)
+
+            '' (single quote)
+
+            @ (stylized D for Discover cards)
+
+            ´ (accent marks)
+
+            ¨ (umlaut)
+
+            '
+          example: Transaction credit 0125146
+          maxLength: 100
+        source:
+          type: string
+          description: 'Field that indicates the source of founds.
+
+
+            **Valid characters:**
+
+            A-Z (uppercase alphabetic)
+
+            a-z (lowercase alphabetic)
+
+            0-9 (numerics)
+
+            (space)
+
+            ´ (accent marks)
+
+            ¨ (umlaut)
+
+            '
+          example: Bank transfer
+          maxLength: 50
+        externalId:
+          type: string
+          description: 'Field that indicates unique identification value of third-party related to the operation.
+
+
+            **Valid characters:**
+
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            - (hyphen)
+
+            '
+          example: b3779728-90a6-11eb-a8b3-0242ac130003
+          maxLength: 50
     RQCashOutReverse:
       type: object
       required:
@@ -382,6 +369,156 @@ components:
             '
           example: b3779728-90a6-11eb-a8b3-0242ac130003
           maxLength: 50
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RSSendMoney400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: 'Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+
+            '
+    RSCashOut200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+          - transactionIdentifier
+          - authCode
+          - status
+          properties:
+            authCode:
+              type: string
+              description: 'Transaction authorization code
+
+                '
+              example: '123456'
+              maxLength: 6
+            status:
+              type: string
+              description: 'Transaction status
+
+                '
+              example: AUTHORIZED
+              maxLength: 32
+            transactionIdentifier:
+              type: string
+              description: 'Unique transaction identification
+
+                '
+              example: 3155310
+              maxLength: 32
+    RSCashIn400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
     ObjTransactionData:
       type: object
       required:
@@ -410,6 +547,238 @@ components:
 
             '
           example: 4d89f38361df418db1bc2898d31aa3d7
+    RSCashOutReverse200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+          - transactionIdentifier
+          properties:
+            authCode:
+              type: string
+              description: 'Transaction authorization code
+
+                '
+              example: '123456'
+              maxLength: 6
+            status:
+              type: string
+              description: 'Transaction status
+
+                '
+              example: AUTHORIZED
+              maxLength: 32
+            transactionIdentifier:
+              type: string
+              description: "Unique transaction identification (uuid format).\n\n\n **Allowed**: alphanumeric\n"
+              example: 4d89f38361df418db1bc2898d31aa3d7
+              maxLength: 32
+              minLength: 32
+    RSCashOut400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RSCashIn200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+          - transactionIdentifier
+          - authCode
+          - status
+          properties:
+            authCode:
+              type: string
+              description: 'Transaction authorization code
+
+                '
+              example: '123456'
+              maxLength: 6
+            status:
+              type: string
+              description: 'Transaction status
+
+                '
+              example: AUTHORIZED
+              maxLength: 32
+            transactionIdentifier:
+              type: string
+              description: 'Unique transaction identification (uuid format).
+
+
+
+                **Allowed**: alphanumeric
+
+                '
+              example: 4d89f38361df418db1bc2898d31aa3d7
+              maxLength: 32
+              minLength: 32
+    RSTransaction200:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 10
+          description: Operation response code
+          example: 200.01.000
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+          example: Process Ok
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: 'Operation Time Stamp in ISO 8601 format.
+
+            date-time – the date-time notation as defined by
+
+            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+
+            for example: 2017-07-21T17:32:28Z
+
+            '
+          example: 2020-01-03 16:05:56.517000+00:00
+        data:
+          type: object
+          $ref: '#/components/schemas/ObjTransactionData'
+    ObjCardId:
+      type: object
+      required:
+      - cardId
+      properties:
+        cardId:
+          type: string
+          maxLength: 36
+          description: 'Unique card identification (uuid format)
+
+            '
+          example: d2cb2441-0034-4211-93af-dcddc892a680
+    RSAccountBalanceByCardId200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+          - availableBalance
+          - currentBalance
+          - balanceBlocked
+          properties:
+            availableBalance:
+              type: string
+              description: Available balance
+            currentBalance:
+              type: string
+              description: Current balance
+            balanceBlocked:
+              type: string
+              description: Balance blocked
+    RSAccountBalanceByCardId400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
     RQSendMoney:
       type: object
       required:
@@ -538,321 +907,6 @@ components:
 
             '
           example: b3779728-90a6-11eb-a8b3-0242ac130003
-    RSCashIn400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    ObjCardId:
-      type: object
-      required:
-      - cardId
-      properties:
-        cardId:
-          type: string
-          maxLength: 36
-          description: 'Unique card identification (uuid format)
-
-            '
-          example: d2cb2441-0034-4211-93af-dcddc892a680
-    RSCashOutReverse400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSSendMoney400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          minLength: 10
-          maxLength: 10
-          description: Operation response code
-        message:
-          type: string
-          maxLength: 140
-          description: Response code description
-        datetime:
-          type: string
-          format: date-time
-          minLength: 24
-          maxLength: 24
-          description: 'Operation Time Stamp in ISO 8601 format.
-
-            date-time – the date-time notation as defined by
-
-            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
-
-            for example: 2017-07-21T17:32:28Z
-
-            '
-    RSCashOut200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-        data:
-          type: object
-          required:
-          - transactionIdentifier
-          - authCode
-          - status
-          properties:
-            authCode:
-              type: string
-              description: 'Transaction authorization code
-
-                '
-              example: '123456'
-              maxLength: 6
-            status:
-              type: string
-              description: 'Transaction status
-
-                '
-              example: AUTHORIZED
-              maxLength: 32
-            transactionIdentifier:
-              type: string
-              description: 'Unique transaction identification
-
-                '
-              example: 3155310
-              maxLength: 32
-    RSCashInReverse200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-        data:
-          type: object
-          required:
-          - transactionIdentifier
-          properties:
-            authCode:
-              type: string
-              description: 'Transaction authorization code
-
-                '
-              example: '123456'
-              maxLength: 6
-            status:
-              type: string
-              description: 'Transaction status
-
-                '
-              example: AUTHORIZED
-              maxLength: 32
-            transactionIdentifier:
-              type: string
-              description: "Unique transaction identification (uuid format).\n\n\n **Allowed**: alphanumeric\n"
-              example: 4d89f38361df418db1bc2898d31aa3d7
-              maxLength: 32
-              minLength: 32
-    RQCashOut:
-      type: object
-      required:
-      - amount
-      properties:
-        amount:
-          type: number
-          description: 'Field that indicates amount
-
-            '
-          format: double
-          maxLength: 10
-          example: 99999999.99
-        fee:
-          type: number
-          description: 'Fee for the transaction
-
-            '
-          format: double
-          maxLength: 10
-          example: 99999999.99
-        tax:
-          type: number
-          description: 'Amount of tax for the operation, this field should have at least one digit and maximum 10 digits.
-
-            '
-          maxLength: 10
-          example: 99999999.99
-          format: double
-        description:
-          type: string
-          description: 'Field that indicates description.
-
-
-            **Valid characters:**
-
-            A-Z (uppercase letters)
-
-            a-z (lowercase letters)
-
-            0-9 (integers)
-
-            (space)
-
-            . (period)
-
-            , (comma)
-
-            / (forward slash)
-
-            - (hyphen)
-
-            &amp; (ampersand)
-
-            '' (single quote)
-
-            @ (stylized D for Discover cards)
-
-            ´ (accent marks)
-
-            ¨ (umlaut)
-
-            '
-          example: Transaction credit 0125146
-          maxLength: 100
-        source:
-          type: string
-          description: 'Field that indicates the source of founds.
-
-
-            **Valid characters:**
-
-            A-Z (uppercase alphabetic)
-
-            a-z (lowercase alphabetic)
-
-            0-9 (numerics)
-
-            (space)
-
-            ´ (accent marks)
-
-            ¨ (umlaut)
-
-            '
-          example: Bank transfer
-          maxLength: 50
-        externalId:
-          type: string
-          description: 'Field that indicates unique identification value of third-party related to the operation.
-
-
-            **Valid characters:**
-
-            A-Z (uppercase letters)
-
-            a-z (lowercase letters)
-
-            0-9 (integers)
-
-            - (hyphen)
-
-            '
-          example: b3779728-90a6-11eb-a8b3-0242ac130003
-          maxLength: 50
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
     RQCashInReverse:
       type: object
       required:
@@ -978,38 +1032,52 @@ components:
             '
           example: b3779728-90a6-11eb-a8b3-0242ac130003
           maxLength: 50
-    RSTransaction200:
+    RQCashIn:
       type: object
+      required:
+      - amount
       properties:
-        code:
-          type: string
+        amount:
+          type: number
+          description: Field that indicates amount
+          format: double
           maxLength: 10
-          description: Operation response code
-          example: 200.01.000
-        message:
+          example: 99999999.99
+        fee:
+          type: number
+          description: Fee for the transaction
+          format: double
+          maxLength: 10
+          example: 99999999.99
+        description:
           type: string
-          maxLength: 140
-          description: Response code description
-          example: Process Ok
-        datetime:
+          description: "Field that indicates description.\n\n**Valid characters:**\nA-Z (uppercase letters)\na-z (lowercase letters)\n0-9 (integers)\n  (space)\n. (period)\n, (comma)\n/ (forward slash)\n- (hyphen)\n&amp; (ampersand)\n' (single quote)\n@ (stylized D for Discover cards)\n´ (accent marks)\n¨ (umlaut)\n"
+          example: Transaction credit 0125146
+          maxLength: 100
+        source:
           type: string
-          format: date-time
-          minLength: 24
-          maxLength: 24
-          description: 'Operation Time Stamp in ISO 8601 format.
+          description: "Field that indicates the source of founds.\n\n**Valid characters:**\nA-Z (uppercase alphabetic)\na-z (lowercase alphabetic)\n0-9 (numerics)\n  (space)\n´ (accent marks)\n¨ (umlaut)\n"
+          example: Bank transfer
+          maxLength: 50
+        externalId:
+          type: string
+          description: 'Field that indicates unique identification value of third-party related to the operation.
 
-            date-time – the date-time notation as defined by
 
-            [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),
+            **Valid characters:**
 
-            for example: 2017-07-21T17:32:28Z
+            A-Z (uppercase letters)
+
+            a-z (lowercase letters)
+
+            0-9 (integers)
+
+            - (hyphen)
 
             '
-          example: 2020-01-03 16:05:56.517000+00:00
-        data:
-          type: object
-          $ref: '#/components/schemas/ObjTransactionData'
-    RSAccountBalanceByCardId400:
+          example: b3779728-90a6-11eb-a8b3-0242ac130003
+          maxLength: 50
+    RSCashOutReverse400:
       type: object
       required:
       - code
@@ -1032,125 +1100,7 @@ components:
           example: 2020-01-03 16:05:56.517000+00:00
           description: Operation Timestamp
           format: date-time
-    RSCashIn200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-        data:
-          type: object
-          required:
-          - transactionIdentifier
-          - authCode
-          - status
-          properties:
-            authCode:
-              type: string
-              description: 'Transaction authorization code
-
-                '
-              example: '123456'
-              maxLength: 6
-            status:
-              type: string
-              description: 'Transaction status
-
-                '
-              example: AUTHORIZED
-              maxLength: 32
-            transactionIdentifier:
-              type: string
-              description: 'Unique transaction identification (uuid format).
-
-
-
-                **Allowed**: alphanumeric
-
-                '
-              example: 4d89f38361df418db1bc2898d31aa3d7
-              maxLength: 32
-              minLength: 32
-    RSAccountBalanceByCardId200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-        data:
-          type: object
-          required:
-          - availableBalance
-          - currentBalance
-          - balanceBlocked
-          properties:
-            availableBalance:
-              type: string
-              description: Available balance
-            currentBalance:
-              type: string
-              description: Current balance
-            balanceBlocked:
-              type: string
-              description: Balance blocked
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
-    RSCashOutReverse200:
+    RSCashInReverse200:
       type: object
       required:
       - code
@@ -1198,139 +1148,55 @@ components:
               example: 4d89f38361df418db1bc2898d31aa3d7
               maxLength: 32
               minLength: 32
-    RSCashInReverse400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSCashOut400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RQCashIn:
-      type: object
-      required:
-      - amount
-      properties:
-        amount:
-          type: number
-          description: Field that indicates amount
-          format: double
-          maxLength: 10
-          example: 99999999.99
-        fee:
-          type: number
-          description: Fee for the transaction
-          format: double
-          maxLength: 10
-          example: 99999999.99
-        description:
-          type: string
-          description: "Field that indicates description.\n\n**Valid characters:**\nA-Z (uppercase letters)\na-z (lowercase letters)\n0-9 (integers)\n  (space)\n. (period)\n, (comma)\n/ (forward slash)\n- (hyphen)\n&amp; (ampersand)\n' (single quote)\n@ (stylized D for Discover cards)\n´ (accent marks)\n¨ (umlaut)\n"
-          example: Transaction credit 0125146
-          maxLength: 100
-        source:
-          type: string
-          description: "Field that indicates the source of founds.\n\n**Valid characters:**\nA-Z (uppercase alphabetic)\na-z (lowercase alphabetic)\n0-9 (numerics)\n  (space)\n´ (accent marks)\n¨ (umlaut)\n"
-          example: Bank transfer
-          maxLength: 50
-        externalId:
-          type: string
-          description: 'Field that indicates unique identification value of third-party related to the operation.
-
-
-            **Valid characters:**
-
-            A-Z (uppercase letters)
-
-            a-z (lowercase letters)
-
-            0-9 (integers)
-
-            - (hyphen)
-
-            '
-          example: b3779728-90a6-11eb-a8b3-0242ac130003
-          maxLength: 50
-  requestBodies:
-    RQCashInReverse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCashInReverse'
-      required: true
-    RQCashOut:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCashOut'
-      required: true
-    RQCashOutReverse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCashOutReverse'
-      required: true
-    RQCashIn:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCashIn'
-      required: true
-    RQSendMoney:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQSendMoney'
-            example: null
-          examples:
-            Default:
-              $ref: '#/components/examples/SendMoneyExample'
   responses:
-    RSCashOut400:
+    RSAccountBalanceByCardId400:
       description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCashOut400'
+            $ref: '#/components/schemas/RSAccountBalanceByCardId400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Card Id:
+              $ref: '#/components/examples/InvalidCardId'
+    RSAccountBalanceByCardId200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAccountBalanceByCardId200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  availableBalance: '153.69'
+                  currentBalance: '153.69'
+                  balanceBlocked: '0'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSCashIn400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCashIn400'
           examples:
             Header Params Required:
               $ref: '#/components/examples/HeaderParamsRequired'
@@ -1348,58 +1214,14 @@ components:
               $ref: '#/components/examples/CardIsExpired'
             Invalid Parameters:
               $ref: '#/components/examples/InvalidParametersCashInAndCashOut'
+            Exceeds Withdrawal Frequency Limit:
+              $ref: '#/components/examples/ExceedsWithdrawalFrequencyLimit'
             Invalid CardId:
               $ref: '#/components/examples/InvalidCardId'
             Unable To Process Transaction:
               $ref: '#/components/examples/UnableToProcessTransaction'
             Duplicate Operation:
               $ref: '#/components/examples/DuplicateOperation'
-    RSCashOutReverse400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCashOutReverse400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersCashInAndCashOutReverse'
-            Transaction Not Found:
-              $ref: '#/components/examples/TransactionNotFound'
-            Transaction Already Cancelled:
-              $ref: '#/components/examples/TransactionAlreadyCancelled'
-            The Card Is Not Active:
-              $ref: '#/components/examples/TheCardIsNotActive'
-            The Transaction Has Not Been Processed Due To Problems In The Validation Of The Business:
-              $ref: '#/components/examples/TheTransactionHasNotBeenProcessedDueToProblemsInTheValidationOfTheBusiness'
-            Transaction Rejected:
-              $ref: '#/components/examples/TransactionRejected'
-            Duplicate Operation:
-              $ref: '#/components/examples/DuplicateOperation'
-    RSCashInReverse200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCashInReverse200'
-          examples:
-            Process Ok:
-              value:
-                code: 200.00.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: '123456'
-                  status: AUTHORIZED
-                  transactionIdentifier: 4d89f38361df418db1bc2898d31aa3d7
-            Pending:
-              value:
-                code: 200.00.001
-                datetime: '2025-08-13T15:52:03.411Z'
-                message: Pending
     RS500:
       description: Internal Server Error
       content:
@@ -1430,42 +1252,6 @@ components:
                 code: 200.00.001
                 datetime: '2025-08-13T15:52:03.411Z'
                 message: Pending
-    RSCashOut200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCashOut200'
-          examples:
-            Process Ok:
-              value:
-                code: 200.00.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  authCode: '123456'
-                  status: AUTHORIZED
-                  transactionIdentifier: 4d89f38361df418db1bc2898d31aa3d7
-            Pending:
-              value:
-                code: 200.00.001
-                datetime: '2025-08-13T15:52:03.411Z'
-                message: Pending
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
     RSSendMoney400:
       description: Bad Request
       content:
@@ -1499,49 +1285,22 @@ components:
               $ref: '#/components/examples/UnableToProcessTransaction'
             Duplicate Operation:
               $ref: '#/components/examples/DuplicateOperation'
-    RSAccountBalanceByCardId200:
+    RSCashOut200:
       description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSAccountBalanceByCardId200'
-          examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  availableBalance: '153.69'
-                  currentBalance: '153.69'
-                  balanceBlocked: '0'
-    RSAccountBalanceByCardId400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAccountBalanceByCardId400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Card Id:
-              $ref: '#/components/examples/InvalidCardId'
-    RSTransaction200:
-      description: Ok
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSTransaction200'
+            $ref: '#/components/schemas/RSCashOut200'
           examples:
             Process Ok:
               value:
-                code: 200.01.000
+                code: 200.00.000
                 message: Process Ok
                 datetime: '2020-01-03T16:05:56.517Z'
                 data:
                   authCode: '123456'
                   status: AUTHORIZED
-                  transactionIdentifier: '000003155310'
+                  transactionIdentifier: 4d89f38361df418db1bc2898d31aa3d7
             Pending:
               value:
                 code: 200.00.001
@@ -1572,35 +1331,29 @@ components:
               $ref: '#/components/examples/TransactionRejected'
             Duplicate Operation:
               $ref: '#/components/examples/DuplicateOperation'
-    RSCashIn400:
+    RSCashOutReverse400:
       description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCashIn400'
+            $ref: '#/components/schemas/RSCashOutReverse400'
           examples:
             Header Params Required:
               $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            CardIsBlocked:
+            Card Is Blocked:
               $ref: '#/components/examples/CardIsBlocked'
-            Invalid Transaction Code:
-              $ref: '#/components/examples/InvalidTransactionCode'
-            Exceeds The Limit Amount:
-              $ref: '#/components/examples/ExceedsTheLimitAmount'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersCashInAndCashOutReverse'
+            Transaction Not Found:
+              $ref: '#/components/examples/TransactionNotFound'
+            Transaction Already Cancelled:
+              $ref: '#/components/examples/TransactionAlreadyCancelled'
             The Card Is Not Active:
               $ref: '#/components/examples/TheCardIsNotActive'
-            Card Is Expired:
-              $ref: '#/components/examples/CardIsExpired'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersCashInAndCashOut'
-            Exceeds Withdrawal Frequency Limit:
-              $ref: '#/components/examples/ExceedsWithdrawalFrequencyLimit'
-            Invalid CardId:
-              $ref: '#/components/examples/InvalidCardId'
-            Unable To Process Transaction:
-              $ref: '#/components/examples/UnableToProcessTransaction'
+            The Transaction Has Not Been Processed Due To Problems In The Validation Of The Business:
+              $ref: '#/components/examples/TheTransactionHasNotBeenProcessedDueToProblemsInTheValidationOfTheBusiness'
+            Transaction Rejected:
+              $ref: '#/components/examples/TransactionRejected'
             Duplicate Operation:
               $ref: '#/components/examples/DuplicateOperation'
     RSCashOutReverse200:
@@ -1624,6 +1377,253 @@ components:
                 code: 200.00.001
                 datetime: '2025-08-13T15:52:03.411Z'
                 message: Pending
+    RSCashInReverse200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCashInReverse200'
+          examples:
+            Process Ok:
+              value:
+                code: 200.00.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: '123456'
+                  status: AUTHORIZED
+                  transactionIdentifier: 4d89f38361df418db1bc2898d31aa3d7
+            Pending:
+              value:
+                code: 200.00.001
+                datetime: '2025-08-13T15:52:03.411Z'
+                message: Pending
+    RSTransaction200:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSTransaction200'
+          examples:
+            Process Ok:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  authCode: '123456'
+                  status: AUTHORIZED
+                  transactionIdentifier: '000003155310'
+            Pending:
+              value:
+                code: 200.00.001
+                datetime: '2025-08-13T15:52:03.411Z'
+                message: Pending
+    RSCashOut400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCashOut400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            CardIsBlocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid Transaction Code:
+              $ref: '#/components/examples/InvalidTransactionCode'
+            Exceeds The Limit Amount:
+              $ref: '#/components/examples/ExceedsTheLimitAmount'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Card Is Expired:
+              $ref: '#/components/examples/CardIsExpired'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersCashInAndCashOut'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
+            Unable To Process Transaction:
+              $ref: '#/components/examples/UnableToProcessTransaction'
+            Duplicate Operation:
+              $ref: '#/components/examples/DuplicateOperation'
+  examples:
+    InvalidCardId:
+      value:
+        code: 400.01.009
+        message: Invalid Card ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidTenantId:
+      value:
+        code: 400.01.004
+        message: Invalid tenant ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    ExceedsWithdrawalFrequencyLimit:
+      value:
+        code: 400.01.522
+        message: Exceeds withdrawal frequency limit
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InsufficientFunds:
+      value:
+        code: 400.01.044
+        message: Insufficient funds
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TransactionRejected:
+      value:
+        code: 400.01.050
+        message: Transaction rejected
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsExpired:
+      value:
+        code: 400.01.407
+        message: Card is expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsNotActive:
+      value:
+        code: 400.01.367
+        message: The card is not active
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersCashInAndCashOutReverse:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - message: 'Field transactionIdentifier: transactionIdentifier is required'
+        - message: 'Field transactionIdentifier: transactionIdentifier length is invalid'
+        - message: 'Field transactionIdentifier: Invalid characters in transactionId'
+    DuplicateOperation:
+      value:
+        code: 400.01.109
+        message: Duplicate operation
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsBlocked:
+      value:
+        code: 400.01.008
+        message: Card is blocked
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TransactionAlreadyCancelled:
+      value:
+        code: 400.01.340
+        message: Transaction already cancelled
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidTransactionCode:
+      value:
+        code: 400.01.338
+        message: Invalid transaction code
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TransactionNotFound:
+      value:
+        code: 400.01.110
+        message: Transaction not found
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InternalServerError:
+      value:
+        code: 500.01.999
+        message: Internal Server Error
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheTransactionHasNotBeenProcessedDueToProblemsInTheValidationOfTheBusiness:
+      value:
+        code: 400.01.801
+        message: The transaction has not been processed due to problems in the validation of the business
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    MaximumNumberOfTransactionsReached:
+      value:
+        code: 400.01.051
+        message: Maximum number of transactions reached
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    SendMoneyExample:
+      value:
+        sender:
+          cardId: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
+        receiver:
+          cardId: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
+        amount: 100
+        fee: 10
+        tax: 1.05
+        description: Invoice payment
+        source: Bank transfer
+        externalId: b3779728-90a6-11eb-a8b3-0242ac130003
+    UnableToProcessTransaction:
+      value:
+        code: 400.01.437
+        message: Unable to process transaction
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    HeaderParamsRequired:
+      value:
+        code: 400.01.001
+        message: Header Params Required
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    ExceedsTheLimitAmount:
+      value:
+        code: 400.01.354
+        message: Exceeds the limit amount
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersCashInAndCashOut:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - message: 'Field fee: exceeded character limit (10)'
+        - message: 'Field amount: Amount cannot be a negative'
+        - message: 'Field description: Invalid characters in description'
+    AccessTokenExpired:
+      value:
+        code: 401.01.993
+        message: Access token expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenNotApproved:
+      value:
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03 16:05:56.517000+00:00
+  requestBodies:
+    RQCashIn:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCashIn'
+      required: true
+    RQCashOutReverse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCashOutReverse'
+      required: true
+    RQCashOut:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCashOut'
+      required: true
+    RQCashInReverse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCashInReverse'
+      required: true
+    RQSendMoney:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQSendMoney'
+            example: null
+          examples:
+            Default:
+              $ref: '#/components/examples/SendMoneyExample'
   parameters:
     cardId:
       name: cardId

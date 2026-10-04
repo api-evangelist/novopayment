@@ -31,15 +31,20 @@ paths:
       - Expectedactivity
 components:
   examples:
-    InvalidAccessToken:
-      value:
-        code: 401.25.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
         code: 500.25.001
         message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenNotApproved:
       value:
@@ -56,57 +61,6 @@ components:
         code: 401.25.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
-  responses:
-    RSExpectedAccountActivity400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSExpectedAccountActivity400'
-          examples:
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSExpectedAccountActivity200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSExpectedAccountActivity200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
   schemas:
     RSExpectedAccountActivity400:
       type: object
@@ -154,7 +108,7 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
           format: date-time
-    RSExpectedAccountActivity200:
+    RS401:
       type: object
       required:
       - code
@@ -163,13 +117,14 @@ components:
       properties:
         code:
           type: string
+          example: 401.01.990
           description: Operation response code
-          example: 200.25.000
+          minLength: 10
           maxLength: 10
         message:
           type: string
+          example: Invalid Access Token
           description: Response code description
-          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -209,7 +164,7 @@ components:
                       enum:
                       - 'yes'
                       - 'no'
-    RS401:
+    RSExpectedAccountActivity200:
       type: object
       required:
       - code
@@ -218,14 +173,13 @@ components:
       properties:
         code:
           type: string
-          example: 401.01.990
           description: Operation response code
-          minLength: 10
+          example: 200.25.000
           maxLength: 10
         message:
           type: string
-          example: Invalid Access Token
           description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -239,6 +193,52 @@ components:
           schema:
             $ref: '#/components/schemas/RQExpectedAccountActivity'
       required: true
+  responses:
+    RSExpectedAccountActivity400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSExpectedAccountActivity400'
+          examples:
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RSExpectedAccountActivity200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSExpectedAccountActivity200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
