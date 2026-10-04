@@ -66,6 +66,9 @@ modified: '2026-09-17'
 url: https://raw.githubusercontent.com/api-evangelist/novopayment/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 common:
+- type: CapabilityMap
+  url: capabilities/novopayment-capability-edges.yml
+  name: NovoPayment Business Capability Map
 - type: Overlay
   url: overlays/novopayment-accounts-overlay.yaml
 - type: Overlay
@@ -167,6 +170,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -599,6 +604,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Customers
+  tags_raw:
   - Customer
   properties:
   - type: OpenAPI
@@ -1392,6 +1399,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Lifecycle Management
+  tags_raw:
   - Life Cycle Management
   properties:
   - type: OpenAPI
@@ -1464,6 +1473,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Merchants
+  tags_raw:
   - Merchant
   properties:
   - type: OpenAPI
@@ -1608,6 +1619,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -1897,6 +1910,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Payments
+  tags_raw:
   - Payment
   properties:
   - type: OpenAPI
@@ -2617,6 +2632,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - SendPayment
+  tags_raw:
   - Sendpayment
   properties:
   - type: OpenAPI
@@ -2689,6 +2706,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Sessions
+  tags_raw:
   - Session
   properties:
   - type: OpenAPI
@@ -3049,6 +3068,8 @@ apis:
   humanURL: https://developer.novopayment.com/api/digital-banking/accounts-api-v1.0
   baseURL: https://sandbox-api.novopayment.com/accounts/v1
   tags:
+  - Tokens
+  tags_raw:
   - Token
   properties:
   - type: OpenAPI
