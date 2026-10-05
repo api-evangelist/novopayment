@@ -1,0 +1,12 @@
+{
+ "url": "https://dcrpi6aufyoyb.cloudfront.net/main/accounts-api/accounts-api-spec-v1.yaml?1791142688",
+ "requested_url": "https://dcrpi6aufyoyb.cloudfront.net/main/accounts-api/accounts-api-spec-v1.yaml?1791142688",
+ "status": 200,
+ "content_type": "binary/octet-stream",
+ "bytes": 226093,
+ "sha256": "46df76de051d687f75672a9c20108b74e519e4b66a8058d1e78ed4296729b957",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

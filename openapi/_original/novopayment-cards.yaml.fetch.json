@@ -1,0 +1,12 @@
+{
+ "url": "https://dcrpi6aufyoyb.cloudfront.net/main/cards-api/cards-api-spec-v1.3.yaml?1791142689",
+ "requested_url": "https://dcrpi6aufyoyb.cloudfront.net/main/cards-api/cards-api-spec-v1.3.yaml?1791142689",
+ "status": 200,
+ "content_type": "binary/octet-stream",
+ "bytes": 191491,
+ "sha256": "e1efcebe074db6bac85430d57820de4db19e59697c2267908c83ce1f44dfcd73",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
