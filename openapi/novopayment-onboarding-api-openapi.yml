@@ -30,7 +30,210 @@ paths:
       tags:
       - Onboarding
 components:
+  requestBodies:
+    RQCreateMerchant:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCreateMerchant'
+      required: true
+  examples:
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.22.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    NoResultsFound:
+      value:
+        code: 200.22.364
+        message: No results found
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          status: 401
+          code: 9159
+          severity: ERROR
+          message: TokenValidationFailed
+          info: ''
+    AccessTokenNotApproved:
+      value:
+        code: 401.22.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.22.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    CreateMerchantOk:
+      value:
+        code: 200.22.000
+        message: Process Ok
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          id: 8e9ed12e-e4ba-4ad2-ac9d-2bcb1c8fc18a
+          acquirerIdentifiers:
+            acquirerId: 66978068
+            acquirerMerchantId: 9655936598
+          tokenizationConfiguration:
+            channelSecurityContext: SHARED_SECRET
+            tokenizationProfiles:
+              profileName: Test1
+              applicationId: Test1
+            tokenRequestorId: 40000000057
+          qrData: iVB...YII=
+    ParamsRequired:
+      value:
+        code: 400.22.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    ErrorGeneralServices:
+      value:
+        code: 400.22.350
+        message: Error General Services
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.22.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
+    RSCreateMerchant400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCreateMerchant:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 200.22.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: 'VISA''s identification response Id
+
+                '
+            acquirerIdentifiers:
+              type: object
+              required:
+              - acquirerId
+              - acquirerMerchantId
+              properties:
+                acquirerId:
+                  type: string
+                  description: 'Acquirer ID
+
+                    '
+                acquirerMerchantId:
+                  type: string
+                  description: 'Unique identifier relation Acquirer and Merchant Id
+
+                    '
+            tokenizationConfiguration:
+              type: object
+              required:
+              - tokenizationProfiles
+              - tokenRequestorId
+              properties:
+                channelSecurityContext:
+                  type: string
+                  description: 'Channel security context; default is shared secret.
+
+                    '
+                  maxLength: 100
+                tokenizationProfiles:
+                  type: object
+                  description: 'List of profiles
+
+                    '
+                  required:
+                  - profileName
+                  - applicationId
+                  properties:
+                    profileName:
+                      type: string
+                      description: 'Profile name in tokenization services
+
+                        '
+                      maxLength: 50
+                    applicationId:
+                      type: string
+                      description: 'Unique Identifier same as the wallet provider
+
+                        '
+                      maxLength: 36
+                tokenRequestorId:
+                  type: string
+                  description: 'Identification to use for payments
+
+                    '
+                  maxLength: 20
+            qrData:
+              type: string
+              description: 'Raw entire QR code data, from scanning QR. Base64 encoded
+
+                '
     RQCreateMerchant:
       type: object
       required:
@@ -192,24 +395,6 @@ components:
 
                 '
               maxLength: 20
-    RS500:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.22.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RS401:
       type: object
       properties:
@@ -228,185 +413,13 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSCreateMerchant:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 200.22.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-              description: 'VISA''s identification response Id
-
-                '
-            acquirerIdentifiers:
-              type: object
-              required:
-              - acquirerId
-              - acquirerMerchantId
-              properties:
-                acquirerId:
-                  type: string
-                  description: 'Acquirer ID
-
-                    '
-                acquirerMerchantId:
-                  type: string
-                  description: 'Unique identifier relation Acquirer and Merchant Id
-
-                    '
-            tokenizationConfiguration:
-              type: object
-              required:
-              - tokenizationProfiles
-              - tokenRequestorId
-              properties:
-                channelSecurityContext:
-                  type: string
-                  description: 'Channel security context; default is shared secret.
-
-                    '
-                  maxLength: 100
-                tokenizationProfiles:
-                  type: object
-                  description: 'List of profiles
-
-                    '
-                  required:
-                  - profileName
-                  - applicationId
-                  properties:
-                    profileName:
-                      type: string
-                      description: 'Profile name in tokenization services
-
-                        '
-                      maxLength: 50
-                    applicationId:
-                      type: string
-                      description: 'Unique Identifier same as the wallet provider
-
-                        '
-                      maxLength: 36
-                tokenRequestorId:
-                  type: string
-                  description: 'Identification to use for payments
-
-                    '
-                  maxLength: 20
-            qrData:
-              type: string
-              description: 'Raw entire QR code data, from scanning QR. Base64 encoded
-
-                '
-    RSCreateMerchant400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.22.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-  examples:
-    InvalidTenantId:
-      value:
-        code: 400.22.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.22.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.22.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    ParamsRequired:
-      value:
-        code: 400.22.003
-        message: Params required
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.22.396
-        message: Invalid Parameters
-        datetime: '2020-01-03T16:05:56.517Z'
-    ErrorGeneralServices:
-      value:
-        code: 400.22.350
-        message: Error General Services
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.22.089
-        message: Invalid Data
-        datetime: '2020-01-03T16:05:56.517Z'
-    NoResultsFound:
-      value:
-        code: 200.22.364
-        message: No results found
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          status: 401
-          code: 9159
-          severity: ERROR
-          message: TokenValidationFailed
-          info: ''
-    CreateMerchantOk:
-      value:
-        code: 200.22.000
-        message: Process Ok
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          id: 8e9ed12e-e4ba-4ad2-ac9d-2bcb1c8fc18a
-          acquirerIdentifiers:
-            acquirerId: 66978068
-            acquirerMerchantId: 9655936598
-          tokenizationConfiguration:
-            channelSecurityContext: SHARED_SECRET
-            tokenizationProfiles:
-              profileName: Test1
-              applicationId: Test1
-            tokenRequestorId: 40000000057
-          qrData: iVB...YII=
-    AccessTokenExpired:
-      value:
-        code: 401.22.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.22.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
   responses:
+    RS500:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
     RSCreateMerchant:
       description: Process Ok
       content:
@@ -418,6 +431,21 @@ components:
               $ref: '#/components/examples/CreateMerchantOk'
             No Results Found:
               $ref: '#/components/examples/NoResultsFound'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
     RSCreateMerchant400:
       description: Bad Request
       content:
@@ -435,34 +463,6 @@ components:
               $ref: '#/components/examples/InvalidParameters'
             Error General Services:
               $ref: '#/components/examples/ErrorGeneralServices'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-  requestBodies:
-    RQCreateMerchant:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCreateMerchant'
-      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

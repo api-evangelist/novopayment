@@ -99,115 +99,113 @@ paths:
         '500':
           $ref: '#/components/responses/RS500'
 components:
-  examples:
-    InvalidCardEmbosserId:
-      value:
-        code: 400.02.557
-        message: Invalid card embosser id
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidProgramId:
-      value:
-        code: 400.02.006
-        message: Invalid program ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestedResourceNotFound:
-      value:
-        code: 400.02.022
-        message: The requested resource was not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidCardBatchStatusId:
-      value:
-        code: 400.02.532
-        message: Invalid card batch status id
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.02.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestParamsRequired:
-      value:
-        code: 400.02.003
-        message: Params required
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.02.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointCreationOfCardBatches:
-      value:
-        quantity: 10
-        cardProgramId: 1
-        cardDesignId: 100
-        branchName: Main Office
-        createdBy: Admin
-        cardEmbosserId: 2
-    TheMaximumLimitOfBatchesApproval:
-      value:
-        code: 400.02.534
-        message: The maximum limit of batches approval per day has been reached
-        datetime: '2020-01-03T16:05:56.517Z'
-    MaximumLimitOfBatches:
-      value:
-        code: 400.02.530
-        message: The maximum limit of batches per day has been reached.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.02.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidDateRange:
-      value:
-        code: 400.02.365
-        message: Invalid date range
-        datetime: '2020-01-03T16:05:56.517Z'
-    QuantityOfCardsInTheBatch:
-      value:
-        code: 400.02.531
-        message: The quantity of cards in the batch exceeds the allowed quantity.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.02.999
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    CurrentBatchStatusDoesNotAllowThisAction:
-      value:
-        code: 400.02.533
-        message: Current batch status does not allow this action
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointAnonymousCardBatchStatusUpdate:
-      value:
-        statusId: 2
-        updatedBy: Manager
-    ProductEmbosserNotMatch:
-      value:
-        code: 400.02.416
-        message: The embosser ID does not match the assigned program ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    NoSearchResultsWereFound:
-      value:
-        code: 400.02.343
-        message: No search results were found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.02.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.02.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.02.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
+  parameters:
+    toDate:
+      name: toDate
+      in: query
+      description: 'The final range of the creation date of the batches to be consulted.
+
+
+        Format YYYYMMDD.
+
+        '
+      schema:
+        type: string
+    createdBy:
+      name: createdBy
+      in: query
+      description: 'The name of the user who issued the batch.
+
+        '
+      schema:
+        type: string
+    batchId:
+      name: batchId
+      in: path
+      description: 'A unique ID assigned to the card batch.
+
+        '
+      required: true
+      schema:
+        type: string
+    fromDate:
+      name: fromDate
+      in: query
+      description: 'Initial range of the creation date of the batches to be consulted.
+
+
+        Format YYYYMMDD.
+
+        '
+      schema:
+        type: string
+    statusId:
+      name: statusId
+      in: query
+      description: 'status of the card batch
+
+        __Allowed values:__
+
+        1. Pending.
+
+        2. Approved.
+
+        3. Processed.
+
+        4. Failed.
+
+        5. Cancelled.
+
+        '
+      schema:
+        type: string
   schemas:
+    RSCardBatchInfo400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Timestamp
+          format: date-time
     RSCreationOfCardBatches200:
       type: object
       required:
@@ -289,52 +287,153 @@ components:
                   description: Embosser name
                   example: THALES
                   maxLength: 50
-    RS500:
+    RSCardBatchList200:
       type: object
       required:
       - code
       - message
       - datetime
+      - data
       properties:
         code:
           type: string
-          example: 500.01.999
           description: Operation response code
-          minLength: 10
+          example: 200.02.000
           maxLength: 10
         message:
           type: string
-          example: Internal Server Error
           description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Timestamp
-          format: date-time
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+        data:
+          type: object
+          properties:
+            batches:
+              type: object
+              description: batches The list of batches as a result of the query.
+              required:
+              - batchId
+              - quantity
+              - cardProgramId
+              - batchStatusId
+              - createdDate
+              - createdBy
+              properties:
+                batchId:
+                  type: string
+                  description: A unique ID assigned to the card batch.
+                  example: ADHJB422
+                  maxLength: 2
+                quantity:
+                  type: number
+                  description: Number of cards in batch
+                  example: 10
+                  maxLength: 9
+                cardProgramId:
+                  type: string
+                  description: This code represents the card program under which the cards was issued.
+                  example: 2
+                  maxLength: 2
+                batchStatusId:
+                  type: string
+                  description: 'The batch status unique identifier
+
+                    __Possible values:__
+
+                    1. Pending.
+
+                    2. Approved.
+
+                    3. Processed.
+
+                    4. Failed.
+
+                    5. Cancelled.
+
+                    '
+                  example: 1
+                  maxLength: 300
+                createdDate:
+                  type: string
+                  description: The date when the batch was created
+                  example: '2020-01-03T16:05:56.517Z'
+                  format: date-time
+                createdBy:
+                  type: string
+                  description: The name of the user who issued the batch.
+                  example: manager
+                  maxLength: 30
+                cardEmbosser:
+                  type: object
+                  description: An object that contains the information of the embosser that will issue the cards
+                  required:
+                  - id
+                  - name
+                  properties:
+                    id:
+                      type: string
+                      description: The card embosser id unique identifier
+                      example: 2
+                      maxLength: 2
+                    name:
+                      type: string
+                      description: Embosser name
+                      example: THALES
+                      maxLength: 50
+    RQCreationOfCardBatches:
+      type: object
+      required:
+      - quantity
+      - cardProgramId
+      - createdBy
+      - cardEmbosserId
+      properties:
+        quantity:
+          type: number
+          description: The number of cards to be issued after processing the batch.
+          example: 10
+          maxLength: 9
+        cardProgramId:
+          type: string
+          description: This code represents the card program under which the cards will be issued.
+          example: 1
+          maxLength: 2
+        branchName:
+          type: string
+          description: Branch/Office of the financial institution to which the cards will be linked.
+          example: Main Office
+          maxLength: 300
+        cardDesignId:
+          type: string
+          description: Card Design ID
+          example: 100
+          maxLength: 20
+        createdBy:
+          type: string
+          description: The name of the user who issued the card batch
+          example: Admin
+          maxLength: 30
+        cardEmbosserId:
+          type: string
+          description: 'This code represents the embosser which the cards will be.
+
+            __Allowed values:__
+
+            1: PSC
+
+            2: THALES
+
+            '
+          enum:
+          - '1'
+          - '2'
+          example: 2
+          maxLength: 2
     RSCardBatchInfo200:
       type: object
       required:
@@ -478,7 +577,7 @@ components:
                   description: Embosser name
                   example: THALES
                   maxLength: 50
-    RSCardBatchInfo400:
+    RS401:
       type: object
       required:
       - code
@@ -487,13 +586,13 @@ components:
       properties:
         code:
           type: string
-          example: 400.02.003
+          example: 401.01.990
           description: Operation response code
           minLength: 10
           maxLength: 10
         message:
           type: string
-          example: Params required
+          example: Invalid Access Token
           description: Response code description
           maxLength: 140
         datetime:
@@ -517,6 +616,29 @@ components:
           maxLength: 140
         datetime:
           type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCardBatchList400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.02.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RSAnonymousCardBatchStatusUpdate200:
@@ -594,104 +716,6 @@ components:
                   description: Embosser name
                   example: THALES
                   maxLength: 50
-    RSCardBatchList200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.02.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-        data:
-          type: object
-          properties:
-            batches:
-              type: object
-              description: batches The list of batches as a result of the query.
-              required:
-              - batchId
-              - quantity
-              - cardProgramId
-              - batchStatusId
-              - createdDate
-              - createdBy
-              properties:
-                batchId:
-                  type: string
-                  description: A unique ID assigned to the card batch.
-                  example: ADHJB422
-                  maxLength: 2
-                quantity:
-                  type: number
-                  description: Number of cards in batch
-                  example: 10
-                  maxLength: 9
-                cardProgramId:
-                  type: string
-                  description: This code represents the card program under which the cards was issued.
-                  example: 2
-                  maxLength: 2
-                batchStatusId:
-                  type: string
-                  description: 'The batch status unique identifier
-
-                    __Possible values:__
-
-                    1. Pending.
-
-                    2. Approved.
-
-                    3. Processed.
-
-                    4. Failed.
-
-                    5. Cancelled.
-
-                    '
-                  example: 1
-                  maxLength: 300
-                createdDate:
-                  type: string
-                  description: The date when the batch was created
-                  example: '2020-01-03T16:05:56.517Z'
-                  format: date-time
-                createdBy:
-                  type: string
-                  description: The name of the user who issued the batch.
-                  example: manager
-                  maxLength: 30
-                cardEmbosser:
-                  type: object
-                  description: An object that contains the information of the embosser that will issue the cards
-                  required:
-                  - id
-                  - name
-                  properties:
-                    id:
-                      type: string
-                      description: The card embosser id unique identifier
-                      example: 2
-                      maxLength: 2
-                    name:
-                      type: string
-                      description: Embosser name
-                      example: THALES
-                      maxLength: 50
     RSAnonymousCardBatchStatusUpdate400:
       type: object
       properties:
@@ -737,230 +761,115 @@ components:
           description: User who performs the action
           example: Manager
           maxLength: 30
-    RSCardBatchList400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.02.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQCreationOfCardBatches:
-      type: object
-      required:
-      - quantity
-      - cardProgramId
-      - createdBy
-      - cardEmbosserId
-      properties:
-        quantity:
-          type: number
-          description: The number of cards to be issued after processing the batch.
-          example: 10
-          maxLength: 9
-        cardProgramId:
-          type: string
-          description: This code represents the card program under which the cards will be issued.
-          example: 1
-          maxLength: 2
-        branchName:
-          type: string
-          description: Branch/Office of the financial institution to which the cards will be linked.
-          example: Main Office
-          maxLength: 300
-        cardDesignId:
-          type: string
-          description: Card Design ID
-          example: 100
-          maxLength: 20
-        createdBy:
-          type: string
-          description: The name of the user who issued the card batch
-          example: Admin
-          maxLength: 30
-        cardEmbosserId:
-          type: string
-          description: 'This code represents the embosser which the cards will be.
-
-            __Allowed values:__
-
-            1: PSC
-
-            2: THALES
-
-            '
-          enum:
-          - '1'
-          - '2'
-          example: 2
-          maxLength: 2
-  parameters:
-    statusId:
-      name: statusId
-      in: query
-      description: 'status of the card batch
-
-        __Allowed values:__
-
-        1. Pending.
-
-        2. Approved.
-
-        3. Processed.
-
-        4. Failed.
-
-        5. Cancelled.
-
-        '
-      schema:
-        type: string
-    fromDate:
-      name: fromDate
-      in: query
-      description: 'Initial range of the creation date of the batches to be consulted.
-
-
-        Format YYYYMMDD.
-
-        '
-      schema:
-        type: string
-    createdBy:
-      name: createdBy
-      in: query
-      description: 'The name of the user who issued the batch.
-
-        '
-      schema:
-        type: string
-    toDate:
-      name: toDate
-      in: query
-      description: 'The final range of the creation date of the batches to be consulted.
-
-
-        Format YYYYMMDD.
-
-        '
-      schema:
-        type: string
-    batchId:
-      name: batchId
-      in: path
-      description: 'A unique ID assigned to the card batch.
-
-        '
-      required: true
-      schema:
-        type: string
+  examples:
+    InvalidData:
+      value:
+        code: 400.02.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.02.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointAnonymousCardBatchStatusUpdate:
+      value:
+        statusId: 2
+        updatedBy: Manager
+    HeaderParamsRequired:
+      value:
+        code: 400.02.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidDateRange:
+      value:
+        code: 400.02.365
+        message: Invalid date range
+        datetime: '2020-01-03T16:05:56.517Z'
+    NoSearchResultsWereFound:
+      value:
+        code: 400.02.343
+        message: No search results were found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    MaximumLimitOfBatches:
+      value:
+        code: 400.02.530
+        message: The maximum limit of batches per day has been reached.
+        datetime: '2020-01-03T16:05:56.517Z'
+    QuantityOfCardsInTheBatch:
+      value:
+        code: 400.02.531
+        message: The quantity of cards in the batch exceeds the allowed quantity.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.02.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestParamsRequired:
+      value:
+        code: 400.02.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidCardBatchStatusId:
+      value:
+        code: 400.02.532
+        message: Invalid card batch status id
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.02.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    ProductEmbosserNotMatch:
+      value:
+        code: 400.02.416
+        message: The embosser ID does not match the assigned program ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.02.999
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointCreationOfCardBatches:
+      value:
+        quantity: 10
+        cardProgramId: 1
+        cardDesignId: 100
+        branchName: Main Office
+        createdBy: Admin
+        cardEmbosserId: 2
+    InvalidCardEmbosserId:
+      value:
+        code: 400.02.557
+        message: Invalid card embosser id
+        datetime: '2020-01-03T16:05:56.517Z'
+    TheMaximumLimitOfBatchesApproval:
+      value:
+        code: 400.02.534
+        message: The maximum limit of batches approval per day has been reached
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidProgramId:
+      value:
+        code: 400.02.006
+        message: Invalid program ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    CurrentBatchStatusDoesNotAllowThisAction:
+      value:
+        code: 400.02.533
+        message: Current batch status does not allow this action
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestedResourceNotFound:
+      value:
+        code: 400.02.022
+        message: The requested resource was not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.02.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
   responses:
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSCardBatchInfo200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardBatchInfo200'
-          examples:
-            Card Batch Info:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: 2023-03-22T11:09:54.203-0500
-                data:
-                  batchId: ADHJB422
-                  cardProgram:
-                    id: 2
-                    name: Cuenta Digital MIO 1
-                  cardDesignId: 100
-                  quantity: 10
-                  branchName: Main Office
-                  batchStatus:
-                    id: 1
-                    name: Pending
-                  createdDate: 2020/01/19 11:10:33
-                  createdBy: admin
-                  approvedDate: 2020/02/05 11:10:33
-                  approvedBy: Manager
-                  cancelledDate: 2020/01/19 11:10:33
-                  canceledBy: Manager
-                  lastUpdatedDate: 2020/01/19 11:10:33
-                  cardEmbosser:
-                    id: 2
-                    name: THALES
-    RSAnonymousCardBatchStatusUpdate200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSAnonymousCardBatchStatusUpdate200'
-          examples:
-            Anonymous Card Batch Status Update:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: 2023-03-22T11:09:54.203-0500
-                data:
-                  batchId: ADHJB422
-                  lastUpdatedDate: 2020/01/19 11:10:33
-                  batchStatus:
-                    id: 2
-                    name: Approved
-                  cardEmbosser:
-                    id: 2
-                    name: THALES
-    RSCreationOfCardBatches200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCreationOfCardBatches200'
-          examples:
-            Creation Of Card Batches:
-              value:
-                code: 202.02.535
-                message: Your request was accepted successfully
-                datetime: 2023-03-22T11:09:54.203-0500
-                data:
-                  batchId: ADHJB422
-                  quantity: 10
-                  createdDate: 2020/01/19 11:10:33
-                  batchStatus:
-                    id: 1
-                    name: Pending
-                  cardEmbosser:
-                    id: 2
-                    name: THALES
     RS500:
       description: Internal Server Error
       content:
@@ -970,65 +879,6 @@ components:
           examples:
             Internal Server Error:
               $ref: '#/components/examples/InternalServerError'
-    RSCardBatchInfo400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardBatchInfo400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-            Requested Resource Not Found:
-              $ref: '#/components/examples/RequestedResourceNotFound'
-    RSCardBatchList200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardBatchList200'
-          examples:
-            Card Batch List:
-              value:
-                code: 200.02.000
-                message: Process Ok
-                datetime: 2023-03-22T11:09:54.203-0500
-                data:
-                  batches:
-                    batchId: ADHJB422
-                    cardProgramId: 2
-                    quantity: 10
-                    batchStatusId: 1
-                    createdDate: 2020/01/19 11:10:33
-                    createdBy: manager
-                    cardEmbosser:
-                      id: 2
-                      name: THALES
-    RSCreationOfCardBatches400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCreationOfCardBatches400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-            Invalid Program Id:
-              $ref: '#/components/examples/InvalidProgramId'
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-            Maximum Limit Of Batches:
-              $ref: '#/components/examples/MaximumLimitOfBatches'
-            Quantity Of Cards In The Batch:
-              $ref: '#/components/examples/QuantityOfCardsInTheBatch'
-            Invalid Card Embosser Id:
-              $ref: '#/components/examples/InvalidCardEmbosserId'
-            Product Embosser not match:
-              $ref: '#/components/examples/ProductEmbosserNotMatch'
     RSCardBatchList400:
       description: Bad Request
       content:
@@ -1067,6 +917,156 @@ components:
               $ref: '#/components/examples/CurrentBatchStatusDoesNotAllowThisAction'
             The Maximum Limit Of Batches Approval:
               $ref: '#/components/examples/TheMaximumLimitOfBatchesApproval'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSCardBatchList200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardBatchList200'
+          examples:
+            Card Batch List:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: 2023-03-22T11:09:54.203-0500
+                data:
+                  batches:
+                    batchId: ADHJB422
+                    cardProgramId: 2
+                    quantity: 10
+                    batchStatusId: 1
+                    createdDate: 2020/01/19 11:10:33
+                    createdBy: manager
+                    cardEmbosser:
+                      id: 2
+                      name: THALES
+    RSCreationOfCardBatches200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreationOfCardBatches200'
+          examples:
+            Creation Of Card Batches:
+              value:
+                code: 202.02.535
+                message: Your request was accepted successfully
+                datetime: 2023-03-22T11:09:54.203-0500
+                data:
+                  batchId: ADHJB422
+                  quantity: 10
+                  createdDate: 2020/01/19 11:10:33
+                  batchStatus:
+                    id: 1
+                    name: Pending
+                  cardEmbosser:
+                    id: 2
+                    name: THALES
+    RSCardBatchInfo200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardBatchInfo200'
+          examples:
+            Card Batch Info:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: 2023-03-22T11:09:54.203-0500
+                data:
+                  batchId: ADHJB422
+                  cardProgram:
+                    id: 2
+                    name: Cuenta Digital MIO 1
+                  cardDesignId: 100
+                  quantity: 10
+                  branchName: Main Office
+                  batchStatus:
+                    id: 1
+                    name: Pending
+                  createdDate: 2020/01/19 11:10:33
+                  createdBy: admin
+                  approvedDate: 2020/02/05 11:10:33
+                  approvedBy: Manager
+                  cancelledDate: 2020/01/19 11:10:33
+                  canceledBy: Manager
+                  lastUpdatedDate: 2020/01/19 11:10:33
+                  cardEmbosser:
+                    id: 2
+                    name: THALES
+    RSCardBatchInfo400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardBatchInfo400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            Requested Resource Not Found:
+              $ref: '#/components/examples/RequestedResourceNotFound'
+    RSAnonymousCardBatchStatusUpdate200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSAnonymousCardBatchStatusUpdate200'
+          examples:
+            Anonymous Card Batch Status Update:
+              value:
+                code: 200.02.000
+                message: Process Ok
+                datetime: 2023-03-22T11:09:54.203-0500
+                data:
+                  batchId: ADHJB422
+                  lastUpdatedDate: 2020/01/19 11:10:33
+                  batchStatus:
+                    id: 2
+                    name: Approved
+                  cardEmbosser:
+                    id: 2
+                    name: THALES
+    RSCreationOfCardBatches400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCreationOfCardBatches400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            Invalid Program Id:
+              $ref: '#/components/examples/InvalidProgramId'
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+            Maximum Limit Of Batches:
+              $ref: '#/components/examples/MaximumLimitOfBatches'
+            Quantity Of Cards In The Batch:
+              $ref: '#/components/examples/QuantityOfCardsInTheBatch'
+            Invalid Card Embosser Id:
+              $ref: '#/components/examples/InvalidCardEmbosserId'
+            Product Embosser not match:
+              $ref: '#/components/examples/ProductEmbosserNotMatch'
   requestBodies:
     RQCreationOfCardBatches:
       content:

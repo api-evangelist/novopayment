@@ -133,86 +133,49 @@ paths:
           $ref: '#/components/responses/RS500'
 components:
   responses:
-    RSDeclineInternalTransfer:
+    RSDeclineIncomingInternationalTransfer:
       description: Process Ok
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSDeclineInternalTransfer'
+            $ref: '#/components/schemas/RSDeclineIncomingInternationalTransfer'
           examples:
             Success:
               value:
                 code: 200.17.000
                 message: Process OK
                 datetime: '2022-05-17T15:44:11.656Z'
-    RSDeclineIncomingInternationalTransfer400:
+    RSDeclineOutgoingInternationalTransaction400:
       description: Process Ok
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSDeclineIncomingInternationalTransfer400'
+            $ref: '#/components/schemas/RSDeclineOutgoingInternationalTransaction400'
           examples:
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
             There Are Open Escalations:
               $ref: '#/components/examples/ThereAreOpenEscalations'
-    RSDeclineInternalTransfer400:
-      description: Process Ok
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSDeclineInternalTransfer400'
-          examples:
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-            The Database Result Was Ok:
-              $ref: '#/components/examples/TheDatabaseResultWasOk'
-            The Requested Resource Was Not Found:
-              $ref: '#/components/examples/TheRequestedResourceWasNotFound'
-    RSApproveOutgoingInternationalTransaction400:
-      description: Process Ok
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSApproveOutgoingInternationalTransaction400'
-          examples:
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-            The Requested Resource Was Not Found:
-              $ref: '#/components/examples/TheRequestedResourceWasNotFound'
-            There Are Open Escalations:
-              $ref: '#/components/examples/ThereAreOpenEscalations'
-            Unable To Process Transactions:
-              $ref: '#/components/examples/UnableToProcessTransactions'
+            Product Status Could Not Be Updated:
+              $ref: '#/components/examples/ProductStatusCouldNotBeUpdated'
             The Process Is Held By Third Party System:
               $ref: '#/components/examples/TheProcessIsHeldByThirdPartySystem'
-    RSApproveIncomingInternationalTransfer:
+    RSDeclineOutgoingInternationalTransaction:
       description: Process Ok
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSApproveIncomingInternationalTransfer'
+            $ref: '#/components/schemas/RSDeclineOutgoingInternationalTransaction'
           examples:
             Success:
               value:
                 code: 200.17.000
                 message: Process OK
                 datetime: '2022-05-17T15:44:11.656Z'
-    RS401:
-      description: Unauthorized
+    RS500:
+      description: Not Found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
+            $ref: '#/components/schemas/RS500'
     RSApproveInternalTransfer:
       description: Process Ok
       content:
@@ -227,18 +190,30 @@ components:
                 datetime: '2022-05-17T15:44:11.656Z'
                 data:
                   authCode: '560719'
-    RSDeclineOutgoingInternationalTransaction:
+    RSDeclineInternalTransfer400:
       description: Process Ok
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSDeclineOutgoingInternationalTransaction'
+            $ref: '#/components/schemas/RSDeclineInternalTransfer400'
           examples:
-            Success:
-              value:
-                code: 200.17.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            The Database Result Was Ok:
+              $ref: '#/components/examples/TheDatabaseResultWasOk'
+            The Requested Resource Was Not Found:
+              $ref: '#/components/examples/TheRequestedResourceWasNotFound'
+    RSDeclineIncomingInternationalTransfer400:
+      description: Process Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSDeclineIncomingInternationalTransfer400'
+          examples:
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            There Are Open Escalations:
+              $ref: '#/components/examples/ThereAreOpenEscalations'
     RSApproveIncomingInternationalTransfer400:
       description: Process Ok
       content:
@@ -262,24 +237,74 @@ components:
               $ref: '#/components/examples/UnableToProcessTransactions'
             The Process Is Held By Third Party System:
               $ref: '#/components/examples/TheProcessIsHeldByThirdPartySystem'
-    RS500:
-      description: Not Found
+    RS401:
+      description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS500'
-    RSDeclineIncomingInternationalTransfer:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSDeclineInternalTransfer:
       description: Process Ok
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSDeclineIncomingInternationalTransfer'
+            $ref: '#/components/schemas/RSDeclineInternalTransfer'
           examples:
             Success:
               value:
                 code: 200.17.000
                 message: Process OK
                 datetime: '2022-05-17T15:44:11.656Z'
+    RSApproveIncomingInternationalTransfer:
+      description: Process Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSApproveIncomingInternationalTransfer'
+          examples:
+            Success:
+              value:
+                code: 200.17.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+    RSApproveOutgoingInternationalTransaction:
+      description: Process Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSApproveOutgoingInternationalTransaction'
+          examples:
+            Success:
+              value:
+                code: 200.17.000
+                message: Process OK
+                datetime: '2022-05-17T15:44:11.656Z'
+    RSApproveOutgoingInternationalTransaction400:
+      description: Process Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSApproveOutgoingInternationalTransaction400'
+          examples:
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+            The Requested Resource Was Not Found:
+              $ref: '#/components/examples/TheRequestedResourceWasNotFound'
+            There Are Open Escalations:
+              $ref: '#/components/examples/ThereAreOpenEscalations'
+            Unable To Process Transactions:
+              $ref: '#/components/examples/UnableToProcessTransactions'
+            The Process Is Held By Third Party System:
+              $ref: '#/components/examples/TheProcessIsHeldByThirdPartySystem'
     RSApproveInternalTransfer400:
       description: Process Ok
       content:
@@ -293,70 +318,119 @@ components:
               $ref: '#/components/examples/TheRequestedResourceWasNotFound'
             The Database Result Was Ok:
               $ref: '#/components/examples/TheDatabaseResultWasOk'
-    RSDeclineOutgoingInternationalTransaction400:
-      description: Process Ok
+  requestBodies:
+    RQApproveInternalTransfer:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSDeclineOutgoingInternationalTransaction400'
-          examples:
-            There Are Open Escalations:
-              $ref: '#/components/examples/ThereAreOpenEscalations'
-            Product Status Could Not Be Updated:
-              $ref: '#/components/examples/ProductStatusCouldNotBeUpdated'
-            The Process Is Held By Third Party System:
-              $ref: '#/components/examples/TheProcessIsHeldByThirdPartySystem'
-    RSApproveOutgoingInternationalTransaction:
-      description: Process Ok
+            $ref: '#/components/schemas/RQApproveInternalTransfer'
+      required: true
+    RQDeclineIncomingInternationalTransfer:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSApproveOutgoingInternationalTransaction'
-          examples:
-            Success:
-              value:
-                code: 200.17.000
-                message: Process OK
-                datetime: '2022-05-17T15:44:11.656Z'
-  schemas:
-    RQApproveIncomingInternationalTransfer:
-      type: object
-      required:
-      - comments
-      - reviewedBy
-      properties:
-        comments:
-          type: string
-          description: Comments related to the transaction
-          example: Successful security validation
-          maxLength: 140
-        reviewedBy:
-          type: string
-          description: User who performs the action
-          example: MASTER
-          maxLength: 40
+            $ref: '#/components/schemas/RQDeclineIncomingInternationalTransfer'
+      required: true
+    RQDeclineOutgoingInternationalTransaction:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQDeclineOutgoingInternationalTransaction'
+      required: true
     RQDeclineInternalTransfer:
-      type: object
-      required:
-      - comments
-      - reviewedBy
-      properties:
-        comments:
-          type: string
-          description: Comments related to the transaction
-          example: Unsuccessful security process
-          maxLength: 4000
-        fraudHoldResolutionDate:
-          type: string
-          description: Date and time when the fraud validation process is solved
-          example: 2021/04/21 14:08:42
-          maxLength: 19
-        reviewedBy:
-          type: string
-          description: The user who performs the action
-          example: MASTER
-          maxLength: 40
-    RSApproveIncomingInternationalTransfer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQDeclineInternalTransfer'
+      required: true
+    RQApproveIncomingInternationalTransfer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQApproveIncomingInternationalTransfer'
+      required: true
+    RQApproveOutgoingInternationalTransaction:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQApproveOutgoingInternationalTransaction'
+      required: true
+  examples:
+    TheProcessIsHeldByThirdPartySystem:
+      value:
+        code: 400.17.478
+        message: The process is held by third party system
+        datetime: '2020-01-03T16:05:56.517Z'
+    ExceedsTheLimitAmount:
+      value:
+        code: 400.17.354
+        message: Exceeds the limit amount
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.01.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    TheDatabaseResultWasOk:
+      value:
+        code: 400.17.020
+        message: The database result was ok, but it was not possible to recognize the database response.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTransactionType:
+      value:
+        code: 400.17.361
+        message: Invalid transaction type
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestParamsRequired:
+      value:
+        code: 400.17.003
+        message: Params required
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+          errors:
+          - message: 'attribute: Can not be null'
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    UnableToProcessTransactions:
+      value:
+        code: 400.17.477
+        message: Unable to process transactions
+    AmountMustBeMoreThanZero:
+      value:
+        code: 400.17.115
+        message: Amount must be more than zero
+        datetime: '2020-01-03T16:05:56.517Z'
+    TheRequestedResourceWasNotFound:
+      value:
+        code: 400.17.022
+        message: The requested resource was not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    ProductStatusCouldNotBeUpdated:
+      value:
+        code: 400.17.317
+        message: product status could not be updated
+        datetime: '2020-01-03T16:05:56.517Z'
+    ThereAreOpenEscalations:
+      value:
+        code: 400.17.035
+        message: There are open escalations.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+  schemas:
+    RSDeclineOutgoingInternationalTransaction:
       type: object
       properties:
         code:
@@ -373,42 +447,6 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-    RSDeclineIncomingInternationalTransfer400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.17.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSApproveOutgoingInternationalTransaction400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.17.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RS500:
       type: object
@@ -428,6 +466,58 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RQApproveOutgoingInternationalTransaction:
+      type: object
+      required:
+      - comments
+      - reviewedBy
+      properties:
+        comments:
+          type: string
+          description: Comments related to the transaction
+          example: Successful security validation
+          maxLength: 140
+        reviewedBy:
+          type: string
+          description: User who performs the action
+          example: MASTER
+          maxLength: 40
+    RSApproveOutgoingInternationalTransaction400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.17.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSApproveIncomingInternationalTransfer400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.17.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RSDeclineOutgoingInternationalTransaction400:
       type: object
       properties:
@@ -445,6 +535,42 @@ components:
         datetime:
           type: string
           example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSApproveIncomingInternationalTransfer:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 200.17.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+    RSDeclineInternalTransfer:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 200.17.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
           format: date-time
     RQDeclineOutgoingInternationalTransaction:
       type: object
@@ -492,118 +618,6 @@ components:
           description: User who performs the action
           example: MASTER
           maxLength: 40
-    RS401:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 401.17.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSDeclineOutgoingInternationalTransaction:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 200.17.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-    RSApproveInternalTransfer400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.17.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSDeclineInternalTransfer400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.17.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSDeclineIncomingInternationalTransfer:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 200.17.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-    RSApproveOutgoingInternationalTransaction:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.17.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
     RQDeclineIncomingInternationalTransfer:
       type: object
       required:
@@ -646,8 +660,12 @@ components:
           description: The user who performs the action
           example: MASTER
           maxLength: 40
-    RSDeclineInternalTransfer:
+    RSApproveOutgoingInternationalTransaction:
       type: object
+      required:
+      - code
+      - message
+      - datetime
       properties:
         code:
           type: string
@@ -664,18 +682,18 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           description: Operation Time Stamp in ISO 8601 format
           format: date-time
-    RSApproveIncomingInternationalTransfer400:
+    RS401:
       type: object
       properties:
         code:
           type: string
-          example: 400.17.003
+          example: 401.17.990
           description: Operation response code
           minLength: 10
           maxLength: 10
         message:
           type: string
-          example: Params required
+          example: Invalid Access Token
           description: Response code description
           maxLength: 140
         datetime:
@@ -703,7 +721,43 @@ components:
           description: The user who performs the action
           example: MASTER
           maxLength: 40
-    RQApproveOutgoingInternationalTransaction:
+    RSDeclineIncomingInternationalTransfer400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.17.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSDeclineIncomingInternationalTransfer:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 200.17.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+    RQApproveIncomingInternationalTransfer:
       type: object
       required:
       - comments
@@ -719,6 +773,42 @@ components:
           description: User who performs the action
           example: MASTER
           maxLength: 40
+    RSApproveInternalTransfer400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.17.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSDeclineInternalTransfer400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.17.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RSApproveInternalTransfer:
       type: object
       properties:
@@ -745,117 +835,27 @@ components:
               description: Transaction authorization code
               example: 560719
               maxLength: 38
-  examples:
-    RequestParamsRequired:
-      value:
-        code: 400.17.003
-        message: Params required
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
-          errors:
-          - message: 'attribute: Can not be null'
-    InvalidAccessToken:
-      value:
-        code: 401.01.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    TheDatabaseResultWasOk:
-      value:
-        code: 400.17.020
-        message: The database result was ok, but it was not possible to recognize the database response.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AmountMustBeMoreThanZero:
-      value:
-        code: 400.17.115
-        message: Amount must be more than zero
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.01.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTransactionType:
-      value:
-        code: 400.17.361
-        message: Invalid transaction type
-        datetime: '2020-01-03T16:05:56.517Z'
-    ProductStatusCouldNotBeUpdated:
-      value:
-        code: 400.17.317
-        message: product status could not be updated
-        datetime: '2020-01-03T16:05:56.517Z'
-    TheProcessIsHeldByThirdPartySystem:
-      value:
-        code: 400.17.478
-        message: The process is held by third party system
-        datetime: '2020-01-03T16:05:56.517Z'
-    TheRequestedResourceWasNotFound:
-      value:
-        code: 400.17.022
-        message: The requested resource was not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    UnableToProcessTransactions:
-      value:
-        code: 400.17.477
-        message: Unable to process transactions
-    ThereAreOpenEscalations:
-      value:
-        code: 400.17.035
-        message: There are open escalations.
-        datetime: '2020-01-03T16:05:56.517Z'
-    ExceedsTheLimitAmount:
-      value:
-        code: 400.17.354
-        message: Exceeds the limit amount
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.01.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.01.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-  requestBodies:
-    RQApproveOutgoingInternationalTransaction:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQApproveOutgoingInternationalTransaction'
-      required: true
-    RQApproveIncomingInternationalTransfer:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQApproveIncomingInternationalTransfer'
-      required: true
     RQDeclineInternalTransfer:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQDeclineInternalTransfer'
-      required: true
-    RQDeclineOutgoingInternationalTransaction:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQDeclineOutgoingInternationalTransaction'
-      required: true
-    RQDeclineIncomingInternationalTransfer:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQDeclineIncomingInternationalTransfer'
-      required: true
-    RQApproveInternalTransfer:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQApproveInternalTransfer'
-      required: true
+      type: object
+      required:
+      - comments
+      - reviewedBy
+      properties:
+        comments:
+          type: string
+          description: Comments related to the transaction
+          example: Unsuccessful security process
+          maxLength: 4000
+        fraudHoldResolutionDate:
+          type: string
+          description: Date and time when the fraud validation process is solved
+          example: 2021/04/21 14:08:42
+          maxLength: 19
+        reviewedBy:
+          type: string
+          description: The user who performs the action
+          example: MASTER
+          maxLength: 40
   parameters:
     transferId:
       name: transferId

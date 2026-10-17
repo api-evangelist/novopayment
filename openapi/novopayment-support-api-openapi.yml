@@ -128,290 +128,71 @@ paths:
         '500':
           $ref: '#/components/responses/RS500'
 components:
-  responses:
-    RSCardPinUpdate200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardPinUpdate200'
-          examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSCardQRImage200:
-      description: Ok
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardQRImage200'
-          examples:
-            Default:
-              value:
-                code: 200.00.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  image: iVBORw0KGgoAAAANSUhEUgAAAgAAAAFVCAIA
-    RSCardPinUpdate400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardReplacement400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Invalid Pin Format:
-              $ref: '#/components/examples/InvalidPinFormat'
-            Original Pin No Match:
-              $ref: '#/components/examples/OriginalPinNoMatch'
-            New Pin Must Be Different To Original:
-              $ref: '#/components/examples/NewPinMustBeDifferentToOriginal'
-            Pin Already Used:
-              $ref: '#/components/examples/PinAlreadyUsed'
-            Card Has No Pin:
-              $ref: '#/components/examples/CardHasNoPin'
-            Encryption Error:
-              $ref: '#/components/examples/EncryptionError'
-            Invalid Encrypted Data:
-              $ref: '#/components/examples/InvalidEncryptedData'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Insufficient Funds:
-              $ref: '#/components/examples/InsufficientFunds'
-            We Were Unable To Process Your Request:
-              $ref: '#/components/examples/WeWereUnableToProcessYourRequest'
-            Invalid Transaction Code:
-              $ref: '#/components/examples/InvalidTransactionCode'
-            Exceeds The Limit Amount:
-              $ref: '#/components/examples/ExceedsTheLimitAmount'
-            The Card Is Not Active:
-              $ref: '#/components/examples/TheCardIsNotActive'
-            Tax Cannot Be Higher Than The Amount:
-              $ref: '#/components/examples/TaxCannotBeHigherThanTheAmount'
-            Maximum Number Of Transactions Reached:
-              $ref: '#/components/examples/MaximumNumberOfTransactionsReached'
-            CardIsExpired:
-              $ref: '#/components/examples/CardIsExpired'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Exceeds Withdrawal Frequency Limit:
-              $ref: '#/components/examples/ExceedsWithdrawalFrequencyLimit'
-            Invalid CardId:
-              $ref: '#/components/examples/InvalidCardId'
-    RSUnblockCard400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUnblockCard400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Card is permanently blocked:
-              $ref: '#/components/examples/CardIsPermanentlyBlocked'
-    RSUnblockCard200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUnblockCard200'
-          examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSCardPinAssignment400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardPinAssignment400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Invalid Pin Format:
-              $ref: '#/components/examples/InvalidPinFormat'
-            Encryption Error:
-              $ref: '#/components/examples/EncryptionError'
-            Invalid Encrypted Data:
-              $ref: '#/components/examples/InvalidEncryptedData'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Card Has Already Been Assigned A Pin:
-              $ref: '#/components/examples/CardHasAlreadyBeenAssignedAPin'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSBlockCard400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSBlockCard400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Card is permanently blocked:
-              $ref: '#/components/examples/CardIsPermanentlyBlocked'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Exceeds Withdrawal Frequency Limit:
-              $ref: '#/components/examples/ExceedsWithdrawalFrequencyLimit'
-            Invalid CardId:
-              $ref: '#/components/examples/InvalidCardId'
-            Invalid Block Code:
-              $ref: '#/components/examples/InvalidBlockCode'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Invalid Card Id:
-              $ref: '#/components/examples/InvalidCardId'
-    RSCardPinAssignment200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardPinAssignment200'
-          examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSBlockCard200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSBlockCard200'
-          examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
   examples:
+    NewPinMustBeDifferentToOriginal:
+      value:
+        code: 400.01.078
+        message: New PIN must be different to original
+        datetime: 2020-01-03T16:05:56.517Z4
+    ExceedsWithdrawalFrequencyLimit:
+      value:
+        code: 400.01.522
+        message: Exceeds withdrawal frequency limit
+        datetime: 2020-01-03 16:05:56.517000+00:00
     EncryptionError:
       value:
         code: 400.01.994
         message: Encryption error
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    OriginalPinNoMatch:
+      value:
+        code: 400.01.013
+        message: Original PIN no match
+        datetime: 2020-01-03T16:05:56.517Z4
+    CardIsExpired:
+      value:
+        code: 400.01.407
+        message: Card is expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    PinAlreadyUsed:
+      value:
+        code: 400.01.079
+        message: PIN already used
+        datetime: 2020-01-03T16:05:56.517Z4
+    InvalidEncryptedData:
+      value:
+        code: 400.01.320
+        message: Invalid Encrypted Data
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    ExceedsTheLimitAmount:
+      value:
+        code: 400.01.354
+        message: Exceeds the limit amount
         datetime: 2020-01-03 16:05:56.517000+00:00
     InvalidCardId:
       value:
         code: 400.01.009
         message: Invalid Card ID
         datetime: 2020-01-03 16:05:56.517000+00:00
-    TaxCannotBeHigherThanTheAmount:
-      value:
-        code: 400.01.371
-        message: Tax cannot be higher than the amount
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidTenantId:
-      value:
-        code: 400.01.004
-        message: Invalid tenant ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidAccessToken:
-      value:
-        code: 401.01.990
-        message: Invalid Access Token
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    ExceedsWithdrawalFrequencyLimit:
-      value:
-        code: 400.01.522
-        message: Exceeds withdrawal frequency limit
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InsufficientFunds:
-      value:
-        code: 400.01.044
-        message: Insufficient funds
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardHasAlreadyBeenAssignedAPin:
-      value:
-        code: 400.01.450
-        message: Card has already been assigned a pin*
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidSignature:
-      value:
-        code: 401.01.992
-        message: Invalid signature
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsExpired:
-      value:
-        code: 400.01.407
-        message: Card is expired
-        datetime: 2020-01-03 16:05:56.517000+00:00
     TheCardIsNotActive:
       value:
         code: 400.01.367
         message: The card is not active
         datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsBlocked:
+    AccessTokenExpired:
       value:
-        code: 400.01.008
-        message: Card is blocked
+        code: 401.01.993
+        message: Access token expired
         datetime: 2020-01-03 16:05:56.517000+00:00
-    NewPinMustBeDifferentToOriginal:
+    HeaderParamsRequired:
       value:
-        code: 400.01.078
-        message: New PIN must be different to original
-        datetime: 2020-01-03T16:05:56.517Z4
-    InvalidEncryptedData:
+        code: 400.01.001
+        message: Header Params Required
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidPinFormat:
       value:
-        code: 400.01.320
-        message: Invalid Encrypted Data
+        code: 400.01.012
+        message: Invalid PIN format
         datetime: 2020-01-03 16:05:56.517000+00:00
     InvalidParameters:
       value:
@@ -425,93 +206,167 @@ components:
         - message: 'Field subject: must not be blank'
         - message: 'Field subject: must not be null'
         datetime: 2020-01-03 16:05:56.517000+00:00
-    PinAlreadyUsed:
-      value:
-        code: 400.01.079
-        message: PIN already used
-        datetime: 2020-01-03T16:05:56.517Z4
-    OriginalPinNoMatch:
-      value:
-        code: 400.01.013
-        message: Original PIN no match
-        datetime: 2020-01-03T16:05:56.517Z4
-    InvalidBlockCode:
-      value:
-        code: 400.01.014
-        message: Invalid block code
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidPinFormat:
-      value:
-        code: 400.01.012
-        message: Invalid PIN format
-        datetime: 2020-01-03 16:05:56.517000+00:00
     InvalidTransactionCode:
       value:
         code: 400.01.338
         message: Invalid transaction code
         datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsPermanentlyBlocked:
+    TaxCannotBeHigherThanTheAmount:
       value:
-        code: 400.01.409
-        message: The card is permanently blocked
+        code: 400.01.371
+        message: Tax cannot be higher than the amount
         datetime: 2020-01-03 16:05:56.517000+00:00
-    WeWereUnableToProcessYourRequest:
+    InvalidTenantId:
       value:
-        code: 400.01.32
-        message: We were unable to process your request
-        datetime: 2020-01-03T16:05:56.517Z4
+        code: 400.01.004
+        message: Invalid tenant ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
     CardHasNoPin:
       value:
         code: 400.01.363
         message: Card has no pin
         datetime: 2020-01-03T16:05:56.517Z4
-    InternalServerError:
+    AccessTokenNotApproved:
       value:
-        code: 500.01.999
-        message: Internal Server Error
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsBlocked:
+      value:
+        code: 400.01.008
+        message: Card is blocked
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
         datetime: 2020-01-03 16:05:56.517000+00:00
     MaximumNumberOfTransactionsReached:
       value:
         code: 400.01.051
         message: Maximum number of transactions reached
         datetime: 2020-01-03 16:05:56.517000+00:00
-    HeaderParamsRequired:
+    InsufficientFunds:
       value:
-        code: 400.01.001
-        message: Header Params Required
+        code: 400.01.044
+        message: Insufficient funds
         datetime: 2020-01-03 16:05:56.517000+00:00
-    ExceedsTheLimitAmount:
+    InternalServerError:
       value:
-        code: 400.01.354
-        message: Exceeds the limit amount
+        code: 500.01.999
+        message: Internal Server Error
         datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenExpired:
+    WeWereUnableToProcessYourRequest:
       value:
-        code: 401.01.993
-        message: Access token expired
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenNotApproved:
+        code: 400.01.32
+        message: We were unable to process your request
+        datetime: 2020-01-03T16:05:56.517Z4
+    CardIsPermanentlyBlocked:
       value:
-        code: 401.01.991
-        message: Access Token not approved
+        code: 400.01.409
+        message: The card is permanently blocked
         datetime: 2020-01-03 16:05:56.517000+00:00
-  schemas:
+    CardHasAlreadyBeenAssignedAPin:
+      value:
+        code: 400.01.450
+        message: Card has already been assigned a pin*
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidBlockCode:
+      value:
+        code: 400.01.014
+        message: Invalid block code
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+  requestBodies:
+    RQUnblockCard:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQUnblockCard'
+      required: true
     RQCardPinUpdate:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardPinUpdate'
+      required: true
+    RQCardPinAssignment:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardPinAssignment'
+      required: true
+    RQBlockCard:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQBlockCard'
+      required: true
+  schemas:
+    RSCardPinAssignment400:
       type: object
       required:
-      - pin
-      - newPin
+      - code
+      - message
+      - datetime
       properties:
-        pin:
+        code:
           type: string
-          description: Four-digit pin of the encrypted card using AES256 algorithm
-          example: 052olf8m99453jCPWTOL3Q==
-          maxLength: 24
-        newPin:
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
           type: string
-          description: Four-digit pin of the encrypted card using AES256 algorithm
-          example: 052olf8m99453jCPWTOL3Q==
-          maxLength: 24
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RSCardPinUpdate200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RQUnblockCard:
+      type: object
+      required:
+      - observations
+      properties:
+        observations:
+          type: string
+          description: 'Description of the reason to unblock the card
+
+
+            **Allowed characters:** alphanumeric
+
+            '
+          example: Card found
+          maxLength: 255
     RSCardReplacement400:
       type: object
       required:
@@ -529,96 +384,6 @@ components:
           type: string
           description: Response code description
           example: Client already registered in this program
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSUnblockCard200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSCardPinAssignment200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSUnblockCard400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSCardPinAssignment400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
           maxLength: 140
         datetime:
           type: string
@@ -648,51 +413,6 @@ components:
           example: 2020-01-03 16:05:56.517000+00:00
           minLength: 24
           maxLength: 24
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
-    RSCardPinUpdate200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
     RSBlockCard400:
       type: object
       required:
@@ -716,18 +436,7 @@ components:
           example: 2020-01-03 16:05:56.517000+00:00
           description: Operation Timestamp
           format: date-time
-    ObjCardQRCodeData:
-      type: object
-      required:
-      - image
-      properties:
-        image:
-          type: string
-          description: 'Image type Object that contains the QR Code image.
-
-            '
-          example: iVBORw0KGgoAAAANSUhEUgAAAgAAAAFVCAIA…
-    RS400:
+    RSUnblockCard400:
       type: object
       required:
       - code
@@ -736,19 +445,30 @@ components:
       properties:
         code:
           type: string
+          example: 400.01.004
+          description: Operation response code
           minLength: 10
           maxLength: 10
-          description: Operation response code
         message:
           type: string
-          maxLength: 140
           description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
         datetime:
           type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
           format: date-time
-          minLength: 24
+    RQCardPinAssignment:
+      type: object
+      required:
+      - pin
+      properties:
+        pin:
+          type: string
+          description: Four-digit pin of the encrypted card using AES256 algorithm
+          example: 052olf8m99453jCPWTOL3Q==
           maxLength: 24
-          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2024-07-21T17:32:28Z         \n"
     RQBlockCard:
       type: object
       required:
@@ -821,15 +541,99 @@ components:
         data:
           type: object
           $ref: '#/components/schemas/ObjCardQRCodeData'
-    RQCardPinAssignment:
+    RQCardPinUpdate:
       type: object
       required:
       - pin
+      - newPin
       properties:
         pin:
           type: string
           description: Four-digit pin of the encrypted card using AES256 algorithm
           example: 052olf8m99453jCPWTOL3Q==
+          maxLength: 24
+        newPin:
+          type: string
+          description: Four-digit pin of the encrypted card using AES256 algorithm
+          example: 052olf8m99453jCPWTOL3Q==
+          maxLength: 24
+    RS400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2024-07-21T17:32:28Z         \n"
+    ObjCardQRCodeData:
+      type: object
+      required:
+      - image
+      properties:
+        image:
+          type: string
+          description: 'Image type Object that contains the QR Code image.
+
+            '
+          example: iVBORw0KGgoAAAANSUhEUgAAAgAAAAFVCAIA…
+    RSCardPinAssignment200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
           maxLength: 24
     RSBlockCard200:
       type: object
@@ -853,46 +657,242 @@ components:
           example: 2020-01-03 16:05:56.517000+00:00
           description: Operation Timestamp
           format: date-time
-    RQUnblockCard:
+    RSUnblockCard200:
       type: object
       required:
-      - observations
+      - code
+      - message
+      - datetime
       properties:
-        observations:
+        code:
           type: string
-          description: 'Description of the reason to unblock the card
-
-
-            **Allowed characters:** alphanumeric
-
-            '
-          example: Card found
-          maxLength: 255
-  requestBodies:
-    RQCardPinAssignment:
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+  responses:
+    RS500:
+      description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RQCardPinAssignment'
-      required: true
-    RQBlockCard:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSUnblockCard400:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RQBlockCard'
-      required: true
-    RQUnblockCard:
+            $ref: '#/components/schemas/RSUnblockCard400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Card is permanently blocked:
+              $ref: '#/components/examples/CardIsPermanentlyBlocked'
+    RSCardPinAssignment400:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RQUnblockCard'
-      required: true
-    RQCardPinUpdate:
+            $ref: '#/components/schemas/RSCardPinAssignment400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid Pin Format:
+              $ref: '#/components/examples/InvalidPinFormat'
+            Encryption Error:
+              $ref: '#/components/examples/EncryptionError'
+            Invalid Encrypted Data:
+              $ref: '#/components/examples/InvalidEncryptedData'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Card Has Already Been Assigned A Pin:
+              $ref: '#/components/examples/CardHasAlreadyBeenAssignedAPin'
+    RSUnblockCard200:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RQCardPinUpdate'
-      required: true
+            $ref: '#/components/schemas/RSUnblockCard200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSCardPinAssignment200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardPinAssignment200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSBlockCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSBlockCard200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSBlockCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSBlockCard400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Card is permanently blocked:
+              $ref: '#/components/examples/CardIsPermanentlyBlocked'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Exceeds Withdrawal Frequency Limit:
+              $ref: '#/components/examples/ExceedsWithdrawalFrequencyLimit'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
+            Invalid Block Code:
+              $ref: '#/components/examples/InvalidBlockCode'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid Card Id:
+              $ref: '#/components/examples/InvalidCardId'
+    RSCardPinUpdate200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardPinUpdate200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCardQRImage200:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardQRImage200'
+          examples:
+            Default:
+              value:
+                code: 200.00.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  image: iVBORw0KGgoAAAANSUhEUgAAAgAAAAFVCAIA
+    RSCardPinUpdate400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardReplacement400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid Pin Format:
+              $ref: '#/components/examples/InvalidPinFormat'
+            Original Pin No Match:
+              $ref: '#/components/examples/OriginalPinNoMatch'
+            New Pin Must Be Different To Original:
+              $ref: '#/components/examples/NewPinMustBeDifferentToOriginal'
+            Pin Already Used:
+              $ref: '#/components/examples/PinAlreadyUsed'
+            Card Has No Pin:
+              $ref: '#/components/examples/CardHasNoPin'
+            Encryption Error:
+              $ref: '#/components/examples/EncryptionError'
+            Invalid Encrypted Data:
+              $ref: '#/components/examples/InvalidEncryptedData'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+    RS400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Insufficient Funds:
+              $ref: '#/components/examples/InsufficientFunds'
+            We Were Unable To Process Your Request:
+              $ref: '#/components/examples/WeWereUnableToProcessYourRequest'
+            Invalid Transaction Code:
+              $ref: '#/components/examples/InvalidTransactionCode'
+            Exceeds The Limit Amount:
+              $ref: '#/components/examples/ExceedsTheLimitAmount'
+            The Card Is Not Active:
+              $ref: '#/components/examples/TheCardIsNotActive'
+            Tax Cannot Be Higher Than The Amount:
+              $ref: '#/components/examples/TaxCannotBeHigherThanTheAmount'
+            Maximum Number Of Transactions Reached:
+              $ref: '#/components/examples/MaximumNumberOfTransactionsReached'
+            CardIsExpired:
+              $ref: '#/components/examples/CardIsExpired'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Exceeds Withdrawal Frequency Limit:
+              $ref: '#/components/examples/ExceedsWithdrawalFrequencyLimit'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
   parameters:
     cardId:
       name: cardId

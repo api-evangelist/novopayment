@@ -111,106 +111,27 @@ paths:
           $ref: '#/components/responses/RS500'
 components:
   schemas:
-    DeleteAliasFavoriteResponse:
+    DocumentType:
       type: object
       additionalProperties: false
       required:
       - code
-      - message
-      - datetime
+      description: 'Document Type object.
+
+        Contains the document code
+
+        '
       properties:
         code:
           type: string
-          example: 200.01.000
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
+          description: 'Type of identification
+
+            __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+
+            '
+          example: GOVERNMENT_ID
+          maxLength: 25
           minLength: 1
-          pattern: ^[a-zA-Z0-9\s]{1,140}$
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          additionalProperties: false
-          description: Customized data object.
-          required:
-          - aliasId
-          - favoriteName
-          properties:
-            aliasId:
-              type: string
-              description: Identificator from alias parent.  This data is for personal use, it is required for administration and management of your alias.
-              example: 99bce68ccef84370a77ba9e6e75624bc
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-            favoriteName:
-              type: string
-              description: Favorite name, favorite to be deleted
-              example: MOTHER
-              maxLength: 32
-              minLength: 1
-              pattern: ^\w+$
-    RS500:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-    RS401:
-      type: object
-      additionalProperties: false
-      properties:
-        code:
-          type: string
-          example: 401.09.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
     RSGenericResponse:
       type: object
       additionalProperties: false
@@ -256,56 +177,365 @@ components:
                     minLength: 1
                     maxLength: 140
                     pattern: ^[a-zA-Z0-9:.\s]{1,140}$
-    CardHolderFavorite:
+    RS500:
       type: object
       additionalProperties: false
       required:
-      - firstName
-      - lastName
-      description: 'Customized object cardHolder Contains personal information of the cardholder
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+    Account:
+      type: object
+      description: Detailed account information, conditional if cards no present
+      required:
+      - accountType
+      - accountNumberEncrypt
+      - countryCode
+      - currencyCode
+      - accountIdentify
+      additionalProperties: false
+      properties:
+        accountId:
+          type: string
+          description: 'account identificator.
+
+            '
+          example: 1297ceb1-cd42-4586-940d-6471d733d53e
+          maxLength: 50
+          pattern: ^(?!\s)(?!.*\s$).{1,50}$
+        accountInternalId:
+          type: string
+          description: 'account Internal UUID. (**this field should be unique**)
+
+            '
+          example: 0458a69b-e70d-49b3-86d2-81d6b7569979
+          maxLength: 36
+          pattern: ^(?!\s)(?!.-*\s$).{1,50}$
+        accountName:
+          type: string
+          description: 'account Name.
+
+            '
+          example: AccountPrincipal
+          maxLength: 50
+          pattern: ^(?!\s)(?!.*\s$).{1,50}$
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        accountNumber:
+          type: string
+          description: 'masked account number.
+
+            '
+          example: '********1432'
+          maxLength: 34
+        accountNumberEncrypt:
+          type: string
+          description: 'account number encrypted with aes256.
+
+            '
+          example: bXgZyYJ5OmRjEuJq9BWSxwpxwBappGeW6N+PHky5UhM=
+          maxLength: 100
+        accountIdentify:
+          type: string
+          description: 'allow values DEFAULT, IBAN
+
+            '
+          example: IBAN
+          maxLength: 10
+          pattern: (\s)*|DEFAULT|IBAN
+        countryCode:
+          type: string
+          description: 'Country code in ISO 3166 alpha-3 code or Country Code (numeric).
+
+            '
+          example: USA
+          minLength: 3
+          maxLength: 3
+          pattern: ^(?!\s)(?!.*\s$).{3,3}$
+        currencyCode:
+          type: string
+          description: 'Currency code  alpha-3 code or Numeric Code (numeric).
+
+            '
+          example: USD
+          minLength: 3
+          maxLength: 3
+          pattern: ^(?!\s)(?!.*\s$).{3,3}$
+        bankCode:
+          type: string
+          example: '01'
+          maxLength: 70
+          minLength: 1
+          description: bank's code
+        bankName:
+          type: string
+          example: banco de bogota
+          maxLength: 70
+          minLength: 1
+          description: bank's name
+    AccountType:
+      type: object
+      additionalProperties: false
+      required:
+      - title
+      description: 'Account Type object.
+
+        Contains the account title
 
         '
       properties:
-        firstName:
+        title:
           type: string
-          description: 'Cardholder’s First Name, who will be registered in the alias directory.
+          description: 'Type of account __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-accounttype)
 
             '
-          example: Andres
-          maxLength: 35
+          example: SAVING
+          maxLength: 25
           minLength: 1
-          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-        lastName:
+          pattern: (\s)*|SAVING|CHECKING|MAESTRA|VISA|LOAN|NRE
+        description:
           type: string
-          description: 'Cardholder’s Last Name, who will be registered in the alias directory.
-
-            '
-          example: Rendon
-          maxLength: 35
+          description: acccount type description
+          example: The savings accounts can be opened by an individual with an aim to save money
           minLength: 1
-          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
-        documentType:
-          $ref: '#/components/schemas/DocumentType'
-        documentNumber:
+        idCode:
           type: string
-          description: 'Identification Number
-
-            '
-          example: '3346756'
-          maxLength: 35
+          description: acccount type identificator
+          example: '1'
           minLength: 1
-          pattern: ^\d{1,35}$
-        email:
+    AliasFavorite:
+      type: object
+      additionalProperties: false
+      required:
+      - favoriteName
+      - favoriteId
+      - favoriteInformation
+      description: Customized object Alias| Contains information of AliasFavorite
+      properties:
+        alias:
           type: string
-          description: 'Cardholder''s Email
-
-            '
-          example: jane@client.com
+          description: Attribute that identifies the alias associated to the cardholder. Conditional is required if the aliasId  is not send
           maxLength: 50
-          minLength: 0
-          pattern: .+[@].+[\.].+
-        address:
-          $ref: '#/components/schemas/Address'
+          minLength: 1
+          example: test@domini.com
+          pattern: ^(?!\s)(?!.*\s$).{1,50}$
+        aliasType:
+          type: string
+          description: '__Allowed values:__
+
+            __MOBILE,__
+
+            __EMAIL,__
+
+            __IDENTIFICATION,__
+
+            __IBAN,__
+
+            __CUSTOM__
+
+            '
+          example: MOBILE
+          minLength: 4
+          maxLength: 14
+          pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+        favoriteId:
+          type: string
+          description: Unique identifier of an Favorite in NovoPayment.
+          maxLength: 32
+          minLength: 32
+          example: 706c26c89b4245b3994a0f5ff9c25275
+          pattern: ^[0-9a-fA-F]{32}$
+        favoriteName:
+          type: string
+          description: Name of the alias added as a favorite
+          maxLength: 32
+          minLength: 1
+          example: MOM
+        favoriteInformation:
+          additionalProperties: false
+          type: object
+          description: Information of a favorite
+          required:
+          - cardHolder
+          properties:
+            cardToken:
+              type: string
+              description: Card data encrypted with the AES256 algorithm.| The cardToken attribute is composed of the following values PAN Card’s primary account number or token Expiration Date Card expiration date SALT Random Value String With the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value. For a favorite without aliases the expiration date must be 0000. When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant. Conditional is required if the aliasId  is not send
+              maxLength: 44
+              minLength: 44
+              example: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
+            cardHolder:
+              $ref: '#/components/schemas/CardHolderFavorite'
+            maskedNumber:
+              type: string
+              description: Payment instrument mask. According to the following format ************XXXX
+              example: '************0246'
+              maxLength: 16
+              minLength: 16
+            account:
+              $ref: '#/components/schemas/Account'
+    GetAliasFavoriteResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          description: Customized data object.
+          required:
+          - alias
+          - aliasType
+          properties:
+            alias:
+              type: string
+              description: Alias associated to the cardholder. If it is a number, it must be in an international format with the 1-3 digit country calling code.
+              example: ejemplo@gmail.com
+              maxLength: 50
+              minLength: 1
+              pattern: ^(?!\s)(?!.*\s$).{1,50}$
+            aliasType:
+              type: string
+              description: '__Allowed values:__
+
+                __MOBILE,__
+
+                __EMAIL,__
+
+                __IDENTIFICATION,__
+
+                __IBAN,__
+
+                __CUSTOM__
+
+                '
+              example: EMAIL
+              maxLength: 14
+              minLength: 4
+              pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+            aliasFavorites:
+              type: array
+              minItems: 0
+              maxItems: 15
+              items:
+                $ref: '#/components/schemas/AliasFavorite'
+    CreateAliasFavoriteRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - aliasParent
+      - aliasFavorite
+      properties:
+        aliasParent:
+          type: object
+          additionalProperties: false
+          required:
+          - aliasId
+          description: Customized object Alias| Contains information of AliasParent
+          properties:
+            aliasId:
+              type: string
+              description: Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
+              example: 5d1bf399902e42f79681c5be8dfdcb02
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
+        aliasFavorite:
+          type: object
+          additionalProperties: false
+          required:
+          - favoriteName
+          description: Customized object Alias| Contains information of AliasFavorite
+          properties:
+            alias:
+              type: string
+              example: 002-00005
+              description: 'Attribute that identifies the alias associated to the cardholder. If it is a number, it must be in an international format with the 1-3 digit country calling code.
+
+                '
+              maxLength: 50
+              minLength: 1
+              pattern: ^(?!\s)(?!.*\s$).{1,50}$
+            aliasType:
+              type: string
+              example: MOBILE
+              description: '__Allowed values:__
+
+                __MOBILE,__
+
+                __EMAIL,__
+
+                __IDENTIFICATION,__
+
+                __IBAN,__
+
+                __CUSTOM__
+
+                '
+              pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
+              maxLength: 15
+              minLength: 1
+            favoriteName:
+              type: string
+              description: Name of the alias added as a favorite
+              maxLength: 32
+              minLength: 1
+              example: MOTHER
+              pattern: ^\w+$
+            cardToken:
+              type: string
+              description: Card data encrypted with the AES256 algorithm.| The cardToken attribute is composed of the following values PAN Card’s primary account number or token Expiration Date Card expiration date SALT Random Value String With the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value. For a favorite without aliases the expiration date must be 0000. When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant. Conditional is required if the aliasId  is not send or Account is not present
+              maxLength: 44
+              minLength: 44
+              pattern: \s*|[\w\d=/+]{44}
+            cardHolder:
+              $ref: '#/components/schemas/CardHolder'
+            account:
+              $ref: '#/components/schemas/Account'
     Address:
       type: object
       additionalProperties: false
@@ -433,308 +663,70 @@ components:
           pattern: .+[@].+[\.].+
         address:
           $ref: '#/components/schemas/Address'
-    Account:
-      type: object
-      description: Detailed account information, conditional if cards no present
-      required:
-      - accountType
-      - accountNumberEncrypt
-      - countryCode
-      - currencyCode
-      - accountIdentify
-      additionalProperties: false
-      properties:
-        accountId:
-          type: string
-          description: 'account identificator.
-
-            '
-          example: 1297ceb1-cd42-4586-940d-6471d733d53e
-          maxLength: 50
-          pattern: ^(?!\s)(?!.*\s$).{1,50}$
-        accountInternalId:
-          type: string
-          description: 'account Internal UUID. (**this field should be unique**)
-
-            '
-          example: 0458a69b-e70d-49b3-86d2-81d6b7569979
-          maxLength: 36
-          pattern: ^(?!\s)(?!.-*\s$).{1,50}$
-        accountName:
-          type: string
-          description: 'account Name.
-
-            '
-          example: AccountPrincipal
-          maxLength: 50
-          pattern: ^(?!\s)(?!.*\s$).{1,50}$
-        accountType:
-          $ref: '#/components/schemas/AccountType'
-        accountNumber:
-          type: string
-          description: 'masked account number.
-
-            '
-          example: '********1432'
-          maxLength: 34
-        accountNumberEncrypt:
-          type: string
-          description: 'account number encrypted with aes256.
-
-            '
-          example: bXgZyYJ5OmRjEuJq9BWSxwpxwBappGeW6N+PHky5UhM=
-          maxLength: 100
-        accountIdentify:
-          type: string
-          description: 'allow values DEFAULT, IBAN
-
-            '
-          example: IBAN
-          maxLength: 10
-          pattern: (\s)*|DEFAULT|IBAN
-        countryCode:
-          type: string
-          description: 'Country code in ISO 3166 alpha-3 code or Country Code (numeric).
-
-            '
-          example: USA
-          minLength: 3
-          maxLength: 3
-          pattern: ^(?!\s)(?!.*\s$).{3,3}$
-        currencyCode:
-          type: string
-          description: 'Currency code  alpha-3 code or Numeric Code (numeric).
-
-            '
-          example: USD
-          minLength: 3
-          maxLength: 3
-          pattern: ^(?!\s)(?!.*\s$).{3,3}$
-        bankCode:
-          type: string
-          example: '01'
-          maxLength: 70
-          minLength: 1
-          description: bank's code
-        bankName:
-          type: string
-          example: banco de bogota
-          maxLength: 70
-          minLength: 1
-          description: bank's name
-    AliasFavorite:
+    CardHolderFavorite:
       type: object
       additionalProperties: false
       required:
-      - favoriteName
-      - favoriteId
-      - favoriteInformation
-      description: Customized object Alias| Contains information of AliasFavorite
-      properties:
-        alias:
-          type: string
-          description: Attribute that identifies the alias associated to the cardholder. Conditional is required if the aliasId  is not send
-          maxLength: 50
-          minLength: 1
-          example: test@domini.com
-          pattern: ^(?!\s)(?!.*\s$).{1,50}$
-        aliasType:
-          type: string
-          description: '__Allowed values:__
-
-            __MOBILE,__
-
-            __EMAIL,__
-
-            __IDENTIFICATION,__
-
-            __IBAN,__
-
-            __CUSTOM__
-
-            '
-          example: MOBILE
-          minLength: 4
-          maxLength: 14
-          pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
-        favoriteId:
-          type: string
-          description: Unique identifier of an Favorite in NovoPayment.
-          maxLength: 32
-          minLength: 32
-          example: 706c26c89b4245b3994a0f5ff9c25275
-          pattern: ^[0-9a-fA-F]{32}$
-        favoriteName:
-          type: string
-          description: Name of the alias added as a favorite
-          maxLength: 32
-          minLength: 1
-          example: MOM
-        favoriteInformation:
-          additionalProperties: false
-          type: object
-          description: Information of a favorite
-          required:
-          - cardHolder
-          properties:
-            cardToken:
-              type: string
-              description: Card data encrypted with the AES256 algorithm.| The cardToken attribute is composed of the following values PAN Card’s primary account number or token Expiration Date Card expiration date SALT Random Value String With the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value. For a favorite without aliases the expiration date must be 0000. When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant. Conditional is required if the aliasId  is not send
-              maxLength: 44
-              minLength: 44
-              example: Maz9oPb4PpW0QxPU0pAA6KYzE2vlEkNitMc+bmibFgo=
-            cardHolder:
-              $ref: '#/components/schemas/CardHolderFavorite'
-            maskedNumber:
-              type: string
-              description: Payment instrument mask. According to the following format ************XXXX
-              example: '************0246'
-              maxLength: 16
-              minLength: 16
-            account:
-              $ref: '#/components/schemas/Account'
-    CreateAliasFavoriteRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - aliasParent
-      - aliasFavorite
-      properties:
-        aliasParent:
-          type: object
-          additionalProperties: false
-          required:
-          - aliasId
-          description: Customized object Alias| Contains information of AliasParent
-          properties:
-            aliasId:
-              type: string
-              description: Unique identifier of an Alias in NovoPayment.  This data is for personal use, it is required for administration and management of your alias.
-              example: 5d1bf399902e42f79681c5be8dfdcb02
-              maxLength: 32
-              minLength: 32
-              pattern: ^[0-9a-fA-F]{32}$
-        aliasFavorite:
-          type: object
-          additionalProperties: false
-          required:
-          - favoriteName
-          description: Customized object Alias| Contains information of AliasFavorite
-          properties:
-            alias:
-              type: string
-              example: 002-00005
-              description: 'Attribute that identifies the alias associated to the cardholder. If it is a number, it must be in an international format with the 1-3 digit country calling code.
-
-                '
-              maxLength: 50
-              minLength: 1
-              pattern: ^(?!\s)(?!.*\s$).{1,50}$
-            aliasType:
-              type: string
-              example: MOBILE
-              description: '__Allowed values:__
-
-                __MOBILE,__
-
-                __EMAIL,__
-
-                __IDENTIFICATION,__
-
-                __IBAN,__
-
-                __CUSTOM__
-
-                '
-              pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
-              maxLength: 15
-              minLength: 1
-            favoriteName:
-              type: string
-              description: Name of the alias added as a favorite
-              maxLength: 32
-              minLength: 1
-              example: MOTHER
-              pattern: ^\w+$
-            cardToken:
-              type: string
-              description: Card data encrypted with the AES256 algorithm.| The cardToken attribute is composed of the following values PAN Card’s primary account number or token Expiration Date Card expiration date SALT Random Value String With the cardToken 48101473592090212201245 the digits in the position 1-16 are the PAN, the next 4 expiration date, and the last 3 the random value. For a favorite without aliases the expiration date must be 0000. When the cardToken is saved in the database, it changes from saltNumber to the saltNumber configured for the tenant. Conditional is required if the aliasId  is not send or Account is not present
-              maxLength: 44
-              minLength: 44
-              pattern: \s*|[\w\d=/+]{44}
-            cardHolder:
-              $ref: '#/components/schemas/CardHolder'
-            account:
-              $ref: '#/components/schemas/Account'
-    DocumentType:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      description: 'Document Type object.
-
-        Contains the document code
+      - firstName
+      - lastName
+      description: 'Customized object cardHolder Contains personal information of the cardholder
 
         '
       properties:
-        code:
+        firstName:
           type: string
-          description: 'Type of identification
-
-            __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-documenttype)
+          description: 'Cardholder’s First Name, who will be registered in the alias directory.
 
             '
-          example: GOVERNMENT_ID
-          maxLength: 25
+          example: Andres
+          maxLength: 35
           minLength: 1
-    AccountType:
-      type: object
-      additionalProperties: false
-      required:
-      - title
-      description: 'Account Type object.
-
-        Contains the account title
-
-        '
-      properties:
-        title:
+          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+        lastName:
           type: string
-          description: 'Type of account __Refer to:__ [here](https://developer.novopayment.com/api/request-and-response-codes#item-accounttype)
+          description: 'Cardholder’s Last Name, who will be registered in the alias directory.
 
             '
-          example: SAVING
-          maxLength: 25
+          example: Rendon
+          maxLength: 35
           minLength: 1
-          pattern: (\s)*|SAVING|CHECKING|MAESTRA|VISA|LOAN|NRE
-        description:
+          pattern: ([\w\dñÑäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ]+[\s]{0,1})+
+        documentType:
+          $ref: '#/components/schemas/DocumentType'
+        documentNumber:
           type: string
-          description: acccount type description
-          example: The savings accounts can be opened by an individual with an aim to save money
+          description: 'Identification Number
+
+            '
+          example: '3346756'
+          maxLength: 35
           minLength: 1
-        idCode:
+          pattern: ^\d{1,35}$
+        email:
           type: string
-          description: acccount type identificator
-          example: '1'
-          minLength: 1
-    RSGeneric400:
+          description: 'Cardholder''s Email
+
+            '
+          example: jane@client.com
+          maxLength: 50
+          minLength: 0
+          pattern: .+[@].+[\.].+
+        address:
+          $ref: '#/components/schemas/Address'
+    RS401:
       type: object
       additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
       properties:
         code:
           type: string
-          example: 400.08.003
+          example: 401.09.990
           description: Operation response code
           minLength: 10
           maxLength: 10
           pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
         message:
           type: string
-          example: Params required
+          example: Invalid Access Token
           description: Response code description
           maxLength: 140
           minLength: 1
@@ -744,21 +736,56 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
           maxLength: 24
+    DeleteAliasFavoriteResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: ^[a-zA-Z0-9\s]{1,140}$
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          maxLength: 24
         data:
           type: object
           additionalProperties: false
+          description: Customized data object.
+          required:
+          - aliasId
+          - favoriteName
           properties:
-            errors:
-              type: array
-              maxItems: 50
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  message:
-                    type: string
-                    description: Error Detail
-                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
+            aliasId:
+              type: string
+              description: Identificator from alias parent.  This data is for personal use, it is required for administration and management of your alias.
+              example: 99bce68ccef84370a77ba9e6e75624bc
+              maxLength: 32
+              minLength: 32
+              pattern: ^[0-9a-fA-F]{32}$
+            favoriteName:
+              type: string
+              description: Favorite name, favorite to be deleted
+              example: MOTHER
+              maxLength: 32
+              minLength: 1
+              pattern: ^\w+$
     CreateAliasFavoriteResponse:
       type: object
       additionalProperties: false
@@ -809,25 +836,24 @@ components:
               minLength: 1
               maxLength: 32
               pattern: ^\w+$
-    GetAliasFavoriteResponse:
+    RSGeneric400:
       type: object
       additionalProperties: false
       required:
       - code
       - message
       - datetime
-      - data
       properties:
         code:
           type: string
-          example: 200.01.000
+          example: 400.08.003
           description: Operation response code
           minLength: 10
           maxLength: 10
           pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
         message:
           type: string
-          example: Process Ok
+          example: Params required
           description: Response code description
           maxLength: 140
           minLength: 1
@@ -835,50 +861,127 @@ components:
         datetime:
           type: string
           example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
           format: date-time
           maxLength: 24
         data:
           type: object
           additionalProperties: false
-          description: Customized data object.
-          required:
-          - alias
-          - aliasType
           properties:
-            alias:
-              type: string
-              description: Alias associated to the cardholder. If it is a number, it must be in an international format with the 1-3 digit country calling code.
-              example: ejemplo@gmail.com
-              maxLength: 50
-              minLength: 1
-              pattern: ^(?!\s)(?!.*\s$).{1,50}$
-            aliasType:
-              type: string
-              description: '__Allowed values:__
-
-                __MOBILE,__
-
-                __EMAIL,__
-
-                __IDENTIFICATION,__
-
-                __IBAN,__
-
-                __CUSTOM__
-
-                '
-              example: EMAIL
-              maxLength: 14
-              minLength: 4
-              pattern: MOBILE|EMAIL|IDENTIFICATION|IBAN|CUSTOM
-            aliasFavorites:
+            errors:
               type: array
-              minItems: 0
-              maxItems: 15
+              maxItems: 50
               items:
-                $ref: '#/components/schemas/AliasFavorite'
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    pattern: ^[a-zA-Z0-9:.\s]{1,300}$
   examples:
+    RQEndpointCreateAliasFavoriteWhitoutAlias:
+      value:
+        aliasParent:
+          aliasId: 42f7d071fe0a41549bd68fe4d7ff1187
+        aliasFavorite:
+          favoriteName: MOTHER
+          cardToken: A4AhbfkEZft/EkcXNlXO8ww+N/EFG2DFarSkC4q1leI=
+          cardHolder:
+            address:
+              name: Home
+              country: USA
+              city: Bogota05
+              line1: Cr9 45 -05
+              line2: Boulevard05
+              postalCode: '20051'
+              state: CU0
+            documentNumber: '334675605'
+            documentType:
+              code: GOVERNMENT_ID
+            email: test05@gmail.com
+            firstName: Adriana
+            lastName: Santost
+    InvalidEncryptedData:
+      value:
+        code: 400.09.320
+        message: Invalid Encrypted Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.09.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.09.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    Unregistered:
+      value:
+        code: 400.09.099
+        message: Unregistered devices
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.09.396
+        message: Invalid parameters.
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          errors:
+          - message: 'Field aliasType: invalid alias type'
+    ExceedsMaximumNumberEmissions:
+      value:
+        code: 404.09.017
+        message: Favorite already exists
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointCreateAliasFavoriteWhitAlias:
+      value:
+        aliasParent:
+          aliasId: 42f7d071fe0a41549bd68fe4d7ff1187
+        aliasFavorite:
+          alias: 002-00005
+          aliasType: MOBILE
+          favoriteName: MOTHER
+    FavoriteAlreadyExists:
+      value:
+        code: 404.09.495
+        message: Favorite already exists
+        datetime: '2020-01-03T16:05:56.517Z'
+    AliasAccountExistFavorite:
+      value:
+        code: 404.09.015
+        message: Account is already registered
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.09.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    FavoriteNotFound:
+      value:
+        code: 404.09.498
+        message: Favorite name not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.09.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.09.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.09.999
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    AliasNotFound:
+      value:
+        code: 400.09.448
+        message: Alias not found
+        datetime: '2020-01-03T16:05:56.517Z'
     RQEndpointCreateAliasFavWhitoutAliasAccount:
       value:
         aliasParent:
@@ -908,135 +1011,26 @@ components:
             accountIdentify: DEFAULT
             countryCode: USA
             currencyCode: USD
-    RQEndpointCreateAliasFavoriteWhitoutAlias:
+    AliasParentMustBeDifferentFromAliasFavorite:
       value:
-        aliasParent:
-          aliasId: 42f7d071fe0a41549bd68fe4d7ff1187
-        aliasFavorite:
-          favoriteName: MOTHER
-          cardToken: A4AhbfkEZft/EkcXNlXO8ww+N/EFG2DFarSkC4q1leI=
-          cardHolder:
-            address:
-              name: Home
-              country: USA
-              city: Bogota05
-              line1: Cr9 45 -05
-              line2: Boulevard05
-              postalCode: '20051'
-              state: CU0
-            documentNumber: '334675605'
-            documentType:
-              code: GOVERNMENT_ID
-            email: test05@gmail.com
-            firstName: Adriana
-            lastName: Santost
-    InvalidTenantId:
-      value:
-        code: 400.09.004
-        message: Invalid Tenant ID
+        code: 404.09.497
+        message: Alias parent must be different from alias favorite
         datetime: '2020-01-03T16:05:56.517Z'
     InvalidAccessToken:
       value:
         code: 401.09.990
         message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
-    Unregistered:
-      value:
-        code: 400.09.099
-        message: Unregistered devices
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.09.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    AliasNotFound:
-      value:
-        code: 400.09.448
-        message: Alias not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointCreateAliasFavoriteWhitAlias:
-      value:
-        aliasParent:
-          aliasId: 42f7d071fe0a41549bd68fe4d7ff1187
-        aliasFavorite:
-          alias: 002-00005
-          aliasType: MOBILE
-          favoriteName: MOTHER
-    InvalidEncryptedData:
-      value:
-        code: 400.09.320
-        message: Invalid Encrypted Data
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.09.396
-        message: Invalid parameters.
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field aliasType: invalid alias type'
-    AliasParentMustBeDifferentFromAliasFavorite:
-      value:
-        code: 404.09.497
-        message: Alias parent must be different from alias favorite
-        datetime: '2020-01-03T16:05:56.517Z'
-    FavoriteNotFound:
-      value:
-        code: 404.09.498
-        message: Favorite name not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.09.999
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    FavoriteAlreadyExists:
-      value:
-        code: 404.09.495
-        message: Favorite already exists
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.09.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    ExceedsMaximumNumberEmissions:
-      value:
-        code: 404.09.017
-        message: Favorite already exists
-        datetime: '2020-01-03T16:05:56.517Z'
-    AliasAccountExistFavorite:
-      value:
-        code: 404.09.015
-        message: Account is already registered
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.09.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.09.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
   responses:
-    RS401:
-      description: Unauthorized
+    RS500:
+      description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS401'
+            $ref: '#/components/schemas/RS500'
           examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RSCreateFavorite200:
       description: OK
       content:
@@ -1052,15 +1046,21 @@ components:
                 data:
                   favoriteId: fbddb339295445d5b7469388e00b0ed0
                   favoriteName: MOTHER
-    RS500:
-      description: Internal Server Error
+    RSDeleteFavorite400:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS500'
+            $ref: '#/components/schemas/RSGeneric400'
           examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid tenant id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Unregistered device:
+              $ref: '#/components/examples/Unregistered'
+            Favorite not found:
+              $ref: '#/components/examples/FavoriteNotFound'
     RSCreatetFavorite400:
       description: Bad Request
       content:
@@ -1084,34 +1084,6 @@ components:
               $ref: '#/components/examples/AliasParentMustBeDifferentFromAliasFavorite'
             Favorite Account already exists:
               $ref: '#/components/examples/AliasAccountExistFavorite'
-    RSDeleteFavorite400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGeneric400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid tenant id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Unregistered device:
-              $ref: '#/components/examples/Unregistered'
-            Favorite not found:
-              $ref: '#/components/examples/FavoriteNotFound'
-    RSGetFavorite400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGenericResponse'
-          examples:
-            Alias not found:
-              $ref: '#/components/examples/AliasNotFound'
-            Favorite not found:
-              $ref: '#/components/examples/FavoriteNotFound'
-            Invalid encrypted data:
-              $ref: '#/components/examples/InvalidEncryptedData'
     RSDeleteFavorite200:
       description: OK
       content:
@@ -1243,6 +1215,34 @@ components:
                         currencyCode: USD
                         bankCode: '01'
                         bankName: Banco de bogota
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSGetFavorite400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenericResponse'
+          examples:
+            Alias not found:
+              $ref: '#/components/examples/AliasNotFound'
+            Favorite not found:
+              $ref: '#/components/examples/FavoriteNotFound'
+            Invalid encrypted data:
+              $ref: '#/components/examples/InvalidEncryptedData'
   requestBodies:
     CreateAliasFavoriteRequest:
       content:

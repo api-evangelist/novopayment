@@ -77,93 +77,59 @@ paths:
         default:
           $ref: '#/components/responses/RS500'
 components:
-  examples:
-    RQEndpointReverseAdjustment:
-      value:
-        adjustmentTransactionCode: '12'
-        amount: 10000
-        currencyCode: USA
-        surcharge: 200
-        transactionCode: '02'
-    InvalidTenantId:
-      value:
-        code: 400.08.004
-        message: Invalid Tenant ID
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.08.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    TransactionRejected:
-      value:
-        code: 400.08.505
-        message: Transaction rejected
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.08.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    TransactionCanceled:
-      value:
-        code: 400.08.340
-        message: Transaction already cancelled
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTransactionType:
-      value:
-        code: 400.08.361
-        message: Invalid transaction type
-        datetime: '2020-01-03T16:05:56.517Z'
-    UnableToReverseTransaction:
-      value:
-        code: 400.08.441
-        message: Unable to reverse transaction
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.08.396
-        message: Invalid parameters
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          errors:
-          - message: 'Field fielName: must not be blank'
-    ComponentConfigurationNotFound:
-      value:
-        code: 400.08.356
-        message: Component configuration not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidTransactionCode:
-      value:
-        code: 400.08.338
-        message: Invalid transaction code
-        datetime: '2020-01-03T16:05:56.517Z'
-    TransactionNotFound:
-      value:
-        code: 400.08.110
-        message: Transaction not found
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    CardNotAllowed:
-      value:
-        code: 400.08.101
-        message: Card not allowed
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.08.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.08.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
   responses:
+    RSReverseFunds400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGenericResponse'
+          examples:
+            Invalid parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Invalid transaction code:
+              $ref: '#/components/examples/InvalidTransactionCode'
+            Transaction already cancelled:
+              $ref: '#/components/examples/TransactionCanceled'
+            Card not allowed:
+              $ref: '#/components/examples/CardNotAllowed'
+            Configuration not found:
+              $ref: '#/components/examples/ComponentConfigurationNotFound'
+            Transaction not found:
+              $ref: '#/components/examples/TransactionNotFound'
+            Invalid transaction type:
+              $ref: '#/components/examples/InvalidTransactionType'
+            Transaction rejected:
+              $ref: '#/components/examples/TransactionRejected'
+    RS500:
+      description: Internal Server Error (AP*)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSReverseAdjustment200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReverseTransactionsResponse'
+          examples:
+            Reverse Adjustment:
+              value:
+                code: 200.08.000
+                message: Process OK
+                datetime: '2021-12-03 16:05:56.517'
+                data:
+                  transactionId: 9a081ed0-3f3d-11eb-b378-0242ac130002
+                  transactionReference: 8a081ed0-3f3d-11eb-b378-0242ac130002
+                  approvalCode: 50708Z
+                  transactionStatus: APPROVED
+                  retrievalReferenceNumber: '401010350420'
+                  systemsTraceAuditNumber: '350420'
+                  transactionIdentifier: '1323141355441'
     RS401:
       description: Unauthorized (AP)
       content:
@@ -203,35 +169,6 @@ components:
                     transmissionDateTime: '2022-09-23T20:52:14.000Z'
                     retrievalReferenceNumber: '307209358738'
                     systemsTraceAuditNumber: '927165'
-    RSReverseAdjustment200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ReverseTransactionsResponse'
-          examples:
-            Reverse Adjustment:
-              value:
-                code: 200.08.000
-                message: Process OK
-                datetime: '2021-12-03 16:05:56.517'
-                data:
-                  transactionId: 9a081ed0-3f3d-11eb-b378-0242ac130002
-                  transactionReference: 8a081ed0-3f3d-11eb-b378-0242ac130002
-                  approvalCode: 50708Z
-                  transactionStatus: APPROVED
-                  retrievalReferenceNumber: '401010350420'
-                  systemsTraceAuditNumber: '350420'
-                  transactionIdentifier: '1323141355441'
-    RS500:
-      description: Internal Server Error (AP*)
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
     RSReverseAdjustment400:
       description: Bad Request
       content:
@@ -249,146 +186,93 @@ components:
               $ref: '#/components/examples/UnableToReverseTransaction'
             Invalid transaction type:
               $ref: '#/components/examples/InvalidTransactionType'
-    RSReverseFunds400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGenericResponse'
-          examples:
-            Invalid parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Invalid transaction code:
-              $ref: '#/components/examples/InvalidTransactionCode'
-            Transaction already cancelled:
-              $ref: '#/components/examples/TransactionCanceled'
-            Card not allowed:
-              $ref: '#/components/examples/CardNotAllowed'
-            Configuration not found:
-              $ref: '#/components/examples/ComponentConfigurationNotFound'
-            Transaction not found:
-              $ref: '#/components/examples/TransactionNotFound'
-            Invalid transaction type:
-              $ref: '#/components/examples/InvalidTransactionType'
-            Transaction rejected:
-              $ref: '#/components/examples/TransactionRejected'
-  schemas:
-    ReverseAutomaticTransferResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.08.000
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Operation Time Stamp in ISO 8601 format
-          format: date-time
-          minLength: 1
-          maxLength: 24
+  examples:
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTransactionType:
+      value:
+        code: 400.08.361
+        message: Invalid transaction type
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.08.396
+        message: Invalid parameters
+        datetime: '2020-01-03T16:05:56.517Z'
         data:
-          type: object
-          additionalProperties: false
-          required:
-          - transactionId
-          - transactionStatus
-          - transactionReference
-          properties:
-            transactionId:
-              type: string
-              description: Unique ID of the transaction
-              example: c14e139f-925b-47b8-be8c-535177aebcd5
-              maxLength: 40
-              minLength: 1
-              pattern: ^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$
-            transactionReference:
-              type: string
-              description: Transaction Reference, a value used to relate to a financial transaction.
-              example: c14e139f-925b-47b8-be8c-535177aebcd5
-              maxLength: 40
-              minLength: 1
-            transactionStatus:
-              type: string
-              description: Transaction Status, Allowed values
-              enum:
-              - APPROVED
-              - REJECT
-              example: APPROVED
-              maxLength: 10
-              minLength: 1
-            transactionDetail:
-              $ref: '#/components/schemas/TransactionDetail'
-    RS500:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.08.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 29
-    RS401:
-      type: object
-      additionalProperties: false
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.08.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          minLength: 1
-          maxLength: 140
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          minLength: 1
-          maxLength: 29
+          errors:
+          - message: 'Field fielName: must not be blank'
+    InvalidTransactionCode:
+      value:
+        code: 400.08.338
+        message: Invalid transaction code
+        datetime: '2020-01-03T16:05:56.517Z'
+    UnableToReverseTransaction:
+      value:
+        code: 400.08.441
+        message: Unable to reverse transaction
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidTenantId:
+      value:
+        code: 400.08.004
+        message: Invalid Tenant ID
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    CardNotAllowed:
+      value:
+        code: 400.08.101
+        message: Card not allowed
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointReverseAdjustment:
+      value:
+        adjustmentTransactionCode: '12'
+        amount: 10000
+        currencyCode: USA
+        surcharge: 200
+        transactionCode: '02'
+    TransactionNotFound:
+      value:
+        code: 400.08.110
+        message: Transaction not found
+        datetime: '2020-01-03T16:05:56.517Z'
+    ComponentConfigurationNotFound:
+      value:
+        code: 400.08.356
+        message: Component configuration not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    TransactionCanceled:
+      value:
+        code: 400.08.340
+        message: Transaction already cancelled
+        datetime: '2020-01-03T16:05:56.517Z'
+    TransactionRejected:
+      value:
+        code: 400.08.505
+        message: Transaction rejected
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+  schemas:
     RSGenericResponse:
       type: object
       additionalProperties: false
@@ -430,6 +314,33 @@ components:
                     description: Error Detail
                     maxLength: 300
                     pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
+    RS500:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 29
     TransactionDetail:
       type: object
       additionalProperties: false
@@ -489,45 +400,70 @@ components:
           example: '2022-09-23T20:52:14.000Z'
           minLength: 24
           maxLength: 24
-    RSReverseAdjustment400:
+    ReverseTransactionsRequest:
       type: object
       additionalProperties: false
+      description: 'Represents the data to Request Adjustment Reverse
+
+        '
+      required:
+      - adjustmentTransactionCode
+      - amount
+      - currencyCode
+      - transactionCode
       properties:
-        code:
+        adjustmentTransactionCode:
           type: string
-          example: 400.08.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
-        message:
+          description: 'Type of transaction to be adjusted. 11 Debit Adjustment, 12 Credit Adjustment
+
+            '
+          example: '12'
+          pattern: 11|12
+          enum:
+          - '11'
+          - '12'
+          maxLength: 2
+          minLength: 2
+        amount:
+          type: number
+          format: decimal
+          description: 'Total transaction amount, including all transactions fee
+
+            '
+          example: 10000
+          minimum: 1
+          maximum: 999999999
+        currencyCode:
           type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-          minLength: 1
-          pattern: '[a-zA-Z0-9:.\s]{1,140}'
-        datetime:
+          description: 'Use a 3-character alpha currency code.
+
+            __Refer to:__ [ISO Currency Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocurrencycodes)
+
+            '
+          example: USA
+          pattern: '[A-Z]{3}'
+          maxLength: 3
+          minLength: 3
+        surcharge:
+          type: number
+          format: decimal
+          description: 'Operation fee or surcharge. This field must be in the same currency and format of the amount.
+
+            '
+          example: 200
+          minimum: 0
+          maximum: 999999999
+        transactionCode:
           type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-          maxLength: 24
-        data:
-          type: object
-          additionalProperties: false
-          properties:
-            errors:
-              type: array
-              maxItems: 50
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  message:
-                    type: string
-                    description: Error Detail
-                    maxLength: 300
-                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
+          description: "Transaction code of the original transaction to be reversed, 02 Person to Person (PP),08 Account to Account (AA) ,17(FT) \n"
+          example: '02'
+          pattern: 02|08|17
+          enum:
+          - '02'
+          - 08
+          - '17'
+          maxLength: 2
+          minLength: 2
     ReverseTransactionsResponse:
       additionalProperties: false
       type: object
@@ -618,70 +554,134 @@ components:
               minLength: 6
               maxLength: 6
               pattern: ^\d{6}$
-    ReverseTransactionsRequest:
+    ReverseAutomaticTransferResponse:
       type: object
       additionalProperties: false
-      description: 'Represents the data to Request Adjustment Reverse
-
-        '
       required:
-      - adjustmentTransactionCode
-      - amount
-      - currencyCode
-      - transactionCode
+      - code
+      - message
+      - datetime
       properties:
-        adjustmentTransactionCode:
+        code:
           type: string
-          description: 'Type of transaction to be adjusted. 11 Debit Adjustment, 12 Credit Adjustment
-
-            '
-          example: '12'
-          pattern: 11|12
-          enum:
-          - '11'
-          - '12'
-          maxLength: 2
-          minLength: 2
-        amount:
-          type: number
-          format: decimal
-          description: 'Total transaction amount, including all transactions fee
-
-            '
-          example: 10000
-          minimum: 1
-          maximum: 999999999
-        currencyCode:
+          example: 200.08.000
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
           type: string
-          description: 'Use a 3-character alpha currency code.
-
-            __Refer to:__ [ISO Currency Codes](https://developer.novopayment.com/api/request-and-response-codes#item-isocurrencycodes)
-
-            '
-          example: USA
-          pattern: '[A-Z]{3}'
-          maxLength: 3
-          minLength: 3
-        surcharge:
-          type: number
-          format: decimal
-          description: 'Operation fee or surcharge. This field must be in the same currency and format of the amount.
-
-            '
-          example: 200
-          minimum: 0
-          maximum: 999999999
-        transactionCode:
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
           type: string
-          description: "Transaction code of the original transaction to be reversed, 02 Person to Person (PP),08 Account to Account (AA) ,17(FT) \n"
-          example: '02'
-          pattern: 02|08|17
-          enum:
-          - '02'
-          - 08
-          - '17'
-          maxLength: 2
-          minLength: 2
+          example: '2020-01-03T16:05:56.517Z'
+          description: Operation Time Stamp in ISO 8601 format
+          format: date-time
+          minLength: 1
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          required:
+          - transactionId
+          - transactionStatus
+          - transactionReference
+          properties:
+            transactionId:
+              type: string
+              description: Unique ID of the transaction
+              example: c14e139f-925b-47b8-be8c-535177aebcd5
+              maxLength: 40
+              minLength: 1
+              pattern: ^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$
+            transactionReference:
+              type: string
+              description: Transaction Reference, a value used to relate to a financial transaction.
+              example: c14e139f-925b-47b8-be8c-535177aebcd5
+              maxLength: 40
+              minLength: 1
+            transactionStatus:
+              type: string
+              description: Transaction Status, Allowed values
+              enum:
+              - APPROVED
+              - REJECT
+              example: APPROVED
+              maxLength: 10
+              minLength: 1
+            transactionDetail:
+              $ref: '#/components/schemas/TransactionDetail'
+    RSReverseAdjustment400:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          example: 400.08.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+          minLength: 1
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          maxLength: 24
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            errors:
+              type: array
+              maxItems: 50
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  message:
+                    type: string
+                    description: Error Detail
+                    maxLength: 300
+                    pattern: ^[a-zA-Z0-9:.,\s]{1,300}$
+    RS401:
+      type: object
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+          pattern: ^[0-9]{3}.[0-9]{2}.[0-9]{3}$
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          minLength: 1
+          maxLength: 140
+          pattern: '[a-zA-Z0-9:.\s]{1,140}'
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+          minLength: 1
+          maxLength: 29
   requestBodies:
     RQReverseAdjustment:
       content:

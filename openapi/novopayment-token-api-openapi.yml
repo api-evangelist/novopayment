@@ -35,71 +35,103 @@ paths:
       operationId: postToken
       x-operation-id-source: derived
 components:
-  schemas:
-    RQOAuth2:
-      type: object
-      required:
-      - grant_type
-      - client_id
-      - client_secret
-      properties:
-        grant_type:
-          type: string
-          description: 'Identifier of the type of authorization required.
-
-            '
-          example: client_credentials
-          maxLength: 18
-        client_id:
-          type: string
-          description: 'The client ID issued to the client during the registration process.
-
-            '
-          example: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
-          maxLength: 32
-        client_secret:
-          type: string
-          description: 'The client''s secret
-
-            '
-          example: OpKzMzh0NQWZVdnQ
-          maxLength: 16
+  examples:
+    AccessTokenExpired:
+      value:
+        code: 401.08.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.08.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    RQEndpointOAuth2:
+      value:
+        grant_type: client_credentials
+        client_id: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
+        client_secret: OpKzMzh0NQWZVdnQ
+    AccessTokenNotApproved:
+      value:
+        code: 401.08.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestParamsRequired:
+      value:
+        code: 400.08.001
+        message: Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
+        errors:
+        - message: 'attributeOneCamelCase: Can not be null'
+    InvalidSignature:
+      value:
+        code: 401.08.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.08.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.08.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
     RS500:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.08.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RS401:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 401.08.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSOAuth2400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOAuth2400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Request Params Required:
+              $ref: '#/components/examples/RequestParamsRequired'
+    RSOAuth2200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOAuth2200'
+          examples:
+            OAuth2:
+              value:
+                token_type: BearerToken
+                issued_at: 1599515333795
+                client_id: bqSzPosD6pAsAkVn7JXzwdI1AgnxIrw0
+                access_token: pQUJGdleh21Tk5XrardxfHt2fo3g
+                application_name: 9366151b-1bfe-4de7-b70a-e7ebb1a70ac3
+                expires_in: 1799
+                status: approved
+  schemas:
     RSOAuth2200:
       type: object
       required:
@@ -146,6 +178,70 @@ components:
           example: approved
           description: Status of credentials
           maxLength: 8
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.08.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.08.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQOAuth2:
+      type: object
+      required:
+      - grant_type
+      - client_id
+      - client_secret
+      properties:
+        grant_type:
+          type: string
+          description: 'Identifier of the type of authorization required.
+
+            '
+          example: client_credentials
+          maxLength: 18
+        client_id:
+          type: string
+          description: 'The client ID issued to the client during the registration process.
+
+            '
+          example: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
+          maxLength: 32
+        client_secret:
+          type: string
+          description: 'The client''s secret
+
+            '
+          example: OpKzMzh0NQWZVdnQ
+          maxLength: 16
     RSOAuth2400:
       type: object
       properties:
@@ -164,63 +260,17 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-  examples:
-    InvalidAccessToken:
-      value:
-        code: 401.08.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    RequestParamsRequired:
-      value:
-        code: 400.08.001
-        message: Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-        info: https://developer.novopayment.com/api/sample-api/version-1/endpoint1
-        errors:
-        - message: 'attributeOneCamelCase: Can not be null'
-    InvalidSignature:
-      value:
-        code: 401.08.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    RQEndpointOAuth2:
-      value:
-        grant_type: client_credentials
-        client_id: z4j5aefxQOH2A3Aukap6TUAKgtwbsNuV
-        client_secret: OpKzMzh0NQWZVdnQ
-    InternalServerError:
-      value:
-        code: 500.08.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.08.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.08.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.08.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
+    RQOAuth2:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RQOAuth2'
+          examples:
+            Customer Monitoring:
+              $ref: '#/components/examples/RQEndpointOAuth2'
+      required: true
   parameters:
-    Content-Type:
-      name: Content-Type
-      in: header
-      description: 'The type of the body of the request
-
-        application/x-www-form-urlencoded
-
-        '
-      required: false
-      schema:
-        type: string
-        default: application/x-www-form-urlencoded
     Accept:
       name: Accept
       in: header
@@ -233,65 +283,15 @@ components:
       schema:
         type: string
         default: application/json
-  responses:
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSOAuth2400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOAuth2400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Request Params Required:
-              $ref: '#/components/examples/RequestParamsRequired'
-    RSOAuth2200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOAuth2200'
-          examples:
-            OAuth2:
-              value:
-                token_type: BearerToken
-                issued_at: 1599515333795
-                client_id: bqSzPosD6pAsAkVn7JXzwdI1AgnxIrw0
-                access_token: pQUJGdleh21Tk5XrardxfHt2fo3g
-                application_name: 9366151b-1bfe-4de7-b70a-e7ebb1a70ac3
-                expires_in: 1799
-                status: approved
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-  requestBodies:
-    RQOAuth2:
-      content:
-        application/x-www-form-urlencoded:
-          schema:
-            $ref: '#/components/schemas/RQOAuth2'
-          examples:
-            Customer Monitoring:
-              $ref: '#/components/examples/RQEndpointOAuth2'
-      required: true
+    Content-Type:
+      name: Content-Type
+      in: header
+      description: 'The type of the body of the request
+
+        application/x-www-form-urlencoded
+
+        '
+      required: false
+      schema:
+        type: string
+        default: application/x-www-form-urlencoded

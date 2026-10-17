@@ -189,283 +189,6 @@ paths:
     - description: Sandbox
       url: https://sandbox-api.novopayment.com/profiles/v1
 components:
-  requestBodies:
-    RQResidenceAddress:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQResidenceAddress'
-      required: true
-    RQGetBiometricApplicantId:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQGetBiometricApplicantId'
-      required: true
-    RQOTPVerification:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQOTPVerification'
-      required: true
-    RQOTPRequestViaSMSOrEmail:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQOTPRequestViaSMSOrEmail'
-      required: true
-    RQPersonalInformation:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQPersonalInformation'
-      required: true
-    RQValidarDocId:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQValidarDocId'
-      required: true
-    RQCellPhoneOTPVerification:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCellPhoneOTPVerification'
-      required: true
-    RQOTPEmailVerification:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQOTPEmailVerification'
-      required: true
-  responses:
-    RSOTPVerification400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOTPVerification400'
-          examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-            Registered User With That Email:
-              $ref: '#/components/examples/RegisteredUserWithThatEmail'
-            Registered User With That Cell Number:
-              $ref: '#/components/examples/RegisteredUserWithThatCellNumber'
-            Wrong Code:
-              $ref: '#/components/examples/WrongCode'
-            Number Attempts Exceeded Wait:
-              $ref: '#/components/examples/NumberAttemptsExceededWait'
-            Number Attempts Exceeded:
-              $ref: '#/components/examples/NumberAttemptsExceeded'
-            Code Expired:
-              $ref: '#/components/examples/CodeExpired'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RSOTPVerification200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOTPVerification200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSResidenceAddress400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSResidenceAddress400'
-          examples:
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSOTPRequestViaSMSOrEmail200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOTPRequestViaSMSOrEmail200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSResidenceAddress200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSResidenceAddress200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSGetBiometricApplicantId400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGetBiometricApplicantId400'
-          examples:
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-    RSValidarDocId200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSValidarDocId200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSValidarDocId400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSValidarDocId400'
-          examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-    RSPersonalInformation200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPersonalInformation200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSPersonalInformation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSPersonalInformation400'
-          examples:
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-    RSOTPRequestViaSMSOrEmail400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOTPRequestViaSMSOrEmail400'
-          examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-    RSGetBiometricApplicantId200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGetBiometricApplicantId200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  applicantId: d4f3efb7-e95e-4db3-a6f5-2496e48871ff
-                  url: https://thrird-party.com/etc/etc?applicantId=d4f3efb7-e95e-4db3-a6f5-2496e48871ff
-    RSCellPhoneOTPVerification200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCellPhoneOTPVerification200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSOTPEmailVerification400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOTPEmailVerification400'
-          examples:
-            Wrong Code:
-              $ref: '#/components/examples/WrongCode'
-            Code Expired:
-              $ref: '#/components/examples/CodeExpired'
-            Number Attempts Exceeded:
-              $ref: '#/components/examples/NumberAttemptsExceeded'
-            Number Attempts Exceeded Wait:
-              $ref: '#/components/examples/NumberAttemptsExceededWait'
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-            Registered User With That Email:
-              $ref: '#/components/examples/RegisteredUserWithThatEmail'
-    RSOTPEmailVerification200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSOTPEmailVerification200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSCellPhoneOTPVerification400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCellPhoneOTPVerification400'
-          examples:
-            Wrong Code:
-              $ref: '#/components/examples/WrongCode'
-            Code Expired:
-              $ref: '#/components/examples/CodeExpired'
-            Number Attempts Exceeded:
-              $ref: '#/components/examples/NumberAttemptsExceeded'
-            Number Attempts Exceeded Wait:
-              $ref: '#/components/examples/NumberAttemptsExceededWait'
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-            Registered User With That Email:
-              $ref: '#/components/examples/RegisteredUserWithThatEmail'
   schemas:
     RQPersonalInformation:
       type: object
@@ -489,28 +212,6 @@ components:
           description: Customer education level.
           example: 1
           maxLength: 38
-    RSResidenceAddress200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RSPersonalInformation400:
       type: object
       required:
@@ -534,6 +235,81 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RQGetBiometricApplicantId:
+      type: object
+      required:
+      - type
+      - email
+      - mobileNumber
+      properties:
+        type:
+          type: string
+          description: 'Customer´s application type.
+
+
+            Local: mobile
+
+
+            Email and SMS: web
+
+            '
+          example: SMS
+          maxLength: 20
+        email:
+          type: string
+          description: Email that receives the link.
+          example: JohnDoe@example.com
+          maxLength: 20
+        mobileNumber:
+          type: string
+          description: Mobile number that receives the link.
+          example: +1 6460000000
+          maxLength: 20
+    RQOTPRequestViaSMSOrEmail:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: 'Phone number.
+
+
+            *Required only if type is: sms
+
+            '
+          example: 6460000000
+          maxLength: 30
+        phoneCodeId:
+          type: object
+          description: 'Country identifier object.
+
+
+            *Required only if type is: sms
+
+            '
+          required:
+          - id
+          - phoneCode
+          properties:
+            id:
+              type: integer
+              description: Country id corresponding to the cell phone number.
+              example: 233
+              maxLength: 38
+            phoneCode:
+              type: integer
+              description: Country phone area code.
+              example: 1
+              maxLength: 38
+        email:
+          type: string
+          description: 'Email to register by the customer.
+
+
+            *Required only if type is: email
+
+            '
+          example: JohnDoe@example.com
+          maxLength: 20
     RS500:
       type: object
       required:
@@ -556,6 +332,213 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
+          format: date-time
+    RSResidenceAddress200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSValidarDocId200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSOTPRequestViaSMSOrEmail400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQOTPVerification:
+      type: object
+      required:
+      - number
+      - code
+      - phoneCodeId
+      properties:
+        number:
+          type: integer
+          description: Phone number.
+          example: 6460000000
+          maxLength: 30
+        code:
+          type: integer
+          description: Code to verify.
+          example: 183015
+          maxLength: 6
+        phoneCodeId:
+          type: object
+          description: Country identifier object.
+          required:
+          - id
+          - phoneCode
+          properties:
+            id:
+              type: integer
+              description: Country id corresponding to the cell phone number.
+              example: 233
+              maxLength: 38
+            phoneCode:
+              type: integer
+              description: Country phone area code.
+              example: 1
+              maxLength: 38
+    RSOTPRequestViaSMSOrEmail200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSResidenceAddress400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSGetBiometricApplicantId200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+        data:
+          type: object
+          required:
+          - applicantId
+          - url
+          properties:
+            applicantId:
+              type: string
+              description: Applicant code assigned to the customer.
+              example: d4f3efb7-e95e-4db3-a6f5-2496e48871ff
+              maxLength: 50
+            url:
+              type: string
+              description: URL to which the customer enters to continue the registration.
+              example: https://thrird-party.com/etc/etc?applicantId=d4f3efb7-e95e-4db3-a6f5-2496e48871ff
+              maxLength: 200
+    RSOTPVerification200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RS401:
       type: object
@@ -602,74 +585,16 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSOTPVerification200:
+    RQValidarDocId:
       type: object
       required:
-      - code
-      - message
-      - datetime
+      - documentNumber
       properties:
-        code:
+        documentNumber:
           type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSOTPRequestViaSMSOrEmail400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSResidenceAddress400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+          description: Identity document number.
+          example: 24.288.239
+          maxLength: 11
     RSValidarDocId400:
       type: object
       required:
@@ -693,39 +618,7 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSValidarDocId200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQValidarDocId:
-      type: object
-      required:
-      - documentNumber
-      properties:
-        documentNumber:
-          type: string
-          description: Identity document number.
-          example: 24.288.239
-          maxLength: 11
-    RSGetBiometricApplicantId400:
+    RSOTPVerification400:
       type: object
       required:
       - code
@@ -798,102 +691,7 @@ components:
               description: Address city identifier.
               example: VEDXLRU8YN
               maxLength: 38
-    RQOTPVerification:
-      type: object
-      required:
-      - number
-      - code
-      - phoneCodeId
-      properties:
-        number:
-          type: integer
-          description: Phone number.
-          example: 6460000000
-          maxLength: 30
-        code:
-          type: integer
-          description: Code to verify.
-          example: 183015
-          maxLength: 6
-        phoneCodeId:
-          type: object
-          description: Country identifier object.
-          required:
-          - id
-          - phoneCode
-          properties:
-            id:
-              type: integer
-              description: Country id corresponding to the cell phone number.
-              example: 233
-              maxLength: 38
-            phoneCode:
-              type: integer
-              description: Country phone area code.
-              example: 1
-              maxLength: 38
-    RSGetBiometricApplicantId200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-        data:
-          type: object
-          required:
-          - applicantId
-          - url
-          properties:
-            applicantId:
-              type: string
-              description: Applicant code assigned to the customer.
-              example: d4f3efb7-e95e-4db3-a6f5-2496e48871ff
-              maxLength: 50
-            url:
-              type: string
-              description: URL to which the customer enters to continue the registration.
-              example: https://thrird-party.com/etc/etc?applicantId=d4f3efb7-e95e-4db3-a6f5-2496e48871ff
-              maxLength: 200
-    RSOTPRequestViaSMSOrEmail200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSOTPVerification400:
+    RSGetBiometricApplicantId400:
       type: object
       required:
       - code
@@ -916,82 +714,7 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RQOTPRequestViaSMSOrEmail:
-      type: object
-      properties:
-        number:
-          type: integer
-          description: 'Phone number.
-
-
-            *Required only if type is: sms
-
-            '
-          example: 6460000000
-          maxLength: 30
-        phoneCodeId:
-          type: object
-          description: 'Country identifier object.
-
-
-            *Required only if type is: sms
-
-            '
-          required:
-          - id
-          - phoneCode
-          properties:
-            id:
-              type: integer
-              description: Country id corresponding to the cell phone number.
-              example: 233
-              maxLength: 38
-            phoneCode:
-              type: integer
-              description: Country phone area code.
-              example: 1
-              maxLength: 38
-        email:
-          type: string
-          description: 'Email to register by the customer.
-
-
-            *Required only if type is: email
-
-            '
-          example: JohnDoe@example.com
-          maxLength: 20
-    RQGetBiometricApplicantId:
-      type: object
-      required:
-      - type
-      - email
-      - mobileNumber
-      properties:
-        type:
-          type: string
-          description: 'Customer´s application type.
-
-
-            Local: mobile
-
-
-            Email and SMS: web
-
-            '
-          example: SMS
-          maxLength: 20
-        email:
-          type: string
-          description: Email that receives the link.
-          example: JohnDoe@example.com
-          maxLength: 20
-        mobileNumber:
-          type: string
-          description: Mobile number that receives the link.
-          example: +1 6460000000
-          maxLength: 20
-    RSCellPhoneOTPVerification400:
+    RSOTPEmailVerification200:
       type: object
       required:
       - code
@@ -1000,14 +723,13 @@ components:
       properties:
         code:
           type: string
-          example: 400.25.003
           description: Operation response code
-          minLength: 10
+          example: 200.25.000
           maxLength: 10
         message:
           type: string
-          example: Params required
           description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -1037,6 +759,29 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           description: Operation Timestamp
           format: date-time
+    RSCellPhoneOTPVerification400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RS401_2:
       type: object
       required:
@@ -1060,7 +805,7 @@ components:
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSOTPEmailVerification200:
+    RSCellPhoneOTPVerification200:
       type: object
       required:
       - code
@@ -1082,40 +827,6 @@ components:
           description: Operation Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RQCellPhoneOTPVerification:
-      type: object
-      required:
-      - number
-      - code
-      - phoneCodeId
-      properties:
-        number:
-          type: integer
-          description: Phone number.
-          example: 6460000000
-          maxLength: 30
-        code:
-          type: integer
-          description: Verification code.
-          example: 686589
-          maxLength: 6
-        phoneCodeId:
-          type: object
-          description: Country identifier.
-          required:
-          - id
-          - phoneCode
-          properties:
-            id:
-              type: integer
-              description: Country id corresponding to the cell phone number.
-              example: 233
-              maxLength: 38
-            phoneCode:
-              type: integer
-              description: Country telephone area code.
-              example: 1
-              maxLength: 38
     RSOTPEmailVerification400:
       type: object
       required:
@@ -1155,38 +866,75 @@ components:
           description: Code to verify.
           example: 695847
           maxLength: 6
-    RSCellPhoneOTPVerification200:
+    RQCellPhoneOTPVerification:
       type: object
       required:
+      - number
       - code
-      - message
-      - datetime
+      - phoneCodeId
       properties:
+        number:
+          type: integer
+          description: Phone number.
+          example: 6460000000
+          maxLength: 30
         code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
+          type: integer
+          description: Verification code.
+          example: 686589
+          maxLength: 6
+        phoneCodeId:
+          type: object
+          description: Country identifier.
+          required:
+          - id
+          - phoneCode
+          properties:
+            id:
+              type: integer
+              description: Country id corresponding to the cell phone number.
+              example: 233
+              maxLength: 38
+            phoneCode:
+              type: integer
+              description: Country telephone area code.
+              example: 1
+              maxLength: 38
   examples:
-    InvalidAccessToken:
+    InvalidData:
       value:
-        code: 401.25.990
-        message: Invalid Access Token
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    CodeExpired:
+      value:
+        code: 400.25.392
+        message: Code expired, request a new code.
         datetime: '2020-01-03T16:05:56.517Z'
     RegisteredUserWithThatEmail:
       value:
         code: 400.25.065
         message: There is already a registered user with that email.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RegisteredUserWithThatCellNumber:
+      value:
+        code: 400.25.066
+        message: There is already a registered user with that cell number.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    NumberAttemptsExceededWait:
+      value:
+        code: 400.25.388
+        message: You have exceeded the number of attempts, wait 10 minutes and request a new one.
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenNotApproved:
       value:
@@ -1198,51 +946,303 @@ components:
         code: 401.25.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-    WrongCode:
-      value:
-        code: 400.25.384
-        message: Wrong code, verify the data and try again.
-        datetime: '2020-01-03T16:05:56.517Z'
     NumberAttemptsExceeded:
       value:
         code: 400.25.389
         message: You have exceeded number of attempts, please request a new code.
-        datetime: '2020-01-03T16:05:56.517Z'
-    ProcessNotCompleted:
-      value:
-        code: 400.25.019
-        message: The process could not be completed.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
-    CodeExpired:
-      value:
-        code: 400.25.392
-        message: Code expired, request a new code.
         datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
         code: 500.25.001
         message: Internal Server Error
         datetime: '2020-01-03T16:05:56.517Z'
-    NumberAttemptsExceededWait:
+    WrongCode:
       value:
-        code: 400.25.388
-        message: You have exceeded the number of attempts, wait 10 minutes and request a new one.
+        code: 400.25.384
+        message: Wrong code, verify the data and try again.
         datetime: '2020-01-03T16:05:56.517Z'
-    RegisteredUserWithThatCellNumber:
+    ProcessNotCompleted:
       value:
-        code: 400.25.066
-        message: There is already a registered user with that cell number.
+        code: 400.25.019
+        message: The process could not be completed.
         datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.25.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
+    RSGetBiometricApplicantId400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetBiometricApplicantId400'
+          examples:
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSPersonalInformation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPersonalInformation400'
+          examples:
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RSResidenceAddress400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSResidenceAddress400'
+          examples:
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSResidenceAddress200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSResidenceAddress200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSOTPVerification200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOTPVerification200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSPersonalInformation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSPersonalInformation200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSOTPRequestViaSMSOrEmail400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOTPRequestViaSMSOrEmail400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+    RSValidarDocId200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSValidarDocId200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSValidarDocId400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSValidarDocId400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+    RSOTPRequestViaSMSOrEmail200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOTPRequestViaSMSOrEmail200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSOTPVerification400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOTPVerification400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Registered User With That Email:
+              $ref: '#/components/examples/RegisteredUserWithThatEmail'
+            Registered User With That Cell Number:
+              $ref: '#/components/examples/RegisteredUserWithThatCellNumber'
+            Wrong Code:
+              $ref: '#/components/examples/WrongCode'
+            Number Attempts Exceeded Wait:
+              $ref: '#/components/examples/NumberAttemptsExceededWait'
+            Number Attempts Exceeded:
+              $ref: '#/components/examples/NumberAttemptsExceeded'
+            Code Expired:
+              $ref: '#/components/examples/CodeExpired'
+    RSGetBiometricApplicantId200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetBiometricApplicantId200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  applicantId: d4f3efb7-e95e-4db3-a6f5-2496e48871ff
+                  url: https://thrird-party.com/etc/etc?applicantId=d4f3efb7-e95e-4db3-a6f5-2496e48871ff
+    RSOTPEmailVerification200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOTPEmailVerification200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCellPhoneOTPVerification200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCellPhoneOTPVerification200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSOTPEmailVerification400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSOTPEmailVerification400'
+          examples:
+            Wrong Code:
+              $ref: '#/components/examples/WrongCode'
+            Code Expired:
+              $ref: '#/components/examples/CodeExpired'
+            Number Attempts Exceeded:
+              $ref: '#/components/examples/NumberAttemptsExceeded'
+            Number Attempts Exceeded Wait:
+              $ref: '#/components/examples/NumberAttemptsExceededWait'
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Registered User With That Email:
+              $ref: '#/components/examples/RegisteredUserWithThatEmail'
+    RSCellPhoneOTPVerification400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCellPhoneOTPVerification400'
+          examples:
+            Wrong Code:
+              $ref: '#/components/examples/WrongCode'
+            Code Expired:
+              $ref: '#/components/examples/CodeExpired'
+            Number Attempts Exceeded:
+              $ref: '#/components/examples/NumberAttemptsExceeded'
+            Number Attempts Exceeded Wait:
+              $ref: '#/components/examples/NumberAttemptsExceededWait'
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Registered User With That Email:
+              $ref: '#/components/examples/RegisteredUserWithThatEmail'
+  requestBodies:
+    RQGetBiometricApplicantId:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQGetBiometricApplicantId'
+      required: true
+    RQPersonalInformation:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQPersonalInformation'
+      required: true
+    RQOTPVerification:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQOTPVerification'
+      required: true
+    RQValidarDocId:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQValidarDocId'
+      required: true
+    RQResidenceAddress:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQResidenceAddress'
+      required: true
+    RQOTPRequestViaSMSOrEmail:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQOTPRequestViaSMSOrEmail'
+      required: true
+    RQOTPEmailVerification:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQOTPEmailVerification'
+      required: true
+    RQCellPhoneOTPVerification:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCellPhoneOTPVerification'
+      required: true
   parameters:
     typeId:
       name: typeId

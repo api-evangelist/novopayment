@@ -37,138 +37,7 @@ paths:
       tags:
       - Generateqr
 components:
-  requestBodies:
-    RQGenerateQrCode:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQGenerateQrCode'
-      required: true
-  parameters:
-    createApiKey:
-      name: createApiKey
-      in: query
-      description: 'Whether to create a new API key for the client.
-
-
-        Note: do not set to true.
-
-        '
-      required: true
-      schema:
-        type: string
-        enum:
-        - false
-        - true
-    apikey:
-      name: apikey
-      in: query
-      description: Public API key, which is different from the shared secret.
-      required: true
-      schema:
-        type: string
-        maxLength: 49
-    XTenantId:
-      name: X-tenant-id
-      in: header
-      description: 'It is necessary send all petitions for identified the client.
-
-        '
-      required: true
-      schema:
-        type: string
-    Accept:
-      name: Accept
-      in: header
-      description: 'Acceptable response format.
-
-
-        Format: Must include application/json
-
-        '
-      required: true
-      schema:
-        type: string
-    XPayToken:
-      name: x-pay-token
-      in: header
-      description: 'A token identifying the transaction and its contents.
-
-
-        The token expires in 480 seconds (8 minutes) for all clients.
-
-        '
-      required: true
-      schema:
-        type: string
-    XRequestId:
-      name: x-request-id
-      in: header
-      description: 'Unique ID for the API request.
-
-
-        Format: Alphabetic, numeric, and hyphens ( - ), e.g. spaces are not allowed.
-
-        '
-      required: true
-      schema:
-        type: string
-        maxLength: 36
   schemas:
-    RSGenerateQrCode400:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 400.22.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS500:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.22.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RS401:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 401.22.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RQGenerateQrCode:
       type: object
       required:
@@ -313,6 +182,42 @@ components:
           - A
           - B
           - C
+    RS500:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.22.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSGenerateQrCode400:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 400.22.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RSGenerateQrCode:
       type: object
       properties:
@@ -365,16 +270,49 @@ components:
 
                 '
               example: 000201010211031140000000456520441115303170540105502015802CO5915Pizzeria Pepito6009MANIZALES62680103***0203***030412340403***0503***0603***0708A60086670803***0902ME6304B111
+    RS401:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 401.22.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
   examples:
+    InvalidData:
+      value:
+        code: 400.22.089
+        message: Invalid Data
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.22.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidParameters:
+      value:
+        code: 400.22.396
+        message: Invalid Parameters
+        datetime: '2020-01-03T16:05:56.517Z'
     InvalidTenantId:
       value:
         code: 400.22.004
         message: Invalid Tenant ID
         datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
+    AccessTokenNotApproved:
       value:
-        code: 401.22.990
-        message: Invalid Access Token
+        code: 401.22.991
+        message: Access Token not approved
         datetime: '2020-01-03T16:05:56.517Z'
     InvalidSignature:
       value:
@@ -386,32 +324,23 @@ components:
         code: 400.22.003
         message: Params required
         datetime: '2020-01-03T16:05:56.517Z'
-    InvalidParameters:
-      value:
-        code: 400.22.396
-        message: Invalid Parameters
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.22.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
     ErrorGeneralServices:
       value:
         code: 400.22.350
         message: Error General Services
         datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
+    InvalidAccessToken:
       value:
-        code: 400.22.089
-        message: Invalid Data
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.22.991
-        message: Access Token not approved
+        code: 401.22.990
+        message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
   responses:
+    RS500:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
     RSGenerateQrCode400:
       description: Bad Request
       content:
@@ -461,12 +390,83 @@ components:
                   qrCodeHeight: 200
                   qrCodeWidth: 200
                   qrCodeString: 000201010211031140000000456520441115303170540105502015802CO5915Pizzeria Pepito6009MANIZALES62680103***0203***030412340403***0503***0603***0708A60086670803***0902ME6304B111
-    RS500:
-      description: Not Found
+  requestBodies:
+    RQGenerateQrCode:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS500'
+            $ref: '#/components/schemas/RQGenerateQrCode'
+      required: true
+  parameters:
+    Accept:
+      name: Accept
+      in: header
+      description: 'Acceptable response format.
+
+
+        Format: Must include application/json
+
+        '
+      required: true
+      schema:
+        type: string
+    XRequestId:
+      name: x-request-id
+      in: header
+      description: 'Unique ID for the API request.
+
+
+        Format: Alphabetic, numeric, and hyphens ( - ), e.g. spaces are not allowed.
+
+        '
+      required: true
+      schema:
+        type: string
+        maxLength: 36
+    createApiKey:
+      name: createApiKey
+      in: query
+      description: 'Whether to create a new API key for the client.
+
+
+        Note: do not set to true.
+
+        '
+      required: true
+      schema:
+        type: string
+        enum:
+        - false
+        - true
+    apikey:
+      name: apikey
+      in: query
+      description: Public API key, which is different from the shared secret.
+      required: true
+      schema:
+        type: string
+        maxLength: 49
+    XPayToken:
+      name: x-pay-token
+      in: header
+      description: 'A token identifying the transaction and its contents.
+
+
+        The token expires in 480 seconds (8 minutes) for all clients.
+
+        '
+      required: true
+      schema:
+        type: string
+    XTenantId:
+      name: X-tenant-id
+      in: header
+      description: 'It is necessary send all petitions for identified the client.
+
+        '
+      required: true
+      schema:
+        type: string
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

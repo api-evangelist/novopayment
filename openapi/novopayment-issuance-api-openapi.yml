@@ -160,222 +160,81 @@ paths:
         '500':
           $ref: '#/components/responses/RS500'
 components:
-  examples:
-    InvalidProgramId:
-      value:
-        code: 400.01.006
-        message: Invalid program Id
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TheCardIsNotAssociatedWithTheAccount:
-      value:
-        code: 400.01.485
-        message: The card is not associated with the account
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidCardId:
-      value:
-        code: 400.01.009
-        message: Invalid Card ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidTenantId:
-      value:
-        code: 400.01.004
-        message: Invalid tenant ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    ItWasNotPossibleToGetTheCardDetail:
-      value:
-        code: 400.01.375
-        message: It was not possible to get the card detail
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidAccessToken:
-      value:
-        code: 401.01.990
-        message: Invalid Access Token
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    ClientAlreadyRegisteredInThisProgram:
-      value:
-        code: 400.01.005
-        message: Client already registered in this program
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardActivated:
-      value:
-        code: 400.01.378
-        message: Card activated. You must cancel the card to complete the replenishment flow.
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidCardType:
-      value:
-        code: 400.01.394
-        message: Invalid Card Type
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsExpired:
-      value:
-        code: 400.01.407
-        message: Card is expired
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidTransactionType:
-      value:
-        code: 400.01.361
-        message: Invalid transaction type
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TheCardIsNotActive:
-      value:
-        code: 400.01.367
-        message: The card is not active
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidParametersCardReplacement:
-      value:
-        code: 400.01.396
-        message: Invalid parameters
-        datetime: 2020-01-03 16:05:56.517000+00:00
-        data:
-        - message: 'Field programId: is required, it must be not empty or blank'
-        - message: 'Field userId: exceeded character limit (36)'
-        - message: 'Field type: is not valid'
-    InvalidSignature:
-      value:
-        code: 401.01.992
-        message: Invalid signature
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsBlocked:
-      value:
-        code: 400.01.008
-        message: Card is blocked
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidUserId:
-      value:
-        code: 400.01.377
-        message: Invalid User ID
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    ProductStatusCouldNotBeUpdated:
-      value:
-        code: 400.01.317
-        message: Product status could not be updated
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidParametersCardHolderCreate:
-      value:
-        code: 400.01.396
-        message: Invalid parameters
-        datetime: 2020-01-03 16:05:56.517000+00:00
-        data:
-        - message: 'Field accountNumber: exceeded character limit (28)'
-        - message: 'Field verificationDigit: is not valid'
-        - message: 'Field cardId: is required, it must be not empty or blank'
-    InvalidParameters:
-      value:
-        code: 400.01.396
-        message: Invalid parameters
-        data:
-        - message: 'Field email: must not be blank'
-        - message: 'Field email: must not be null'
-        - message: 'Field to: must not be blank'
-        - message: 'Field to: must not be null'
-        - message: 'Field subject: must not be blank'
-        - message: 'Field subject: must not be null'
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidBlockCode:
-      value:
-        code: 400.01.014
-        message: Invalid block code
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InvalidParametersCardStatus:
-      value:
-        code: 400.01.396
-        message: Invalid parameters
-        datetime: 2020-01-03 16:05:56.517000+00:00
-        data:
-        - message: 'Field cardStatus: invalid value, allow only A'
-    InvalidParametersCardAndAccount:
-      value:
-        code: 400.01.396
-        message: Invalid parameters
-        datetime: 2020-01-03 16:05:56.517000+00:00
-        data:
-        - message: 'Field programId: is required, it must be not empty or blank'
-        - message: 'Field cardHolder.documentNumber: exceeded character limit (23)'
-        - message: 'Field cardHolder.maternalSurname: is not valid'
-    AccountIsAlreadyRegistered:
-      value:
-        code: 400.01.015
-        message: Account is already registered
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TheCardIsAlreadyLinkedToAnAccount:
-      value:
-        code: 400.01.486
-        message: The card is already linked to an account
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    TheCardDoesNotHaveALinkedAccount:
-      value:
-        code: 400.01.374
-        message: The card does not have a linked account
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    BranchIsNotRegistered:
-      value:
-        code: 400.01.016
-        message: Branch is not registered
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    InternalServerError:
-      value:
-        code: 500.01.999
-        message: Internal Server Error
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    NoResultsFound:
-      value:
-        code: 200.00.364
-        message: No results found
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardInformationOk:
-      value:
-        code: 200.01.000
-        message: Process Ok
-        datetime: '2020-01-03T16:05:56.517Z'
-        data:
-          cardToken: acd/Pzd5vXKdL9Ndy5NfOmtFpCUWlY23xnzuvSOXVzw=
-          userToken: z644+UkTtgJyBpyvluZf2SeACehU5urUSHMEl/Bx17M=
-          accountNumber: '*****4107'
-          mask: '***********6778'
-          holderName: FNAME LNAME
-          cvvNumber: NtJeltpWKD7Vf1laGK7nPg==
-          dynCvvNumber: zdE2bZJzN/likYFBuI4xng==
-          cardStatus: ACTIVE
-          cardType: VIRTUAL
-          blockType:
-            code: PB
-            msg: Preventive blockage
-    HeaderParamsRequired:
-      value:
-        code: 400.01.001
-        message: Header Params Required
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenExpired:
-      value:
-        code: 401.01.993
-        message: Access token expired
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    AccessTokenNotApproved:
-      value:
-        code: 401.01.991
-        message: Access Token not approved
-        datetime: 2020-01-03 16:05:56.517000+00:00
-    CardIsAlreadyActivated:
-      value:
-        code: 400.01.007
-        message: Card is already activated
-        datetime: 2020-01-03 16:05:56.517000+00:00
   responses:
-    RSCardIdUserId200:
-      description: Ok
+    RSCardAndAccountBundled200:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCardIdUserId200'
+            $ref: '#/components/schemas/RSCardAndAccountBundled200'
+          examples:
+            Default:
+              value:
+                code: 200.00.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  cardId: d2cb2441-0034-4211-93af-dcddc892a680
+                  userId: d2cb2441-0034-4211-93af-dcddc892a680
+                  userToken: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
+    RSCardReplacement400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardReplacement400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Client Already Registered In This Program:
+              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
+            Invalid Program Id:
+              $ref: '#/components/examples/InvalidProgramId'
+            Invalid User Id:
+              $ref: '#/components/examples/InvalidUserId'
+            Card Activated:
+              $ref: '#/components/examples/CardActivated'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersCardReplacement'
+            The Card Is Not Associated With The Account:
+              $ref: '#/components/examples/TheCardIsNotAssociatedWithTheAccount'
+            Invalid Block Code:
+              $ref: '#/components/examples/InvalidBlockCode'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSVirtualToPhysicalCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSVirtualToPhysicalCard200'
           examples:
             Default:
               value:
                 code: 200.01.000
                 message: Process Ok
                 datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  cardId: d2cb2441-0034-4211-93af-dcddc892a680
-                  userId: d2cb2441-0034-4211-93af-dcddc892a680
+    RSCardActiveStatus200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardActiveStatus200'
+          examples:
+            Default:
+              value:
+                code: 200.01.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
     RS401:
       description: Unauthorized
       content:
@@ -402,99 +261,6 @@ components:
               $ref: '#/components/examples/NoResultsFound'
             Card Information Ok:
               $ref: '#/components/examples/CardInformationOk'
-    RSVirtualToPhysicalCard400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSVirtualToPhysicalCard400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Card Is Blocked:
-              $ref: '#/components/examples/CardIsBlocked'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            Product Status Could Not Be Updated:
-              $ref: '#/components/examples/ProductStatusCouldNotBeUpdated'
-            Invalid Card Type:
-              $ref: '#/components/examples/InvalidCardType'
-            Invalid Transaction Type:
-              $ref: '#/components/examples/InvalidTransactionType'
-    RSCardInformation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardInformation400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParameters'
-            The Card Does Not Have A Linked Account:
-              $ref: '#/components/examples/TheCardDoesNotHaveALinkedAccount'
-            It Was Not Possible To Get The Card Detail:
-              $ref: '#/components/examples/ItWasNotPossibleToGetTheCardDetail'
-            Invalid CardId:
-              $ref: '#/components/examples/InvalidCardId'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSCardReplacement400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardReplacement400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Client Already Registered In This Program:
-              $ref: '#/components/examples/ClientAlreadyRegisteredInThisProgram'
-            Invalid Program Id:
-              $ref: '#/components/examples/InvalidProgramId'
-            Invalid User Id:
-              $ref: '#/components/examples/InvalidUserId'
-            Card Activated:
-              $ref: '#/components/examples/CardActivated'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersCardReplacement'
-            The Card Is Not Associated With The Account:
-              $ref: '#/components/examples/TheCardIsNotAssociatedWithTheAccount'
-            Invalid Block Code:
-              $ref: '#/components/examples/InvalidBlockCode'
-    RSCardAndAccountBundled400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCardAndAccountBundled400'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequired'
-            Invalid Tenant Id:
-              $ref: '#/components/examples/InvalidTenantId'
-            Invalid Program Id:
-              $ref: '#/components/examples/InvalidProgramId'
-            Account Is Already Registered:
-              $ref: '#/components/examples/AccountIsAlreadyRegistered'
-            Branch Is Not Registered:
-              $ref: '#/components/examples/BranchIsNotRegistered'
-            Invalid Parameters:
-              $ref: '#/components/examples/InvalidParametersCardAndAccount'
     RSCardHolderCreate400:
       description: Bad Request
       content:
@@ -522,6 +288,25 @@ components:
               $ref: '#/components/examples/AccountIsAlreadyRegistered'
             Invalid Card Id:
               $ref: '#/components/examples/InvalidCardId'
+    RSCardInformation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCardInformation400'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            The Card Does Not Have A Linked Account:
+              $ref: '#/components/examples/TheCardDoesNotHaveALinkedAccount'
+            It Was Not Possible To Get The Card Detail:
+              $ref: '#/components/examples/ItWasNotPossibleToGetTheCardDetail'
+            Invalid CardId:
+              $ref: '#/components/examples/InvalidCardId'
     RSCardReplacement200:
       description: OK
       content:
@@ -538,18 +323,27 @@ components:
                   cardId: d2cb2441-0034-4211-93af-dcddc892a680
                   userId: d2cb2441-0034-4211-93af-dcddc892a680
                   userToken: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
-    RSCardActiveStatus200:
-      description: OK
+    RSVirtualToPhysicalCard400:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCardActiveStatus200'
+            $ref: '#/components/schemas/RSVirtualToPhysicalCard400'
           examples:
-            Default:
-              value:
-                code: 200.01.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Card Is Blocked:
+              $ref: '#/components/examples/CardIsBlocked'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParameters'
+            Product Status Could Not Be Updated:
+              $ref: '#/components/examples/ProductStatusCouldNotBeUpdated'
+            Invalid Card Type:
+              $ref: '#/components/examples/InvalidCardType'
+            Invalid Transaction Type:
+              $ref: '#/components/examples/InvalidTransactionType'
     RSCardActiveStatus400:
       description: Bad Request
       content:
@@ -571,262 +365,41 @@ components:
               $ref: '#/components/examples/TheCardDoesNotHaveALinkedAccount'
             Card is already activated:
               $ref: '#/components/examples/CardIsAlreadyActivated'
-    RSCardAndAccountBundled200:
-      description: OK
+    RSCardAndAccountBundled400:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCardAndAccountBundled200'
+            $ref: '#/components/schemas/RSCardAndAccountBundled400'
           examples:
-            Default:
-              value:
-                code: 200.00.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  cardId: d2cb2441-0034-4211-93af-dcddc892a680
-                  userId: d2cb2441-0034-4211-93af-dcddc892a680
-                  userToken: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
-    RSVirtualToPhysicalCard200:
-      description: OK
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequired'
+            Invalid Tenant Id:
+              $ref: '#/components/examples/InvalidTenantId'
+            Invalid Program Id:
+              $ref: '#/components/examples/InvalidProgramId'
+            Account Is Already Registered:
+              $ref: '#/components/examples/AccountIsAlreadyRegistered'
+            Branch Is Not Registered:
+              $ref: '#/components/examples/BranchIsNotRegistered'
+            Invalid Parameters:
+              $ref: '#/components/examples/InvalidParametersCardAndAccount'
+    RSCardIdUserId200:
+      description: Ok
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSVirtualToPhysicalCard200'
+            $ref: '#/components/schemas/RSCardIdUserId200'
           examples:
             Default:
               value:
                 code: 200.01.000
                 message: Process Ok
                 datetime: '2020-01-03T16:05:56.517Z'
-  requestBodies:
-    RQCardCardholders:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCardCardholders'
-    RQCardReplacement:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCardReplacement'
-      required: true
-    RQCardAndAccountBundled:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCardAndAccountBundled'
-      required: true
-    RQCardActiveStatus:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQCardActiveStatus'
-      required: true
-    RQVirtualToPhysicalCard:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQVirtualToPhysicalCard'
-      required: true
+                data:
+                  cardId: d2cb2441-0034-4211-93af-dcddc892a680
+                  userId: d2cb2441-0034-4211-93af-dcddc892a680
   schemas:
-    RSCardReplacement400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.005
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Client already registered in this program
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSCardInformation200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-        data:
-          type: object
-          required:
-          - cardToken
-          - userToken
-          - accountNumber
-          - mask
-          - holderName
-          - cardStatus
-          - cardType
-          properties:
-            cardToken:
-              type: string
-              example: amDfBsZl6gw5giqm10rf6FaKKeEOeYopAQccozz7nk=
-              description: 'Card data encrypted with the [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565)
-
-
-                The cardToken attribute is composed of the following values:
-
-                - PAN: Card''s primary account number
-
-                - Expiration Date: Card expiration date
-
-                - SALT: Random Value String
-
-
-                <PAN><EXPIRATION_DATE><SALT>
-
-                '
-              maxLength: 44
-              minLength: 44
-            userToken:
-              type: string
-              example: camDfBsZl6gw5giqm10rfyPqi/vfK3KvGyHpcVqWYoE=
-              description: 'User data encrypted with the [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565)
-
-
-                __Encrypted information:__ Document number | document type | account number
-
-                '
-              maxLength: 32
-              minLength: 32
-            accountNumber:
-              type: string
-              example: '*****1234'
-              description: Unique register for the account
-              maxLength: 28
-            mask:
-              type: string
-              description: Masked card number
-              example: 463521******4123
-              minLength: 16
-              maxLength: 16
-            holderName:
-              type: string
-              description: Custom field for the card
-              example: John Doe
-              maxLength: 32
-            cvvNumber:
-              type: string
-              description: 'Encrypted form [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565) of the card''s static security code
-
-                '
-              example: zWNTka0/Pvl8MnFGqPhE5A==
-              minLength: 32
-              maxLength: 32
-            dynCvvNumber:
-              type: string
-              description: 'Encrypted form [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565) of the card''s dynamic security code
-
-                '
-              example: zWNTka0/Pvl8MnFGqPhE5A==
-              minLength: 32
-              maxLength: 32
-            cardStatus:
-              type: string
-              description: 'Current status of the card
-
-
-                **Possible values**:
-
-                ACTIVE
-
-                INACTIVE
-
-                '
-              enum:
-              - ACTIVE
-              - INACTIVE
-              example: ACTIVE
-              minLength: 6
-              maxLength: 8
-            cardType:
-              type: string
-              description: 'Type of card
-
-
-                **Possible values:**
-
-                VIRTUAL
-
-                PHYSICAL
-
-                '
-              enum:
-              - VIRTUAL
-              - PHYSICAL
-              example: VIRTUAL
-              minLength: 7
-              maxLength: 8
-            blockType:
-              type: object
-              required:
-              - code
-              - msg
-              properties:
-                code:
-                  type: string
-                  description: 'Type of lock presented by the card
-
-
-                    **Allowed values**:
-
-                    41: Lost card
-
-                    43: Stolen card
-
-                    PB: Preventive Block
-
-                    17: Cancelled card
-
-                    '
-                  enum:
-                  - '41'
-                  - '43'
-                  - PB
-                  - '17'
-                  example: PB
-                  minLength: 2
-                  maxLength: 2
-                msg:
-                  type: string
-                  description: 'Message associated to the block
-
-
-                    **Allowed characters**: alphabetic
-
-                    '
-                  example: Temporary block
-                  maxLength: 32
     RQCardAndAccountBundled:
       type: object
       required:
@@ -1097,120 +670,12 @@ components:
               description: "Unique identifier of the office/branch representing the client\n\n **Allowed values**: numeric\n"
               example: 1
               maxLength: 2
-    RSCardInformation400:
+    RSCardActiveStatus200:
       type: object
       required:
       - code
       - message
       - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RQVirtualToPhysicalCard:
-      type: object
-      required:
-      - observation
-      properties:
-        observation:
-          type: string
-          description: 'Description of the reason for the change of card type.
-
-
-            **Note**: This field can be empty
-
-            '
-          example: change per customer request.
-          maxLength: 100
-    RSCardAndAccountBundled400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.00.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Params required
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          minLength: 24
-          maxLength: 24
-    RSCardAndAccountBundled200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      - data
       properties:
         code:
           type: string
@@ -1227,55 +692,6 @@ components:
           example: 2020-01-03 16:05:56.517000+00:00
           description: Operation Timestamp
           format: date-time
-        data:
-          required:
-          - cardId
-          - userId
-          - userToken
-          type: object
-          properties:
-            cardId:
-              type: string
-              description: Unique card identification (uuid format)
-              example: d2cb2441-0034-4211-93af-dcddc892a680
-              minLength: 36
-              maxLength: 36
-            userId:
-              type: string
-              description: Unique user identification (uuid format)
-              example: t2cb2442-0035-4211-93af-xcddx893a681
-              minLength: 36
-              maxLength: 36
-            userToken:
-              type: string
-              description: 'Encrypted form for a user created with a [AES256 algorithm](https://www.rfc-editor.org/rfc/rfc3565)
-
-
-                __Encrypted information:__ Document number | document type | account number
-
-                '
-              example: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
-              minLength: 32
-              maxLength: 32
-    RQCardActiveStatus:
-      type: object
-      required:
-      - cardStatus
-      properties:
-        cardStatus:
-          type: string
-          description: 'Indicate card activation through the field.
-
-
-            **Allowed values**:
-
-            A: active
-
-            '
-          example: A
-          enum:
-          - A
-          maxLength: 1
     RSCardIdUserId200:
       type: object
       required:
@@ -1312,110 +728,6 @@ components:
         data:
           type: object
           $ref: '#/components/schemas/ObjCardIdUserIdData'
-    RSCardActiveStatus400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RSCardActiveStatus200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
-    RQCardReplacement:
-      type: object
-      required:
-      - programId
-      - type
-      - userId
-      properties:
-        programId:
-          type: string
-          description: 'Card Program Identifier to which the card to be issued belongs, this data is provided by NovoPayment.
-
-
-            __Allowed characters:__ alphanumeric
-
-            '
-          example: 454165454
-          maxLength: 10
-        type:
-          type: string
-          description: 'Type of issuance
-
-
-            __Allowed values: unnamed, named__
-
-            '
-          example: named
-          maxLength: 8
-          enum:
-          - unnamed
-          - named
-        userId:
-          type: string
-          description: "Field indicating the unique user identifier, provided by NovoPayment during issuance (uuid format). \n"
-          example: d78ddf88-d5eb-11ec-9d64-0242ac120003
-          minLength: 36
-          maxLength: 36
-    RSVirtualToPhysicalCard400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.01.004
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Invalid tenant ID
-          maxLength: 140
-        datetime:
-          type: string
-          example: 2020-01-03 16:05:56.517000+00:00
-          description: Operation Timestamp
-          format: date-time
     RQCardCardholders:
       type: object
       required:
@@ -1662,6 +974,484 @@ components:
             '
           example: 1
           maxLength: 2
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RSCardReplacement400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.005
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Client already registered in this program
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RSCardHolderCreate400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          minLength: 10
+          maxLength: 10
+          description: Operation response code
+        message:
+          type: string
+          maxLength: 140
+          description: Response code description
+        datetime:
+          type: string
+          format: date-time
+          minLength: 24
+          maxLength: 24
+          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
+    RSCardInformation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+        data:
+          type: object
+          required:
+          - cardToken
+          - userToken
+          - accountNumber
+          - mask
+          - holderName
+          - cardStatus
+          - cardType
+          properties:
+            cardToken:
+              type: string
+              example: amDfBsZl6gw5giqm10rf6FaKKeEOeYopAQccozz7nk=
+              description: 'Card data encrypted with the [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565)
+
+
+                The cardToken attribute is composed of the following values:
+
+                - PAN: Card''s primary account number
+
+                - Expiration Date: Card expiration date
+
+                - SALT: Random Value String
+
+
+                <PAN><EXPIRATION_DATE><SALT>
+
+                '
+              maxLength: 44
+              minLength: 44
+            userToken:
+              type: string
+              example: camDfBsZl6gw5giqm10rfyPqi/vfK3KvGyHpcVqWYoE=
+              description: 'User data encrypted with the [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565)
+
+
+                __Encrypted information:__ Document number | document type | account number
+
+                '
+              maxLength: 32
+              minLength: 32
+            accountNumber:
+              type: string
+              example: '*****1234'
+              description: Unique register for the account
+              maxLength: 28
+            mask:
+              type: string
+              description: Masked card number
+              example: 463521******4123
+              minLength: 16
+              maxLength: 16
+            holderName:
+              type: string
+              description: Custom field for the card
+              example: John Doe
+              maxLength: 32
+            cvvNumber:
+              type: string
+              description: 'Encrypted form [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565) of the card''s static security code
+
+                '
+              example: zWNTka0/Pvl8MnFGqPhE5A==
+              minLength: 32
+              maxLength: 32
+            dynCvvNumber:
+              type: string
+              description: 'Encrypted form [AES256 Algorithm](https://www.rfc-editor.org/rfc/rfc3565) of the card''s dynamic security code
+
+                '
+              example: zWNTka0/Pvl8MnFGqPhE5A==
+              minLength: 32
+              maxLength: 32
+            cardStatus:
+              type: string
+              description: 'Current status of the card
+
+
+                **Possible values**:
+
+                ACTIVE
+
+                INACTIVE
+
+                '
+              enum:
+              - ACTIVE
+              - INACTIVE
+              example: ACTIVE
+              minLength: 6
+              maxLength: 8
+            cardType:
+              type: string
+              description: 'Type of card
+
+
+                **Possible values:**
+
+                VIRTUAL
+
+                PHYSICAL
+
+                '
+              enum:
+              - VIRTUAL
+              - PHYSICAL
+              example: VIRTUAL
+              minLength: 7
+              maxLength: 8
+            blockType:
+              type: object
+              required:
+              - code
+              - msg
+              properties:
+                code:
+                  type: string
+                  description: 'Type of lock presented by the card
+
+
+                    **Allowed values**:
+
+                    41: Lost card
+
+                    43: Stolen card
+
+                    PB: Preventive Block
+
+                    17: Cancelled card
+
+                    '
+                  enum:
+                  - '41'
+                  - '43'
+                  - PB
+                  - '17'
+                  example: PB
+                  minLength: 2
+                  maxLength: 2
+                msg:
+                  type: string
+                  description: 'Message associated to the block
+
+
+                    **Allowed characters**: alphabetic
+
+                    '
+                  example: Temporary block
+                  maxLength: 32
+    RSCardActiveStatus400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RQCardActiveStatus:
+      type: object
+      required:
+      - cardStatus
+      properties:
+        cardStatus:
+          type: string
+          description: 'Indicate card activation through the field.
+
+
+            **Allowed values**:
+
+            A: active
+
+            '
+          example: A
+          enum:
+          - A
+          maxLength: 1
+    RSCardAndAccountBundled400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.00.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Params required
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RQVirtualToPhysicalCard:
+      type: object
+      required:
+      - observation
+      properties:
+        observation:
+          type: string
+          description: 'Description of the reason for the change of card type.
+
+
+            **Note**: This field can be empty
+
+            '
+          example: change per customer request.
+          maxLength: 100
+    RSVirtualToPhysicalCard200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          minLength: 24
+          maxLength: 24
+    RQCardReplacement:
+      type: object
+      required:
+      - programId
+      - type
+      - userId
+      properties:
+        programId:
+          type: string
+          description: 'Card Program Identifier to which the card to be issued belongs, this data is provided by NovoPayment.
+
+
+            __Allowed characters:__ alphanumeric
+
+            '
+          example: 454165454
+          maxLength: 10
+        type:
+          type: string
+          description: 'Type of issuance
+
+
+            __Allowed values: unnamed, named__
+
+            '
+          example: named
+          maxLength: 8
+          enum:
+          - unnamed
+          - named
+        userId:
+          type: string
+          description: "Field indicating the unique user identifier, provided by NovoPayment during issuance (uuid format). \n"
+          example: d78ddf88-d5eb-11ec-9d64-0242ac120003
+          minLength: 36
+          maxLength: 36
+    RSCardInformation400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.01.004
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Invalid tenant ID
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+    RSCardAndAccountBundled200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      - data
+      properties:
+        code:
+          type: string
+          example: 200.01.000
+          description: Operation response code
+          maxLength: 10
+        message:
+          type: string
+          example: Process Ok
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: 2020-01-03 16:05:56.517000+00:00
+          description: Operation Timestamp
+          format: date-time
+        data:
+          required:
+          - cardId
+          - userId
+          - userToken
+          type: object
+          properties:
+            cardId:
+              type: string
+              description: Unique card identification (uuid format)
+              example: d2cb2441-0034-4211-93af-dcddc892a680
+              minLength: 36
+              maxLength: 36
+            userId:
+              type: string
+              description: Unique user identification (uuid format)
+              example: t2cb2442-0035-4211-93af-xcddx893a681
+              minLength: 36
+              maxLength: 36
+            userToken:
+              type: string
+              description: 'Encrypted form for a user created with a [AES256 algorithm](https://www.rfc-editor.org/rfc/rfc3565)
+
+
+                __Encrypted information:__ Document number | document type | account number
+
+                '
+              example: FUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0
+              minLength: 32
+              maxLength: 32
     RSCardReplacement200:
       type: object
       required:
@@ -1715,7 +1505,7 @@ components:
               minLength: 32
               maxLength: 32
               example: DLUhTMjU2IiwiYWxnIjoiUlNBLU9BRVA
-    RSCardHolderCreate400:
+    RSVirtualToPhysicalCard400:
       type: object
       required:
       - code
@@ -1724,35 +1514,14 @@ components:
       properties:
         code:
           type: string
+          example: 400.01.004
+          description: Operation response code
           minLength: 10
           maxLength: 10
-          description: Operation response code
         message:
           type: string
-          maxLength: 140
           description: Response code description
-        datetime:
-          type: string
-          format: date-time
-          minLength: 24
-          maxLength: 24
-          description: "Operation Time Stamp in ISO 8601 format.\ndate-time – the date-time notation as defined by\n[RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6),\nfor example: 2017-07-21T17:32:28Z   \n"
-    RSVirtualToPhysicalCard200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 200.01.000
-          description: Operation response code
-          maxLength: 10
-        message:
-          type: string
-          example: Process Ok
-          description: Response code description
+          example: Invalid tenant ID
           maxLength: 140
         datetime:
           type: string
@@ -1779,6 +1548,206 @@ components:
 
             '
           example: d2cb2441-0034-4211-93af-dcddc892a680
+  examples:
+    AccessTokenNotApproved:
+      value:
+        code: 401.01.991
+        message: Access Token not approved
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsExpired:
+      value:
+        code: 400.01.407
+        message: Card is expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersCardHolderCreate:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - message: 'Field accountNumber: exceeded character limit (28)'
+        - message: 'Field verificationDigit: is not valid'
+        - message: 'Field cardId: is required, it must be not empty or blank'
+    InvalidCardId:
+      value:
+        code: 400.01.009
+        message: Invalid Card ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccessTokenExpired:
+      value:
+        code: 401.01.993
+        message: Access token expired
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsNotActive:
+      value:
+        code: 400.01.367
+        message: The card is not active
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsNotAssociatedWithTheAccount:
+      value:
+        code: 400.01.485
+        message: The card is not associated with the account
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersCardAndAccount:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - message: 'Field programId: is required, it must be not empty or blank'
+        - message: 'Field cardHolder.documentNumber: exceeded character limit (23)'
+        - message: 'Field cardHolder.maternalSurname: is not valid'
+    InvalidTransactionType:
+      value:
+        code: 400.01.361
+        message: Invalid transaction type
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardIsAlreadyLinkedToAnAccount:
+      value:
+        code: 400.01.486
+        message: The card is already linked to an account
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    HeaderParamsRequired:
+      value:
+        code: 400.01.001
+        message: Header Params Required
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParameters:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        data:
+        - message: 'Field email: must not be blank'
+        - message: 'Field email: must not be null'
+        - message: 'Field to: must not be blank'
+        - message: 'Field to: must not be null'
+        - message: 'Field subject: must not be blank'
+        - message: 'Field subject: must not be null'
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    ItWasNotPossibleToGetTheCardDetail:
+      value:
+        code: 400.01.375
+        message: It was not possible to get the card detail
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidUserId:
+      value:
+        code: 400.01.377
+        message: Invalid User ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    AccountIsAlreadyRegistered:
+      value:
+        code: 400.01.015
+        message: Account is already registered
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    ClientAlreadyRegisteredInThisProgram:
+      value:
+        code: 400.01.005
+        message: Client already registered in this program
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidTenantId:
+      value:
+        code: 400.01.004
+        message: Invalid tenant ID
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsAlreadyActivated:
+      value:
+        code: 400.01.007
+        message: Card is already activated
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersCardStatus:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - message: 'Field cardStatus: invalid value, allow only A'
+    NoResultsFound:
+      value:
+        code: 200.00.364
+        message: No results found
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    BranchIsNotRegistered:
+      value:
+        code: 400.01.016
+        message: Branch is not registered
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardIsBlocked:
+      value:
+        code: 400.01.008
+        message: Card is blocked
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    TheCardDoesNotHaveALinkedAccount:
+      value:
+        code: 400.01.374
+        message: The card does not have a linked account
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardInformationOk:
+      value:
+        code: 200.01.000
+        message: Process Ok
+        datetime: '2020-01-03T16:05:56.517Z'
+        data:
+          cardToken: acd/Pzd5vXKdL9Ndy5NfOmtFpCUWlY23xnzuvSOXVzw=
+          userToken: z644+UkTtgJyBpyvluZf2SeACehU5urUSHMEl/Bx17M=
+          accountNumber: '*****4107'
+          mask: '***********6778'
+          holderName: FNAME LNAME
+          cvvNumber: NtJeltpWKD7Vf1laGK7nPg==
+          dynCvvNumber: zdE2bZJzN/likYFBuI4xng==
+          cardStatus: ACTIVE
+          cardType: VIRTUAL
+          blockType:
+            code: PB
+            msg: Preventive blockage
+    InvalidSignature:
+      value:
+        code: 401.01.992
+        message: Invalid signature
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InternalServerError:
+      value:
+        code: 500.01.999
+        message: Internal Server Error
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidProgramId:
+      value:
+        code: 400.01.006
+        message: Invalid program Id
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidCardType:
+      value:
+        code: 400.01.394
+        message: Invalid Card Type
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    CardActivated:
+      value:
+        code: 400.01.378
+        message: Card activated. You must cancel the card to complete the replenishment flow.
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    ProductStatusCouldNotBeUpdated:
+      value:
+        code: 400.01.317
+        message: Product status could not be updated
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidBlockCode:
+      value:
+        code: 400.01.014
+        message: Invalid block code
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidAccessToken:
+      value:
+        code: 401.01.990
+        message: Invalid Access Token
+        datetime: 2020-01-03 16:05:56.517000+00:00
+    InvalidParametersCardReplacement:
+      value:
+        code: 400.01.396
+        message: Invalid parameters
+        datetime: 2020-01-03 16:05:56.517000+00:00
+        data:
+        - message: 'Field programId: is required, it must be not empty or blank'
+        - message: 'Field userId: exceeded character limit (36)'
+        - message: 'Field type: is not valid'
   parameters:
     cvvNumber:
       name: cvvNumber
@@ -1787,21 +1756,6 @@ components:
 
 
         **Default value**: false
-
-        '
-      required: false
-      schema:
-        type: boolean
-        example: false
-    dynCvvNumber:
-      name: dynCvvNumber
-      in: query
-      description: 'Use this value to show the dynamic security code.
-
-
-        **Default value**: false
-
-        **Note**: You can only retrieve the dynamic CVV if you have this configuration in NovoPayment''s system.
 
         '
       required: false
@@ -1818,6 +1772,52 @@ components:
         type: string
         maxLength: 36
         minLength: 36
+    dynCvvNumber:
+      name: dynCvvNumber
+      in: query
+      description: 'Use this value to show the dynamic security code.
+
+
+        **Default value**: false
+
+        **Note**: You can only retrieve the dynamic CVV if you have this configuration in NovoPayment''s system.
+
+        '
+      required: false
+      schema:
+        type: boolean
+        example: false
+  requestBodies:
+    RQCardCardholders:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardCardholders'
+    RQCardActiveStatus:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardActiveStatus'
+      required: true
+    RQVirtualToPhysicalCard:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQVirtualToPhysicalCard'
+      required: true
+    RQCardReplacement:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardReplacement'
+      required: true
+    RQCardAndAccountBundled:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQCardAndAccountBundled'
+      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

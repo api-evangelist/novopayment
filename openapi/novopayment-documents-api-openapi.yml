@@ -73,161 +73,46 @@ paths:
     - description: Sandbox
       url: https://sandbox-api.novopayment.com/profiles/v1
 components:
-  responses:
-    RSUploadSupportDocument200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUploadSupportDocument200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSGetCustomersSupportDocuments200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGetCustomersSupportDocuments200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-                data:
-                  documents:
-                  - documentId: 2
-                    name: Proof of Employe
-                    description: Proof of employment issued by the company
-                    referenceDocumentLink: https://www.irs.gov/pub/irs-pdf/fw8ben.pdf
-                    validExtension:
-                    - .xls
-                    - .pdf
-                    - .png
-                    minSize: 54000
-                    maxSize: 750000
-                    maxUploadDays: 15
-                    uploadDateLimit: '2021-10-10'
-                    uploadInformation:
-                      documentUploadId: 14
-                      requestedDate: '2021-10-01'
-                      statusDoc:
-                        statusId: 1
-                        description: Uploaded
-                      fileInfo:
-                        fileName: proofofemploye.pdf
-                        fileSize: 78000
-                        extension: pdf
-                        uploadDate: '2021-10-02'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSGetCustomersSupportDocuments400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSGetCustomersSupportDocuments400'
-          examples:
-            Invalid Data:
-              $ref: '#/components/examples/InvalidData'
-    RSUploadSupportDocument400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUploadSupportDocument400'
-          examples:
-            Process Not Completed:
-              $ref: '#/components/examples/ProcessNotCompleted'
-            Request Acknowledge Failure:
-              $ref: '#/components/examples/RequestAcknowledgeFailure'
-    RSCustomerDocumentUpload400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCustomerDocumentUpload400'
-          examples:
-            Request Acknowledge Failure:
-              $ref: '#/components/examples/RequestAcknowledgeFailure_2'
-    RSCustomerDocumentUpload200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSCustomerDocumentUpload200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
   examples:
-    InvalidAccessToken:
+    InvalidData:
       value:
-        code: 401.25.990
-        message: Invalid Access Token
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenNotApproved:
       value:
         code: 401.25.991
         message: Access Token not approved
         datetime: '2020-01-03T16:05:56.517Z'
+    RequestAcknowledgeFailure:
+      value:
+        code: 400.25.023
+        message: It was not possible to acknowledge the request, please try again.
+        datetime: '2020-01-03T16:05:56.517Z'
     InvalidSignature:
       value:
         code: 401.25.992
         message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    ProcessNotCompleted:
-      value:
-        code: 400.25.019
-        message: The process could not be completed.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
         datetime: '2020-01-03T16:05:56.517Z'
     InternalServerError:
       value:
         code: 500.25.001
         message: Internal Server Error
         datetime: '2020-01-03T16:05:56.517Z'
-    RequestAcknowledgeFailure:
+    ProcessNotCompleted:
       value:
-        code: 400.25.023
-        message: It was not possible to acknowledge the request, please try again.
+        code: 400.25.019
+        message: The process could not be completed.
         datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
+    InvalidAccessToken:
       value:
-        code: 401.25.993
-        message: Access token expired
+        code: 401.25.990
+        message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
     RequestAcknowledgeFailure_2:
       value:
@@ -235,7 +120,7 @@ components:
         message: It was not possible to acknowledge the request, please try again.
         datetime: '2020-01-03T16:05:56.517Z'
   schemas:
-    RSUploadSupportDocument200:
+    RSGetCustomersSupportDocuments400:
       type: object
       required:
       - code
@@ -244,13 +129,14 @@ components:
       properties:
         code:
           type: string
+          example: 400.25.003
           description: Operation response code
-          example: 200.25.000
+          minLength: 10
           maxLength: 10
         message:
           type: string
+          example: Params required
           description: Response code description
-          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -279,120 +165,6 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
-          format: date-time
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQUploadSupportDocument:
-      type: object
-      required:
-      - documentId
-      - documentUploadId
-      - fileInfo
-      properties:
-        documentId:
-          type: string
-          description: Document identifier.
-          example: 1
-          maxLength: 38
-        documentUploadId:
-          type: string
-          description: Document upload identifier.
-          example: 14
-          maxLength: 38
-        fileInfo:
-          type: object
-          description: An object that contains the information about the file when it is uploaded.
-          required:
-          - fileName
-          - fileSize
-          - extension
-          - bytes
-          properties:
-            fileName:
-              type: string
-              description: Name of the uploaded file.
-              example: proofofemploye.pdf
-              maxLength: 100
-            fileSize:
-              type: number
-              description: Size of the uploaded file in kbs.
-              example: 78000
-              maxLength: 38
-            extension:
-              type: string
-              description: Extension of the uploaded file.
-              example: pdf
-              maxLength: 10
-            bytes:
-              type: string
-              description: Base64 of the file to upload.
-              example: JVBERi0xLjcNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFIvTGFuZyhlcy1DTykgL1N0cnVjdFRyZWVSb290IDEwIDAgUi9NYXJrSW5mbzw8L01hcmtlZCB0cnVlPj4vTWV0YWRhdGEgMjAgMCBSL1ZpZXdlclByZWZlcmVuY2VzIDIxIDAgUj4+DQplbmRvYmoNCjIgMCBvYmoNCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWyAzIDAgUl0gPj4NCmVuZG9iag0KMyAwIG9iag0KPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9SZXNvdXJjZXM8PC9Gb250PDwvRjEgNSAwIFI+Pi9FeHRHU3RhdGU8PC9HUzcgNyAwIFIvR1M4IDggMCBSPj4vUHJvY1NldFsvUERGL1RleHQvSW1hZ2VCL0ltYWdlQy9JbWFnZUldID4+L01lZGlhQm94WyAwIDAgNjEyIDc5Ml0gL0NvbnRlbnRzIDQgMCBSL0dyb3VwPDwvVHlwZS9Hcm91cC9TL1RyYW5zcGFyZW5jeSDUy9EZXZpY2VSR0I+Pi9UYWJzL1MvU3RydWN0UGFyZW50cyAwPj4NCmVuZG9iag0KNCAwIG9iag0KPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAyMDA+Pg0Kc3RyZWFtDQp4nKWOOwvCQBCE+4P7D1PuCrncxpgYEAuTUxRjlEQsxMJCUxl8/H/wf
-    RSGetCustomersSupportDocuments400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSUploadSupportDocument400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RSGetCustomersSupportDocuments200:
       type: object
@@ -551,6 +323,119 @@ components:
                             type: string
                             description: Date the file was uploaded.
                             example: 2021-10-02
+    RSUploadSupportDocument400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSUploadSupportDocument200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RQUploadSupportDocument:
+      type: object
+      required:
+      - documentId
+      - documentUploadId
+      - fileInfo
+      properties:
+        documentId:
+          type: string
+          description: Document identifier.
+          example: 1
+          maxLength: 38
+        documentUploadId:
+          type: string
+          description: Document upload identifier.
+          example: 14
+          maxLength: 38
+        fileInfo:
+          type: object
+          description: An object that contains the information about the file when it is uploaded.
+          required:
+          - fileName
+          - fileSize
+          - extension
+          - bytes
+          properties:
+            fileName:
+              type: string
+              description: Name of the uploaded file.
+              example: proofofemploye.pdf
+              maxLength: 100
+            fileSize:
+              type: number
+              description: Size of the uploaded file in kbs.
+              example: 78000
+              maxLength: 38
+            extension:
+              type: string
+              description: Extension of the uploaded file.
+              example: pdf
+              maxLength: 10
+            bytes:
+              type: string
+              description: Base64 of the file to upload.
+              example: JVBERi0xLjcNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFIvTGFuZyhlcy1DTykgL1N0cnVjdFRyZWVSb290IDEwIDAgUi9NYXJrSW5mbzw8L01hcmtlZCB0cnVlPj4vTWV0YWRhdGEgMjAgMCBSL1ZpZXdlclByZWZlcmVuY2VzIDIxIDAgUj4+DQplbmRvYmoNCjIgMCBvYmoNCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWyAzIDAgUl0gPj4NCmVuZG9iag0KMyAwIG9iag0KPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9SZXNvdXJjZXM8PC9Gb250PDwvRjEgNSAwIFI+Pi9FeHRHU3RhdGU8PC9HUzcgNyAwIFIvR1M4IDggMCBSPj4vUHJvY1NldFsvUERGL1RleHQvSW1hZ2VCL0ltYWdlQy9JbWFnZUldID4+L01lZGlhQm94WyAwIDAgNjEyIDc5Ml0gL0NvbnRlbnRzIDQgMCBSL0dyb3VwPDwvVHlwZS9Hcm91cC9TL1RyYW5zcGFyZW5jeSDUy9EZXZpY2VSR0I+Pi9UYWJzL1MvU3RydWN0UGFyZW50cyAwPj4NCmVuZG9iag0KNCAwIG9iag0KPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAyMDA+Pg0Kc3RyZWFtDQp4nKWOOwvCQBCE+4P7D1PuCrncxpgYEAuTUxRjlEQsxMJCUxl8/H/wf
     RS500_2:
       type: object
       required:
@@ -573,74 +458,6 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Operation Timestamp
-          format: date-time
-    RS401_2:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSCustomerDocumentUpload200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSCustomerDocumentUpload400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Operation Timestamp
-          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RQCustomerDocumentUpload:
       type: object
@@ -687,6 +504,189 @@ components:
               type: string
               description: Base64 of the file to upload.
               example: JVBERi0xLjcNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFIvTGFuZyhlcy1DTykgL1N0cnVjdFRyZWVSb290IDEwIDAgUi9NYXJrSW5mbzw8L01hcmtlZCB0cnVlPj4vTWV0YWRhdGEgMjAgMCBSL1ZpZXdlclByZWZlcmVuY2VzIDIxIDAgUj4+DQplbmRvYmoNCjIgMCBvYmoNCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWyAzIDAgUl0gPj4NCmVuZG9iag0KMyAwIG9iag0KPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9SZXNvdXJjZXM8PC9Gb250PDwvRjEgNSAwIFI+Pi9FeHRHU3RhdGU8PC9HUzcgNyAwIFIvR1M4IDggMCBSPj4vUHJvY1NldFsvUERGL1RleHQvSW1hZ2VCL0ltYWdlQy9JbWFnZUldID4+L01lZGlhQm94WyAwIDAgNjEyIDc5Ml0gL0NvbnRlbnRzIDQgMCBSL0dyb3VwPDwvVHlwZS9Hcm91cC9TL1RyYW5zcGFyZW5jeS9DUy9EZXZpY2VSR0I+Pi9UYWJzL1MvU3RydWN0UGFyZW50cyAwPj4NCmVuZG9iag0KNCAwIG9iag0KPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAyMDA+Pg0Kc3RyZWFtDQp4nKWOOwvCQBCE+4P7D1PuCrncxpgYEAuTUxRjlEQsxMJCUxl8/H/wfDTWbrHs7Ay7H8L6euwwGoVlPi9gw+Wxa0GnR+BqHo8xKXLctLLGviqTCBaJ72kW4X7SatdDp9Wk0SqcCkSMjdGctRKfsxAMB0b8KhVrUu9cfG5Wp2gf/ibatxp+1UyrPRUcxFTlWxahkoM+uRXH1HBGFTiIyC0cS/Sx1pzQ8jVUfECz0Mp5jI1W//BKZk3/h/eN+aXD7yO4MscTHM0=
+    RSCustomerDocumentUpload400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.25.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSCustomerDocumentUpload200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401_2:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Operation Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  responses:
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSUploadSupportDocument400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUploadSupportDocument400'
+          examples:
+            Process Not Completed:
+              $ref: '#/components/examples/ProcessNotCompleted'
+            Request Acknowledge Failure:
+              $ref: '#/components/examples/RequestAcknowledgeFailure'
+    RSGetCustomersSupportDocuments400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetCustomersSupportDocuments400'
+          examples:
+            Invalid Data:
+              $ref: '#/components/examples/InvalidData'
+    RSUploadSupportDocument200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUploadSupportDocument200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSGetCustomersSupportDocuments200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSGetCustomersSupportDocuments200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+                data:
+                  documents:
+                  - documentId: 2
+                    name: Proof of Employe
+                    description: Proof of employment issued by the company
+                    referenceDocumentLink: https://www.irs.gov/pub/irs-pdf/fw8ben.pdf
+                    validExtension:
+                    - .xls
+                    - .pdf
+                    - .png
+                    minSize: 54000
+                    maxSize: 750000
+                    maxUploadDays: 15
+                    uploadDateLimit: '2021-10-10'
+                    uploadInformation:
+                      documentUploadId: 14
+                      requestedDate: '2021-10-01'
+                      statusDoc:
+                        statusId: 1
+                        description: Uploaded
+                      fileInfo:
+                        fileName: proofofemploye.pdf
+                        fileSize: 78000
+                        extension: pdf
+                        uploadDate: '2021-10-02'
+    RSCustomerDocumentUpload200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCustomerDocumentUpload200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSCustomerDocumentUpload400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSCustomerDocumentUpload400'
+          examples:
+            Request Acknowledge Failure:
+              $ref: '#/components/examples/RequestAcknowledgeFailure_2'
   requestBodies:
     RQUploadSupportDocument:
       content:

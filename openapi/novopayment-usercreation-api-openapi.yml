@@ -31,21 +31,6 @@ paths:
       - Usercreation
 components:
   examples:
-    InternalServerError:
-      value:
-        code: 500.25.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountCreate:
-      value:
-        code: 400.25.386
-        message: Your account was created! You can now use your credentials to enter your account.
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccountIsOnTheWay:
-      value:
-        code: 400.25.385
-        message: Your account is on the way! We'll let you know when your account is ready.
-        datetime: '2020-01-03T16:05:56.517Z'
     InvalidAccessToken:
       value:
         code: 401.25.990
@@ -56,16 +41,79 @@ components:
         code: 401.25.991
         message: Access Token not approved
         datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.25.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
     InvalidSignature:
       value:
         code: 401.25.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
+    AccountCreate:
+      value:
+        code: 400.25.386
+        message: Your account was created! You can now use your credentials to enter your account.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccountIsOnTheWay:
+      value:
+        code: 400.25.385
+        message: Your account is on the way! We'll let you know when your account is ready.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
+    RSUserCreation200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUserCreation200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
+    RSUserCreation400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSUserCreation400'
+          examples:
+            Account Is On The Way:
+              $ref: '#/components/examples/AccountIsOnTheWay'
+            Account Create:
+              $ref: '#/components/examples/AccountCreate'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
   schemas:
     RSUserCreation400:
       type: object
@@ -83,6 +131,51 @@ components:
         message:
           type: string
           example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RSUserCreation200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
           description: Response code description
           maxLength: 140
         datetime:
@@ -113,51 +206,6 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
           format: date-time
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RSUserCreation200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RQUserCreation:
       type: object
       required:
@@ -174,54 +222,6 @@ components:
           description: System access password.
           example: JohnDoe.Password
           maxLength: 100
-  responses:
-    RSUserCreation200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUserCreation200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSUserCreation400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSUserCreation400'
-          examples:
-            Account Is On The Way:
-              $ref: '#/components/examples/AccountIsOnTheWay'
-            Account Create:
-              $ref: '#/components/examples/AccountCreate'
-    RS401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
   requestBodies:
     RQUserCreation:
       content:

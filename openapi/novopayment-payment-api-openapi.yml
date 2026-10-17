@@ -31,15 +31,20 @@ paths:
       - Payment
 components:
   examples:
+    CardNumberInvalid:
+      value:
+        code: 400.25.047
+        message: The card number is invalid.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
     CardSecurityCodeInvalid:
       value:
         code: 400.25.049
         message: Card security code is invalid.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.25.990
-        message: Invalid Access Token
         datetime: '2020-01-03T16:05:56.517Z'
     AccessTokenNotApproved:
       value:
@@ -51,38 +56,78 @@ components:
         code: 401.25.992
         message: Invalid signature
         datetime: '2020-01-03T16:05:56.517Z'
-    CardNumberInvalid:
+    InternalServerError:
       value:
-        code: 400.25.047
-        message: The card number is invalid.
+        code: 500.25.001
+        message: Internal Server Error
         datetime: '2020-01-03T16:05:56.517Z'
     CardInformationInvalid:
       value:
         code: 400.25.046
         message: The payment could not be processed because of invalid card information.
         datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.25.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.25.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
     CardExpirationDateInvalid:
       value:
         code: 400.25.048
         message: Card expiration date is invalid.
         datetime: '2020-01-03T16:05:56.517Z'
-  requestBodies:
-    RQMembershipPayment:
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
+    RS500:
+      description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RQMembershipPayment'
-      required: true
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
+    RSMembershipPayment400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSMembershipPayment400'
+          examples:
+            Card Information Invalid:
+              $ref: '#/components/examples/CardInformationInvalid'
+            Card Number Invalid:
+              $ref: '#/components/examples/CardNumberInvalid'
+            Card Expiration Date Invalid:
+              $ref: '#/components/examples/CardExpirationDateInvalid'
+            Card Security Code Invalid:
+              $ref: '#/components/examples/CardSecurityCodeInvalid'
+    RS401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401'
+          examples:
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
+    RSMembershipPayment200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSMembershipPayment200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
   schemas:
     RQMembershipPayment:
       type: object
@@ -118,29 +163,6 @@ components:
           description: Email to register the payment.
           example: JohnDoe@example.com
           maxLength: 20
-    RSMembershipPayment400:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 400.25.003
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Params required
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RS500:
       type: object
       required:
@@ -163,6 +185,28 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
+          format: date-time
+    RSMembershipPayment200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RS401:
       type: object
@@ -187,7 +231,7 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-    RSMembershipPayment200:
+    RSMembershipPayment400:
       type: object
       required:
       - code
@@ -196,71 +240,27 @@ components:
       properties:
         code:
           type: string
+          example: 400.25.003
           description: Operation response code
-          example: 200.25.000
+          minLength: 10
           maxLength: 10
         message:
           type: string
+          example: Params required
           description: Response code description
-          example: Process Ok
           maxLength: 140
         datetime:
           type: string
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
-  responses:
-    RS401:
-      description: Unauthorized
+  requestBodies:
+    RQMembershipPayment:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS401'
-          examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
-    RSMembershipPayment200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSMembershipPayment200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RSMembershipPayment400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSMembershipPayment400'
-          examples:
-            Card Information Invalid:
-              $ref: '#/components/examples/CardInformationInvalid'
-            Card Number Invalid:
-              $ref: '#/components/examples/CardNumberInvalid'
-            Card Expiration Date Invalid:
-              $ref: '#/components/examples/CardExpirationDateInvalid'
-            Card Security Code Invalid:
-              $ref: '#/components/examples/CardSecurityCodeInvalid'
+            $ref: '#/components/schemas/RQMembershipPayment'
+      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2

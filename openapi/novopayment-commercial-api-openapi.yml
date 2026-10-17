@@ -30,37 +30,6 @@ paths:
       tags:
       - Commercial
 components:
-  examples:
-    InternalServerError:
-      value:
-        code: 500.18.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    ParameterFormatError:
-      value:
-        code: 400.18.081
-        message: Parameter format error
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.18.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.18.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.18.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.18.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
     RSCreateCommercialCustomers200:
       type: object
@@ -95,52 +64,6 @@ components:
               description: Unique customer identifier.
               example: 49BCD622C6A07726594D63AAB2F436D366782AD1
               maxLength: 40
-    RS500:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 500.01.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2020-01-03T16:05:56.517Z'
-          description: Opertion Timestamp
-          format: date-time
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
     RSCreateCommercialCustomers400:
       type: object
       required:
@@ -345,16 +268,99 @@ components:
                 description: Country in ISO code 2 digits.
                 example: US
                 maxLength: 2
+    RS500:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 500.01.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2020-01-03T16:05:56.517Z'
+          description: Opertion Timestamp
+          format: date-time
+    RS401:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 401.01.990
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid Access Token
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  examples:
+    InvalidAccessToken:
+      value:
+        code: 401.18.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    ParameterFormatError:
+      value:
+        code: 400.18.081
+        message: Parameter format error
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.18.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.18.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.18.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.18.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
   responses:
-    RSCreateCommercialCustomers400:
-      description: Bad Request
+    RS401:
+      description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RSCreateCommercialCustomers400'
+            $ref: '#/components/schemas/RS401'
           examples:
-            Parameter Format Error:
-              $ref: '#/components/examples/ParameterFormatError'
+            Invalid Access Token:
+              $ref: '#/components/examples/InvalidAccessToken'
+            Access Token Not Approved:
+              $ref: '#/components/examples/AccessTokenNotApproved'
+            Invalid Signature:
+              $ref: '#/components/examples/InvalidSignature'
+            Access Token Expired:
+              $ref: '#/components/examples/AccessTokenExpired'
     RSCreateCommercialCustomers200:
       description: OK
       content:
@@ -378,21 +384,15 @@ components:
           examples:
             Internal Server Error:
               $ref: '#/components/examples/InternalServerError'
-    RS401:
-      description: Unauthorized
+    RSCreateCommercialCustomers400:
+      description: Bad Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RS401'
+            $ref: '#/components/schemas/RSCreateCommercialCustomers400'
           examples:
-            Invalid Access Token:
-              $ref: '#/components/examples/InvalidAccessToken'
-            Access Token Not Approved:
-              $ref: '#/components/examples/AccessTokenNotApproved'
-            Invalid Signature:
-              $ref: '#/components/examples/InvalidSignature'
-            Access Token Expired:
-              $ref: '#/components/examples/AccessTokenExpired'
+            Parameter Format Error:
+              $ref: '#/components/examples/ParameterFormatError'
   requestBodies:
     RQCreateCommercialCustomers:
       content:

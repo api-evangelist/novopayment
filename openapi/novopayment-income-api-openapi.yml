@@ -30,38 +30,42 @@ paths:
       tags:
       - Income
 components:
-  examples:
-    InternalServerError:
-      value:
-        code: 500.25.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidData:
-      value:
-        code: 400.25.089
-        message: Invalid data.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.25.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.25.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.25.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.25.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
+  requestBodies:
+    RQIncomeSource:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQIncomeSource'
+      required: true
   schemas:
+    RQIncomeSource:
+      type: object
+      required:
+      - fundsTypeId
+      - incomeId
+      - otherFundsTypeId
+      - annualBonus
+      properties:
+        fundsTypeId:
+          type: integer
+          description: Main income type.
+          example: 1
+          maxLength: 38
+        incomeId:
+          type: integer
+          description: Income range.
+          example: 2
+          maxLength: 38
+        otherFundsTypeId:
+          type: integer
+          description: Additional income sources.
+          example: 3
+          maxLength: 38
+        annualBonus:
+          type: number
+          description: Total annual income.
+          example: 98.650.000,00
+          maxLength: 38
     RSIncomeSource400:
       type: object
       required:
@@ -108,6 +112,28 @@ components:
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
           format: date-time
+    RSIncomeSource200:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          description: Operation response code
+          example: 200.25.000
+          maxLength: 10
+        message:
+          type: string
+          description: Response code description
+          example: Process Ok
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
     RS401:
       type: object
       required:
@@ -131,64 +157,50 @@ components:
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+  examples:
+    InvalidAccessToken:
+      value:
+        code: 401.25.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidData:
+      value:
+        code: 400.25.089
+        message: Invalid data.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.25.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.25.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenExpired:
+      value:
+        code: 401.25.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.25.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+  responses:
     RSIncomeSource200:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          description: Operation response code
-          example: 200.25.000
-          maxLength: 10
-        message:
-          type: string
-          description: Response code description
-          example: Process Ok
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
-          format: date-time
-    RQIncomeSource:
-      type: object
-      required:
-      - fundsTypeId
-      - incomeId
-      - otherFundsTypeId
-      - annualBonus
-      properties:
-        fundsTypeId:
-          type: integer
-          description: Main income type.
-          example: 1
-          maxLength: 38
-        incomeId:
-          type: integer
-          description: Income range.
-          example: 2
-          maxLength: 38
-        otherFundsTypeId:
-          type: integer
-          description: Additional income sources.
-          example: 3
-          maxLength: 38
-        annualBonus:
-          type: number
-          description: Total annual income.
-          example: 98.650.000,00
-          maxLength: 38
-  requestBodies:
-    RQIncomeSource:
+      description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/RQIncomeSource'
-      required: true
-  responses:
+            $ref: '#/components/schemas/RSIncomeSource200'
+          examples:
+            Success:
+              value:
+                code: 200.25.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
     RS401:
       description: Unauthorized
       content:
@@ -213,18 +225,6 @@ components:
           examples:
             Internal Server Error:
               $ref: '#/components/examples/InternalServerError'
-    RSIncomeSource200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSIncomeSource200'
-          examples:
-            Success:
-              value:
-                code: 200.25.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
     RSIncomeSource400:
       description: Bad Request
       content:

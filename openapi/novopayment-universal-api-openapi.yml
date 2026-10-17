@@ -38,99 +38,6 @@ paths:
       tags:
       - Universal
 components:
-  responses:
-    RSEncryptCard500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500Tk'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerErrorTk'
-    RSEncryptCard400:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS400Tk'
-          examples:
-            Header Params Required:
-              $ref: '#/components/examples/HeaderParamsRequiredTk'
-            Error General Service:
-              $ref: '#/components/examples/ErrorGeneralService'
-            Invalid parameters:
-              $ref: '#/components/examples/InvalidParams'
-            Component configuration not found:
-              $ref: '#/components/examples/ConfigurationNotFound'
-            Encryption error:
-              $ref: '#/components/examples/EncryptionError'
-    RSEncryptCard401:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS401Tk'
-          examples:
-            Invalid signature:
-              $ref: '#/components/examples/InvalidSignatureTk'
-            Decryption Error:
-              $ref: '#/components/examples/DecryptionError'
-    RSEncryptCard200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSEncryptCard200'
-          examples:
-            Default:
-              value:
-                code: 200.00.000
-                message: Process Ok
-                datetime: '2022-04-25T23:19:12.000Z'
-                data:
-                  signedPayload: eyJle...y3fmkg
-  examples:
-    ErrorGeneralService:
-      value:
-        code: 400.00.350
-        message: Error General Service.
-        datetime: '2022-04-25T23:19:12.000Z'
-    InvalidParams:
-      value:
-        code: 400.00.396
-        message: Invalid parameters.
-        datetime: '2024-07-17T00:57:36.360Z'
-    InvalidSignatureTk:
-      value:
-        code: 401.00.992
-        message: Invalid signature
-        datetime: '2024-07-17T00:57:36.360Z'
-    DecryptionError:
-      value:
-        code: 401.00.997
-        message: Decryption Error
-        datetime: '2024-07-17T00:57:36.360Z'
-    ConfigurationNotFound:
-      value:
-        code: 400.00.356
-        message: Component configuration not found.
-        datetime: '2024-07-17T00:57:36.360Z'
-    HeaderParamsRequiredTk:
-      value:
-        code: 400.00.001
-        message: Header Params Required
-        datetime: '2022-04-25T23:19:12.000Z'
-    EncryptionError:
-      value:
-        code: 400.00.994
-        message: Encryption error
-        datetime: '2024-07-17T00:57:36.360Z'
-    InternalServerErrorTk:
-      value:
-        code: 500.00.999
-        message: Internal Server Error
-        datetime: '2022-04-25T23:19:12.000Z'
   schemas:
     ObjBillingAddressEnablement:
       type: object
@@ -185,17 +92,6 @@ components:
 
             '
           example: 336-222-6060
-    ObjSignedPayload:
-      type: object
-      required:
-      - signedPayload
-      properties:
-        signedPayload:
-          type: string
-          description: 'Encrypted and signed card information
-
-            '
-          example: eyJle...y3fmkg
     RS400Tk:
       type: object
       properties:
@@ -216,6 +112,61 @@ components:
           description: 'Operation Time Stamp in ISO 8601 format<br>date-time - the date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6), for example, 2017-07-21T17:32:28Z
 
             '
+          minLength: 24
+          maxLength: 24
+    ObjUserEnablement:
+      type: object
+      required:
+      - firstName
+      - lastName
+      - email
+      - phoneNumber
+      properties:
+        firstName:
+          type: string
+          maxLength: 20
+          description: 'Required for VCEH
+
+            '
+          example: Lewis
+        lastName:
+          type: string
+          maxLength: 20
+          description: 'Required for VCEH
+
+            '
+          example: Schultz
+        email:
+          type: string
+          maxLength: 256
+          description: 'Required for VCEH
+
+            '
+          example: lschultz@gmail.com
+        phoneNumber:
+          type: string
+          maxLength: 32
+          description: 'Required for VCEH
+
+            '
+          example: 336-222-6060
+    RS500Tk:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 500.00.999
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Internal Server Error
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
           minLength: 24
           maxLength: 24
     RSEncryptCard200:
@@ -247,13 +198,25 @@ components:
           maxLength: 24
         data:
           $ref: '#/components/schemas/ObjSignedPayload'
-    RQEncryptCard:
+    RS401Tk:
       type: object
-      required:
-      - encryptedData
       properties:
-        encryptedData:
-          $ref: '#/components/schemas/ObjCardEncryptionEncryptedData'
+        code:
+          type: string
+          example: 401.00.992
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Invalid signature
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          example: '2022-04-25T23:19:12.000Z'
+          minLength: 24
+          maxLength: 24
     ObjCardEncryptionEncryptedData:
       type: object
       description: 'Encrypted and signed request data
@@ -319,80 +282,117 @@ components:
           $ref: '#/components/schemas/ObjBillingAddressEnablement'
         user:
           $ref: '#/components/schemas/ObjUserEnablement'
-    RS500Tk:
-      type: object
-      properties:
-        code:
-          type: string
-          example: 500.00.999
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Internal Server Error
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2022-04-25T23:19:12.000Z'
-          minLength: 24
-          maxLength: 24
-    ObjUserEnablement:
+    RQEncryptCard:
       type: object
       required:
-      - firstName
-      - lastName
-      - email
-      - phoneNumber
+      - encryptedData
       properties:
-        firstName:
-          type: string
-          maxLength: 20
-          description: 'Required for VCEH
-
-            '
-          example: Lewis
-        lastName:
-          type: string
-          maxLength: 20
-          description: 'Required for VCEH
-
-            '
-          example: Schultz
-        email:
-          type: string
-          maxLength: 256
-          description: 'Required for VCEH
-
-            '
-          example: lschultz@gmail.com
-        phoneNumber:
-          type: string
-          maxLength: 32
-          description: 'Required for VCEH
-
-            '
-          example: 336-222-6060
-    RS401Tk:
+        encryptedData:
+          $ref: '#/components/schemas/ObjCardEncryptionEncryptedData'
+    ObjSignedPayload:
       type: object
+      required:
+      - signedPayload
       properties:
-        code:
+        signedPayload:
           type: string
-          example: 401.00.992
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid signature
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          example: '2022-04-25T23:19:12.000Z'
-          minLength: 24
-          maxLength: 24
+          description: 'Encrypted and signed card information
+
+            '
+          example: eyJle...y3fmkg
+  responses:
+    RSEncryptCard400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS400Tk'
+          examples:
+            Header Params Required:
+              $ref: '#/components/examples/HeaderParamsRequiredTk'
+            Error General Service:
+              $ref: '#/components/examples/ErrorGeneralService'
+            Invalid parameters:
+              $ref: '#/components/examples/InvalidParams'
+            Component configuration not found:
+              $ref: '#/components/examples/ConfigurationNotFound'
+            Encryption error:
+              $ref: '#/components/examples/EncryptionError'
+    RSEncryptCard500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500Tk'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerErrorTk'
+    RSEncryptCard401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS401Tk'
+          examples:
+            Invalid signature:
+              $ref: '#/components/examples/InvalidSignatureTk'
+            Decryption Error:
+              $ref: '#/components/examples/DecryptionError'
+    RSEncryptCard200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSEncryptCard200'
+          examples:
+            Default:
+              value:
+                code: 200.00.000
+                message: Process Ok
+                datetime: '2022-04-25T23:19:12.000Z'
+                data:
+                  signedPayload: eyJle...y3fmkg
+  examples:
+    EncryptionError:
+      value:
+        code: 400.00.994
+        message: Encryption error
+        datetime: '2024-07-17T00:57:36.360Z'
+    ErrorGeneralService:
+      value:
+        code: 400.00.350
+        message: Error General Service.
+        datetime: '2022-04-25T23:19:12.000Z'
+    InvalidSignatureTk:
+      value:
+        code: 401.00.992
+        message: Invalid signature
+        datetime: '2024-07-17T00:57:36.360Z'
+    InternalServerErrorTk:
+      value:
+        code: 500.00.999
+        message: Internal Server Error
+        datetime: '2022-04-25T23:19:12.000Z'
+    ConfigurationNotFound:
+      value:
+        code: 400.00.356
+        message: Component configuration not found.
+        datetime: '2024-07-17T00:57:36.360Z'
+    DecryptionError:
+      value:
+        code: 401.00.997
+        message: Decryption Error
+        datetime: '2024-07-17T00:57:36.360Z'
+    InvalidParams:
+      value:
+        code: 400.00.396
+        message: Invalid parameters.
+        datetime: '2024-07-17T00:57:36.360Z'
+    HeaderParamsRequiredTk:
+      value:
+        code: 400.00.001
+        message: Header Params Required
+        datetime: '2022-04-25T23:19:12.000Z'
   requestBodies:
     RQEncryptCard:
       required: true

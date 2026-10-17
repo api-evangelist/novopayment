@@ -32,61 +32,8 @@ paths:
       tags:
       - Recipients
 components:
-  requestBodies:
-    RQApproveOrDeclineARecipient:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RQApproveOrDeclineARecipient'
-      required: true
-  examples:
-    RequestedResourceNotFound:
-      value:
-        code: 400.18.022
-        message: The requested resource was not found.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidAccessToken:
-      value:
-        code: 401.18.990
-        message: Invalid Access Token
-        datetime: '2020-01-03T16:05:56.517Z'
-    InvalidSignature:
-      value:
-        code: 401.18.992
-        message: Invalid signature
-        datetime: '2020-01-03T16:05:56.517Z'
-    ProductStatusNotUpdated:
-      value:
-        code: 400.18.317
-        message: Product status could not be updated.
-        datetime: '2020-01-03T16:05:56.517Z'
-    InternalServerError:
-      value:
-        code: 500.18.001
-        message: Internal Server Error
-        datetime: '2020-01-03T16:05:56.517Z'
-    OpenEscalationsExist:
-      value:
-        code: 400.18.035
-        message: Open escalations exist.
-        datetime: '2020-01-03T16:05:56.517Z'
-    HeaderParamsRequired:
-      value:
-        code: 400.18.001
-        message: Header Params Required
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenExpired:
-      value:
-        code: 401.18.993
-        message: Access token expired
-        datetime: '2020-01-03T16:05:56.517Z'
-    AccessTokenNotApproved:
-      value:
-        code: 401.18.991
-        message: Access Token not approved
-        datetime: '2020-01-03T16:05:56.517Z'
   schemas:
-    RSApproveOrDeclineARecipient400:
+    RSApproveOrDeclineARecipient200:
       type: object
       required:
       - code
@@ -95,14 +42,13 @@ components:
       properties:
         code:
           type: string
-          example: 400.18.003
           description: Operation response code
-          minLength: 10
+          example: 200.18.000
           maxLength: 10
         message:
           type: string
-          example: Params required
           description: Response code description
+          example: Process Ok
           maxLength: 140
         datetime:
           type: string
@@ -131,29 +77,6 @@ components:
           type: string
           example: '2020-01-03T16:05:56.517Z'
           description: Opertion Timestamp
-          format: date-time
-    RS401:
-      type: object
-      required:
-      - code
-      - message
-      - datetime
-      properties:
-        code:
-          type: string
-          example: 401.01.990
-          description: Operation response code
-          minLength: 10
-          maxLength: 10
-        message:
-          type: string
-          example: Invalid Access Token
-          description: Response code description
-          maxLength: 140
-        datetime:
-          type: string
-          description: Opertion Timestamp
-          example: '2020-01-03T16:05:56.517Z'
           format: date-time
     RQApproveOrDeclineARecipient:
       type: object
@@ -190,7 +113,7 @@ components:
           description: The user who performs the action.
           example: Master
           maxLength: 100
-    RSApproveOrDeclineARecipient200:
+    RS401:
       type: object
       required:
       - code
@@ -199,20 +122,99 @@ components:
       properties:
         code:
           type: string
+          example: 401.01.990
           description: Operation response code
-          example: 200.18.000
+          minLength: 10
           maxLength: 10
         message:
           type: string
+          example: Invalid Access Token
           description: Response code description
-          example: Process Ok
           maxLength: 140
         datetime:
           type: string
           description: Opertion Timestamp
           example: '2020-01-03T16:05:56.517Z'
           format: date-time
+    RSApproveOrDeclineARecipient400:
+      type: object
+      required:
+      - code
+      - message
+      - datetime
+      properties:
+        code:
+          type: string
+          example: 400.18.003
+          description: Operation response code
+          minLength: 10
+          maxLength: 10
+        message:
+          type: string
+          example: Params required
+          description: Response code description
+          maxLength: 140
+        datetime:
+          type: string
+          description: Opertion Timestamp
+          example: '2020-01-03T16:05:56.517Z'
+          format: date-time
+  examples:
+    AccessTokenExpired:
+      value:
+        code: 401.18.993
+        message: Access token expired
+        datetime: '2020-01-03T16:05:56.517Z'
+    HeaderParamsRequired:
+      value:
+        code: 400.18.001
+        message: Header Params Required
+        datetime: '2020-01-03T16:05:56.517Z'
+    ProductStatusNotUpdated:
+      value:
+        code: 400.18.317
+        message: Product status could not be updated.
+        datetime: '2020-01-03T16:05:56.517Z'
+    AccessTokenNotApproved:
+      value:
+        code: 401.18.991
+        message: Access Token not approved
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidSignature:
+      value:
+        code: 401.18.992
+        message: Invalid signature
+        datetime: '2020-01-03T16:05:56.517Z'
+    InternalServerError:
+      value:
+        code: 500.18.001
+        message: Internal Server Error
+        datetime: '2020-01-03T16:05:56.517Z'
+    OpenEscalationsExist:
+      value:
+        code: 400.18.035
+        message: Open escalations exist.
+        datetime: '2020-01-03T16:05:56.517Z'
+    RequestedResourceNotFound:
+      value:
+        code: 400.18.022
+        message: The requested resource was not found.
+        datetime: '2020-01-03T16:05:56.517Z'
+    InvalidAccessToken:
+      value:
+        code: 401.18.990
+        message: Invalid Access Token
+        datetime: '2020-01-03T16:05:56.517Z'
   responses:
+    RS500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RS500'
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/InternalServerError'
     RS401:
       description: Unauthorized
       content:
@@ -228,27 +230,6 @@ components:
               $ref: '#/components/examples/InvalidSignature'
             Access Token Expired:
               $ref: '#/components/examples/AccessTokenExpired'
-    RSApproveOrDeclineARecipient200:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RSApproveOrDeclineARecipient200'
-          examples:
-            Success:
-              value:
-                code: 200.18.000
-                message: Process Ok
-                datetime: '2020-01-03T16:05:56.517Z'
-    RS500:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RS500'
-          examples:
-            Internal Server Error:
-              $ref: '#/components/examples/InternalServerError'
     RSApproveOrDeclineARecipient400:
       description: Bad Request
       content:
@@ -264,6 +245,18 @@ components:
               $ref: '#/components/examples/RequestedResourceNotFound'
             Product Status Not Updated:
               $ref: '#/components/examples/ProductStatusNotUpdated'
+    RSApproveOrDeclineARecipient200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RSApproveOrDeclineARecipient200'
+          examples:
+            Success:
+              value:
+                code: 200.18.000
+                message: Process Ok
+                datetime: '2020-01-03T16:05:56.517Z'
   parameters:
     productId:
       name: productId
@@ -274,6 +267,13 @@ components:
         type: integer
         example: 221BF87320F278DC9F41C835AD0D5111B2B0FF68
         maxLength: 38
+  requestBodies:
+    RQApproveOrDeclineARecipient:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RQApproveOrDeclineARecipient'
+      required: true
   securitySchemes:
     oAuth2ClientCredentials:
       type: oauth2
