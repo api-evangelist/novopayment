@@ -914,3 +914,9 @@ components:
         clientCredentials:
           tokenUrl: https://sandbox-api.novopayment.com/oauth2/token
           scopes: {}
+x-provenance:
+  method: harvested
+  publisher: NovoPayment
+  source: https://dcrpi6aufyoyb.cloudfront.net/main/cards-api/cards-api-spec-v1.3.yaml?1791142689
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
